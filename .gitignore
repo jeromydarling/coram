@@ -39,3 +39,5 @@ dist
 # and large; the manifest with the blur-up placeholders IS committed.
 media/original/
 media/derived/
+# Staging manifest. Promoted to src/shared/imagery-manifest.json by the upload.
+media/manifest.json

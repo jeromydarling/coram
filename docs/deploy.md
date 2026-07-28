@@ -99,12 +99,21 @@ Generation is build-time, not per-request: nine photographs do not change
 between deploys, and putting an inference queue on the critical path of a page
 with a 1.5s LCP target would be a bad trade.
 
-Two things to know before regenerating. The art direction lives in
-`src/shared/imagery.ts` and is enforced, not advisory — `assertOnDirection()`
-runs before any inference is spent and rejects a prompt that breaks §8.2's ban
-list or that does not say how faces are obscured. And `src/shared/imagery-manifest.json`
-is committed, because it carries the blur-up placeholders the HTML inlines;
-regenerating changes it, so it belongs in the diff a person reviews.
+Generation never touches the committed manifest. It writes `media/manifest.json`,
+and `imagery:upload` promotes that to `src/shared/imagery-manifest.json` only
+after every object has landed in R2. That ordering is deliberate: the committed
+manifest is what makes `<Picture>` emit a real `<img>` instead of its fallback
+tone block, so a manifest whose objects are not in the bucket produces broken
+images — worse than the placeholder it replaced. Commit the promoted manifest
+to ship the photographs.
+
+**Look at `media/original/` before uploading.** `assertOnDirection()` validates
+the prompts we send and cannot see what comes back, and the first run proved
+that gap is real: it produced a sign-in sheet headed "Kodak Portra 400", a
+Kodak product box sitting on a table, and — the one that matters — a phone bank
+with two fully recognizable faces, from a prompt that passed every check. §8.2
+calls the face rule "a rule, not a preference", and only a person looking at
+the output can enforce it.
 
 ## 4. Secrets
 

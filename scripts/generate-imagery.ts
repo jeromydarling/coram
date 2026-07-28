@@ -48,7 +48,20 @@ const MODEL = process.env.IMAGERY_MODEL ?? '@cf/black-forest-labs/flux-2-dev';
 const STEPS = Number(process.env.IMAGERY_STEPS ?? 20);
 const ORIGINAL_DIR = 'media/original';
 const DERIVED_DIR = 'media/derived';
-const MANIFEST = 'src/shared/imagery-manifest.json';
+/**
+ * Staging manifest, gitignored alongside the images it describes.
+ *
+ * Deliberately NOT src/shared/imagery-manifest.json. That file is what flips
+ * <Picture> from its fallback tone block to a real <img>, so committing it
+ * while the objects are not yet in R2 puts broken images on the site — worse
+ * than the placeholder it replaced. Generation therefore cannot write the
+ * committed file at all; `upload-imagery.ts` promotes this one only after
+ * every object has actually landed in the bucket.
+ */
+const MANIFEST = 'media/manifest.json';
+
+/** Promoted by upload-imagery.ts. Imported by the Worker at build time. */
+export const PUBLISHED_MANIFEST = 'src/shared/imagery-manifest.json';
 
 /** Wide enough to carry the grain, small enough to inline in the HTML. */
 const LQIP_WIDTH = 20;
@@ -224,7 +237,10 @@ async function main(): Promise<void> {
     console.log(`✓ ${spec.id} — ${Object.keys(manifest[spec.id].bytes).length} derived files`);
   }
 
-  console.log(`\nWrote ${MANIFEST}. Review media/original/ before uploading.`);
+  console.log(
+    `\nWrote ${MANIFEST}. Review media/original/, then \`npm run imagery:upload\` —` +
+      `\nnothing appears on the site until the upload promotes this to ${PUBLISHED_MANIFEST}.`,
+  );
 }
 
 main().catch((error) => {
