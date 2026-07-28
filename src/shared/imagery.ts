@@ -155,9 +155,16 @@ export const IMAGES: ImageSpec[] = [
   },
   {
     id: 'sign-in-sheet',
+    /*
+     * Cropped tight to the ruled columns. The first version framed the whole
+     * page including its printed header, which is precisely the empty surface
+     * the model filled with a film-stock name. No header in frame, nothing to
+     * letter.
+     */
     subject:
-      'a printed sign-in sheet on a clipboard at the edge of a table, ruled columns filled in ' +
-      'with unreadable handwriting, a pen resting on top, a roll of blank name tags beside it',
+      'a close crop of a sign-in sheet on a clipboard at the edge of a table, ruled columns ' +
+      'filled in with loose illegible handwriting, the top of the page out of frame, ' +
+      'a pen resting on it, a roll of blank name tags beside it',
     faceClause: 'framed below the shoulders, no faces in frame',
     accent: false,
     width: 1600,
@@ -210,10 +217,17 @@ export const IMAGES: ImageSpec[] = [
   },
   {
     id: 'whiteboard',
+    /*
+     * "illegible" is doing real work, not describing a mood. A surface the
+     * prompt leaves open gets filled with whatever tokens are nearby — the
+     * first sign-in sheet came back headed "Kodak Portra 400". Saying the
+     * handwriting is too loose to read gives the model something specific to
+     * draw, and it is what a fast whiteboard actually looks like.
+     */
     subject:
-      'a whiteboard covered in overlapping handwriting mid-argument, arrows between boxes, ' +
-      'three items circled, half-erased text underneath, two people standing at the edge of ' +
-      'the frame pointing at different parts of it',
+      'a whiteboard covered in overlapping illegible handwriting mid-argument, loose shorthand ' +
+      'scrawled too fast to read, arrows between boxes, three items circled, half-erased marks ' +
+      'underneath, two people standing at the edge of the frame pointing at different parts',
     faceClause: 'framed below the shoulders, no faces in frame',
     accent: false,
     width: 1600,
