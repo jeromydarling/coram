@@ -25,8 +25,9 @@ because porting those would cost more than starting clean.
 
 ## High value — port these
 
-### Nuntius §5.4 — the global opt-out ledger
+### Nuntius §5.4 — the global opt-out ledger — **PORTED**
 
+Landed in `migrations/0004_nuntius.sql`. Original at
 `supabase/migrations/20260220133107_*.sql`
 
 The closest thing to a drop-in in the whole repo. `email_suppressions` is
@@ -36,17 +37,25 @@ manual`, `self_service | admin | system`) are exactly the distinctions a
 deliverability dashboard needs. `email_unsubscribe_tokens` stores a
 `token_hash`, not the token — same discipline Coram's `auth_tokens` uses.
 
-Two changes on the way in. §5.4 requires the ledger to span **every channel**,
-not just email, so the identifier column has to generalize from `email` to a
-contact-method pair. And it needs a retention rule — though note this is a
-table where the right answer is probably `retentionDays: null` with
-`pii: 'contact'`, which the registry currently forbids: an opt-out that expires
-is an opt-out that fails. That is a real conflict between §3.4 and §5.4's
-"forever", and it should be resolved deliberately rather than by whoever writes
-the migration.
+**What shipped, and how the §3.4 conflict resolved.** The CROS ledger stores a
+plaintext `email`, which would have forced a choice between §5.4's "forever"
+and §3.4's requirement that personal data expire. Coram's stores
+`HMAC-SHA256(pepper, "<label>:<identifier>")` instead, with the pepper held in
+Worker secrets and deliberately absent from Postgres. The table then holds no
+personal data at all, so indefinite retention is fine under §3.4 as written and
+neither rule had to bend.
 
-### Vinculum §5.2 — the relationship graph
+That also fixes the case the plaintext version could not: someone unsubscribes,
+their contact record is later purged, and the suppression survives without us
+still holding an address we had promised to delete.
 
+The `reason` / `source` CHECK constraints carried over as-is. Enforcement is
+new — a `BEFORE INSERT` trigger on every outbound table, deriving the hash from
+the contact row rather than from anything a caller passed.
+
+### Vinculum §5.2 — the relationship graph — **PORTED**
+
+Landed in `migrations/0006_vinculum.sql`. Original at
 `supabase/migrations/20260213144756_*.sql`, plus
 `supabase/functions/upsert-relationship-edges/index.ts` (99 lines)
 
@@ -67,6 +76,16 @@ That has no tenant predicate at all — any signed-in user of any tenant could
 read every edge in the database. The table also has no `tenant_id`. This is the
 single clearest argument for rewriting the policies rather than porting them,
 and for Coram's default-deny posture where a missing predicate fails closed.
+
+**What shipped:** the shape carried over unchanged, including the unique
+constraint that makes ingestion idempotent. Added: a `tenant_id` column, a
+`CHECK` on the endpoint types, and a `relationship_edges_select` policy that
+hides an edge unless *both* ends are visible to the caller — so an organizer
+cannot learn that a contact outside their turf exists by seeing an edge point
+at it. The traversal API is capped at one hop, because deeper walks would let
+someone map a whole network out from a single contact in their turf, which is
+both what a hostile subpoena would ask for and what turf bounds exist to
+prevent.
 
 ### Scriba §5.10 — model scope guardrails
 

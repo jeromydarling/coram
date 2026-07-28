@@ -27,6 +27,7 @@ import { campaigns } from './routes/api/campaigns';
 import { contacts } from './routes/api/contacts';
 import { exports } from './routes/api/exports';
 import { funds } from './routes/api/funds';
+import { vinculum } from './routes/api/vinculum';
 import { events } from './routes/api/events';
 import { imports } from './routes/api/imports';
 import { marketing } from './routes/marketing';
@@ -69,6 +70,7 @@ app.route('/api/exports', exports);
 app.route('/api/events', events);
 app.route('/api/campaigns', campaigns);
 app.route('/api/funds', funds);
+app.route('/api/vinculum', vinculum);
 
 // Signature-verified, no session (§1.1). Mounted before the SPA and marketing
 // so nothing else can shadow it.
