@@ -25,6 +25,17 @@
  *   contact   — directly identifies a person (name, email, phone, address)
  *   protected — contact data whose exposure carries physical or legal risk to
  *               the person. Custos rows are the only ones that qualify.
+ *
+ * Classify by the *subject* of the row, not by every column in it.
+ *
+ * An event has a `created_by`, and a segment has one too, but neither row is
+ * about that person — they are about an event and a saved filter, and the
+ * reference is authorship. Those are `none`. An RSVP is about a person even
+ * though it holds only a contact id, so it is `pseudonym`.
+ *
+ * The test to apply: if this row were deleted, would a *person* have less data
+ * held about them, or would the workspace have lost a piece of its own
+ * configuration? The first is personal data; the second is not.
  */
 export type PiiClass = 'none' | 'pseudonym' | 'contact' | 'protected';
 
