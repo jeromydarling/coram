@@ -87,10 +87,16 @@ const INJECTION = [
 // ---------------------------------------------------------------------------
 
 /*
- * The numbers are US-only, which is a real limitation for a product that will
- * be used elsewhere. Better a wrong-country number than none while the
- * per-region list is outstanding — but this is worth fixing before Coram is
- * used outside the US, and it is not a detail to discover in production.
+ * These numbers are US-only, and that is a scoped decision rather than an
+ * oversight: Coram launches in the US, and a maintained per-region number table
+ * is the kind of data that goes stale silently, so it needs an owner before it
+ * needs code.
+ *
+ * The trigger for revisiting is the first workspace outside the US, not a
+ * calendar date. What it needs then is a per-workspace locale and a table with
+ * someone responsible for it — not a wider default. A crisis number is read as
+ * authoritative, so the wrong country's is worse than a plain instruction to
+ * contact local emergency services, and that is the fallback to add here first.
  */
 const CRISIS_RESPONSE = `This sounds like something I am not able to help with, and I do not want to pretend otherwise.
 

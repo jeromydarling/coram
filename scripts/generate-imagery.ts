@@ -33,7 +33,19 @@ import {
   type ImageSpec,
 } from '../src/shared/imagery';
 
-const MODEL = '@cf/black-forest-labs/flux-2-dev';
+const MODEL = process.env.IMAGERY_MODEL ?? '@cf/black-forest-labs/flux-2-dev';
+
+/**
+ * Sampling steps. flux-2-dev is not step-distilled, so this is the main lever
+ * for the film-grain, available-light look §8.2 asks for — more steps resolve
+ * the falloff in a dim room instead of flattening it.
+ *
+ * Overridable because the ceiling here is shared capacity rather than the
+ * model: a busy account answers a long generation with a 424 or 429, and
+ * dropping steps is the difference between a run that finishes and one that
+ * spends its whole budget on retries.
+ */
+const STEPS = Number(process.env.IMAGERY_STEPS ?? 20);
 const ORIGINAL_DIR = 'media/original';
 const DERIVED_DIR = 'media/derived';
 const MANIFEST = 'src/shared/imagery-manifest.json';
@@ -60,17 +72,14 @@ function env(name: string): string {
   return value;
 }
 
-async function generate(spec: ImageSpec): Promise<Buffer> {
-  // Check before spending an inference, not after.
-  assertOnDirection(spec);
+const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
+async function attempt(spec: ImageSpec): Promise<Buffer> {
   const form = new FormData();
   form.append('prompt', prompt(spec));
   form.append('width', String(spec.width));
   form.append('height', String(spec.height));
-  // flux-2-dev is not distilled to a fixed step count; 28 is where the grain
-  // and available-light falloff stop improving for this subject matter.
-  form.append('steps', '28');
+  form.append('steps', String(STEPS));
 
   const res = await fetch(
     `https://api.cloudflare.com/client/v4/accounts/${env('CLOUDFLARE_ACCOUNT_ID')}/ai/run/${MODEL}`,
@@ -82,22 +91,55 @@ async function generate(spec: ImageSpec): Promise<Buffer> {
   );
 
   if (!res.ok) {
-    throw new Error(`Workers AI ${res.status}: ${(await res.text()).slice(0, 400)}`);
+    throw new Error(`Workers AI ${res.status}: ${(await res.text()).slice(0, 300)}`);
   }
 
-  // The image models return raw bytes for some routes and a base64 field for
+  // The image models return raw bytes on some routes and a base64 field on
   // others. Handle both rather than guessing and failing at 3am.
   const type = res.headers.get('content-type') ?? '';
   if (type.startsWith('image/')) {
     return Buffer.from(await res.arrayBuffer());
   }
 
-  const body = (await res.json()) as { result?: { image?: string }; errors?: unknown };
+  const body = (await res.json()) as { result?: { image?: string } };
   const b64 = body.result?.image;
   if (!b64) {
-    throw new Error(`Workers AI returned no image: ${JSON.stringify(body).slice(0, 400)}`);
+    throw new Error(`Workers AI returned no image: ${JSON.stringify(body).slice(0, 300)}`);
   }
   return Buffer.from(b64, 'base64');
+}
+
+/**
+ * Generate one image, retrying transient routing failures.
+ *
+ * Workers AI answers a busy model with 424 `could not route request to AI
+ * model`, which is capacity rather than anything wrong with the request — the
+ * identical call succeeds a minute later. Without a retry a nine-image run dies
+ * on whichever one happened to land badly, having already paid for the ones
+ * before it.
+ */
+async function generate(spec: ImageSpec): Promise<Buffer> {
+  // Check before spending an inference, not after.
+  assertOnDirection(spec);
+
+  let lastError: unknown;
+
+  for (let i = 0; i < 4; i++) {
+    try {
+      return await attempt(spec);
+    } catch (error) {
+      lastError = error;
+      const message = error instanceof Error ? error.message : String(error);
+      // A prompt the model rejects will be rejected identically every time.
+      // Only back off for the failures that are worth waiting out.
+      if (!/\b(424|429|500|502|503|504)\b|could not route/.test(message)) throw error;
+      const wait = 2000 * 2 ** i;
+      console.log(`  ↻ ${spec.id} — ${message.slice(0, 80)}; retrying in ${wait / 1000}s`);
+      await sleep(wait);
+    }
+  }
+
+  throw lastError;
 }
 
 async function derive(spec: ImageSpec, original: Buffer): Promise<ManifestEntry> {
