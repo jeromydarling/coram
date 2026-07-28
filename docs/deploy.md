@@ -64,6 +64,7 @@ npx wrangler kv namespace create KV_RATE
 
 npx wrangler r2 bucket create coram-files
 npx wrangler r2 bucket create coram-exports
+npx wrangler r2 bucket create coram-media
 
 npx wrangler queues create coram-purge
 npx wrangler queues create coram-purge-dlq
@@ -74,6 +75,36 @@ npx wrangler queues create coram-send-dlq
 The dead-letter queue matters more than it looks. A message that lands there is
 a burn that did not finish clearing R2 — a workspace the product has told
 someone is gone, with objects still in a bucket. Alert on it.
+
+`coram-media` is separate from `coram-files` deliberately: it serves bytes to
+unauthenticated visitors, and a bucket that does that must never also hold a
+workspace's uploads. It is the only bucket the burn switch does not touch,
+because nothing in it belongs to a tenant.
+
+## 3a. Marketing photography (§8.2)
+
+The site renders without this — `<Picture>` falls back to a tone block in the
+palette — so it is not a launch blocker. When you want the photographs:
+
+```sh
+export CLOUDFLARE_ACCOUNT_ID=...
+export CLOUDFLARE_API_TOKEN=...        # needs Workers AI: Read
+
+npm run imagery:generate               # FLUX.2 [dev] on Workers AI
+# look at media/original/*.png before going further
+npm run imagery:upload -- --remote
+```
+
+Generation is build-time, not per-request: nine photographs do not change
+between deploys, and putting an inference queue on the critical path of a page
+with a 1.5s LCP target would be a bad trade.
+
+Two things to know before regenerating. The art direction lives in
+`src/shared/imagery.ts` and is enforced, not advisory — `assertOnDirection()`
+runs before any inference is spent and rejects a prompt that breaks §8.2's ban
+list or that does not say how faces are obscured. And `src/shared/imagery-manifest.json`
+is committed, because it carries the blur-up placeholders the HTML inlines;
+regenerating changes it, so it belongs in the diff a person reviews.
 
 ## 4. Secrets
 

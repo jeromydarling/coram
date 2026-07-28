@@ -1,0 +1,8 @@
+# Marketing motion bundle (§8.4). Stable filename, so revalidate often but
+# serve stale while doing it — a five-minute-old animation is not a bug.
+/marketing/*
+  Cache-Control: public, max-age=300, stale-while-revalidate=86400
+
+# Hashed SPA assets. Content-addressed, so a year is safe.
+/assets/*
+  Cache-Control: public, max-age=31536000, immutable

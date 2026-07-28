@@ -4,6 +4,7 @@
  * §1.5: one repo, one Worker, one deploy. Routing is by path prefix (§1.1):
  *
  *   /                  marketing, public
+ *   /media/*           marketing photography from R2, public
  *   /trust             transparency artifacts, public
  *   /canary.txt        PGP-signed warrant canary, text/plain
  *   /.well-known/*     security.txt, PGP key
@@ -35,6 +36,7 @@ import { vinculum } from './routes/api/vinculum';
 import { events } from './routes/api/events';
 import { imports } from './routes/api/imports';
 import { marketing } from './routes/marketing';
+import { media } from './routes/media';
 import { publicEvents } from './routes/public-events';
 import { publicUnsubscribe } from './routes/public-unsubscribe';
 import { stripeWebhook } from './routes/webhooks/stripe';
@@ -85,6 +87,8 @@ app.route('/api/federatio', federatio);
 // Signature-verified, no session (§1.1). Mounted before the SPA and marketing
 // so nothing else can shadow it.
 app.route('/webhooks', stripeWebhook);
+
+app.route('/', media);
 
 app.get('/api/health', (c) => c.json({ ok: true, environment: c.env.ENVIRONMENT }));
 

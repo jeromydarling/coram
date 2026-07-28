@@ -17,6 +17,13 @@ export interface Env {
   // Object storage.
   R2_FILES: R2Bucket;
   R2_EXPORTS: R2Bucket;
+  /**
+   * Marketing photography (§8.2), generated at build time and served under
+   * /media. Public by definition and holds nothing tenant-scoped, which is why
+   * it is a separate bucket from R2_FILES — a bucket that serves unauthenticated
+   * bytes should not be one that also holds a workspace's uploads.
+   */
+  R2_MEDIA: R2Bucket;
 
   // Async jobs.
   Q_PURGE: Queue<PurgeMessage>;

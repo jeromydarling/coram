@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "vite build && vite build --config vite.marketing.config.ts",
     "preview": "wrangler dev",
     "deploy": "wrangler deploy",
     "lint": "eslint .",
@@ -13,7 +13,9 @@
     "test:watch": "vitest",
     "check:retention": "tsx scripts/check-retention.ts",
     "db:generate": "drizzle-kit generate",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "imagery:generate": "tsx scripts/generate-imagery.ts",
+    "imagery:upload": "tsx scripts/upload-imagery.ts"
   },
   "dependencies": {
     "@radix-ui/react-accordion": "^1.2.11",
@@ -97,6 +99,7 @@
     "typescript-eslint": "^8.38.0",
     "vite": "^6.0.0",
     "vitest": "^2.1.9",
-    "wrangler": "^4.0.0"
+    "wrangler": "^4.0.0",
+    "sharp": "^0.34.4"
   }
 }

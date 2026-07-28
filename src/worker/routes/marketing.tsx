@@ -6,18 +6,22 @@
  * external JS, no CDN fonts, no analytics beyond what Cloudflare provides at
  * the edge (§10).
  *
- * What is here and what is not, deliberately:
+ * All nine §8.1 sections are here, with the §8.2 photography served from R2 by
+ * routes/media.ts and the §8.4 motion in src/marketing/motion.ts.
  *
- *   Here — the routing shape, /trust with live artifact dates and automatic
- *   staleness flagging, pricing, the four commitments, and the comparison
- *   table. These are structural or factual about us.
+ * The invariant that makes the motion safe: **every section below renders in
+ * its finished state.** The merge graphic is already merged, the module grid is
+ * already visible, the hero is already framed. Motion moves elements away from
+ * that state and brings them back, so the page is correct with JavaScript off,
+ * with the bundle 404ing, and under `prefers-reduced-motion` — which §8.4
+ * requires be "a real static fallback, not a zero-duration transition".
  *
- *   Not here — the §8.2 imagery, the scroll-driven sequences, and the
- *   §8.4 motion work. Those need a designer and photographs, and shipping
- *   placeholder versions would make the page worse than a plain one.
+ * Photography degrades the same way. `<Picture>` renders a tone block in the
+ * palette when an image has not been generated, so a fresh clone with no
+ * Cloudflare credentials looks deliberate rather than broken.
  *
  * §9 says "Ship 1–3 before writing any marketing copy. The site describes a
- * product that exists." Modules 1–7 exist in code but have never run against a
+ * product that exists." Every module exists in code but none has run against a
  * live database, so the copy below describes capabilities rather than results,
  * and /trust states plainly that no artifact has been published. Reading it
  * back before launch, with a working deploy, is a required step rather than a
@@ -27,6 +31,7 @@
 import { Hono } from 'hono';
 
 import type { Env, Vars } from '../env';
+import { Picture } from '../lib/picture';
 import { anyOverdue, describe, loadArtifacts, staleness } from '../lib/trust';
 
 export const marketing = new Hono<{ Bindings: Env; Variables: Vars }>();
@@ -78,16 +83,118 @@ const STYLE = `
            padding-bottom: 4rem; font-size: .9rem; color: var(--muted); }
   footer a { color: var(--muted); }
   code { font-size: .9em; }
+
+  /* ---- §8.1 hero: full-bleed, dark scrim, Ken Burns on the frame ---- */
+  .hero { position: relative; width: 100%; height: min(82vh, 640px);
+          overflow: hidden; background: #14120f; }
+  /* The animated element. Scaling this never re-decodes the image inside it. */
+  .hero-frame { position: absolute; inset: 0; will-change: transform; }
+  .hero-frame img, .hero-frame > div { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .hero-scrim { position: absolute; inset: 0;
+                background: linear-gradient(180deg, rgba(20,18,15,.35) 0%,
+                            rgba(20,18,15,.55) 45%, rgba(20,18,15,.92) 100%); }
+  .hero-copy { position: absolute; left: 0; right: 0; bottom: 0;
+               max-width: 46rem; margin: 0 auto; padding: 0 1.25rem 2.75rem; }
+  .hero-copy h1 { color: #f5f1ea; margin: 0 0 .6rem; font-size: clamp(2rem, 5.2vw, 3.1rem); }
+  .hero-copy p { color: #cfc7bb; margin: 0; max-width: 30em; }
+
+  /* ---- §8.1 "The problem": six tools converge on one mark ---- */
+  /* overflow:hidden is structural, not cosmetic — the scattered state of the
+     scroll sequence must never reach the copy of the next section. */
+  .merge { position: relative; height: 360px; margin: 2rem 0 1.5rem;
+           overflow: hidden; border: 1px solid var(--line); border-radius: 8px;
+           background: linear-gradient(180deg, transparent, rgba(201,130,31,.04)); }
+  .tool { position: absolute; transform-origin: center;
+          width: 8.5rem; margin-left: -4.25rem; margin-top: -1.1rem;
+          border: 1px solid var(--line); border-radius: 6px; background: var(--bg);
+          padding: .4rem .5rem; font-size: .78rem; text-align: center; color: var(--muted);
+          will-change: transform; }
+  .merge-mark { position: absolute; left: 50%; top: 50%; width: 104px; height: 104px;
+                margin: -52px 0 0 -52px; will-change: transform, opacity; }
+  @media (max-width: 34rem) {
+    .merge { height: 320px; }
+    .tool { width: 6.5rem; margin-left: -3.25rem; font-size: .7rem; }
+  }
+
+  /* ---- §8.1 module grid ---- */
+  .grid { display: grid; gap: .75rem; margin: 1rem 0;
+          grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr)); }
+  /* Column + auto margin so every demo sits on the card's baseline however
+     long the description wraps. Ragged demo positions read as a bug. */
+  .module { border: 1px solid var(--line); border-radius: 8px; padding: .85rem .9rem;
+            display: flex; flex-direction: column; will-change: transform, opacity; }
+  .module h3 { margin: 0 0 .15rem; font-size: .95rem; }
+  .module p { margin: 0; font-size: .85rem; color: var(--muted); max-width: none; }
+  .module svg { display: block; margin-top: auto; padding-top: .9rem;
+                width: 100%; height: 34px; overflow: visible; }
+  .module svg [data-demo-part] { transform-origin: center bottom; }
+
+  /* ---- §8.1 "Why we built this": editorial column, 68ch measure ---- */
+  .editorial { max-width: 68ch; }
+  .editorial p { max-width: none; line-height: 1.75; }
+  .portrait { float: right; width: 15rem; margin: .35rem 0 1rem 1.5rem; border-radius: 6px; }
+  .portrait img, .portrait > div { width: 100%; border-radius: 6px; display: block; }
+  @media (max-width: 40rem) { .portrait { float: none; width: 100%; margin: 1rem 0; } }
+
+  .full { max-width: none; padding: 0; }
+
+  /*
+   * §8.4: a real static fallback, not a zero-duration transition. The motion
+   * bundle returns early under reduced motion, leaving the server-rendered
+   * state — this only stops anything mid-flight and disables hover drift.
+   */
+  @media (prefers-reduced-motion: reduce) {
+    * { animation: none !important; transition: none !important; }
+  }
 `;
 
-function Page(props: { title: string; children?: unknown }) {
+/**
+ * The mark at favicon size: eight people around a table, the ring in amber.
+ *
+ * Hand-written rather than shared with <Mark> because at 16px the detail has to
+ * change — the people go larger relative to the ring and the stroke thickens,
+ * or it turns to mush in a tab. Same drawing, different optical size.
+ */
+const FAVICON = `data:image/svg+xml,${encodeURIComponent(
+  `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">` +
+    `<circle cx="50" cy="50" r="19" fill="none" stroke="#c9821f" stroke-width="7"/>` +
+    Array.from({ length: 8 }, (_, i) => {
+      const a = (i / 8) * Math.PI * 2 - Math.PI / 2;
+      const cx = (50 + Math.cos(a) * 36).toFixed(1);
+      const cy = (50 + Math.sin(a) * 36).toFixed(1);
+      return `<circle cx="${cx}" cy="${cy}" r="8" fill="#8a8079"/>`;
+    }).join('') +
+    `</svg>`,
+)}`;
+
+function Page(props: {
+  title: string;
+  description?: string;
+  /** Loads the §8.4 motion bundle. Only the front page needs it. */
+  motion?: boolean;
+  children?: unknown;
+}) {
   return (
     <html lang="en">
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <title>{props.title}</title>
+        {props.description ? <meta name="description" content={props.description} /> : null}
+        {/*
+         * The mark, inline. An SVG favicon costs no request, scales to every
+         * size a browser asks for, and — because `currentColor` is not
+         * available here — carries its own two colours so it reads on both a
+         * light and a dark tab strip.
+         */}
+        <link rel="icon" href={FAVICON} type="image/svg+xml" />
         <style>{STYLE}</style>
+        {/*
+         * defer, not async: this must not compete with the hero image for
+         * bandwidth. The page is complete and correct before it arrives, so
+         * there is nothing to gain by racing it (§8, 1.5s LCP).
+         */}
+        {props.motion ? <script type="module" src="/marketing/motion.js" defer /> : null}
       </head>
       <body>
         <header>
@@ -116,16 +223,189 @@ function Page(props: { title: string; children?: unknown }) {
 // /
 // ---------------------------------------------------------------------------
 
+/** The six tools §8.1 wants merging into one mark. */
+const REPLACED = ['CRM', 'Events tool', 'Texting tool', 'Donation page', 'Spreadsheet', 'Group chat'];
+
+/**
+ * The Coram mark: a ring of people around a table.
+ *
+ * Drawn rather than generated. A diffusion model is the wrong instrument for a
+ * geometric mark that has to stay identical between the front page, the merge
+ * sequence, and eventually a favicon.
+ */
+function Mark({ size = 104 }: { size?: number }) {
+  const people = Array.from({ length: 8 }, (_, i) => {
+    const angle = (i / 8) * Math.PI * 2 - Math.PI / 2;
+    return { cx: 50 + Math.cos(angle) * 34, cy: 50 + Math.sin(angle) * 34 };
+  });
+
+  return (
+    <svg viewBox="0 0 100 100" width={size} height={size} role="img" aria-label="Coram">
+      <circle cx="50" cy="50" r="17" fill="none" stroke="var(--accent)" stroke-width="2.5" />
+      {people.map((p) => (
+        <circle cx={p.cx} cy={p.cy} r="5.5" fill="var(--fg)" />
+      ))}
+    </svg>
+  );
+}
+
+/**
+ * Micro-interaction demos (§8.1: "a three-second looping micro-interaction
+ * demo, not a screenshot").
+ *
+ * Abstract rather than literal. A screenshot of a screen nobody has used yet
+ * would be a claim about a product that has not shipped; a moving abstraction
+ * of the shape of the work is honest about being an illustration.
+ *
+ * Rendered static and legible; `motion.ts` animates the parts while in view.
+ */
+function Demo({ kind }: { kind: 'rows' | 'graph' | 'grid' | 'send' | 'bars' | 'shield' | 'text' }) {
+  const bar = (x: number, h: number, o = 1) => (
+    <rect data-demo-part x={x} y={30 - h} width="7" height={h} rx="1.5" fill="var(--fg)" opacity={o} />
+  );
+
+  switch (kind) {
+    case 'bars':
+      return (
+        <svg data-demo viewBox="0 0 120 32" aria-hidden="true">
+          {[6, 14, 10, 22, 17, 27].map((h, i) => bar(i * 12, h, 0.35 + i * 0.11))}
+        </svg>
+      );
+    case 'rows':
+      return (
+        <svg data-demo viewBox="0 0 120 32" aria-hidden="true">
+          {[0, 1, 2, 3].map((i) => (
+            <rect
+              data-demo-part
+              x="0"
+              y={i * 8}
+              width={104 - i * 18}
+              height="4"
+              rx="2"
+              fill="var(--fg)"
+              opacity={0.7 - i * 0.13}
+            />
+          ))}
+        </svg>
+      );
+    case 'graph':
+      return (
+        <svg data-demo viewBox="0 0 120 32" aria-hidden="true">
+          <path d="M12 16 L44 8 M12 16 L44 26 M44 8 L84 16 M44 26 L84 16" stroke="var(--line)" stroke-width="1.5" fill="none" />
+          {[
+            [12, 16],
+            [44, 8],
+            [44, 26],
+            [84, 16],
+            [108, 16],
+          ].map(([cx, cy], i) => (
+            <circle data-demo-part cx={cx} cy={cy} r="4.5" fill="var(--fg)" opacity={0.4 + i * 0.14} />
+          ))}
+        </svg>
+      );
+    case 'grid':
+      return (
+        <svg data-demo viewBox="0 0 120 32" aria-hidden="true">
+          {Array.from({ length: 14 }, (_, i) => (
+            <rect
+              data-demo-part
+              x={(i % 7) * 17}
+              y={i < 7 ? 2 : 18}
+              width="13"
+              height="11"
+              rx="2"
+              fill="var(--fg)"
+              opacity={0.2 + ((i * 7) % 10) / 14}
+            />
+          ))}
+        </svg>
+      );
+    case 'send':
+      return (
+        <svg data-demo viewBox="0 0 120 32" aria-hidden="true">
+          {[0, 1, 2].map((i) => (
+            <rect
+              data-demo-part
+              x={i * 8}
+              y={i * 10 + 2}
+              width={70 - i * 8}
+              height="8"
+              rx="4"
+              fill="var(--fg)"
+              opacity={0.65 - i * 0.16}
+            />
+          ))}
+          <circle data-demo-part cx="106" cy="16" r="6" fill="var(--accent)" opacity="0.8" />
+        </svg>
+      );
+    case 'shield':
+      return (
+        <svg data-demo viewBox="0 0 120 32" aria-hidden="true">
+          {[26, 19, 12].map((r, i) => (
+            <circle
+              data-demo-part
+              cx="60"
+              cy="16"
+              r={r}
+              fill="none"
+              stroke="var(--fg)"
+              stroke-width="1.5"
+              opacity={0.2 + i * 0.2}
+            />
+          ))}
+        </svg>
+      );
+    default:
+      return (
+        <svg data-demo viewBox="0 0 120 32" aria-hidden="true">
+          {[0, 1, 2].map((i) => (
+            <rect data-demo-part x="0" y={i * 11} width={112 - i * 24} height="5" rx="2.5" fill="var(--fg)" opacity="0.55" />
+          ))}
+          {/* The redaction: §5.10 strips identifying values before inference. */}
+          <rect data-demo-part x="42" y="11" width="34" height="5" rx="2.5" fill="var(--accent)" />
+        </svg>
+      );
+  }
+}
+
+const MODULES: Array<{ name: string; line: string; demo: Parameters<typeof Demo>[0]['kind'] }> = [
+  { name: 'Membra', line: 'Supporter records, tags, segments, import and full export.', demo: 'rows' },
+  { name: 'Vinculum', line: 'One-to-ones, ladders of engagement, turf, follow-up queues.', demo: 'graph' },
+  { name: 'Convocare', line: 'Events with RSVP, shifts, waitlists, and check-in.', demo: 'grid' },
+  { name: 'Nuntius', line: 'Email, peer-to-peer texting, and a phone bank.', demo: 'send' },
+  { name: 'Petitio', line: 'Petitions and legislator lookup.', demo: 'rows' },
+  { name: 'Thesaurus', line: 'Fundraising, dues, and escrowed mutual aid and bail funds.', demo: 'bars' },
+  { name: 'Colloquium', line: 'Encrypted internal channels that expire on their own.', demo: 'send' },
+  { name: 'Consilium', line: 'Proposals, quorum, and five ways to vote.', demo: 'bars' },
+  { name: 'Custos', line: 'Legal observer intake and jail support.', demo: 'shield' },
+  { name: 'Scriba', line: 'Drafting help from a private model, with names stripped first.', demo: 'text' },
+  { name: 'Federatio', line: 'Coalitions, where a parent sees totals and nothing more.', demo: 'graph' },
+];
+
 marketing.get('/', (c) =>
   c.html(
-    <Page title="Coram — everything your movement runs on, one place">
-      <main>
-        <h1>Everything your movement runs on. One place.</h1>
-        <p class="lead">
-          Replaces your CRM, events tool, texting tool, donation page, spreadsheet, and group
-          chat. One login, one shared record of who your people are.
-        </p>
+    <Page
+      motion
+      title="Coram — everything your movement runs on, one place"
+      description="One place for your CRM, events, texting, donations, spreadsheet and group chat. Free under 250 contacts, every module."
+    >
+      {/* 1. Hero (§8.1) — full-bleed, dark scrim, slow Ken Burns push-in. */}
+      <section class="hero">
+        <div class="hero-frame" data-motion="ken-burns">
+          <Picture id="hero-hall" sizes="100vw" priority />
+        </div>
+        <div class="hero-scrim" />
+        <div class="hero-copy">
+          <h1>Everything your movement runs on. One place.</h1>
+          <p>
+            Replaces your CRM, events tool, texting tool, donation page, spreadsheet, and group
+            chat. One login, one shared record of who your people are.
+          </p>
+        </div>
+      </section>
 
+      <main>
+        {/* 2. The problem (§8.1) — six tools drift, collide, merge into the mark. */}
         <h2>The problem</h2>
         <p>
           A typical group runs six disconnected tools with no shared data layer. The person who
@@ -136,8 +416,31 @@ marketing.get('/', (c) =>
           The market is fragmented because organizers are poor, not because they prefer variety.
         </p>
 
-        {/* §8.1 section 3 — the emotional centre. Four sentences, no icons, no
-            headers on each, generous whitespace. No tradition named (§2). */}
+        {/*
+         * Rendered merged: this is the finished state of the scroll sequence
+         * and, unchanged, the static fallback §8.1 asks for under reduced
+         * motion or no JavaScript.
+         */}
+        <div class="merge" data-motion="merge" role="img" aria-label="Six separate tools — CRM, events, texting, donations, spreadsheet, group chat — gathered into one.">
+          {REPLACED.map((label, i) => {
+            const angle = (i / REPLACED.length) * Math.PI * 2 - Math.PI / 2;
+            return (
+              <div
+                class="tool"
+                data-tool
+                style={`left:${50 + Math.cos(angle) * 23}%;top:${50 + Math.sin(angle) * 28}%`}
+              >
+                {label}
+              </div>
+            );
+          })}
+          <div class="merge-mark" data-mark>
+            <Mark />
+          </div>
+        </div>
+
+        {/* 3. What we owe you (§8.1, §2) — the emotional centre. Four sentences,
+            no icons, no headers on each. No tradition named. */}
         <h2>What we owe you</h2>
         <p>We do not surveil the people who use this.</p>
         <p>
@@ -147,21 +450,19 @@ marketing.get('/', (c) =>
         <p>The free tier is not a funnel. It is the point.</p>
         <p>We take nothing from bail funds and mutual aid.</p>
 
+        {/* 4. Module grid (§8.1) — staggered fade-up, looping micro-demos. */}
         <h2>What it does</h2>
-        <ul>
-          <li>Supporter records, tags, segments, import and full export</li>
-          <li>One-to-ones, ladders of engagement, turf, follow-up queues</li>
-          <li>Events with RSVP, shifts, waitlists, and check-in</li>
-          <li>Email, peer-to-peer texting, and a phone bank</li>
-          <li>Petitions and legislator lookup</li>
-          <li>Fundraising, dues, and escrowed mutual aid and bail funds</li>
-          <li>Encrypted internal channels</li>
-          <li>Proposals, quorum, and five ways to vote</li>
-          <li>Legal observer intake and jail support</li>
-          <li>Drafting help from a private model</li>
-          <li>Coalitions, where a parent sees totals and nothing more</li>
-        </ul>
+        <div class="grid" data-motion="stagger">
+          {MODULES.map((m) => (
+            <div class="module">
+              <h3>{m.name}</h3>
+              <p>{m.line}</p>
+              <Demo kind={m.demo} />
+            </div>
+          ))}
+        </div>
 
+        {/* 5. Comparison (§8.3) — sticky first column on mobile. */}
         <h2>How it compares</h2>
         <div class="scroll">
           <ComparisonTable />
@@ -171,11 +472,30 @@ marketing.get('/', (c) =>
           something here is out of date, tell us and we will correct it.
         </p>
 
+        {/* 6. Trust (§8.1) — the four artifacts, live dates, on /trust. */}
+        <h2>What we publish</h2>
+        <p>
+          An annual security audit in full, including what we have not fixed. A semiannual
+          transparency report. A quarterly warrant canary. Documentation for taking everything
+          with you.
+        </p>
+        <p>
+          Every one carries a live date, and the page flags itself when something is overdue.{' '}
+          <a href="/trust">See where they stand</a> — including the ones we have not published
+          yet.
+        </p>
+
+        {/* 7. Pricing (§8.1) — the bail-fund waiver gets its own row. */}
         <h2>What it costs</h2>
         <p>
           Free under 250 contacts, with all eleven modules. Not a trial, not feature-gated, no
           card required. <a href="/pricing">Full pricing</a>.
         </p>
+        <div class="highlight">
+          <p style="margin:0">
+            <strong>1% on fundraising and dues. Zero on bail and mutual aid.</strong>
+          </p>
+        </div>
       </main>
     </Page>,
   ),
@@ -298,9 +618,18 @@ marketing.get('/pricing', (c) =>
 
 marketing.get('/why', (c) =>
   c.html(
-    <Page title="Why we built this — Coram">
-      <main>
+    <Page
+      title="Why we built this — Coram"
+      description="Movement tools are fragmented because organizers cannot pay. Coram gives the stack away and takes a percentage of money that moves through it."
+    >
+      {/* §8.1 item 8: long-form editorial, measure capped at 68 characters,
+          generous line height, one portrait-orientation photograph. */}
+      <main class="editorial">
         <h1>Why we built this</h1>
+
+        <div class="portrait">
+          <Picture id="why-portrait" sizes="(max-width: 40rem) 100vw, 15rem" />
+        </div>
 
         <p>
           Six tools, six logins, six exports, and no answer to the question every organizer

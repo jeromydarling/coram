@@ -70,6 +70,15 @@ bucket_name = "coram-files"
 binding = "R2_EXPORTS"
 bucket_name = "coram-exports"
 
+# Marketing photography (§8.2), generated at build time by
+# `npm run imagery:generate` and uploaded by `npm run imagery:upload`.
+# Deliberately a separate bucket from R2_FILES: this one serves bytes to
+# unauthenticated visitors, and a bucket that does that should never also
+# hold a workspace's uploads.
+[[r2_buckets]]
+binding = "R2_MEDIA"
+bucket_name = "coram-media"
+
 ####################################################################
 # Async jobs
 #

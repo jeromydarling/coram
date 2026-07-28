@@ -34,3 +34,8 @@ dist-ssr
 # Build output
 dist
 .wrangler
+
+# Generated marketing photography (§8.2). Reproducible from scripts/generate-imagery.ts
+# and large; the manifest with the blur-up placeholders IS committed.
+media/original/
+media/derived/
