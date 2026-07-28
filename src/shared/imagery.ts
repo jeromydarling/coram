@@ -18,11 +18,22 @@
  * argues against itself before anyone reads a word.
  */
 
-/** 35mm, available light, muted. Prepended to every prompt. */
+/**
+ * 35mm, available light, muted. Prepended to every prompt.
+ *
+ * No brand names, and that is not pedantry. This preamble originally named a
+ * film stock, and the model printed it onto the subject — the sign-in sheet
+ * came back with "Kodak Portra 400" as its header. Any prompt token can end up
+ * rendered as text when the scene contains a surface that holds text, which
+ * here is half the shot list: sign-in sheets, whiteboards, call lists, name
+ * tags. Describing the stock instead of naming it gets the same look with
+ * nothing for the model to letter onto a page.
+ */
 export const STYLE =
-  'documentary photojournalism, 35mm film photograph, Kodak Portra 400, available light only, ' +
-  'natural film grain, shallow depth of field, muted desaturated color palette, low contrast, ' +
-  'candid and unposed, no one aware of the camera';
+  'documentary photojournalism, 35mm film photograph on warm neutral color negative stock, ' +
+  'available light only, natural film grain, shallow depth of field, ' +
+  'muted desaturated color palette, low contrast, candid and unposed, ' +
+  'no one aware of the camera';
 
 /**
  * §8.2 allows one warm accent, "amber, sparingly". Sparingly is enforced by
