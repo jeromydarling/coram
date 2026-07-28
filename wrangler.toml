@@ -73,9 +73,9 @@ bucket_name = "coram-exports"
 ####################################################################
 # Async jobs
 #
-# Q_SEND and Q_IMPORT land with Nuntius and Membra respectively.
-# Q_PURGE is live now because the burn switch (§3.5) and the nightly
-# retention sweep (§3.4) both depend on it.
+# Q_IMPORT is unused: imports run inside the request because the rows
+# are never stored between preview and commit (§5.1), so there is
+# nothing for a queue to pick up.
 ####################################################################
 
 [[queues.producers]]
@@ -89,6 +89,21 @@ max_batch_timeout = 5
 max_retries = 3
 dead_letter_queue = "coram-purge-dlq"
 
+[[queues.producers]]
+binding = "Q_SEND"
+queue = "coram-send"
+
+# Small batches and one retry. A send that fails twice should land in the
+# dead-letter queue for a human, not be retried into a provider that is
+# rate-limiting us — and never retried so often that someone receives the
+# same message twice.
+[[queues.consumers]]
+queue = "coram-send"
+max_batch_size = 25
+max_batch_timeout = 10
+max_retries = 1
+dead_letter_queue = "coram-send-dlq"
+
 ####################################################################
 # Scheduled
 #   03:00 UTC daily — retention sweep across every registered table
@@ -101,6 +116,7 @@ crons = ["0 3 * * *", "0 4 * * *"]
 ####################################################################
 # Non-secret vars. Secrets go in via `wrangler secret put`:
 #   AUTH_JWT_SECRET          signing key for our own session JWTs
+#   SUPPRESSION_PEPPER       peppers opt-out ledger hashes; never in Postgres
 #   FEDERATION_STRIPE_SECRET routed through the CROS hub
 #   STRIPE_WEBHOOK_SECRET
 #   INFERENCE_KEY
@@ -115,10 +131,10 @@ CANARY_PUBKEY_FINGERPRINT = "REPLACE_ME_pgp_fingerprint"
 # Durable Objects — declared with the modules that own them.
 #   DO_CHANNEL / ChannelDO      -> Colloquium  (§5.7)
 #   DO_BALLOT  / BallotDO       -> Consilium   (§5.8)
-#   DO_DIAL    / DialerQueueDO  -> Nuntius     (§5.4)
 #
-# Left commented because `wrangler deploy` fails on a namespace whose
-# class does not exist yet.
+# DO_DIAL is live below — DialerQueueDO ships with Nuntius (§5.4). The
+# other two are still commented out because `wrangler deploy` fails on a
+# namespace whose class does not exist yet.
 ####################################################################
 
 # [[durable_objects.bindings]]
@@ -129,9 +145,13 @@ CANARY_PUBKEY_FINGERPRINT = "REPLACE_ME_pgp_fingerprint"
 # name = "DO_BALLOT"
 # class_name = "BallotDO"
 
-# [[durable_objects.bindings]]
-# name = "DO_DIAL"
-# class_name = "DialerQueueDO"
+[[durable_objects.bindings]]
+name = "DO_DIAL"
+class_name = "DialerQueueDO"
+
+[[migrations]]
+tag = "v1"
+new_sqlite_classes = ["DialerQueueDO"]
 
 [env.production]
 vars = { ENVIRONMENT = "production" }

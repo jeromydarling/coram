@@ -14,21 +14,27 @@
 
 import { Hono } from 'hono';
 
-import type { Env, PurgeMessage, Vars } from './env';
+import type { Env, PurgeMessage, SendMessage, Vars } from './env';
 import { attachSession } from './lib/auth';
 import { ERROR, err, requestId } from './lib/http';
 import { TenancyError } from './lib/rls';
 import { checkCanaryAge } from './cron/canary';
 import { runRetentionSweep } from './cron/purge';
 import { handlePurge } from './jobs/purge';
+import { handleSend } from './jobs/send';
 import { auth } from './routes/api/auth';
+import { campaigns } from './routes/api/campaigns';
 import { contacts } from './routes/api/contacts';
 import { exports } from './routes/api/exports';
 import { events } from './routes/api/events';
 import { imports } from './routes/api/imports';
 import { marketing } from './routes/marketing';
 import { publicEvents } from './routes/public-events';
+import { publicUnsubscribe } from './routes/public-unsubscribe';
 import { workspace } from './routes/api/workspace';
+
+/** Durable Object classes must be exported from the Worker entry. */
+export { DialerQueueDO } from './do/DialerQueueDO';
 
 const app = new Hono<{ Bindings: Env; Variables: Vars }>();
 
@@ -59,6 +65,7 @@ app.route('/api/contacts', contacts);
 app.route('/api/imports', imports);
 app.route('/api/exports', exports);
 app.route('/api/events', events);
+app.route('/api/campaigns', campaigns);
 
 app.get('/api/health', (c) => c.json({ ok: true, environment: c.env.ENVIRONMENT }));
 
@@ -80,6 +87,7 @@ app.get('/app/*', async (c) => {
 // SECURITY DEFINER functions in 0003, so RLS is not bypassed, just not
 // applicable to a caller who has no tenant.
 app.route('/', publicEvents);
+app.route('/', publicUnsubscribe);
 
 // Marketing last: its '/' would otherwise shadow the prefixes above.
 app.route('/', marketing);
@@ -134,7 +142,21 @@ export default {
     }
   },
 
-  async queue(batch: MessageBatch<PurgeMessage>, env: Env): Promise<void> {
-    await handlePurge(batch, env);
+  /**
+   * Two queues, one consumer entry point. Dispatch on the queue name rather
+   * than sniffing the message shape, so a message arriving on the wrong queue
+   * is a visible error instead of quietly doing the wrong work.
+   */
+  async queue(batch: MessageBatch<PurgeMessage | SendMessage>, env: Env): Promise<void> {
+    switch (batch.queue) {
+      case 'coram-purge':
+        await handlePurge(batch as MessageBatch<PurgeMessage>, env);
+        break;
+      case 'coram-send':
+        await handleSend(batch as MessageBatch<SendMessage>, env);
+        break;
+      default:
+        console.error('queue: no consumer for %s', batch.queue);
+    }
   },
-} satisfies ExportedHandler<Env, PurgeMessage>;
+} satisfies ExportedHandler<Env, PurgeMessage | SendMessage>;

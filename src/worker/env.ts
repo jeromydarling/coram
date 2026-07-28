@@ -20,6 +20,10 @@ export interface Env {
 
   // Async jobs.
   Q_PURGE: Queue<PurgeMessage>;
+  Q_SEND: Queue<SendMessage>;
+
+  // Durable Objects. DialerQueueDO backs the phone bank (§5.4).
+  DO_DIAL: DurableObjectNamespace;
 
   // Static assets for the SPA under /app.
   ASSETS: Fetcher;
@@ -31,6 +35,13 @@ export interface Env {
 
   // Secrets.
   AUTH_JWT_SECRET: string;
+  /**
+   * Peppers the opt-out ledger's identifier hashes (§5.4). Kept out of
+   * Postgres on purpose, so a database disclosure cannot test whether a given
+   * address is suppressed. Rotating it orphans every existing suppression —
+   * it is not a routine rotation.
+   */
+  SUPPRESSION_PEPPER: string;
   FEDERATION_STRIPE_SECRET?: string;
   STRIPE_WEBHOOK_SECRET?: string;
   INFERENCE_KEY?: string;
@@ -42,6 +53,11 @@ export interface Env {
  * one DELETE is fast — but R2 listing and deletion is paginated and unbounded,
  * so it runs here.
  */
+/** Delivery work for Nuntius (§5.4). */
+export type SendMessage =
+  | { kind: 'campaign'; campaignId: string; cursor?: string }
+  | { kind: 'p2p'; conversationId: string; messageId: string };
+
 export type PurgeMessage =
   | { kind: 'burn.r2'; tenantId: string; bucket: 'files' | 'exports'; cursor?: string }
   | { kind: 'retention.sweep'; table: string };

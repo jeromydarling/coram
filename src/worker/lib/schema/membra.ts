@@ -80,6 +80,15 @@ export const contacts = pgTable(
     /** The coarsest location held. No street address, ever (§3.7). */
     postalCode: text('postal_code'),
 
+    /**
+     * Peppered hashes of email and phone, maintained by lib/suppression.ts.
+     * They exist so the opt-out triggers in 0004 can derive a recipient's
+     * ledger key from the contact row itself rather than from anything a
+     * caller passed in — see migrations/0004_nuntius.sql.
+     */
+    emailHash: text('email_hash'),
+    phoneHash: text('phone_hash'),
+
     customFields: jsonb('custom_fields').notNull().default(sql`'{}'::jsonb`),
 
     /** Explicitly logged interactions only. Never opens, clicks, or page views. */

@@ -67,6 +67,8 @@ npx wrangler r2 bucket create coram-exports
 
 npx wrangler queues create coram-purge
 npx wrangler queues create coram-purge-dlq
+npx wrangler queues create coram-send
+npx wrangler queues create coram-send-dlq
 ```
 
 The dead-letter queue matters more than it looks. A message that lands there is
@@ -77,6 +79,7 @@ someone is gone, with objects still in a bucket. Alert on it.
 
 ```sh
 npx wrangler secret put AUTH_JWT_SECRET          # openssl rand -base64 48
+npx wrangler secret put SUPPRESSION_PEPPER       # openssl rand -base64 48
 npx wrangler secret put FEDERATION_STRIPE_SECRET
 npx wrangler secret put STRIPE_WEBHOOK_SECRET
 npx wrangler secret put INFERENCE_KEY
@@ -84,6 +87,13 @@ npx wrangler secret put INFERENCE_KEY
 
 Rotating `AUTH_JWT_SECRET` invalidates every session immediately. That is the
 intended behaviour, and it is the fastest global sign-out available.
+
+**`SUPPRESSION_PEPPER` is not rotatable.** It keys every hash in the opt-out
+ledger (§5.4), and changing it orphans every existing suppression — meaning
+people who unsubscribed would start receiving messages again. Set it once,
+back it up somewhere the workspace can survive losing, and do not treat it as a
+routine credential. It is deliberately absent from Postgres so a database
+disclosure cannot be used to test whether a given address is suppressed.
 
 ## 5. Deploy
 

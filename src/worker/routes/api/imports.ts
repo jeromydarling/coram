@@ -16,6 +16,7 @@ import { record } from '../../lib/audit';
 import { requireWorkspace } from '../../lib/auth';
 import { ERROR, err, ok } from '../../lib/http';
 import { close, connect, withTenant, type Tx } from '../../lib/rls';
+import { contactHashes } from '../../lib/suppression';
 import { isReachable, mapRow } from '../../../shared/importers/contactRows';
 import {
   importCommitSchema,
@@ -121,9 +122,15 @@ imports.post('/commit', async (c) => {
           continue;
         }
 
+        // An imported contact with no hash is one the opt-out ledger cannot
+        // protect, and a bulk import is precisely where a previously
+        // unsubscribed address comes back in.
+        const hashes = await contactHashes(c.env, mapped);
+
         const done = await tx`
           INSERT INTO public.contacts
-            (tenant_id, display_name, email, phone, postal_code, turf_id, import_batch_id)
+            (tenant_id, display_name, email, phone, postal_code, turf_id, import_batch_id,
+             email_hash, phone_hash)
           VALUES (
             coram.current_tenant_id(),
             ${mapped.displayName ?? mapped.email ?? mapped.phone!},
@@ -131,7 +138,8 @@ imports.post('/commit', async (c) => {
             ${mapped.phone ?? null},
             ${mapped.postalCode ?? null},
             ${turfId ?? null},
-            ${batchId}::uuid
+            ${batchId}::uuid,
+            ${hashes.emailHash}, ${hashes.phoneHash}
           )
           ON CONFLICT DO NOTHING
           RETURNING id

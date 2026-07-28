@@ -19,6 +19,7 @@ import { record } from '../../lib/audit';
 import { requireWorkspace } from '../../lib/auth';
 import { ERROR, err, ok } from '../../lib/http';
 import { close, connect, withTenant } from '../../lib/rls';
+import { contactHashes } from '../../lib/suppression';
 import {
   createContactSchema,
   listContactsQuery,
@@ -99,11 +100,17 @@ contacts.post('/', async (c) => {
   const sql = connect(c.env);
   c.executionCtx.waitUntil(close(sql));
 
+  // The opt-out triggers in 0004 derive a recipient's ledger key from these
+  // columns, so a contact written without them is a contact the ledger cannot
+  // protect. Computed here because the pepper is a Worker secret.
+  const { emailHash, phoneHash } = await contactHashes(c.env, input);
+
   try {
     const created = await withTenant(sql, session, async (tx) => {
       const [row] = await tx`
         INSERT INTO public.contacts
-          (tenant_id, display_name, email, phone, postal_code, turf_id, custom_fields)
+          (tenant_id, display_name, email, phone, postal_code, turf_id, custom_fields,
+           email_hash, phone_hash)
         VALUES (
           coram.current_tenant_id(),
           ${input.displayName},
@@ -111,7 +118,8 @@ contacts.post('/', async (c) => {
           ${input.phone ?? null},
           ${input.postalCode ?? null},
           ${input.turfId ?? null},
-          ${JSON.stringify(input.customFields)}::jsonb
+          ${JSON.stringify(input.customFields)}::jsonb,
+          ${emailHash}, ${phoneHash}
         )
         RETURNING id, display_name, email, phone, postal_code, turf_id, created_at
       `;
@@ -142,6 +150,11 @@ contacts.patch('/:id', async (c) => {
   const sql = connect(c.env);
   c.executionCtx.waitUntil(close(sql));
 
+  // Only recomputed for the fields actually being changed. Passing null leaves
+  // the stored hash alone, so editing a phone number cannot silently blank the
+  // email hash and detach someone from their own opt-out.
+  const { emailHash, phoneHash } = await contactHashes(c.env, input);
+
   try {
     const updated = await withTenant(sql, session, async (tx) => {
       // COALESCE so an omitted field keeps its value while an explicitly
@@ -153,7 +166,9 @@ contacts.patch('/:id', async (c) => {
           phone        = coalesce(${input.phone ?? null}, phone),
           postal_code  = coalesce(${input.postalCode ?? null}, postal_code),
           turf_id      = coalesce(${input.turfId ?? null}::uuid, turf_id),
-          custom_fields = coalesce(${input.customFields ? JSON.stringify(input.customFields) : null}::jsonb, custom_fields)
+          custom_fields = coalesce(${input.customFields ? JSON.stringify(input.customFields) : null}::jsonb, custom_fields),
+          email_hash   = coalesce(${emailHash}, email_hash),
+          phone_hash   = coalesce(${phoneHash}, phone_hash)
         WHERE id = ${id}::uuid
         RETURNING id, display_name, email, phone, postal_code, turf_id, updated_at
       `;

@@ -21,6 +21,7 @@ import type { Env, Vars } from '../env';
 import { mintOneTimeToken } from '../lib/crypto';
 import { clientIp, consume } from '../lib/ratelimit';
 import { close, connect, withoutTenant } from '../lib/rls';
+import { contactHashes } from '../lib/suppression';
 import { publicRsvpSchema } from '../../shared/schemas/events';
 
 export const publicEvents = new Hono<{ Bindings: Env; Variables: Vars }>();
@@ -318,6 +319,12 @@ publicEvents.post('/e/:slug/rsvp', async (c) => {
   // The QR token for the door. Only its hash is stored.
   const { hash } = await mintOneTimeToken();
 
+  // The opt-out ledger's keys. Computed here because the pepper is a Worker
+  // secret and public_rsvp — being SQL — cannot derive them. Passing them in
+  // is what lets that function refuse to re-acquire a contact on someone who
+  // has opted out, and what gives any new contact row a working hash.
+  const { emailHash, phoneHash } = await contactHashes(c.env, input);
+
   const sql = connect(c.env);
   c.executionCtx.waitUntil(close(sql));
 
@@ -329,7 +336,8 @@ publicEvents.post('/e/:slug/rsvp', async (c) => {
           ${slug}, ${input.displayName ?? null}, ${input.email ?? null},
           ${input.phone ?? null}, ${input.postalCode ?? null},
           ${input.guestCount}, ${input.needsRide}, ${input.childcareChildren},
-          ${input.accessNeeds ?? null}, ${hash}
+          ${input.accessNeeds ?? null}, ${hash},
+          ${emailHash}, ${phoneHash}
         )
       `,
     );

@@ -12,3 +12,4 @@
 export * from './foundation';
 export * from './membra';
 export * from './convocare';
+export * from './nuntius';

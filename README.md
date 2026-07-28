@@ -71,7 +71,7 @@ supposed to be gone.
 
 ## Status
 
-Section 9 build sequence, step 3 of 8 (Convocare done, Nuntius next):
+Section 9 build sequence, step 3 of 8 complete:
 
 - [x] Worker entry, Hono routing, one deploy
 - [x] Tenancy, the five roles, default-deny RLS
@@ -81,7 +81,7 @@ Section 9 build sequence, step 3 of 8 (Convocare done, Nuntius next):
 - [x] Burn switch
 - [x] Membra, and the import/export pipeline
 - [x] Convocare — events, shifts, RSVP, check-in
-- [ ] Nuntius — outreach and the opt-out ledger
+- [x] Nuntius — outreach and the opt-out ledger
 - [ ] Thesaurus
 - [ ] Vinculum + Consilium
 - [ ] Colloquium + Custos
