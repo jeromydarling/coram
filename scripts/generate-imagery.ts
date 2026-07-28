@@ -212,10 +212,18 @@ async function main(): Promise<void> {
     }
 
     manifest[spec.id] = await derive(spec, original);
+
+    /*
+     * Written after every image rather than once at the end. A nine-image run
+     * takes long enough to hit a capacity failure that outlives the retries,
+     * and losing the manifest for the eight that succeeded — while their
+     * originals sit on disk, already paid for — turns a partial failure into a
+     * total one.
+     */
+    await writeFile(MANIFEST, `${JSON.stringify(manifest, null, 2)}\n`);
     console.log(`✓ ${spec.id} — ${Object.keys(manifest[spec.id].bytes).length} derived files`);
   }
 
-  await writeFile(MANIFEST, `${JSON.stringify(manifest, null, 2)}\n`);
   console.log(`\nWrote ${MANIFEST}. Review media/original/ before uploading.`);
 }
 

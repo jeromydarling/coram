@@ -90,13 +90,24 @@ const STYLE = `
   /* The animated element. Scaling this never re-decodes the image inside it. */
   .hero-frame { position: absolute; inset: 0; will-change: transform; }
   .hero-frame img, .hero-frame > div { width: 100%; height: 100%; object-fit: cover; display: block; }
+  /*
+   * Tuned against the actual photograph, not guessed. The subject of the hero
+   * sits in the lower third — which is also where the copy sits — so a scrim
+   * heavy enough to guarantee text contrast everywhere turns a crowded hall
+   * into an empty dark room. This stays light through the top two thirds and
+   * ramps late, and the headline gets a shadow of its own instead of making
+   * the whole image pay for its legibility.
+   */
   .hero-scrim { position: absolute; inset: 0;
-                background: linear-gradient(180deg, rgba(20,18,15,.35) 0%,
-                            rgba(20,18,15,.55) 45%, rgba(20,18,15,.92) 100%); }
+                background: linear-gradient(180deg, rgba(20,18,15,.18) 0%,
+                            rgba(20,18,15,.30) 42%, rgba(20,18,15,.62) 72%,
+                            rgba(20,18,15,.88) 100%); }
   .hero-copy { position: absolute; left: 0; right: 0; bottom: 0;
                max-width: 46rem; margin: 0 auto; padding: 0 1.25rem 2.75rem; }
-  .hero-copy h1 { color: #f5f1ea; margin: 0 0 .6rem; font-size: clamp(2rem, 5.2vw, 3.1rem); }
-  .hero-copy p { color: #cfc7bb; margin: 0; max-width: 30em; }
+  .hero-copy h1 { color: #f8f5f0; margin: 0 0 .6rem; font-size: clamp(2rem, 5.2vw, 3.1rem);
+                  text-shadow: 0 1px 24px rgba(12,10,8,.85), 0 1px 3px rgba(12,10,8,.6); }
+  .hero-copy p { color: #ddd6cb; margin: 0; max-width: 30em;
+                 text-shadow: 0 1px 16px rgba(12,10,8,.9); }
 
   /* ---- §8.1 "The problem": six tools converge on one mark ---- */
   /* overflow:hidden is structural, not cosmetic — the scattered state of the
