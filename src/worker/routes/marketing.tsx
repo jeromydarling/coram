@@ -144,7 +144,12 @@ const STYLE = `
   .editorial { max-width: 68ch; }
   .editorial p { max-width: none; line-height: 1.75; }
   .portrait { float: right; width: 15rem; margin: .35rem 0 1rem 1.5rem; border-radius: 6px; }
-  .portrait img, .portrait > div { width: 100%; border-radius: 6px; display: block; }
+  /* height:auto is required, not tidiness. <img> carries width and height
+     attributes so the browser can reserve space before the bytes land, and
+     those act as presentational hints — constraining only the width leaves
+     the height hint in force and the picture renders squashed. */
+  .portrait img, .portrait > div { width: 100%; height: auto;
+                                   border-radius: 6px; display: block; }
   @media (max-width: 40rem) { .portrait { float: none; width: 100%; margin: 1rem 0; } }
 
   .full { max-width: none; padding: 0; }
@@ -199,7 +204,19 @@ function Page(props: {
          * light and a dark tab strip.
          */}
         <link rel="icon" href={FAVICON} type="image/svg+xml" />
-        <style>{STYLE}</style>
+        {/*
+         * dangerouslySetInnerHTML, not {STYLE}, and it is load-bearing.
+         * Hono JSX escapes text children, so a child combinator inside the
+         * stylesheet ships as `.portrait &gt; div` — an invalid selector,
+         * which makes a CSS parser drop the *entire* rule including the valid
+         * selectors beside it. That silently killed object-fit on the hero and
+         * the width cap on the portrait, with no error anywhere.
+         *
+         * Safe here because STYLE is a module constant we author. Nothing
+         * user-supplied reaches it, and marketing.test.ts fails if any `&gt;`
+         * appears in an emitted stylesheet again.
+         */}
+        <style dangerouslySetInnerHTML={{ __html: STYLE }} />
         {/*
          * defer, not async: this must not compete with the hero image for
          * bandwidth. The page is complete and correct before it arrives, so

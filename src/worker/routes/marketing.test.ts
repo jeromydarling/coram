@@ -53,6 +53,34 @@ describe('marketing pages', () => {
     }
   });
 
+  /*
+   * Hono JSX escapes text children, so `<style>{CSS}</style>` ships a child
+   * combinator as `&gt;`. That is not a cosmetic problem: an invalid selector
+   * invalidates the whole selector list, so a CSS parser silently discards the
+   * entire rule — including the valid selectors sitting next to it. It cost
+   * object-fit on the hero and the width cap on the /why portrait, with no
+   * error in the console and nothing visibly wrong until an image was real.
+   */
+  it.each(['/', '/pricing', '/why', '/trust'])('emits unescaped CSS on %s', async (path) => {
+    const html = await (await get(path, fakeEnv())).text();
+    const styles = [...html.matchAll(/<style[^>]*>([\s\S]*?)<\/style>/g)].map((m) => m[1]);
+
+    expect(styles.length).toBeGreaterThan(0);
+    for (const css of styles) {
+      expect(css).not.toContain('&gt;');
+      expect(css).not.toContain('&amp;');
+      expect(css).not.toContain('&quot;');
+    }
+  });
+
+  it('caps the /why portrait so it cannot force horizontal overflow', async () => {
+    const html = await (await get('/why', fakeEnv())).text();
+    const css = /<style[^>]*>([\s\S]*?)<\/style>/.exec(html)?.[1] ?? '';
+    // The rule that constrains the floated image. If the selector is mangled
+    // again this is what stops the page scrolling sideways.
+    expect(css).toMatch(/\.portrait img[^{]*\{[^}]*width:\s*100%/);
+  });
+
   it('says plainly that it is closed source', async () => {
     const html = await (await get('/', fakeEnv())).text();
     expect(html).toContain('closed source');
