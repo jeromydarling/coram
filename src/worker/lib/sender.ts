@@ -88,6 +88,19 @@ export function getSender(_env: Env): Sender {
   return new UnconfiguredSender();
 }
 
+/**
+ * Whether anything can actually be delivered.
+ *
+ * Callers use this to refuse work that would silently produce a broken result
+ * rather than an error — Consilium checks it before opening a secret ballot,
+ * because a ballot whose voting links were minted and then dropped on the floor
+ * is worse than no ballot at all: the tokens exist, hashed, and nobody holds
+ * one.
+ */
+export function canDeliver(_env: Env): boolean {
+  return false;
+}
+
 // ---------------------------------------------------------------------------
 // Merge fields
 // ---------------------------------------------------------------------------

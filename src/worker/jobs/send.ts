@@ -30,6 +30,15 @@ export async function handleSend(batch: MessageBatch<SendMessage>, env: Env): Pr
       try {
         if (message.body.kind === 'campaign') {
           await sendCampaignPage(sql, env, sender, message.body.campaignId);
+        } else if (message.body.kind === 'ballot_tokens') {
+          // Unreachable today: the route refuses to open a secret ballot while
+          // no provider is configured. Explicit rather than a silent fallthrough
+          // so it fails loudly if that guard is ever removed.
+          console.error(
+            'send job: ballot token delivery is not implemented (ballot %s)',
+            message.body.ballotId,
+          );
+          throw new Error('Ballot token delivery is not implemented.');
         }
         message.ack();
       } catch (error) {

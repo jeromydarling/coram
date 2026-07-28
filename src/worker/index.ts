@@ -24,6 +24,7 @@ import { handlePurge } from './jobs/purge';
 import { handleSend } from './jobs/send';
 import { auth } from './routes/api/auth';
 import { campaigns } from './routes/api/campaigns';
+import { consilium } from './routes/api/consilium';
 import { contacts } from './routes/api/contacts';
 import { exports } from './routes/api/exports';
 import { funds } from './routes/api/funds';
@@ -37,6 +38,7 @@ import { stripeWebhook } from './routes/webhooks/stripe';
 import { workspace } from './routes/api/workspace';
 
 /** Durable Object classes must be exported from the Worker entry. */
+export { BallotDO } from './do/BallotDO';
 export { DialerQueueDO } from './do/DialerQueueDO';
 
 const app = new Hono<{ Bindings: Env; Variables: Vars }>();
@@ -71,6 +73,7 @@ app.route('/api/events', events);
 app.route('/api/campaigns', campaigns);
 app.route('/api/funds', funds);
 app.route('/api/vinculum', vinculum);
+app.route('/api/consilium', consilium);
 
 // Signature-verified, no session (§1.1). Mounted before the SPA and marketing
 // so nothing else can shadow it.

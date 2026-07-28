@@ -22,8 +22,11 @@ export interface Env {
   Q_PURGE: Queue<PurgeMessage>;
   Q_SEND: Queue<SendMessage>;
 
-  // Durable Objects. DialerQueueDO backs the phone bank (§5.4).
+  // Durable Objects.
+  //   DO_DIAL   phone bank queue (§5.4)
+  //   DO_BALLOT live tallies (§5.8)
   DO_DIAL: DurableObjectNamespace;
+  DO_BALLOT: DurableObjectNamespace;
 
   // Static assets for the SPA under /app.
   ASSETS: Fetcher;
@@ -56,7 +59,13 @@ export interface Env {
 /** Delivery work for Nuntius (§5.4). */
 export type SendMessage =
   | { kind: 'campaign'; campaignId: string; cursor?: string }
-  | { kind: 'p2p'; conversationId: string; messageId: string };
+  | { kind: 'p2p'; conversationId: string; messageId: string }
+  /**
+   * One voting link per eligible member (§5.8). Carries no tokens — the job
+   * cannot re-derive them, which is the point: they exist once, in the request
+   * that minted them, and are handed straight to delivery.
+   */
+  | { kind: 'ballot_tokens'; ballotId: string };
 
 export type PurgeMessage =
   | { kind: 'burn.r2'; tenantId: string; bucket: 'files' | 'exports'; cursor?: string }

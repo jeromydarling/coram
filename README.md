@@ -71,7 +71,7 @@ supposed to be gone.
 
 ## Status
 
-Section 9 build sequence, step 5 of 8 (Vinculum done, Consilium next):
+Section 9 build sequence, step 5 of 8 complete:
 
 - [x] Worker entry, Hono routing, one deploy
 - [x] Tenancy, the five roles, default-deny RLS
@@ -84,7 +84,7 @@ Section 9 build sequence, step 5 of 8 (Vinculum done, Consilium next):
 - [x] Nuntius — outreach and the opt-out ledger
 - [x] Thesaurus — funds, dues, escrowed mutual aid and bail
 - [x] Vinculum — 1:1s, ladders, follow-up queue, relationship graph
-- [ ] Consilium — governance and voting
+- [x] Consilium — proposals, quorum, five voting methods, secret ballots
 - [ ] Colloquium + Custos
 - [ ] Scriba + Federatio
 - [ ] Marketing routes, `/trust`, canary infrastructure

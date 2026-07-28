@@ -15,3 +15,4 @@ export * from './convocare';
 export * from './nuntius';
 export * from './thesaurus';
 export * from './vinculum';
+export * from './consilium';

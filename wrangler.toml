@@ -130,10 +130,9 @@ CANARY_PUBKEY_FINGERPRINT = "REPLACE_ME_pgp_fingerprint"
 ####################################################################
 # Durable Objects — declared with the modules that own them.
 #   DO_CHANNEL / ChannelDO      -> Colloquium  (§5.7)
-#   DO_BALLOT  / BallotDO       -> Consilium   (§5.8)
 #
-# DO_DIAL is live below — DialerQueueDO ships with Nuntius (§5.4). The
-# other two are still commented out because `wrangler deploy` fails on a
+# DO_DIAL (Nuntius, §5.4) and DO_BALLOT (Consilium, §5.8) are live below.
+# DO_CHANNEL is still commented out because `wrangler deploy` fails on a
 # namespace whose class does not exist yet.
 ####################################################################
 
@@ -141,9 +140,9 @@ CANARY_PUBKEY_FINGERPRINT = "REPLACE_ME_pgp_fingerprint"
 # name = "DO_CHANNEL"
 # class_name = "ChannelDO"
 
-# [[durable_objects.bindings]]
-# name = "DO_BALLOT"
-# class_name = "BallotDO"
+[[durable_objects.bindings]]
+name = "DO_BALLOT"
+class_name = "BallotDO"
 
 [[durable_objects.bindings]]
 name = "DO_DIAL"
@@ -151,7 +150,7 @@ class_name = "DialerQueueDO"
 
 [[migrations]]
 tag = "v1"
-new_sqlite_classes = ["DialerQueueDO"]
+new_sqlite_classes = ["DialerQueueDO", "BallotDO"]
 
 [env.production]
 vars = { ENVIRONMENT = "production" }
