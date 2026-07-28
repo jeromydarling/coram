@@ -47,12 +47,22 @@ export const MAX_ACCENT_SHARE = 0.4;
 /**
  * Every image obscures faces. One of these clauses must appear in every
  * prompt — they are the four ways §8.2 permits.
+ *
+ * They are not equally reliable, and the ordering here is deliberate.
+ * `out of focus` is the weakest and should only be used where a single
+ * subject sits at a single depth: in a scene with people at several
+ * distances the model happily defocuses the foreground and leaves someone
+ * mid-frame perfectly sharp. The first phone-bank generation came back with
+ * two fully recognizable faces for exactly that reason. Prefer a camera
+ * position that makes faces impossible — from behind, or below the
+ * shoulders — over a depth-of-field effect that has to land on every person
+ * to work.
  */
 export const FACE_CLAUSES = [
   'seen entirely from behind, no faces visible',
-  'faces fully out of focus and unrecognizable',
   'framed below the shoulders, no faces in frame',
   'backlit into silhouette, features not discernible',
+  'faces fully out of focus and unrecognizable',
 ] as const;
 
 /**
@@ -169,10 +179,17 @@ export const IMAGES: ImageSpec[] = [
   },
   {
     id: 'phone-bank',
+    /*
+     * Shot from behind the callers, down the line of the table. The first
+     * version photographed them from the front and relied on depth of field to
+     * hide faces; it hid two and left two sharp enough to recognise. Moving the
+     * camera makes the rule structural instead of hoping an effect lands.
+     */
     subject:
-      'a phone bank set up along a folding table in a borrowed room, people leaning over ' +
-      'handwritten call lists, headsets, a hand-drawn tally chart taped to the wall behind them',
-    faceClause: 'faces fully out of focus and unrecognizable',
+      'a phone bank along a folding table in a borrowed room, photographed from behind the ' +
+      'row of callers looking down the line, the backs of their heads and headset bands, ' +
+      'handwritten call lists and desk phones on the table in front of them',
+    faceClause: 'seen entirely from behind, no faces visible',
     accent: false,
     width: 1600,
     height: 1000,
