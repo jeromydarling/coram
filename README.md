@@ -71,7 +71,7 @@ supposed to be gone.
 
 ## Status
 
-Foundation. Section 9 build sequence, step 1 of 8:
+Section 9 build sequence, step 2 of 8:
 
 - [x] Worker entry, Hono routing, one deploy
 - [x] Tenancy, the five roles, default-deny RLS
@@ -79,7 +79,7 @@ Foundation. Section 9 build sequence, step 1 of 8:
 - [x] Audit log — access, never content
 - [x] `retention.ts`, nightly purge cron, CI gate
 - [x] Burn switch
-- [ ] Membra, and the import/export pipeline
+- [x] Membra, and the import/export pipeline
 - [ ] Convocare + Nuntius
 - [ ] Thesaurus
 - [ ] Vinculum + Consilium

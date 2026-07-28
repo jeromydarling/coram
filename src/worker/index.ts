@@ -22,6 +22,9 @@ import { checkCanaryAge } from './cron/canary';
 import { runRetentionSweep } from './cron/purge';
 import { handlePurge } from './jobs/purge';
 import { auth } from './routes/api/auth';
+import { contacts } from './routes/api/contacts';
+import { exports } from './routes/api/exports';
+import { imports } from './routes/api/imports';
 import { marketing } from './routes/marketing';
 import { workspace } from './routes/api/workspace';
 
@@ -50,6 +53,9 @@ app.use('/api/*', attachSession);
 
 app.route('/api/auth', auth);
 app.route('/api/workspace', workspace);
+app.route('/api/contacts', contacts);
+app.route('/api/imports', imports);
+app.route('/api/exports', exports);
 
 app.get('/api/health', (c) => c.json({ ok: true, environment: c.env.ENVIRONMENT }));
 

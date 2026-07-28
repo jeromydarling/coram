@@ -84,7 +84,7 @@ function main(): void {
       problems.push(
         `${name} (${table.file}) is created in SQL but not registered with retention.ts.\n` +
           `    Add a registerTable({ table: '${name}', ... }) call beside its definition in ` +
-          `src/worker/lib/schema.ts. §3.4 does not allow a table to exist without a stated ` +
+          `src/worker/lib/schema/. §3.4 does not allow a table to exist without a stated ` +
           `retention position.`,
       );
       continue;

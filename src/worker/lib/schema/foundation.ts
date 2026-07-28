@@ -22,7 +22,7 @@ import {
   uuid,
 } from 'drizzle-orm/pg-core';
 
-import { registerTable } from './retention';
+import { registerTable } from '../retention';
 
 /** The five roles from §4.1. Mirrors the `coram_role` enum in Postgres. */
 export const ROLES = ['steward', 'organizer', 'member', 'observer', 'legal'] as const;
