@@ -1,0 +1,35 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      # §3.4 — a migration that adds PII without a retention rule fails here.
+      # Deliberately the first check: it is the one that protects a promise we
+      # have made publicly, and a run that dies at typecheck should still have
+      # told us about a table with no retention position.
+      - name: Retention rules
+        run: npm run check:retention
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Tests
+        run: npm test

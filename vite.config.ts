@@ -1,50 +1,37 @@
-/// <reference types="vitest" />
-import { defineConfig } from "vite";
-import react from "@vitejs/plugin-react-swc";
-import path from "path";
-import { componentTagger } from "lovable-tagger";
+import path from 'node:path';
 
-// https://vitejs.dev/config/
-export default defineConfig(({ mode }) => ({
-  server: {
-    host: "::",
-    port: 8080,
-    hmr: {
-      overlay: false,
-    },
-  },
-  plugins: [react(), mode === "development" && componentTagger()].filter(Boolean),
+import { cloudflare } from '@cloudflare/vite-plugin';
+import react from '@vitejs/plugin-react-swc';
+import { defineConfig } from 'vite';
+
+/**
+ * One build, one deploy (§1.5). The Cloudflare plugin reads wrangler.toml,
+ * builds the Worker from its `main`, and emits the SPA to dist/client where
+ * the [assets] binding picks it up.
+ */
+export default defineConfig({
+  plugins: [react(), cloudflare()],
+
   resolve: {
     alias: {
-      "@": path.resolve(__dirname, "./src"),
+      '@': path.resolve(__dirname, './src/app'),
+      '@shared': path.resolve(__dirname, './src/shared'),
     },
   },
-  // Phase A perf: strip console/debugger from production bundles.
-  esbuild:
-    mode === "production"
-      ? { drop: ["console", "debugger"] }
-      : undefined,
+
   build: {
     rollupOptions: {
       output: {
-        // Phase A perf: split heavy vendor libs into their own chunks so the
-        // main bundle stays small and these libs are only loaded when needed.
         manualChunks(id) {
-          if (!id.includes("node_modules")) return undefined;
-          if (id.includes("pdfjs-dist")) return "vendor-pdfjs";
-          if (id.includes("jspdf")) return "vendor-jspdf";
-          if (id.includes("react-simple-maps") || id.includes("d3-")) return "vendor-maps";
-          if (id.includes("framer-motion")) return "vendor-motion";
-          if (id.includes("@tiptap")) return "vendor-tiptap";
-          if (id.includes("recharts")) return "vendor-recharts";
-          if (id.includes("@radix-ui")) return "vendor-radix";
+          if (!id.includes('node_modules')) return undefined;
+          // Marketing-only, and §8.4 keeps it out of /app entirely. Splitting
+          // it means the product shell never pays for it.
+          if (id.includes('framer-motion')) return 'vendor-motion';
+          if (id.includes('recharts') || id.includes('d3-')) return 'vendor-charts';
+          if (id.includes('@radix-ui')) return 'vendor-radix';
           return undefined;
         },
       },
     },
   },
-  test: {
-    environment: "jsdom",
-    include: ["src/**/*.{test,spec}.{ts,tsx}"],
-  },
-}));
+});

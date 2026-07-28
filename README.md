@@ -1,73 +1,88 @@
-# Welcome to your Lovable project
+# Coram
 
-## Project info
+The operating system for grassroots organizing.
 
-**URL**: https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID
+One repo, one Cloudflare Worker, one deploy. The marketing site, the API, and
+the product ship together on the same origin. See `CLAUDE.md` for the spec that
+governs this codebase — it is authoritative, and where this README disagrees
+with it, this README is wrong.
 
-## How can I edit this code?
+Private repository. Trust is earned through published third-party audits.
 
-There are several ways of editing your application.
+## Stack
 
-**Use Lovable**
+| Layer | Choice |
+|---|---|
+| Runtime | Cloudflare Workers, one Worker |
+| Router / API | Hono |
+| Frontend | React 19 + Vite, SPA under `/app` |
+| Marketing | Same Worker, server-rendered via Hono JSX |
+| Database | Postgres behind Cloudflare Hyperdrive, RLS-enforced |
+| Edge state | Workers KV — sessions, rate limits, flags |
+| Object storage | R2 |
+| Async jobs | Cloudflare Queues |
+| Scheduled | Cron Triggers |
+| Validation | Zod, shared between client and Worker |
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and start prompting.
+## Layout
 
-Changes made via Lovable will be committed automatically to this repo.
-
-**Use your preferred IDE**
-
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
+```
+migrations/            forward-only SQL. The RLS policies here are the
+                       security boundary — not the TypeScript.
+src/worker/            the Worker: routes, cron, queue consumers, lib
+src/app/               the React SPA served under /app
+src/shared/            Zod schemas and types imported by both sides
+scripts/               CI gates
 ```
 
-**Edit a file directly in GitHub**
+## Running it
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+```sh
+npm install
+npm run dev              # Vite and the Worker, together
+npm test
+npm run typecheck
+npm run check:retention
+```
 
-**Use GitHub Codespaces**
+Deploying needs real Cloudflare resources and a Postgres instance. See
+[docs/deploy.md](docs/deploy.md).
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+## Three things to know before changing anything
 
-## What technologies are used for this project?
+**Access control is in Postgres, not in TypeScript.** Every table is
+default-deny RLS. The Worker connects as `coram_app`, which is not the table
+owner and has no `BYPASSRLS`. A handler that forgets a `WHERE tenant_id = ...`
+returns zero rows rather than someone else's. Application-layer checks exist to
+produce good error messages, never to make the decision — a change that
+enforces access only in TypeScript is wrong, however well it reads.
 
-This project is built with:
+**Every table declares how long it keeps data, next to its definition.**
+`src/worker/lib/retention.ts` is the registry, and `npm run check:retention`
+fails CI if a migration creates a table that has not registered, or if a rule
+names a column the table does not have. This is not a lint rule to be relaxed
+under deadline — it backs a promise made publicly at `/trust`.
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+**The burn switch is real.** A steward can destroy a workspace irreversibly in
+under a minute: rows, R2 objects, and Durable Object state. No soft-delete, no
+undo. Any module that stores something outside Postgres must register its
+cleanup with the burn path, or it will leave data behind after a workspace is
+supposed to be gone.
 
-## How can I deploy this project?
+## Status
 
-Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.
+Foundation. Section 9 build sequence, step 1 of 8:
 
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+- [x] Worker entry, Hono routing, one deploy
+- [x] Tenancy, the five roles, default-deny RLS
+- [x] Sessions and auth — signup, login, reset, revocation
+- [x] Audit log — access, never content
+- [x] `retention.ts`, nightly purge cron, CI gate
+- [x] Burn switch
+- [ ] Membra, and the import/export pipeline
+- [ ] Convocare + Nuntius
+- [ ] Thesaurus
+- [ ] Vinculum + Consilium
+- [ ] Colloquium + Custos
+- [ ] Scriba + Federatio
+- [ ] Marketing routes, `/trust`, canary infrastructure

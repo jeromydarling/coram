@@ -1,0 +1,137 @@
+####################################################################
+# Coram — one Worker. App + API + marketing site, same origin.
+#
+# Placeholder ids below are marked REPLACE_ME. Create the resources
+# and paste the ids in; see docs/deploy.md for the exact commands.
+####################################################################
+
+name = "coram"
+main = "src/worker/index.ts"
+compatibility_date = "2026-07-01"
+
+# postgres.js needs node:crypto / node:net / node:stream.
+compatibility_flags = ["nodejs_compat"]
+
+# The Vite build emits the SPA here. The Worker serves it at /app/*.
+[assets]
+directory = "./dist/client"
+binding = "ASSETS"
+
+[observability]
+enabled = true
+
+####################################################################
+# Database — Postgres behind Hyperdrive.
+#
+# The Worker connects as `coram_app`, a NOLOGIN-inheriting role that is
+# NOT the table owner and does NOT have BYPASSRLS. That is deliberate:
+# a table owner silently bypasses RLS unless FORCE ROW LEVEL SECURITY
+# is set, and we do not want the security boundary resting on our
+# remembering to set it. See migrations/0001_foundation.sql.
+####################################################################
+
+[[hyperdrive]]
+binding = "HYPERDRIVE"
+id = "REPLACE_ME_hyperdrive_config_id"
+
+# Cron connects as coram_cron, which carries BYPASSRLS because the nightly
+# sweep spans every tenant. It is a second Hyperdrive config pointing at the
+# same database with a different user, so that request handlers hold no
+# credential for it — §4.2 keeps service-role out of the request path.
+[[hyperdrive]]
+binding = "HYPERDRIVE_CRON"
+id = "REPLACE_ME_hyperdrive_cron_config_id"
+
+####################################################################
+# Edge state
+####################################################################
+
+[[kv_namespaces]]
+binding = "KV_SESSIONS"
+id = "REPLACE_ME_kv_sessions"
+
+[[kv_namespaces]]
+binding = "KV_FLAGS"
+id = "REPLACE_ME_kv_flags"
+
+[[kv_namespaces]]
+binding = "KV_RATE"
+id = "REPLACE_ME_kv_rate"
+
+####################################################################
+# Object storage — zero egress
+####################################################################
+
+[[r2_buckets]]
+binding = "R2_FILES"
+bucket_name = "coram-files"
+
+[[r2_buckets]]
+binding = "R2_EXPORTS"
+bucket_name = "coram-exports"
+
+####################################################################
+# Async jobs
+#
+# Q_SEND and Q_IMPORT land with Nuntius and Membra respectively.
+# Q_PURGE is live now because the burn switch (§3.5) and the nightly
+# retention sweep (§3.4) both depend on it.
+####################################################################
+
+[[queues.producers]]
+binding = "Q_PURGE"
+queue = "coram-purge"
+
+[[queues.consumers]]
+queue = "coram-purge"
+max_batch_size = 100
+max_batch_timeout = 5
+max_retries = 3
+dead_letter_queue = "coram-purge-dlq"
+
+####################################################################
+# Scheduled
+#   03:00 UTC daily — retention sweep across every registered table
+#   04:00 UTC daily — canary staleness check (warn 100d, overdue 120d)
+####################################################################
+
+[triggers]
+crons = ["0 3 * * *", "0 4 * * *"]
+
+####################################################################
+# Non-secret vars. Secrets go in via `wrangler secret put`:
+#   AUTH_JWT_SECRET          signing key for our own session JWTs
+#   FEDERATION_STRIPE_SECRET routed through the CROS hub
+#   STRIPE_WEBHOOK_SECRET
+#   INFERENCE_KEY
+####################################################################
+
+[vars]
+ENVIRONMENT = "development"
+INFERENCE_ENDPOINT = "REPLACE_ME_private_inference_host"
+CANARY_PUBKEY_FINGERPRINT = "REPLACE_ME_pgp_fingerprint"
+
+####################################################################
+# Durable Objects — declared with the modules that own them.
+#   DO_CHANNEL / ChannelDO      -> Colloquium  (§5.7)
+#   DO_BALLOT  / BallotDO       -> Consilium   (§5.8)
+#   DO_DIAL    / DialerQueueDO  -> Nuntius     (§5.4)
+#
+# Left commented because `wrangler deploy` fails on a namespace whose
+# class does not exist yet.
+####################################################################
+
+# [[durable_objects.bindings]]
+# name = "DO_CHANNEL"
+# class_name = "ChannelDO"
+
+# [[durable_objects.bindings]]
+# name = "DO_BALLOT"
+# class_name = "BallotDO"
+
+# [[durable_objects.bindings]]
+# name = "DO_DIAL"
+# class_name = "DialerQueueDO"
+
+[env.production]
+vars = { ENVIRONMENT = "production" }

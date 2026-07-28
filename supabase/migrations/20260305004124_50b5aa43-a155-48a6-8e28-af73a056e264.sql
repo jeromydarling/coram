@@ -1,1 +1,0 @@
-UPDATE profiles SET is_approved = true WHERE user_id = '0e24281e-fb02-4f84-8a44-826023879138';

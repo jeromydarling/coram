@@ -1,27 +1,37 @@
 {
   "compilerOptions": {
-    "allowJs": true,
-    "noImplicitAny": false,
-    "noUnusedLocals": false,
-    "noUnusedParameters": false,
-    "paths": {
-      "@/*": [
-        "./src/*"
-      ]
-    },
+    "target": "ES2022",
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "moduleDetection": "force",
+    "jsx": "react-jsx",
+    "isolatedModules": true,
+    "noEmit": true,
     "skipLibCheck": true,
-    "strictNullChecks": false
-  },
-  "exclude": [
-    "supabase/functions"
-  ],
-  "files": [],
-  "references": [
-    {
-      "path": "./tsconfig.app.json"
-    },
-    {
-      "path": "./tsconfig.node.json"
+    "resolveJsonModule": true,
+    "useDefineForClassFields": true,
+    "verbatimModuleSyntax": false,
+
+    /*
+     * The inherited project ran with strict off, strictNullChecks off, and
+     * noImplicitAny off. That is not a setting a codebase whose security
+     * boundary is "did you remember to scope this query" can afford, so it is
+     * on here from the first commit rather than as a later migration.
+     */
+    "strict": true,
+    "noUncheckedIndexedAccess": false,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+    "forceConsistentCasingInFileNames": true,
+
+    "types": ["@cloudflare/workers-types", "vitest/globals"],
+
+    "paths": {
+      "@/*": ["./src/app/*"],
+      "@shared/*": ["./src/shared/*"]
     }
-  ]
+  },
+  "include": ["src", "scripts", "vite.config.ts"]
 }

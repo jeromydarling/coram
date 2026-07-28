@@ -1,7 +1,8 @@
 # Salvage inventory — CROS → Coram
 
-Status: **awaiting approval.** Nothing in the DELETE column has been removed yet.
-The marketing site (180 files) is already gone, per explicit instruction.
+Status: **executed.** Approved and carried out; kept for provenance. If you are
+looking for something that used to be in this repo, the recovery table at the
+bottom says where it went.
 
 Target platform per decision: **Cloudflare Worker + Postgres behind Hyperdrive.**
 No Supabase platform (no Auth, no Edge Functions, no `supabase-js`). RLS stays the
@@ -32,7 +33,7 @@ a grassroots organizing OS. They share a shape, not a domain.
 
 | What | Size | Destination | Note |
 |---|---:|---|---|
-| `src/components/ui/**` | 57 files | `src/app/components/ui/` | Clean shadcn. Verified: imports only `@/lib/utils`, `@/hooks/use-mobile`, `@/hooks/use-toast`. Zero product coupling. This is the single biggest genuine win. |
+| `src/components/ui/**` | 57 files → 54 kept | `src/app/components/ui/` | shadcn. See the correction below: three of these were not clean. |
 | `src/lib/utils.ts` | 6 lines | `src/app/lib/utils.ts` | The `cn()` helper. |
 | `src/hooks/use-toast.ts`, `use-mobile.tsx` | 2 files | `src/app/hooks/` | Required by the ui components above. |
 | `src/lib/sanitize.ts` | 87 lines | `src/app/lib/sanitize.ts` | DOMPurify allowlist, already correctly restrictive on URI schemes. |
@@ -97,6 +98,40 @@ it — which is correct, since §8.4 says no motion inside `/app` at all. It sta
 `package.json` for the new marketing routes only.
 
 ---
+
+## Correction: the shadcn set was not as clean as this document first claimed
+
+The original version of this file said the 57 `components/ui` files imported
+only `@/lib/utils`, `@/hooks/use-mobile`, and `@/hooks/use-toast`. That was
+based on a grep that only matched double-quoted import paths, so every
+single-quoted CROS import went unseen. Three files were contaminated:
+
+| File | Problem | Resolution |
+|---|---|---|
+| `sonner.tsx` | Imported `@/lib/toneCharter` and wrapped `toast` in a mapper that rewrote message strings at call time — "Contact created" became "Noted." | Restored to stock shadcn. That mapper encoded the other product's tone charter; §2 sets a different rule, and a component that silently rewrites what a developer wrote is the wrong place to enforce copy style. |
+| `help-tooltip.tsx` | Imported `@/lib/helpContent`, a CROS help-key registry | Deleted |
+| `rich-text-editor.tsx` | Imported three `@tiptap/*` packages not in the new dependency set | Deleted. Recoverable if Nuntius wants a rich composer. |
+
+54 of the 57 carried forward. The typechecker caught all three, which is the
+argument for turning `strict` on before porting rather than after.
+
+## Deferred keepers — where to find them
+
+These were approved as keep-with-rework but belong to modules that have not
+been built. Rather than sit in the tree as dead code, they stay in git history.
+All paths are as of commit `1ff1e33`, the last commit before the restructure:
+
+| What | Path at `1ff1e33` | Wanted by |
+|---|---|---|
+| `llmGateway.ts` — retry/backoff + `LlmErrorKind` taxonomy | `supabase/functions/_shared/llmGateway.ts` | Scriba (§5.10). Must be re-pointed at `INFERENCE_ENDPOINT` and placed behind `redact.ts`. |
+| Stripe hub satellite contract — `Route`, HMAC, DLQ, `event_id` idempotency | `supabase/functions/_shared/stripeHub/{routing,forward}.ts` | Thesaurus (§5.6) |
+| RLS helper patterns — `has_role`, `user_in_tenant`, `is_tenant_admin` | across `supabase/migrations/*.sql` | Already absorbed. `migrations/0001_foundation.sql` carries the `SECURITY DEFINER STABLE SET search_path` shape, with `auth.uid()` replaced by session GUCs. |
+
+Retrieve with `git show 1ff1e33:<path>`.
+
+Ported into the tree now, inert until their module lands: `Importer.ts` and
+`GivingCSVImporter.ts` (→ `src/shared/importers/`), `stateFips.ts`
+(→ `src/shared/geo/`), `csv.ts` and `sanitize.ts` (→ `src/app/lib/`).
 
 ## What this leaves
 

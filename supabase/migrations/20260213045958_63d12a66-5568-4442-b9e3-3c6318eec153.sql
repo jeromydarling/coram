@@ -1,1 +1,0 @@
-ALTER TABLE public.grants ADD COLUMN available_funding numeric NULL;

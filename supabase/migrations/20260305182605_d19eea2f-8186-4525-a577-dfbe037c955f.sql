@@ -1,1 +1,0 @@
-UPDATE public.profiles SET is_approved = true WHERE user_id = 'bc752f4f-63bb-4418-9f0f-c2f702e1b66b';
