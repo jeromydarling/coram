@@ -28,7 +28,9 @@ import { consilium } from './routes/api/consilium';
 import { contacts } from './routes/api/contacts';
 import { custos } from './routes/api/custos';
 import { exports } from './routes/api/exports';
+import { federatio } from './routes/api/federatio';
 import { funds } from './routes/api/funds';
+import { scriba } from './routes/api/scriba';
 import { vinculum } from './routes/api/vinculum';
 import { events } from './routes/api/events';
 import { imports } from './routes/api/imports';
@@ -77,6 +79,8 @@ app.route('/api/funds', funds);
 app.route('/api/vinculum', vinculum);
 app.route('/api/consilium', consilium);
 app.route('/api/custos', custos);
+app.route('/api/scriba', scriba);
+app.route('/api/federatio', federatio);
 
 // Signature-verified, no session (§1.1). Mounted before the SPA and marketing
 // so nothing else can shadow it.

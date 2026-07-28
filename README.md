@@ -71,7 +71,7 @@ supposed to be gone.
 
 ## Status
 
-Section 9 build sequence, step 6 of 8 complete:
+Section 9 build sequence, step 7 of 8 complete:
 
 - [x] Worker entry, Hono routing, one deploy
 - [x] Tenancy, the five roles, default-deny RLS
@@ -86,5 +86,5 @@ Section 9 build sequence, step 6 of 8 complete:
 - [x] Vinculum — 1:1s, ladders, follow-up queue, relationship graph
 - [x] Consilium — proposals, quorum, five voting methods, secret ballots
 - [x] Colloquium + Custos — sealed channels, jail support, panic wipe
-- [ ] Scriba + Federatio
+- [x] Scriba + Federatio — redacted inference, coalitions by consent
 - [ ] Marketing routes, `/trust`, canary infrastructure

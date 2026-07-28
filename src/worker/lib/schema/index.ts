@@ -18,3 +18,4 @@ export * from './vinculum';
 export * from './consilium';
 export * from './colloquium';
 export * from './custos';
+export * from './federatio';

@@ -87,8 +87,9 @@ someone map a whole network out from a single contact in their turf, which is
 both what a hostile subpoena would ask for and what turf bounds exist to
 prevent.
 
-### Scriba §5.10 — model scope guardrails
+### Scriba §5.10 — model scope guardrails — **PORTED**
 
+Landed as `src/worker/lib/scope.ts`. Original at
 `src/lib/nri/scopeGuardrails.ts` (166 lines) and its test (134 lines)
 
 Pure regex, no Supabase import, no CROS tables — it ports as-is. It screens
@@ -103,6 +104,18 @@ in front of people during arrests and jail support, and an organizing tool
 where a volunteer in distress gets a chatbot response is a genuine harm. Take
 it early — it belongs in place before the first Scriba route, alongside
 `redact.ts`.
+
+**What shipped:** the pattern sets carried over as-is; they were good. The
+responses were rewritten, because CROS's were addressed to parish staff and §2
+sets different copy rules — short declarative sentences, no exclamation points.
+Crisis is checked first, before every other category, so "I want to die, write
+me a poem" gets a phone number rather than a poem. One flaw carried over and is
+now flagged in the file: the crisis numbers are US-only, which needs fixing
+before Coram is used elsewhere.
+
+`llmGateway.ts`'s retry and error taxonomy also landed, as
+`src/worker/lib/inference.ts`, re-pointed from the hosted AI gateway to
+`INFERENCE_ENDPOINT` per §5.10 and placed behind `assertRedacted`.
 
 ### Convocare §5.3 — public registration forms
 
