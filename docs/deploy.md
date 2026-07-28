@@ -111,21 +111,46 @@ Two triggers, both declared in `wrangler.toml`:
 | 03:00 | `runRetentionSweep` | Purges rows past the window each table declared (§3.4) |
 | 04:00 | `checkCanaryAge` | Warns at 100 days, marks `/trust` overdue at 120 (§7) |
 
-## Publishing a canary
+## Publishing the §7 artifacts
+
+`/trust` lists four things — the annual security audit, the semiannual
+transparency report, the quarterly warrant canary, and the export/self-host
+docs. Each shows a live date and **flags itself as overdue automatically** once
+it passes its cadence. There is no way to suppress that from the application,
+which is the point: §7 argues a stale artifact is worse than no artifact.
+
+All four are recorded in `KV_FLAGS` under `trust:<kind>`, so publishing one
+needs no deploy:
+
+```sh
+npx wrangler kv key put --binding=KV_FLAGS "trust:security_audit" \
+  '{"publishedAt":"2026-07-28","url":"https://coram.app/audits/2026.pdf"}'
+```
+
+`kind` is one of `security_audit`, `transparency_report`, `canary`,
+`export_docs`. A URL is required — `publish()` refuses a record without one,
+because "audited" linking to nothing is the exact failure §7 is written
+against.
+
+### The canary specifically
 
 Signing is a manual human act and nothing in this codebase does it. That is the
 point — a canary's value rests entirely on a person being free to decline to
 sign it, so an automated signature would be worth nothing.
 
-Sign the text by hand, then publish:
+Sign the text by hand, then publish both the document and the date:
 
 ```sh
 npx wrangler kv key put --binding=KV_FLAGS "canary:document" --path ./canary.asc
-npx wrangler kv key put --binding=KV_FLAGS "canary:last_signed_at" "2026-07-28"
+npx wrangler kv key put --binding=KV_FLAGS "canary:pubkey"   --path ./coram-pgp.asc
+npx wrangler kv key put --binding=KV_FLAGS "trust:canary" \
+  '{"publishedAt":"2026-07-28","url":"/canary.txt"}'
 ```
 
-It is served at `/canary.txt` as `text/plain`, and `/trust` reads the date. No
-deploy is needed to publish one.
+The document is served at `/canary.txt` as `text/plain` and the key at
+`/.well-known/coram-pgp.asc`; both 404 until published. The date drives both
+the `/trust` card and the nightly `checkCanaryAge` warning — they read the same
+record on purpose, so the alert and the public page cannot disagree.
 
 ## Backups
 

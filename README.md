@@ -71,7 +71,7 @@ supposed to be gone.
 
 ## Status
 
-Section 9 build sequence, step 7 of 8 complete:
+Section 9 build sequence, all 8 steps complete:
 
 - [x] Worker entry, Hono routing, one deploy
 - [x] Tenancy, the five roles, default-deny RLS
@@ -87,4 +87,17 @@ Section 9 build sequence, step 7 of 8 complete:
 - [x] Consilium — proposals, quorum, five voting methods, secret ballots
 - [x] Colloquium + Custos — sealed channels, jail support, panic wipe
 - [x] Scriba + Federatio — redacted inference, coalitions by consent
-- [ ] Marketing routes, `/trust`, canary infrastructure
+- [x] Marketing routes, `/trust`, canary infrastructure
+
+Every module exists in code. **None of it has run against a live database.**
+Provisioning, a first migration run, and reading the marketing copy back
+against a working deploy are all still ahead. `/trust` reflects this — it says
+plainly that no artifact has been published, because none has.
+
+Deliberately not built: the §8.2 photography and the §8.4 motion work, which
+need a designer.
+
+**Five decisions need a person, not a commit** — ballot secrecy, the delivery
+provider, the mutual aid fallback rail, how far federation reaches, and
+non-US crisis lines. They are written up with the tradeoffs at
+[docs/open-decisions.md](docs/open-decisions.md).

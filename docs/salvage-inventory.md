@@ -144,7 +144,7 @@ the `SECURITY DEFINER` RLS helper shape, the Stripe hub satellite contract, and 
 importer `detect/map/preview/import` interface. Those are worth more than the file count
 suggests.
 
-## Open question the Hyperdrive decision creates
+## Open question the Hyperdrive decision created — **resolved, built**
 
 CLAUDE.md §4.2 says the Worker "connects with a per-request JWT carrying `tenant_id`,
 `role`, and `turf_ids`." With Supabase Auth gone, **Coram now has to issue those JWTs
@@ -152,4 +152,10 @@ itself** — signup, login, password reset, session refresh, email verification.
 real work that the spec's build sequence (§9) folds into "Foundation" without naming.
 It also means `KV_SESSIONS` (§1.4) becomes load-bearing rather than a convenience.
 
-I will build it unless you would rather front it with an external IdP.
+Built rather than fronted with an external IdP. `src/worker/lib/crypto.ts`
+issues HS256 tokens over PBKDF2-verified passwords, `KV_SESSIONS` holds the
+revocation state, and the claims deliberately carry **no role** — role and turf
+are re-derived from `memberships` inside `coram.set_request_context()` on every
+request, so a token minted before a demotion cannot exercise the old role.
+
+Everything still open is in [open-decisions.md](open-decisions.md).

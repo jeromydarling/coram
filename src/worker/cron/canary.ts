@@ -7,49 +7,35 @@
  * free to decline to sign.
  *
  * All this does is watch the clock:
- *   at 100 days  email the steward that it is due
- *   at 120 days  /trust displays "This canary is overdue"
+ *   at 100 days  warn the steward that it is due
+ *   at 120 days  /trust displays "Overdue"
+ *
+ * Both numbers live in `lib/trust.ts` alongside the other three artifacts,
+ * and this job reads the same KV record `/trust` renders. Keeping a second
+ * copy of the date here would let the alert and the public page disagree, and
+ * the public page is the one people act on.
  *
  * Publishing the cadence is what makes silence meaningful (§7).
  */
 
 import type { Env } from '../env';
-
-export const CANARY_WARN_DAYS = 100;
-export const CANARY_OVERDUE_DAYS = 120;
-
-/** KV key holding the ISO date of the most recent hand-signed canary. */
-const CANARY_SIGNED_KEY = 'canary:last_signed_at';
+import { ageInDays, loadArtifact, staleness, type Staleness } from '../lib/trust';
 
 export interface CanaryStatus {
   lastSignedAt: string | null;
   ageDays: number | null;
-  state: 'fresh' | 'due' | 'overdue' | 'never_signed';
-}
-
-export async function canaryStatus(env: Env): Promise<CanaryStatus> {
-  const stored = await env.KV_FLAGS.get(CANARY_SIGNED_KEY);
-  if (!stored) return { lastSignedAt: null, ageDays: null, state: 'never_signed' };
-
-  const signedAt = new Date(stored);
-  if (Number.isNaN(signedAt.getTime())) {
-    return { lastSignedAt: null, ageDays: null, state: 'never_signed' };
-  }
-
-  const ageDays = Math.floor((Date.now() - signedAt.getTime()) / 86_400_000);
-
-  return {
-    lastSignedAt: stored,
-    ageDays,
-    state:
-      ageDays >= CANARY_OVERDUE_DAYS ? 'overdue' : ageDays >= CANARY_WARN_DAYS ? 'due' : 'fresh',
-  };
+  state: Staleness;
 }
 
 export async function checkCanaryAge(env: Env): Promise<CanaryStatus> {
-  const status = await canaryStatus(env);
+  const artifact = await loadArtifact(env, 'canary');
+  const status: CanaryStatus = {
+    lastSignedAt: artifact.publishedAt,
+    ageDays: ageInDays(artifact),
+    state: staleness(artifact),
+  };
 
-  if (status.state === 'due' || status.state === 'never_signed') {
+  if (status.state === 'due' || status.state === 'never_published') {
     // Delivery lands with Nuntius (§5.4). Logged until then so the signal is
     // at least visible in Workers observability rather than lost.
     console.warn('canary: %s at %s days — steward needs to sign', status.state, status.ageDays);
