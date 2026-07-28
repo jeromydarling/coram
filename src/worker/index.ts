@@ -26,11 +26,13 @@ import { auth } from './routes/api/auth';
 import { campaigns } from './routes/api/campaigns';
 import { contacts } from './routes/api/contacts';
 import { exports } from './routes/api/exports';
+import { funds } from './routes/api/funds';
 import { events } from './routes/api/events';
 import { imports } from './routes/api/imports';
 import { marketing } from './routes/marketing';
 import { publicEvents } from './routes/public-events';
 import { publicUnsubscribe } from './routes/public-unsubscribe';
+import { stripeWebhook } from './routes/webhooks/stripe';
 import { workspace } from './routes/api/workspace';
 
 /** Durable Object classes must be exported from the Worker entry. */
@@ -66,6 +68,11 @@ app.route('/api/imports', imports);
 app.route('/api/exports', exports);
 app.route('/api/events', events);
 app.route('/api/campaigns', campaigns);
+app.route('/api/funds', funds);
+
+// Signature-verified, no session (§1.1). Mounted before the SPA and marketing
+// so nothing else can shadow it.
+app.route('/webhooks', stripeWebhook);
 
 app.get('/api/health', (c) => c.json({ ok: true, environment: c.env.ENVIRONMENT }));
 

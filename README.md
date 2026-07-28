@@ -71,7 +71,7 @@ supposed to be gone.
 
 ## Status
 
-Section 9 build sequence, step 3 of 8 complete:
+Section 9 build sequence, step 4 of 8 complete:
 
 - [x] Worker entry, Hono routing, one deploy
 - [x] Tenancy, the five roles, default-deny RLS
@@ -82,7 +82,7 @@ Section 9 build sequence, step 3 of 8 complete:
 - [x] Membra, and the import/export pipeline
 - [x] Convocare — events, shifts, RSVP, check-in
 - [x] Nuntius — outreach and the opt-out ledger
-- [ ] Thesaurus
+- [x] Thesaurus — funds, dues, escrowed mutual aid and bail
 - [ ] Vinculum + Consilium
 - [ ] Colloquium + Custos
 - [ ] Scriba + Federatio
