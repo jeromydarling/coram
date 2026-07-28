@@ -128,17 +128,19 @@ INFERENCE_ENDPOINT = "REPLACE_ME_private_inference_host"
 CANARY_PUBKEY_FINGERPRINT = "REPLACE_ME_pgp_fingerprint"
 
 ####################################################################
-# Durable Objects — declared with the modules that own them.
+# Durable Objects
+#   DO_DIAL    / DialerQueueDO  -> Nuntius     (§5.4)
+#   DO_BALLOT  / BallotDO       -> Consilium   (§5.8)
 #   DO_CHANNEL / ChannelDO      -> Colloquium  (§5.7)
 #
-# DO_DIAL (Nuntius, §5.4) and DO_BALLOT (Consilium, §5.8) are live below.
-# DO_CHANNEL is still commented out because `wrangler deploy` fails on a
-# namespace whose class does not exist yet.
+# ChannelDO's storage holds the only copy of a message's ciphertext, for
+# the channel's TTL and no longer (§3.2). Nothing else in this Worker
+# stores message content, and Postgres holds envelopes only.
 ####################################################################
 
-# [[durable_objects.bindings]]
-# name = "DO_CHANNEL"
-# class_name = "ChannelDO"
+[[durable_objects.bindings]]
+name = "DO_CHANNEL"
+class_name = "ChannelDO"
 
 [[durable_objects.bindings]]
 name = "DO_BALLOT"
@@ -150,7 +152,7 @@ class_name = "DialerQueueDO"
 
 [[migrations]]
 tag = "v1"
-new_sqlite_classes = ["DialerQueueDO", "BallotDO"]
+new_sqlite_classes = ["DialerQueueDO", "BallotDO", "ChannelDO"]
 
 [env.production]
 vars = { ENVIRONMENT = "production" }

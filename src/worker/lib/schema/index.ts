@@ -16,3 +16,5 @@ export * from './nuntius';
 export * from './thesaurus';
 export * from './vinculum';
 export * from './consilium';
+export * from './colloquium';
+export * from './custos';

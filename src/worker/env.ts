@@ -24,9 +24,11 @@ export interface Env {
 
   // Durable Objects.
   //   DO_DIAL   phone bank queue (§5.4)
-  //   DO_BALLOT live tallies (§5.8)
+  //   DO_BALLOT  live tallies (§5.8)
+  //   DO_CHANNEL sealed message delivery (§5.7) — the only copy of ciphertext
   DO_DIAL: DurableObjectNamespace;
   DO_BALLOT: DurableObjectNamespace;
+  DO_CHANNEL: DurableObjectNamespace;
 
   // Static assets for the SPA under /app.
   ASSETS: Fetcher;
