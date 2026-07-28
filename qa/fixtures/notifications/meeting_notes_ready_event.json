@@ -1,0 +1,18 @@
+{
+  "event_type": "meeting_notes_ready",
+  "org_id": null,
+  "user_id": "user-rim-001",
+  "metadata": {
+    "meeting_note_id": "mn-88888888-aaaa-bbbb-cccc-dddddddddddd",
+    "meeting_title": "Quarterly Review with Example Nonprofit",
+    "tasks_created": 3,
+    "contacts_linked": 2,
+    "contact_slug": "john-doe-1"
+  },
+  "priority": "normal",
+  "fingerprint": "meeting_notes:mn-88888888-aaaa-bbbb-cccc-dddddddddddd",
+  "tier": "T1",
+  "deep_link": "/people/john-doe-1",
+  "title": "📝 Meeting notes ready",
+  "body": "Notes from Quarterly Review with Example Nonprofit with 3 action items — available when you're ready."
+}

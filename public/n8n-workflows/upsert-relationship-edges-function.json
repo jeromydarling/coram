@@ -1,0 +1,21 @@
+{
+  "_description": "Edge function 'upsert-relationship-edges' is needed to receive edges from n8n. Create this file at supabase/functions/upsert-relationship-edges/index.ts. This JSON documents the expected contract.",
+  "endpoint": "/functions/v1/upsert-relationship-edges",
+  "method": "POST",
+  "auth": "N8N_SHARED_SECRET via X-Api-Key or Bearer header",
+  "request_body": {
+    "edges": [
+      {
+        "source_type": "person | organization | grant | event | contact | campaign",
+        "source_id": "uuid",
+        "target_type": "person | organization | grant | event | contact | campaign",
+        "target_id": "uuid",
+        "edge_reason": "string"
+      }
+    ]
+  },
+  "response": {
+    "ok": true,
+    "edges_upserted": 5
+  }
+}

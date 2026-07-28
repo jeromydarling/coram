@@ -1,0 +1,1 @@
+ALTER TABLE public.grants ADD COLUMN application_url text NULL;

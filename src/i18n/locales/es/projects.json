@@ -1,0 +1,127 @@
+{
+  "projects": {
+    "title": "Proyectos",
+    "mobileTitle": "Proyectos",
+    "subtitle": "Buen trabajo en movimiento.",
+    "helpWhat": "Proyectos de servicio comunitario \u2014 pintura, banco de alimentos, limpiezas.",
+    "helpWhere": "Lista de proyectos en Programaci\u00f3n.",
+    "helpWhy": "Un contenedor sereno para el buen trabajo, no una herramienta de gesti\u00f3n de proyectos.",
+    "newProject": "Nuevo Proyecto",
+    "untitledProject": "Proyecto sin T\u00edtulo",
+    "empty": {
+      "title": "A\u00fan no hay proyectos",
+      "description": "Los proyectos son para el buen trabajo que su comunidad realiza junta \u2014 pintar una casa, organizar un banco de alimentos o planificar un d\u00eda de limpieza.",
+      "createButton": "Cree su primer proyecto"
+    },
+    "card": {
+      "lastNote": "\u00daltima nota:"
+    }
+  },
+  "projectDetail": {
+    "title": "Proyecto",
+    "allProjects": "Todos los Proyectos",
+    "untitledProject": "Proyecto sin T\u00edtulo",
+    "projectNotFound": "Proyecto no encontrado.",
+    "helpers": {
+      "title": "Colaboradores",
+      "helpWhat": "Voluntarios y personal que ayudan en este proyecto.",
+      "helpWhere": "P\u00e1gina de detalle del proyecto.",
+      "helpWhy": "Registre qui\u00e9n contribuy\u00f3 a este buen trabajo.",
+      "noHelpers": "No hay colaboradores asignados a\u00fan."
+    },
+    "actions": {
+      "addNote": "Agregar una nota",
+      "recordVoice": "Grabar nota de voz",
+      "recordForHelper": "Grabar para un colaborador"
+    },
+    "reflections": {
+      "title": "Reflexiones",
+      "helpWhat": "Notas y transcripciones de voz de este proyecto.",
+      "helpWhere": "P\u00e1gina de detalle del proyecto.",
+      "helpWhy": "Construye la historia narrativa de este buen trabajo.",
+      "empty": "A\u00fan no hay reflexiones. Agregue una nota o grabe una nota de voz para comenzar la historia.",
+      "processing": "Procesando"
+    },
+    "noteDialog": {
+      "title": "Agregar una Reflexi\u00f3n",
+      "description": "\u00bfQu\u00e9 ocurri\u00f3? \u00bfQu\u00e9 not\u00f3?",
+      "placeholder": "Escriba su reflexi\u00f3n\u2026",
+      "saveButton": "Guardar Nota"
+    },
+    "voiceDialog": {
+      "title": "Nota de Voz",
+      "description": "Grabe lo que not\u00f3, sinti\u00f3 o aprendi\u00f3."
+    },
+    "onBehalfDialog": {
+      "title": "Grabar para un Colaborador",
+      "description": "Permita que un voluntario grabe en su dispositivo."
+    },
+    "aboutContact": "Sobre:",
+    "volunteer": "Voluntario"
+  },
+  "playbooks": {
+    "title": "Gu\u00edas Regionales",
+    "subtitle": "Mejores pr\u00e1cticas y gu\u00edas para la construcci\u00f3n de anclas, estrategia de becas y expansi\u00f3n metropolitana",
+    "newPlaybook": "Nueva Gu\u00eda",
+    "searchPlaceholder": "Buscar gu\u00edas...",
+    "categoryTabs": {
+      "all": "Todas"
+    },
+    "categories": {
+      "general": "General",
+      "generalDescription": "Mejores pr\u00e1cticas y gu\u00edas",
+      "metro": "Metropolitana",
+      "metroDescription": "Gu\u00edas espec\u00edficas por regi\u00f3n",
+      "anchor_type": "Tipo de Ancla",
+      "anchor_typeDescription": "Por nivel de socio",
+      "grant_type": "Tipo de Beca",
+      "grant_typeDescription": "Gu\u00edas espec\u00edficas de becas"
+    },
+    "empty": {
+      "title": "No se encontraron gu\u00edas",
+      "noResults": "Intente ajustar sus t\u00e9rminos de b\u00fasqueda.",
+      "noPlaybooks": "Cree su primera gu\u00eda para comenzar.",
+      "createButton": "Crear Gu\u00eda"
+    },
+    "dialog": {
+      "createTitle": "Crear Gu\u00eda",
+      "editTitle": "Editar Gu\u00eda",
+      "createDescription": "Cree una nueva gu\u00eda para compartir mejores pr\u00e1cticas con su equipo.",
+      "editDescription": "Actualice los detalles de la gu\u00eda a continuaci\u00f3n.",
+      "titleLabel": "T\u00edtulo *",
+      "titlePlaceholder": "ej., Lanzar un Ancla para Refugiados",
+      "descriptionLabel": "Descripci\u00f3n",
+      "descriptionPlaceholder": "Resumen breve de lo que cubre esta gu\u00eda",
+      "categoryLabel": "Categor\u00eda *",
+      "metroLabel": "\u00c1rea Metropolitana",
+      "metroPlaceholder": "Seleccione un \u00e1rea",
+      "noSpecificMetro": "Sin \u00e1rea espec\u00edfica",
+      "anchorTierLabel": "Nivel de Ancla",
+      "tierPlaceholder": "Seleccione el nivel",
+      "allTiers": "Todos los niveles",
+      "contentLabel": "Contenido *",
+      "contentPlaceholder": "Escriba el contenido de la gu\u00eda aqu\u00ed...",
+      "cancelButton": "Cancelar",
+      "saveChanges": "Guardar Cambios",
+      "createButton": "Crear Gu\u00eda"
+    },
+    "viewDialog": {
+      "editButton": "Editar",
+      "closeButton": "Cerrar"
+    },
+    "deleteConfirm": "\u00bfEst\u00e1 seguro de que desea eliminar esta gu\u00eda?"
+  },
+  "workflowDownloads": {
+    "title": "Descargas de Flujos de Trabajo n8n",
+    "description": "Descargue estos archivos JSON e imp\u00f3rtelos en su instancia de n8n. Recuerde actualizar las constantes del flujo de trabajo (secretos, URLs) despu\u00e9s de importar. Todos los nodos de retrollamada utilizan",
+    "descriptionSuffix": "encabezados duales.",
+    "categories": {
+      "search": "B\u00fasqueda",
+      "enrichment": "Enriquecimiento",
+      "discovery": "Descubrimiento",
+      "intelligence": "Inteligencia",
+      "automation": "Automatizaci\u00f3n / Cron"
+    },
+    "downloadButton": "Descargar"
+  }
+}

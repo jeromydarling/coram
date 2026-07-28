@@ -1,0 +1,188 @@
+{
+  "reports": {
+    "title": "Reports",
+    "subtitle": "Narrative-ready summaries you can share with leaders, boards, and supporters.",
+    "whatYoureSeeing": "What you're seeing",
+    "whatYoureSeingTooltip": "Reports adapt to your archetype and your data. Sections appear as your work deepens.",
+    "tabs": {
+      "impactView": "Impact View",
+      "exportPdf": "Export PDF",
+      "templates": "Templates",
+      "scheduled": "Scheduled"
+    },
+    "actions": {
+      "exportImpactReport": "Export Impact Report",
+      "thoseWhoGave": "Those Who Gave",
+      "integrationAudit": "Integration Audit",
+      "newTemplate": "New Template",
+      "schedule": "Schedule"
+    },
+    "scope": {
+      "title": "Report Scope",
+      "allRegions": "All Regions",
+      "allMetros": "All Metros"
+    },
+    "preview": {
+      "title": "Report Preview",
+      "generating": "Generating...",
+      "downloadPdf": "Download PDF",
+      "generatedLabel": "Generated:",
+      "byLabel": "By:"
+    },
+    "sections": {
+      "countLabel": "{{count}} sections"
+    },
+    "templates": {
+      "defaultBadge": "Default"
+    },
+    "schedules": {
+      "noSchedules": "No scheduled reports yet.",
+      "noSchedulesSubtitle": "Let these arrive quietly — on your schedule.",
+      "createSchedule": "Create Schedule",
+      "recipientsCount": "{{count}} recipients"
+    },
+    "builder": {
+      "title": "Report Builder",
+      "subtitle": "Create a custom report template"
+    }
+  },
+  "buildReport": {
+    "title": "CROS Build Report",
+    "downloaded": "Downloaded — Click Again",
+    "downloadPdf": "Download PDF"
+  },
+  "impactExport": {
+    "backToReports": "Reports",
+    "allRegions": "All Regions",
+    "allMetros": "All Metros",
+    "print": "Print",
+    "generating": "Generating\u2026",
+    "downloadPdf": "Download PDF",
+    "coverTitle": "The Story of Our Impact",
+    "preparedBy": "Prepared by",
+    "confidential": "Confidential",
+    "generated": "Generated",
+    "noData": "No data available for the selected scope."
+  },
+  "testimonium": {
+    "title": "Testimonium",
+    "subtitle": "Your community's story, told through lived experience.",
+    "helpContent": "Testimonium transforms your existing relationship data into calm, reflective narrative reports for leadership. Drift Detection gently surfaces relationships that may benefit from reconnection.",
+    "tabs": {
+      "reports": "Reports",
+      "driftDetection": "Drift Detection"
+    },
+    "generateReport": "Generate Report",
+    "generating": "Generating\u2026",
+    "noStories": {
+      "title": "No stories yet",
+      "description": "Generate your first narrative report to see your community's impact told through the lens of lived relationships.",
+      "button": "Generate First Report"
+    },
+    "toasts": {
+      "generated": "Narrative report generated",
+      "failed": "Failed to generate report"
+    }
+  },
+  "testimoniumReport": {
+    "loading": "Loading\u2026",
+    "notFound": "Report Not Found",
+    "notFoundMessage": "Report not found.",
+    "backToTestimonium": "Back to Testimonium",
+    "back": "Back",
+    "generateStoryPdf": "Generate Story PDF",
+    "sections": {
+      "communityMovements": "Community Movements",
+      "quietProgress": "Quiet Progress"
+    },
+    "metrics": {
+      "relationshipsGrown": "relationships grown",
+      "eventsAttended": "events attended",
+      "reflectionsWritten": "reflections written"
+    },
+    "pdf": {
+      "themesLabel": "Themes:",
+      "metricsLine": "Relationships: {{relationships}} \u00b7 Events: {{events}} \u00b7 Reflections: {{reflections}}"
+    },
+    "toasts": {
+      "pdfDownloaded": "PDF downloaded",
+      "pdfFailed": "Failed to export PDF"
+    }
+  },
+  "testimoniumExports": {
+    "title": "Witnessed Stories",
+    "subtitle": "Narrative briefs assembled from the work you're already doing.",
+    "builder": {
+      "sectionTitle": "Generate Witness Report",
+      "tooltipWhat": "Assembles a narrative brief from your value moments and telemetry",
+      "tooltipWhere": "testimonium_exports",
+      "tooltipWhy": "Board-ready stories without writing",
+      "periodLabel": "Period",
+      "fromLabel": "From",
+      "toLabel": "To",
+      "startPlaceholder": "Start",
+      "endPlaceholder": "End",
+      "generateButton": "Generate",
+      "buildingButton": "Building\u2026",
+      "monthly": "Monthly",
+      "quarterly": "Quarterly",
+      "custom": "Custom"
+    },
+    "previousReports": {
+      "title": "Previous Reports",
+      "tooltipWhat": "History of generated narrative briefs",
+      "tooltipWhere": "testimonium_exports",
+      "tooltipWhy": "Revisit or download past witness reports",
+      "previewButton": "Preview",
+      "empty": "No witness reports yet. Generate your first one above."
+    },
+    "preview": {
+      "title": "Narrative Preview",
+      "downloadPdf": "Download PDF",
+      "briefSuffix": "brief"
+    },
+    "metrics": {
+      "momentsWitnessed": "moments witnessed",
+      "eventsAttended": "events attended",
+      "growthSignals": "growth signals"
+    },
+    "tooltipLabels": {
+      "what": "What:",
+      "where": "Where:",
+      "why": "Why:"
+    },
+    "toasts": {
+      "generated": "Witness report generated",
+      "buildFailed": "Failed to build export",
+      "previewFailed": "Could not load preview",
+      "pdfDownloaded": "PDF downloaded"
+    }
+  },
+  "thoseWhoGave": {
+    "title": "Those Who Gave",
+    "subtitle": "A record of generosity",
+    "helpWhat": "Board report listing people who gave during the selected timeframe.",
+    "helpWhere": "Reports section.",
+    "helpWhy": "Calm, grateful acknowledgment of generosity \u2014 not fundraising analytics.",
+    "filters": {
+      "from": "From",
+      "to": "To",
+      "print": "Print"
+    },
+    "report": {
+      "heading": "Those Who Gave",
+      "personSingular": "person",
+      "peoplePlural": "people",
+      "gaveLabel": "gave",
+      "totalLabel": "Total:",
+      "loading": "Loading...",
+      "empty": "No generosity records found for this timeframe."
+    },
+    "table": {
+      "name": "Name",
+      "total": "Total",
+      "recurring": "Recurring",
+      "yes": "Yes"
+    }
+  }
+}

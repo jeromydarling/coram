@@ -1,0 +1,17 @@
+{
+  "event_type": "watchlist_signal",
+  "org_id": "org-wl-001",
+  "user_id": "user-rim-001",
+  "metadata": {
+    "signal_id": "sig-11111111-aaaa-bbbb-cccc-dddddddddddd",
+    "confidence": 0.85,
+    "summary": "Website content changed for Example Nonprofit"
+  },
+  "priority": "high",
+  "fingerprint": "watchlist_signal:sig-11111111-aaaa-bbbb-cccc-dddddddddddd",
+  "tier": "T1",
+  "deep_link": "/organizations/org-wl-001",
+  "title": "📡 New website signal detected",
+  "body": "New context available for Example Nonprofit — ready when you are.",
+  "bundle_key": "watchlist:org-wl-001"
+}

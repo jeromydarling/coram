@@ -1,0 +1,127 @@
+{
+  "projects": {
+    "title": "Projects",
+    "mobileTitle": "Projects",
+    "subtitle": "Good work in motion.",
+    "helpWhat": "Community service projects \u2014 painting, food drives, cleanups.",
+    "helpWhere": "Projects list under Scheduling.",
+    "helpWhy": "A calm container for good work, not a project management tool.",
+    "newProject": "New Project",
+    "untitledProject": "Untitled Project",
+    "empty": {
+      "title": "No projects yet",
+      "description": "Projects are for the good work your community does together \u2014 painting a house, running a food drive, or organizing a cleanup day.",
+      "createButton": "Create your first project"
+    },
+    "card": {
+      "lastNote": "Last note:"
+    }
+  },
+  "projectDetail": {
+    "title": "Project",
+    "allProjects": "All Projects",
+    "untitledProject": "Untitled Project",
+    "projectNotFound": "Project not found.",
+    "helpers": {
+      "title": "Helpers",
+      "helpWhat": "Volunteers and staff helping with this project.",
+      "helpWhere": "Project detail page.",
+      "helpWhy": "Track who contributed to this good work.",
+      "noHelpers": "No helpers assigned yet."
+    },
+    "actions": {
+      "addNote": "Add a note",
+      "recordVoice": "Record voice note",
+      "recordForHelper": "Record for a helper"
+    },
+    "reflections": {
+      "title": "Reflections",
+      "helpWhat": "Notes and voice transcripts from this project.",
+      "helpWhere": "Project detail page.",
+      "helpWhy": "Builds the narrative story of this good work.",
+      "empty": "No reflections yet. Add a note or record a voice note to start the story.",
+      "processing": "Processing"
+    },
+    "noteDialog": {
+      "title": "Add a Reflection",
+      "description": "What happened? What did you notice?",
+      "placeholder": "Write your reflection\u2026",
+      "saveButton": "Save Note"
+    },
+    "voiceDialog": {
+      "title": "Voice Note",
+      "description": "Record what you noticed, felt, or learned."
+    },
+    "onBehalfDialog": {
+      "title": "Record for a Helper",
+      "description": "Let a volunteer record on your device."
+    },
+    "aboutContact": "About:",
+    "volunteer": "Volunteer"
+  },
+  "playbooks": {
+    "title": "Regional Playbooks",
+    "subtitle": "Best practices and guides for anchor building, grant strategy, and metro expansion",
+    "newPlaybook": "New Playbook",
+    "searchPlaceholder": "Search playbooks...",
+    "categoryTabs": {
+      "all": "All"
+    },
+    "categories": {
+      "general": "General",
+      "generalDescription": "Best practices and guides",
+      "metro": "Metro",
+      "metroDescription": "Region-specific playbooks",
+      "anchor_type": "Anchor Type",
+      "anchor_typeDescription": "By partner tier",
+      "grant_type": "Grant Type",
+      "grant_typeDescription": "Grant-specific guides"
+    },
+    "empty": {
+      "title": "No playbooks found",
+      "noResults": "Try adjusting your search terms.",
+      "noPlaybooks": "Create your first playbook to get started.",
+      "createButton": "Create Playbook"
+    },
+    "dialog": {
+      "createTitle": "Create Playbook",
+      "editTitle": "Edit Playbook",
+      "createDescription": "Create a new playbook to share best practices with your team.",
+      "editDescription": "Update the playbook details below.",
+      "titleLabel": "Title *",
+      "titlePlaceholder": "e.g., Launching a Refugee Anchor",
+      "descriptionLabel": "Description",
+      "descriptionPlaceholder": "Brief summary of what this playbook covers",
+      "categoryLabel": "Category *",
+      "metroLabel": "Metro",
+      "metroPlaceholder": "Select metro",
+      "noSpecificMetro": "No specific metro",
+      "anchorTierLabel": "Anchor Tier",
+      "tierPlaceholder": "Select tier",
+      "allTiers": "All tiers",
+      "contentLabel": "Content *",
+      "contentPlaceholder": "Write the playbook content here...",
+      "cancelButton": "Cancel",
+      "saveChanges": "Save Changes",
+      "createButton": "Create Playbook"
+    },
+    "viewDialog": {
+      "editButton": "Edit",
+      "closeButton": "Close"
+    },
+    "deleteConfirm": "Are you sure you want to delete this playbook?"
+  },
+  "workflowDownloads": {
+    "title": "n8n Workflow Downloads",
+    "description": "Download these JSON files and import them into your n8n instance. Remember to update Workflow Constants (secrets, URLs) after importing. All callback nodes use",
+    "descriptionSuffix": "dual headers.",
+    "categories": {
+      "search": "Search",
+      "enrichment": "Enrichment",
+      "discovery": "Discovery",
+      "intelligence": "Intelligence",
+      "automation": "Automation / Cron"
+    },
+    "downloadButton": "Download"
+  }
+}

@@ -1,0 +1,134 @@
+{
+  "page": {
+    "title": "Subvenciones",
+    "subtitle": "Seguimiento de subvenciones y gestión del canal"
+  },
+  "filters": {
+    "searchPlaceholder": "Buscar subvenciones...",
+    "allStages": "Todas las Etapas",
+    "allFunders": "Todos los Financiadores",
+    "allMetros": "Todas las Metrópolis",
+    "allYears": "Todos los Años",
+    "stagePlaceholder": "Etapa",
+    "funderTypePlaceholder": "Tipo de Financiador",
+    "metroPlaceholder": "Metrópolis",
+    "fyPlaceholder": "AF",
+    "activeFilters": "Filtros activos:",
+    "clearAll": "Borrar todo",
+    "stageFilter": "Etapa: {{value}}",
+    "statusFilter": "Estado: {{value}}",
+    "funderFilter": "Financiador: {{value}}",
+    "metroFilter": "Metrópolis: {{value}}",
+    "fiscalYearFilter": "AF: {{value}}",
+    "ratingFilter": "Calificación \u2265 {{value}}"
+  },
+  "buttons": {
+    "addGrant": "Agregar Subvención",
+    "export": "Exportar",
+    "import": "Importar",
+    "edit": "Editar {{count}}",
+    "delete": "Eliminar {{count}}",
+    "selectAll": "Todas"
+  },
+  "views": {
+    "grid": "Vista de cuadrícula",
+    "list": "Vista de lista",
+    "compare": "Comparación año a año"
+  },
+  "table": {
+    "grant": "Subvención",
+    "funder": "Financiador",
+    "stage": "Etapa",
+    "type": "Tipo",
+    "fy": "AF",
+    "amountRequested": "Monto Solicitado",
+    "metro": "Metrópolis",
+    "rating": "Calificación"
+  },
+  "card": {
+    "requested": "Solicitado:",
+    "viewSource": "Ver Fuente",
+    "ends": "Termina:"
+  },
+  "counts": {
+    "showing": "Mostrando {{filtered}} de {{total}} subvenciones"
+  },
+  "empty": {
+    "noGrantsFound": "No se encontraron subvenciones",
+    "adjustFilters": "Intente ajustar sus filtros",
+    "getStarted": "Comience agregando su primera subvención"
+  },
+  "bulkDelete": {
+    "title_one": "¿Eliminar {{count}} Subvención?",
+    "title_other": "¿Eliminar {{count}} Subvenciones?",
+    "description": "Esto eliminará las subvenciones seleccionadas y sus actividades asociadas. Tendrá 8 segundos para deshacer esta acción.",
+    "deleting": "Eliminando...",
+    "confirmDelete": "Eliminar"
+  },
+  "import": {
+    "title": "Importar Subvenciones"
+  },
+  "detail": {
+    "loading": "Cargando...",
+    "notFound": "Subvención No Encontrada",
+    "notFoundSubtitle": "Esta subvención no existe",
+    "notFoundMessage": "La subvención que busca no pudo ser encontrada.",
+    "backToGrants": "Volver a Subvenciones",
+    "enrich": "Enriquecer",
+    "duplicate": "Duplicar",
+    "edit": "Editar",
+    "delete": "Eliminar",
+    "metro": "Metrópolis:",
+    "opportunity": "Oportunidad:",
+    "source": "Fuente:",
+    "apply": "Aplicar:",
+    "noUrl": "Sin URL",
+    "matchRequired": "Contrapartida Requerida:",
+    "reporting": "Informes:",
+    "notRequired": "No requerido",
+    "yes": "Sí",
+    "no": "No",
+    "funding": "Financiamiento",
+    "available": "Disponible",
+    "requested": "Solicitado",
+    "awarded": "Otorgado",
+    "fiscalYear": "Año Fiscal",
+    "grantTerm": "Período de Subvención",
+    "startDate": "Fecha de Inicio",
+    "endDate": "Fecha de Finalización",
+    "multiYear": "Plurianual",
+    "grantTypes": "Tipos de Subvención",
+    "strategicFocus": "Enfoque Estratégico",
+    "notes": "Notas",
+    "internalStrategyNotes": "Notas Internas de Estrategia",
+    "activities": "Actividades ({{count}})",
+    "logActivity": "Registrar Actividad",
+    "activityType": "Tipo de Actividad",
+    "date": "Fecha",
+    "notesLabel": "Notas",
+    "notesPlaceholder": "¿Qué ocurrió?",
+    "nextAction": "Próxima Acción",
+    "nextActionPlaceholder": "¿Cuál es el siguiente paso?",
+    "dueDate": "Fecha Límite",
+    "saveActivity": "Guardar Actividad",
+    "cancel": "Cancelar",
+    "created": "Creado {{date}}",
+    "stageSince": "En esta etapa desde {{date}}"
+  },
+  "deleteDialog": {
+    "title": "¿Eliminar Subvención?",
+    "description": "¿Está seguro de que desea eliminar esta subvención? Tendrá 8 segundos para deshacer esta acción.",
+    "deleting": "Eliminando...",
+    "confirm": "Eliminar",
+    "cancel": "Cancelar"
+  },
+  "toasts": {
+    "searchingUrl": "Buscando URL de la subvención…",
+    "extractingDetails": "Extrayendo detalles de la subvención…",
+    "foundUrl": "URL encontrada: {{title}}",
+    "noUrlFound": "No se pudo encontrar una URL para esta subvención",
+    "enrichmentStarted": "Enriquecimiento de subvención iniciado",
+    "enrichmentInProgress": "Enriquecimiento ya en progreso",
+    "enrichmentFailed": "El enriquecimiento falló"
+  }
+}

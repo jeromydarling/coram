@@ -1,0 +1,6 @@
+{
+  "error": "quota_exceeded:403",
+  "status_code": 403,
+  "expected_category": "quota",
+  "expected_code": "429_quota"
+}

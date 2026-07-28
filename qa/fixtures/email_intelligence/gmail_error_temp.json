@@ -1,0 +1,6 @@
+{
+  "error": "timeout_or_network:Connection reset by peer",
+  "status_code": 500,
+  "expected_category": "provider_temp",
+  "expected_code": "server_error"
+}

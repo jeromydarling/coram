@@ -1,0 +1,155 @@
+{
+  "title": "Help & Guidance",
+  "subtitle": "Learn how to tend your relational garden",
+  "searchHelp": "Search for help...",
+  "categories": {
+    "gettingStarted": "Getting Started",
+    "relationships": "Relationships & Contacts",
+    "journeys": "Journeys & Chapters",
+    "events": "Local Pulse & Events",
+    "volunteers": "Voluntārium",
+    "provisions": "Prōvīsiō",
+    "companion": "NRI Companion",
+    "operator": "Operator Console",
+    "settings": "Settings & Preferences",
+    "integrations": "Integrations",
+    "billing": "Billing & Account"
+  },
+  "tooltips": {
+    "what": {
+      "connectionStrength": "Connection strength reflects how deep and active your relationship is. It's based on interaction frequency, journey progress, and your own assessment.",
+      "localPulse": "Local Pulse aggregates community events from your subscribed sources. It uses your keyword tuner to surface the most relevant events.",
+      "nriCompanion": "The NRI Companion offers reflective prompts and relational insights based on your data. It's not AI that automates — it's intelligence that illuminates.",
+      "journeyChapters": "Journey chapters let you narrate the unfolding story of a relationship over time. Each chapter marks a meaningful phase or milestone.",
+      "seasonalRhythm": "The seasonal rhythm bar reflects the current natural or liturgical season, gently inviting you to match your relational practices to the time of year.",
+      "operatorConsole": "The operator console gives administrators a bird's-eye view of community health, system operations, growth analytics, and relational intelligence."
+    },
+    "where": {
+      "addContact": "Click 'Add Relationship' on the Relationships page or use the + button in the header.",
+      "findEvents": "Head to Local Pulse in the sidebar. You can also subscribe to RSS/iCal feeds from your community sources.",
+      "logInteraction": "Open any contact's detail page and click 'Log Interaction' in the activity tab.",
+      "changeLanguage": "Go to Settings > Profile > Language, or use the language switcher in the header."
+    },
+    "why": {
+      "trackRelationships": "Because every person matters. Tracking relationships isn't surveillance — it's stewardship. It helps you show up consistently for the people who need you.",
+      "useReflections": "Reflection deepens attention. When you pause to notice what's happening in your relationships, you grow in wisdom and compassion.",
+      "logInteractions": "Logging interactions isn't busywork. It's how you notice patterns — who you haven't checked in with, who might need a word of encouragement, who is growing."
+    }
+  },
+  "gardenerManuals": {
+    "title": "Gardener Manuals",
+    "description": "In-depth guides for tending your relational garden.",
+    "beginner": "Beginner's Guide: Planting Your First Seeds",
+    "intermediate": "Growing Season: Deepening Your Practice",
+    "advanced": "Master Gardener: Community-Scale Cultivation"
+  },
+  "contact": {
+    "title": "Need More Help?",
+    "email": "Email us at support@crosplatform.com",
+    "community": "Join the CROS community",
+    "feedback": "Send Feedback"
+  },
+  "helpNav": {
+    "sections": {
+      "documents": "Document Library",
+      "overview": "Platform Overview",
+      "app-sections": "App Sections",
+      "roles": "Roles & Permissions",
+      "restoration": "Recovery & Restoration",
+      "shortcuts": "Keyboard Shortcuts",
+      "adoption": "Adoption & Rhythm"
+    }
+  },
+  "page": {
+    "title": "Help & Documentation",
+    "jumpTo": "Jump to:",
+    "helpPdf": "Help PDF",
+    "helpPdfShort": "PDF",
+    "partnerCards": "Partner Cards",
+    "partnerCardsShort": "Cards",
+    "platformOverview": {
+      "title": "Platform Overview",
+      "badgeLabel": "Active",
+      "seeAppSections": "See the \"Application Sections\" below for detailed documentation on each module."
+    },
+    "appSections": {
+      "title": "Application Sections",
+      "description": "Click each section to learn more about its features and how to use it. Sections are filtered to your plan."
+    },
+    "roles": {
+      "title": "User Roles & Permissions",
+      "description": "Understanding what each role can access in the system",
+      "tableRole": "Role",
+      "tableDescription": "Description",
+      "tableDataAccess": "Data Access",
+      "tableAdmin": "Admin",
+      "adminAccess": "Admin Access",
+      "noAdmin": "No Admin",
+      "adminYes": "Yes",
+      "adminNo": "No",
+      "rolesNote": "Note: All users must be approved by an Admin before they can access the system. The first user to register is automatically granted Admin access."
+    },
+    "restoration": {
+      "title": "Recovery & Restoration",
+      "subtitle": "Nothing is lost here."
+    },
+    "keyboardShortcuts": {
+      "title": "Keyboard Shortcuts",
+      "globalHeading": "Global",
+      "navigationHeading": "Navigation (press G then the letter)",
+      "openSearch": "Open Global Search",
+      "openHelp": "Open Help",
+      "closeModal": "Close Modal/Dialog"
+    }
+  },
+  "adoptionHub": {
+    "title": "Adoption & Daily Rhythm",
+    "subtitle": "Helping your people live inside the story — not learn software.",
+    "intro": {
+      "title": "Adoption is not about learning tools — it is about building rhythm.",
+      "openCommandCenter": "Open Command Center"
+    },
+    "leaderRhythm": {
+      "title": "The 5-Minute Daily Model",
+      "intro": "Leaders set the rhythm. Here's a gentle daily pattern that takes less than five minutes:",
+      "noticeSignal": "Notice one signal",
+      "noticeSignalDetail": "a drift alert, a momentum shift, a new connection.",
+      "sendEncouragement": "Send one encouragement",
+      "sendEncouragementDetail": "a message, a quick check-in, a reflection shared with a teammate.",
+      "recordReflection": "Record one reflection",
+      "recordReflectionDetail": "what did you observe today that matters?",
+      "followsNaturally": "When leaders model this rhythm, teams follow naturally."
+    },
+    "visitorMomentum": {
+      "title": "When visitors speak, the system remembers.",
+      "openVisits": "Open Visits"
+    },
+    "frictionGuidance": {
+      "title": "When something feels confusing, pause."
+    },
+    "firstStoryMeeting": {
+      "title": "Your First Story Meeting",
+      "intro": "When your team gathers to talk about relationships, try opening with this:",
+      "framing": "This framing shifts the conversation from performance tracking to collective awareness."
+    },
+    "emailIntake": {
+      "title": "How to include people who prefer email",
+      "stepsHeading": "Three simple steps for Stewards:",
+      "step1": "Enable Simple Intake in Settings.",
+      "step1Settings": "Settings",
+      "step2": "Copy the share message and send it to your team.",
+      "step3": "That's it. Notes flow in — no training required.",
+      "openSettings": "Open Settings"
+    },
+    "adoptionSignals": {
+      "title": "Adoption Signals",
+      "viewDashboard": "View Adoption Dashboard"
+    }
+  },
+  "caregiverGuide": {
+    "title": "Companion Guide",
+    "subtitle": "Everything you need to know about using CROS™ as a companion — solo or with an organization.",
+    "forLine": "For mentors, sponsors, caregivers, and those who walk closely with others.",
+    "footer": "Need more help? Visit the full Help page or reach out through Help Requests."
+  }
+}

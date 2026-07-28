@@ -1,0 +1,68 @@
+{
+  "title": "Consola del operador",
+  "subtitle": "Gestión multi-comunidad e inteligencia del sistema",
+  "modules": {
+    "cura": {
+      "title": "CURA",
+      "subtitle": "Supervisión del cuidado y las relaciones",
+      "description": "Observe la salud de las relaciones en sus comunidades. Identifique a quienes pueden estar quedando en el olvido.",
+      "atRiskRelationships": "Relaciones en riesgo",
+      "dormantConnections": "Conexiones en reposo",
+      "followUpOverdue": "Seguimientos vencidos",
+      "relationshipHealth": "Índice de salud relacional",
+      "communityPulse": "Pulso comunitario"
+    },
+    "machina": {
+      "title": "MACHINA",
+      "subtitle": "Operaciones y automatización del sistema",
+      "description": "Administre las operaciones del sistema, integraciones y flujos de automatización.",
+      "systemStatus": "Estado del sistema",
+      "activeIntegrations": "Integraciones activas",
+      "syncStatus": "Estado de sincronización",
+      "automationRules": "Reglas de automatización",
+      "errorLog": "Registro de errores",
+      "apiUsage": "Uso de la API"
+    },
+    "crescere": {
+      "title": "CRESCERE",
+      "subtitle": "Crecimiento y análisis",
+      "description": "Comprenda cómo su comunidad crece, cambia y se profundiza a lo largo del tiempo.",
+      "communityGrowth": "Crecimiento de la comunidad",
+      "engagementTrends": "Tendencias de participación",
+      "retentionRate": "Tasa de retención",
+      "newRelationships": "Nuevas relaciones",
+      "activeJourneys": "Caminos activos",
+      "seasonalPatterns": "Patrones estacionales",
+      "exportReport": "Exportar informe"
+    },
+    "scientia": {
+      "title": "SCIENTIA",
+      "subtitle": "Conocimiento y observaciones",
+      "description": "La capa de inteligencia. Revela patrones, necesidades y oportunidades en su red relacional.",
+      "insights": "Observaciones",
+      "patterns": "Patrones detectados",
+      "recommendations": "Recomendaciones",
+      "communityNeeds": "Necesidades emergentes",
+      "networkMap": "Mapa de la red",
+      "impactSummary": "Resumen de impacto"
+    }
+  },
+  "communities": {
+    "title": "Comunidades",
+    "addCommunity": "Agregar comunidad",
+    "manageCommunity": "Administrar",
+    "communityName": "Nombre de la comunidad",
+    "memberCount": "{{count}} miembros",
+    "activeSince": "Activa desde {{date}}",
+    "switchCommunity": "Cambiar de comunidad"
+  },
+  "alerts": {
+    "title": "Alertas del operador",
+    "critical": "Crítica",
+    "warning": "Advertencia",
+    "info": "Informativa",
+    "noAlerts": "No hay alertas activas. Todos los sistemas funcionan correctamente.",
+    "acknowledgeAlert": "Acusar recibo",
+    "resolveAlert": "Resolver"
+  }
+}

@@ -1,0 +1,1176 @@
+{
+  "hero": {
+    "headline": "See People. Grow Together.",
+    "subheadline": "The relational community intelligence platform for those who care for others.",
+    "cta": "Start Your Journey",
+    "secondaryCta": "See How It Works"
+  },
+  "taglines": {
+    "primary": "See People. Grow Together.",
+    "companion": "Your relationships deserve more than a spreadsheet.",
+    "mission": "Built for those who care for others.",
+    "nri": "Not artificial. Relational."
+  },
+  "valueProps": {
+    "seepeople": {
+      "title": "See People",
+      "description": "Every person in your community has a story. CROS helps you see them — truly see them — and respond with intention."
+    },
+    "growTogether": {
+      "title": "Grow Together",
+      "description": "Relationships aren't transactions. They unfold over time. CROS grows with you, season by season."
+    },
+    "communityIntelligence": {
+      "title": "Community Intelligence",
+      "description": "Know what's happening in your community. Surface needs, connect resources, and track the health of your relational network."
+    }
+  },
+  "nriPanel": {
+    "title": "NRI, Not AI",
+    "subtitle": "Natural Relational Intelligence",
+    "description": "Most platforms use AI to automate relationships. CROS uses NRI — Natural Relational Intelligence — to illuminate them. The NRI Companion doesn't replace your judgment. It deepens your attention.",
+    "comparison": {
+      "aiTitle": "Typical AI CRM",
+      "nriTitle": "CROS NRI Companion",
+      "aiPoint1": "Automates follow-ups",
+      "nriPoint1": "Reminds you why this person matters",
+      "aiPoint2": "Scores leads",
+      "nriPoint2": "Illuminates connection strength",
+      "aiPoint3": "Predicts revenue",
+      "nriPoint3": "Surfaces unmet needs",
+      "aiPoint4": "Sends mass emails",
+      "nriPoint4": "Suggests a handwritten note"
+    }
+  },
+  "pricing": {
+    "title": "Pricing",
+    "subtitle": "Simple, honest pricing for those who serve.",
+    "core": {
+      "name": "CROS Core",
+      "price": "$49",
+      "period": "/month",
+      "description": "Everything you need to see your people and grow your community.",
+      "features": {
+        "relationships": "Unlimited relationships & contacts",
+        "journeys": "Journey chapters & reflections",
+        "localPulse": "Local Pulse event tracking",
+        "companion": "NRI Companion",
+        "integrations": "Core integrations (Google, Apple, Outlook)",
+        "accessibility": "Full accessibility mode"
+      },
+      "cta": "Start Your Journey"
+    },
+    "addOns": {
+      "title": "Add-On Modules",
+      "voluntarium": "Voluntārium — Volunteer coordination",
+      "provisio": "Prōvīsiō — Resource & provision tracking",
+      "operator": "Operator Console — Multi-community management",
+      "contactSales": "Contact us for add-on pricing"
+    },
+    "faq": {
+      "title": "Frequently Asked Questions",
+      "q1": "Is there a free trial?",
+      "a1": "Yes — start with a 14-day free trial. No credit card required.",
+      "q2": "Can I cancel anytime?",
+      "a2": "Absolutely. No contracts, no cancellation fees.",
+      "q3": "Is my data safe?",
+      "a3": "Your data is yours. We never sell it, share it, or use it for advertising. Ever.",
+      "q4": "Do the Latin module names mean it's only for Catholic communities?",
+      "a4": "Not at all. CROS is designed for anyone who cares for others — mentors, recovery coaches, advocates, community organizers, and yes, parish leaders too."
+    }
+  },
+  "testimonials": {
+    "title": "What People Are Saying",
+    "comingSoon": "Testimonials coming soon."
+  },
+  "cta": {
+    "final": "Your community is waiting. Start seeing people today.",
+    "button": "Begin Your Journey"
+  },
+  "archetypeResonanceCard": {
+    "eyebrow": "A week inside",
+    "cta": "Begin your rhythm"
+  },
+  "archetypeWeekTemplate": {
+    "backLink": "Back to Archetypes",
+    "titlePrefix": "A Week Inside CROS™",
+    "closingReflectionHeading": "The Living Story",
+    "seePricing": "See pricing",
+    "breadcrumb": {
+      "home": "Home",
+      "archetypes": "Archetypes"
+    }
+  },
+  "authorityShareCard": {
+    "heading": "Know another team walking this road?",
+    "body": "You're welcome to share this story with someone who might need it.",
+    "copyLink": "Copy Link",
+    "copied": "Copied",
+    "shareByEmail": "Share by Email",
+    "defaultEmailSubject": "A story you might find meaningful — from CROS",
+    "toastCopied": "Link copied",
+    "toastError": "Could not copy link"
+  },
+  "civicGravityBlock": {
+    "archetypesLabel": "Archetypes active in this region",
+    "narrativeThemesLabel": "Narrative themes",
+    "seasonalFocusLabel": "Seasonal focus",
+    "seasonal": {
+      "spring": "Spring renewal — communities are planning new outreach and partnerships.",
+      "summer": "Summer engagement — field presence and volunteer activity typically increase.",
+      "autumn": "Autumn reflection — organizations are reviewing impact and deepening relationships.",
+      "winter": "Winter gathering — communities draw inward, focusing on care and preparation."
+    }
+  },
+  "civicSignalBlock": {
+    "label": "From the network",
+    "fallback": "Community patterns are forming here."
+  },
+  "comparisonTable": {
+    "capabilityHeader": "Capability",
+    "columns": {
+      "crm": "Traditional CRM",
+      "marketing": "Marketing Platform",
+      "cros": "CROS™"
+    },
+    "rows": {
+      "relationshipMemory": {
+        "label": "Relationship Memory",
+        "crm": "Activity logs · static notes",
+        "marketing": "Subscriber history only",
+        "cros": "Reflections + Impulsus™ narrative journal"
+      },
+      "communityAwareness": {
+        "label": "Community Awareness",
+        "crm": "Manual research",
+        "marketing": "None",
+        "cros": "Signum™ Local Pulse + Metro Narrative"
+      },
+      "humanContext": {
+        "label": "Human Context",
+        "crm": "Custom fields",
+        "marketing": "Tags & segments",
+        "cros": "NRI™ Narrative Intelligence signals"
+      },
+      "migration": {
+        "label": "Migration & Integration",
+        "crm": "Complex exports",
+        "marketing": "Vendor lock-in",
+        "cros": "Relatio™ two-way sync (HubSpot, Salesforce, Dynamics 365) + guided migration"
+      },
+      "volunteer": {
+        "label": "Volunteer + Community Presence",
+        "crm": "Add-on modules",
+        "marketing": "Not supported",
+        "cros": "Voluntārium™ built in"
+      },
+      "expansion": {
+        "label": "Expansion Planning",
+        "crm": "Manual project tracking",
+        "marketing": "Not applicable",
+        "cros": "Expansion Planning Canvas"
+      },
+      "narrativeReporting": {
+        "label": "Narrative Reporting",
+        "crm": "Static dashboards",
+        "marketing": "Campaign analytics only",
+        "cros": "Testimonium™ Witness Console"
+      }
+    }
+  },
+  "constellationEmbed": {
+    "heading": "A living constellation of care",
+    "subheading": "Across cities and communities, small acts are becoming shared stories.",
+    "seeHowItWorks": "See how it works",
+    "atlas": {
+      "liveLabel_one": "Care is present across {{count}} community",
+      "liveLabel_other": "Care is present across {{count}} communities",
+      "fallback": "Where care is happening"
+    },
+    "constellation": {
+      "liveLabel_one": "{{count}} shared signal of growth",
+      "liveLabel_other": "{{count}} shared signals of growth",
+      "fallback": "How communities are growing together"
+    },
+    "providence": {
+      "fallback": "The quiet threads connecting moments"
+    },
+    "compass": {
+      "label": "How movement flows",
+      "tooltip": "Movement across CROS is shaped by shared intelligence — guided by care, discernment, narrative, and restoration."
+    }
+  },
+  "elementBadge": {
+    "nriSubtitle": "The Head",
+    "crosSubtitle": "The Heart",
+    "profundaSubtitle": "The Body"
+  },
+  "featurePageLayout": {
+    "getStarted": "Get started",
+    "breadcrumb": {
+      "home": "Home"
+    }
+  },
+  "gardenerNoteModal": {
+    "title": "A Note from the First Gardener",
+    "srDescription": "A personal reflection on the origins of CROS.",
+    "p1": "I built CROS slowly — while serving in ministry, recovery spaces, nonprofit outreach, and creative work.",
+    "p2": "It exists because humans deserve more than databases and thoughtless automation.",
+    "p3": "Now it grows beyond me — through every organization that chooses to tend it.",
+    "footnote": "Technology shaped by presence, not disruption."
+  },
+  "legalPageLayout": {
+    "eyebrow": "Written in human language. Updated with care.",
+    "lastUpdated": "Last updated:",
+    "breadcrumb": {
+      "home": "CROS"
+    }
+  },
+  "livingArchetypeStoryCard": {
+    "heading": "Living Signals from the Field",
+    "tooltip": {
+      "what": "Anonymized narrative signals aggregated across the ecosystem.",
+      "where": "Derived from testimonium rollups — no tenant data exposed.",
+      "why": "Shows that real organizations are using CROS™ for this mission type."
+    },
+    "recentMovement": "Recent Movement Across Ministries Like Yours",
+    "anonymizedNote": "These reflections are anonymized and aggregated across the ecosystem."
+  },
+  "narrativeCTA": {
+    "beginRhythm": {
+      "heading": "Ready to begin?",
+      "body": "Choose your mission archetype and let CROS™ shape itself around the work you already do.",
+      "button": "Begin your rhythm"
+    },
+    "seeCityStory": {
+      "heading": "What's happening in your city?",
+      "body": "See the civic patterns emerging across the CROS™ network — anonymized, aggregated, and human.",
+      "button": "Explore civic stories"
+    },
+    "walkFirstWeek": {
+      "heading": "Walk your first week",
+      "body": "See what a week inside CROS™ looks like for your mission — no commitment, just a story.",
+      "button": "See a week inside"
+    }
+  },
+  "narrativeComparisonTable": {
+    "dimensionHeader": "Dimension",
+    "traditionalHeader": "Traditional",
+    "crosHeader": "CROS™"
+  },
+  "narrativeGraphLinks": {
+    "defaultHeading": "You may also explore",
+    "typeLabels": {
+      "role": "Role",
+      "archetype": "Archetype",
+      "concept": "Concept",
+      "signal": "Signal"
+    }
+  },
+  "narrativePulseStrip": {
+    "signal1": "{{n}} new community reflections recorded this week across the network.",
+    "signal2": "Teams in {{n}} regions noted increasing volunteer presence.",
+    "signal3": "{{n}} story moments captured — relationships are deepening.",
+    "signal4": "Companions across {{n}} metros shared field observations this quarter.",
+    "signal5": "{{n}} mission communities are in active rhythm right now."
+  },
+  "nriVsAiPanel": {
+    "aiTitle": "Artificial Intelligence",
+    "nriTitle": "Narrative Relational Intelligence (NRI™)",
+    "aiPoints": {
+      "p1": "Predicts patterns",
+      "p2": "Optimizes workflows",
+      "p3": "Automates tasks"
+    },
+    "nriPoints": {
+      "p1": "Observes human activity",
+      "p2": "Surfaces meaning over metrics",
+      "p3": "Strengthens memory instead of replacing judgment"
+    },
+    "tagline": "AI organizes data. NRI™ helps people understand their relationships."
+  },
+  "publicLayout": {
+    "logoAlt": "CROS logo",
+    "nav": {
+      "features": "Features",
+      "theModel": "The Model",
+      "archetypes": "Archetypes",
+      "pricing": "Pricing",
+      "about": "About",
+      "allFeatures": "All features",
+      "signIn": "Sign in",
+      "getStarted": "Get started"
+    },
+    "featureGroups": {
+      "core": "Core",
+      "intelligence": "Intelligence",
+      "modules": "Modules"
+    },
+    "featureItems": {
+      "relationshipMemory": "Relationship Memory",
+      "reflections": "Reflections"
+    },
+    "aboutLinks": {
+      "manifesto": "Manifesto",
+      "ourStory": "Our Story",
+      "roles": "Roles",
+      "proof": "Proof",
+      "security": "Security",
+      "contact": "Contact"
+    },
+    "footer": {
+      "copyright": "© {{year}} CROS™ · {{fullName}}. All rights reserved.",
+      "gardenerNote": "CROS was grown from decades of lived community work."
+    }
+  },
+  "quietComparisonGrid": {
+    "beforeLabel": "Before",
+    "withCrosLabel": "With CROS"
+  },
+  "relatedNarrativesCard": {
+    "heading": "Continue the story",
+    "categoryLabels": {
+      "role": "Role",
+      "archetype": "Archetype",
+      "week": "Week Story",
+      "philosophy": "Philosophy",
+      "adoption": "Adoption",
+      "concept": "Concept"
+    }
+  },
+  "relatioPositioningMatrix": {
+    "eyebrow": "Where CROS fits",
+    "footnote": "CROS works alongside your existing tools — or can become your primary system over time.",
+    "seeIntegrations": "See all integrations",
+    "columns": {
+      "crm": {
+        "heading": "Traditional CRM",
+        "p1": "Tracks transactions",
+        "p2": "Sales-first design",
+        "p3": "Data ownership unclear"
+      },
+      "cros": {
+        "heading": "CROS™",
+        "p1": "Relationship-first",
+        "p2": "Narrative-aware",
+        "p3": "Companion, not replacement"
+      },
+      "bridge": {
+        "heading": "Bridge Mode",
+        "p1": "Integrates with Salesforce, Planning Center, ParishSoft & more",
+        "p2": "One-way narrative enrichment",
+        "p3": "Keep what works, add what's missing"
+      }
+    }
+  },
+  "roleSelector": {
+    "prompt": "Which role speaks to you?",
+    "adaptNote": "Content will adapt to your perspective.",
+    "roles": {
+      "shepherd": "Shepherd",
+      "companion": "Companion",
+      "visitor": "Visitor",
+      "leader": "Steward"
+    }
+  },
+  "top10ComparisonChart": {
+    "jumpLink": "Jump to Divergence ↓",
+    "capabilityHeader": "Capability",
+    "convergeHeader": "Where we converge — baseline CRM",
+    "divergeHeader": "Where we diverge — human + narrative",
+    "footnote": "indicates \"possible via customization or varies by setup.\" This chart focuses on what each system is designed to do by default.",
+    "rows": {
+      "orgsAccounts": "Organizations / Accounts",
+      "peopleContacts": "People / Contacts",
+      "activitiesNotes": "Activities / Notes",
+      "tasks": "Tasks",
+      "emailLogging": "Basic Email Logging",
+      "importExport": "Import / Export",
+      "relationshipMemory": "Relationship Memory (Reflections + email story)",
+      "impulsus": "First-person Impact Journal (Impulsus™)",
+      "signum": "Community Awareness (Signum™ Local Pulse)",
+      "nriSignals": "Narrative Intelligence (NRI™) signals",
+      "testimonium": "Metro Narrative + Drift (Testimonium™)",
+      "migrationHarness": "Migration Harness + Demo Lab",
+      "communio": "Communio (cross-tenant signal sharing)"
+    }
+  },
+  "weekLibraryCTA": {
+    "eyebrow": "Narrative Library",
+    "heading": "See what a real week looks like inside CROS™",
+    "body": "Stories from Visitors, Shepherds, Stewards, and Companions — real rhythms, not feature lists.",
+    "linkText": "Explore the stories"
+  },
+  "archetypeDeepPage": {
+    "eyebrow": "Mission Archetype",
+    "weekInsideHeading": "A Week Inside CROS™",
+    "weekInsideBody": "See how a {{archetype}} team uses CROS™ from Monday to Sunday.",
+    "readFullWeek": "Read the full week",
+    "threeLensesHeading": "Three Lenses, One Mission",
+    "extendAddOnsHeading": "Extend with Add-ons",
+    "storiesHeading": "Stories from this archetype",
+    "insightsHeading": "Related insights",
+    "seePricing": "See pricing",
+    "roleLenses": {
+      "shepherd": {
+        "lens": "Sees the Metro Narrative, Drift Detection, and weekly story — guiding the mission with awareness."
+      },
+      "companion": {
+        "lens": "Logs reflections, manages follow-ups, and keeps the thread of care unbroken."
+      },
+      "visitor": {
+        "lens": "Captures field moments with voice notes — showing up where life happens."
+      }
+    },
+    "addOns": {
+      "testimonium": "Drift detection and story signals.",
+      "impulsus": "Private impact scrapbook journal.",
+      "relatio": "CRM migration bridges."
+    },
+    "addOnTiers": {
+      "insight": "Insight",
+      "story": "Story",
+      "bridge": "Bridge"
+    },
+    "seoLinks": {
+      "heading": "Continue exploring",
+      "allArchetypes": "All Archetypes",
+      "allArchetypesDesc": "See every mission archetype.",
+      "nri": "NRI",
+      "nriDesc": "Understand Narrative Relational Intelligence.",
+      "signals": "Signals",
+      "signalsDesc": "Anonymized narrative signals from the ecosystem.",
+      "roles": "Roles",
+      "rolesDesc": "Find where you fit.",
+      "pricing": "Pricing",
+      "pricingDesc": "Plans for every mission size."
+    }
+  },
+  "archetypesPage": {
+    "roleIdentityHeading": "Which role fits you?",
+    "title": "Mission Archetypes",
+    "description": "CROS™ adapts to your mission — church, nonprofit, social enterprise, or workforce development. Choose an archetype and your workspace shapes itself.",
+    "heroBody": "CROS™ adapts to your mission. Choose an archetype during onboarding and your workspace shapes itself — journey stages, language, community signals, and narrative tone.",
+    "exampleJourneysLabel": "Example Journeys",
+    "exampleReflectionLabel": "Example Reflection",
+    "communitySignalLabel": "Community Signal",
+    "readWeekInside": "Read a Week Inside CROS™",
+    "deepDive": "Deep dive",
+    "seoLinks": {
+      "heading": "Next steps",
+      "pricing": "Pricing",
+      "pricingDesc": "See plans for every mission size.",
+      "roles": "Roles",
+      "rolesDesc": "Find where you fit - Shepherd, Companion, or Visitor.",
+      "insights": "Insights",
+      "insightsDesc": "Narrative essays on relationship, technology, and care."
+    }
+  },
+  "authorityPage": {
+    "eyebrow": "The CROS Authority Hub",
+    "heading": "Knowledge for Living Mission",
+    "subheading": "Stories, guidance, and reflections from the field — for leaders who believe relationships matter more than metrics.",
+    "readingPath": {
+      "label": "Where to begin",
+      "description": "Start with a Week story to see CROS in daily rhythm. Then explore an Adoption guide for practical wisdom. When you're ready to go deeper, the Essays and Field Dispatches will meet you there."
+    },
+    "featured": {
+      "heading": "Featured Reading"
+    },
+    "categories": {
+      "week": {
+        "label": "What a Week Looks Like",
+        "description": "Archetype-driven storytelling about real rhythms."
+      },
+      "adoption": {
+        "label": "Adoption Guidance",
+        "description": "Non-technical leadership insights."
+      },
+      "story": {
+        "label": "Narrative Essays",
+        "description": "Reflections on relational work."
+      },
+      "leadership": {
+        "label": "Leadership Reflections",
+        "description": "On stewarding mission without losing your soul."
+      },
+      "field_dispatch": {
+        "label": "Field Dispatches",
+        "description": "Voices from the places where the work happens."
+      }
+    },
+    "pieceCount_one": "{{count}} piece",
+    "pieceCount_other": "{{count}} pieces",
+    "softConversion": {
+      "heading": "See how this works in your organization",
+      "exploreArchetypes": "Explore Archetypes",
+      "viewPricing": "View Pricing"
+    },
+    "seoLinks": {
+      "heading": "Continue exploring",
+      "fieldJournal": "Field Journal",
+      "fieldJournalDesc": "Quiet observations from the field.",
+      "lexicon": "Lexicon",
+      "lexiconDesc": "The language of living mission.",
+      "nri": "NRI",
+      "nriDesc": "Narrative Relational Intelligence."
+    }
+  },
+  "authorityCategoryPage": {
+    "backLink": "Back to Authority Hub",
+    "categories": {
+      "weeks": {
+        "label": "What a Week Looks Like",
+        "description": "Archetype-driven storytelling about real rhythms of mission work."
+      },
+      "adoption": {
+        "label": "Adoption Guidance",
+        "description": "Non-technical leadership insights for bringing CROS into your organization."
+      },
+      "stories": {
+        "label": "Narrative Essays",
+        "description": "Reflections on what it means to build systems that remember people."
+      },
+      "leadership": {
+        "label": "Leadership Reflections",
+        "description": "On stewarding mission-driven organizations without losing what matters most."
+      },
+      "field-dispatches": {
+        "label": "Field Dispatches",
+        "description": "First-person accounts from the places where relational work happens."
+      }
+    },
+    "softConversion": {
+      "heading": "See how this works in your organization",
+      "exploreArchetypes": "Explore Archetypes",
+      "viewPricing": "View Pricing"
+    }
+  },
+  "callingPage": {
+    "eyebrow": "A Calling",
+    "narrativeThemesHeading": "Narrative themes",
+    "archetypesHeading": "Archetypes drawn to this calling",
+    "rolesHeading": "Roles that carry this calling",
+    "faqHeading": "Questions about this calling",
+    "ctaHeading": "Follow this calling",
+    "ctaBody": "Begin with the archetype that matches your mission. CROS™ will shape itself around the work you already do.",
+    "ctaButton": "Begin your rhythm"
+  },
+  "crosFeaturePage": {
+    "eyebrow": "The Heart of the Platform",
+    "capabilitiesHeading": "Key Capabilities",
+    "getStarted": "Get started"
+  },
+  "communioFeaturePage": {
+    "eyebrow": "Modules",
+    "getStarted": "Get started"
+  },
+  "communioNetworkPage": {
+    "networkLabel": "Network",
+    "civicThemesHeading": "Civic themes",
+    "signalsHeading": "Signals from the network",
+    "participatingArchetypesHeading": "Participating archetypes",
+    "ctaHeading": "Join the movement",
+    "ctaBody": "When organizations share their patterns, everyone sees more clearly.",
+    "ctaButton": "Begin your rhythm"
+  },
+  "joinPage": {
+    "invitationRequired": "Invitation Required",
+    "inviteMessages": {
+      "no_token": "No invitation token provided.",
+      "not_found": "This invitation link is not valid.",
+      "revoked": "This invitation has been revoked.",
+      "already_used": "This invitation has already been used.",
+      "expired": "This invitation has expired. Please ask your steward for a new one.",
+      "error": "Something went wrong validating this invitation.",
+      "invalid": "Invalid invitation."
+    },
+    "inviteOnlyNote": "{{appName}} is an invite-only platform. To join, please contact your organization's steward for an invitation link.",
+    "alreadyHaveAccount": "Already have an account? Sign in",
+    "youreInvited": "You're invited",
+    "invitedDescription": "Join {{tenantName}} on {{appName}} as a {{role}}",
+    "roles": {
+      "shepherd": "Shepherd (Leadership)",
+      "companion": "Companion (Staff)",
+      "visitor": "Visitor (Volunteer)"
+    },
+    "invitedEmailLabel": "Invited email:",
+    "yourNameLabel": "Your Name",
+    "yourNamePlaceholder": "How you'd like to be known",
+    "passwordLabel": "Password",
+    "confirmPasswordLabel": "Confirm Password",
+    "createAccountButton": "Create Account & Join",
+    "successMessage": "Account created! Please check your email to verify your address, then sign in.",
+    "alreadyRegisteredError": "This email is already registered. Please sign in instead, and the invite will be applied automatically.",
+    "passwordMismatch": "Passwords do not match",
+    "passwordTooShort": "Password must be at least 8 characters",
+    "signInLink": "Sign in",
+    "alreadyHaveAccountFooter": "Already have an account?"
+  },
+  "signupPage": {
+    "invitationRequired": "Invitation Required",
+    "description": "{{appName}} is an invite-only platform built for human-centered organizations.",
+    "howToGetAccess": "How to get access:",
+    "steps": {
+      "step1": "Ask your organization's steward for an invitation link",
+      "step2": "Click the link to create your account",
+      "step3": "Verify your email and sign in"
+    },
+    "notOnPlatform": "If your organization isn't on {{appName}} yet,",
+    "getInTouch": "get in touch",
+    "toLearnHow": "to learn how to join.",
+    "alreadyHaveAccount": "Already have an account? Sign in"
+  },
+  "loginPage": {
+    "welcomeBack": "Welcome back",
+    "description": "Sign in to your CROS account",
+    "removedAlert": "Your access to the organization has been removed. Please contact a steward if you believe this is an error.",
+    "checkoutSuccess": "Payment successful! Sign in to access your CROS account.",
+    "signInWithGoogle": "Sign in with Google",
+    "orDivider": "or",
+    "emailLabel": "Email",
+    "emailPlaceholder": "you@organization.org",
+    "passwordLabel": "Password",
+    "forgotPassword": "Forgot password?",
+    "signInButton": "Sign In",
+    "noAccountNote": "Need an account?",
+    "contactSteward": "Ask your organization's steward for an invite link."
+  },
+  "forgotPasswordPage": {
+    "title": "Forgot Password",
+    "description": "Enter your email to receive a password reset link",
+    "emailLabel": "Email",
+    "emailPlaceholder": "you@organization.org",
+    "sendResetLink": "Send Reset Link",
+    "successMessage": "Check your email for a password reset link. It may take a few minutes to arrive.",
+    "backToLogin": "Back to login"
+  },
+  "resetPasswordPage": {
+    "title": "Reset Password",
+    "description": "Enter your new password below",
+    "invalidLinkTitle": "Invalid Link",
+    "invalidLinkDescription": "This password reset link is invalid or has expired.",
+    "requestNewLink": "Request New Link",
+    "newPasswordLabel": "New Password",
+    "confirmPasswordLabel": "Confirm New Password",
+    "updatePasswordButton": "Update Password",
+    "successMessage": "Password updated successfully! Redirecting...",
+    "passwordMismatch": "Passwords do not match",
+    "passwordTooShort": "Password must be at least 8 characters"
+  },
+  "featuresPage": {
+    "eyebrow": "What {{appName}}™ does",
+    "headline": "A system that remembers people.",
+    "subheadline": "Most platforms track transactions. {{appName}}™ remembers relationships. Where traditional AI analyzes data, NRI™ learns from human experience. Together, they create a system that helps organizations grow without losing their humanity.",
+    "sections": {
+      "core": {
+        "eyebrow": "Foundation",
+        "heading": "Relationship Memory",
+        "body": "The core of {{appName}}™ — everything your team needs to remember people well."
+      },
+      "intelligence": {
+        "eyebrow": "Intelligence",
+        "heading": "Narrative Relational Intelligence",
+        "body": "AI that assists the system — but the intelligence belongs to the human relationships."
+      },
+      "modules": {
+        "eyebrow": "Modules",
+        "heading": "Purpose-built for community work",
+        "body": "Every module was shaped by real organizations doing real relationship work."
+      },
+      "governance": {
+        "eyebrow": "Governance",
+        "heading": "Shared Intelligence",
+        "body": "Every CROS community participates in a shared intelligence capacity. Instead of charging per action, CROS protects calm work with predictable, human-scaled limits."
+      }
+    },
+    "core": {
+      "features": {
+        "relationshipMemory": {
+          "title": "Relationship Memory",
+          "desc": "Reflections, journey chapters, and email history create a living record of every relationship."
+        },
+        "peoplePartners": {
+          "title": "People & Partners",
+          "desc": "Track individuals and organizations as relationships — not leads in a pipeline."
+        },
+        "journeyChapters": {
+          "title": "Journey Chapters",
+          "desc": "Visualize where each partnership is in its story — from first meeting to sustained collaboration."
+        },
+        "eventsCalendar": {
+          "title": "Events & Calendar",
+          "desc": "Community events, meetings, and scheduled activities — all in one place."
+        },
+        "reflections": {
+          "title": "Reflections",
+          "desc": "Private, sacred space for capturing what you noticed, felt, and learned."
+        },
+        "visits": {
+          "title": "Visits",
+          "desc": "Simplified mobile-first visit tracking — log a visit in under 60 seconds."
+        }
+      }
+    },
+    "intelligence": {
+      "features": {
+        "nri": {
+          "title": "NRI™ (Neary)",
+          "desc": "Narrative Relational Intelligence — AI that assists without replacing the human voice."
+        },
+        "signum": {
+          "title": "Signum™",
+          "desc": "Tenant-aware discovery guided by shared intelligence capacity."
+        },
+        "testimonium": {
+          "title": "Testimonium™",
+          "desc": "Narrative storytelling and impact insights woven from your daily relationship work."
+        },
+        "discovery": {
+          "title": "Discovery",
+          "desc": "Discovery learns from your mission without overwhelming your team."
+        }
+      }
+    },
+    "modules": {
+      "features": {
+        "communio": {
+          "title": "Communio™",
+          "desc": "Public profiles help others discover you — without exposing private data. Opt-in narrative sharing between organizations."
+        },
+        "relatioCampaigns": {
+          "title": "Relatio Campaigns™",
+          "desc": "Build and send relationship-first email campaigns grounded in real context."
+        },
+        "voluntarium": {
+          "title": "Voluntārium™",
+          "desc": "Volunteer management, hours tracking, and recognition — community as first-class citizens."
+        },
+        "provisio": {
+          "title": "Prōvīsiō™",
+          "desc": "Technology provision requests and order tracking for the communities you serve."
+        },
+        "impulsus": {
+          "title": "Impulsus™",
+          "desc": "A private impact scrapbook journal — your team's sacred space for capturing stories."
+        },
+        "relatioMarketplace": {
+          "title": "Relatio™ Marketplace",
+          "desc": "Integration bridges and migration tools — imported data strengthens discovery signals, turning external systems into living context."
+        },
+        "financialMoments": {
+          "title": "Financial Moments",
+          "desc": "When relationships include generosity, participation, or collaboration — CROS simply remembers those moments too."
+        }
+      }
+    },
+    "cta": {
+      "quote": "\"The work continues quietly today.\"",
+      "viewPricing": "View pricing",
+      "talkToUs": "Talk to us"
+    }
+  },
+  "comparePage": {
+    "headline": "Most systems organize data.\nCROS™ remembers relationships.",
+    "subheadline": "For decades, CRMs helped organizations track activity — but rarely helped them understand the human story behind it. CROS™ was built differently.",
+    "viewPricing": "View Pricing",
+    "seeArchetypes": "See Archetypes",
+    "howCrosComparesHeading": "How CROS™ Compares",
+    "convergeSection": {
+      "heading": "Where We Converge — and Where We Diverge",
+      "body": "Most modern platforms can store contacts, log activity, and track tasks. That's the convergence. The divergence is whether the system helps your team remember the human story — and notice what's changing in the community you serve."
+    },
+    "convergeCard": {
+      "heading": "Converge",
+      "body": "Contact records, tasks, basic tracking — the essentials."
+    },
+    "divergeCard": {
+      "heading": "Diverge",
+      "body": "Relationship memory, community awareness, narrative intelligence — the human layer."
+    },
+    "top10": {
+      "heading": "CROS™ vs 10 Leading Platforms",
+      "subheading": "Most CRMs assume you're at a desk. CROS™ assumes you're with people."
+    },
+    "migrationSection": {
+      "heading": "Leaving your old system shouldn't be a project.",
+      "body": "We built Relatio™ bridges so teams can migrate the relationship spine — organizations, people, tasks, and interaction history — without bringing over donor accounting complexity.",
+      "footnote": "We migrate relationship history — not donations.",
+      "cta": "See Migration Options"
+    },
+    "humanitySection": {
+      "heading": "Where Traditional Systems Lose the Story",
+      "p1": "Traditional platforms were designed to manage transactions — not relationships.",
+      "p2": "They record emails sent, donations logged, campaigns opened.",
+      "p3": "But they rarely answer: What did we notice? What changed? Who needed us most?",
+      "p4": "CROS™ doesn't replace technology. It restores the human layer that technology quietly removed.",
+      "p5": "Instead of forcing people into spreadsheets, CROS™ helps your team remember why those relationships mattered in the first place."
+    },
+    "intelligenceSection": {
+      "heading": "Intelligence, Redefined",
+      "subheading": "Not all intelligence is created equal."
+    },
+    "unifiedSection": {
+      "heading": "One system · every layer",
+      "unifierNote": "CROS™ unifies these without losing the human story."
+    },
+    "finalCta": {
+      "heading": "Ready to move beyond the spreadsheet?",
+      "subheading": "Join organizations choosing relationships over records.",
+      "viewPricing": "View Pricing",
+      "talkToUs": "Talk to us"
+    },
+    "competitorGroups": {
+      "legacyCrm": {
+        "title": "Legacy CRM Stack",
+        "body": "Complex pipelines, rigid schemas, and reporting built for sales teams — not mission-driven organizations."
+      },
+      "emailFirst": {
+        "title": "Email-First Platforms",
+        "body": "Subscriber-focused systems that track opens and clicks — but never capture the human story behind the outreach."
+      },
+      "volunteerPlatforms": {
+        "title": "Volunteer Platforms",
+        "body": "Scheduling tools that coordinate shifts — without narrative context about the people who show up."
+      }
+    },
+    "seoLinksHeading": "Ready to explore?"
+  },
+  "compareArchetypePage": {
+    "viewPricing": "View Pricing",
+    "seeArchetypes": "See Archetypes",
+    "seoLinksHeading": "Keep exploring"
+  },
+  "compareCompetitorPage": {
+    "worksWithHeading": "Works With",
+    "traditionalLabel": "Traditional",
+    "seoLinksHeading": "Keep exploring"
+  },
+  "relatioMarketplace": {
+    "gate": {
+      "title": "Relatio Marketplace",
+      "description": "Available in CROS Bridge. Connect your CROS workspace to CRMs, communication tools, and community platforms.",
+      "viewPlans": "View plans"
+    },
+    "narrativeCompanions": "Narrative Companions",
+    "companionTooltip": "CROS listens alongside your existing system. Nothing is changed — we only observe and generate narrative signals.",
+    "listening": "Listening",
+    "startSetup": "Start Setup",
+    "connectedBridges": "Connected Bridges",
+    "crmBridges": "CRM Bridges",
+    "dataBridges": "Data Bridges",
+    "syncHistory": "Sync History"
+  },
+  "landingPage": {
+    "heroCopy": "CROS™ helps teams remember people, notice community shifts, and build a living story of impact — without turning mission into busywork.",
+    "heroTagline": "A Relationship Operating System built on a different ontology — where story guides structure.",
+    "deviceTrustBar": {
+      "mobile": "Mobile-first",
+      "tablet": "Tablet-ready",
+      "desktop": "Desktop-friendly",
+      "browser": "Runs in browser",
+      "addToHome": "Add to Home Screen"
+    },
+    "rolesSection": {
+      "heading": "What role are you?",
+      "subheading": "CROS™ adapts to how you serve — whether you lead, walk alongside, or show up in the field.",
+      "shepherd": {
+        "tagline": "Keep the story.",
+        "copy": "Guide the mission with calm oversight. See relationships unfold across people, communities, and time."
+      },
+      "companion": {
+        "tagline": "Keep the thread.",
+        "copy": "Walk alongside others. Remember conversations, follow up with care, and never lose the thread."
+      },
+      "visitor": {
+        "tagline": "Keep the witness.",
+        "copy": "Show up where life happens. Speak a voice note. Your presence becomes the record."
+      },
+      "exploreRoles": "Explore roles"
+    },
+    "nervousSystem": {
+      "label": "NERVOUS SYSTEM",
+      "name": "You",
+      "body": "The system only lives when you do. Every reflection, conversation, and moment of presence is the signal that gives CROS™ its meaning."
+    },
+    "reflectionCard": {
+      "heading": "Not sure if you need new software?",
+      "subheading": "Before comparing features, try this reflection.",
+      "cta": "Take the Reflection"
+    },
+    "technologyCard": {
+      "heading": "Technology should carry the weight.\nHumans carry the meaning.",
+      "p1": "Computers learned numbers.",
+      "p2": "AI learned language.",
+      "p3": "CROS™ helps you remember people.",
+      "cta": "Read the Manifesto"
+    },
+    "narrativeCards": {
+      "heading": "What if your daily work felt different?",
+      "imagine": {
+        "heading": "Imagine",
+        "body": "Imagine a system that walks alongside your team — instead of adding to the burden.",
+        "item1": "Imagine knowing who needs care today",
+        "item2": "Imagine fewer systems pulling you apart",
+        "item3": "Imagine your work feeling whole again",
+        "link": "Imagine This"
+      },
+      "seePeople": {
+        "heading": "See People",
+        "beforeLabel": "Before",
+        "afterLabel": "After",
+        "before1": "Data scattered across tools",
+        "before2": "Activity tracked but meaning unclear",
+        "before3": "Reports without relational insight",
+        "after1": "People seen as stories",
+        "after2": "Movement understood in context",
+        "after3": "Trust becomes visible",
+        "link": "Explore the Problem"
+      }
+    },
+    "archetypesSection": {
+      "heading": "Built for missions like yours",
+      "subheading": "Choose your archetype. CROS™ adapts to how you serve.",
+      "exploreArchetypes": "Explore archetypes"
+    },
+    "beyondCrmSection": {
+      "heading": "Why Organizations Are Moving Beyond Traditional CRMs",
+      "body": "Traditional systems track activity. CROS™ remembers relationships — and the human stories that hold them together.",
+      "cta": "See How CROS™ Compares"
+    },
+    "privacySection": {
+      "heading": "Privacy & trust, by design",
+      "body": "Reflections stay private. Sessions expire after inactivity. Admins see health, not content. Your community's data is protected at every layer.",
+      "link": "Learn about our security approach"
+    },
+    "integrationsSection": {
+      "badgeLabel": "CROS Bridge™",
+      "heading": "Connects to the tools you already use",
+      "subheading": "30+ integrations — CRMs, church management systems, nonprofit platforms, and WordPress.",
+      "twoWayLabel": "2-way",
+      "readLabel": "read",
+      "seeAll": "See all 30+ integrations"
+    },
+    "intelligenceSection": {
+      "heading": "Intelligence, governed with intention.",
+      "p1": "CROS includes a shared intelligence capacity — not to replace human judgment, but to help communities notice what might otherwise be missed.",
+      "p2": "Instead of unlimited automation, we believe in discernment. Your community shares a living AI capacity that grows alongside your mission, guided by gentle safeguards and transparent stewardship.",
+      "bullet1": "No surprise overages",
+      "bullet2": "Shared capacity shaped by your mission",
+      "bullet3": "AI that listens before it speaks",
+      "bullet4": "Bulk operations and saved views for growing teams",
+      "cta": "See how intelligence flows through CROS"
+    },
+    "finalCta": {
+      "heading": "Ready to remember people well?",
+      "subheading": "No donor management. No urgency dashboards. Just human relationships, cared for.",
+      "button": "Get started now"
+    }
+  },
+  "rolesPage": {
+    "heroHeading": "What role are you?",
+    "heroSubheading": "CROS™ adapts to how you serve people — whether you lead, walk alongside, or show up in the field.",
+    "seoLinksHeading": "Continue exploring"
+  },
+  "roleGuidePage": {
+    "roleLabels": {
+      "shepherd": "Shepherd",
+      "companion": "Companion",
+      "visitor": "Visitor",
+      "steward": "Steward"
+    },
+    "backToRole": "Back to {{role}}",
+    "guideLabel": "{{role}} Guide",
+    "moreGuidesHeading": "More {{role}} guides",
+    "seePricing": "See pricing",
+    "seoLinksHeading": "Continue exploring"
+  },
+  "rolePathwayPage": {
+    "eyebrow": "Pilgrim Pathway",
+    "signalsHeading": "Signs you walk this path",
+    "weekHeading": "A week on this path",
+    "archetypesHeading": "Archetypes where this role thrives",
+    "faqHeading": "Common questions",
+    "ctaHeading": "Step into this role",
+    "ctaBody": "Begin your journey with CROS™ and let the system shape itself around how you already serve.",
+    "ctaButton": "Step into this role"
+  },
+  "roleStoryPage": {
+    "roleLabels": {
+      "shepherd": "Shepherd",
+      "companion": "Companion",
+      "visitor": "Visitor",
+      "steward": "Steward"
+    },
+    "reflectionLabel": "Reflection",
+    "getStarted": "Get started",
+    "relatedConceptsHeading": "Related concepts",
+    "seoLinksHeading": "Continue exploring"
+  },
+  "weekNarrativePage": {
+    "eyebrow": "What a week looks like",
+    "explorePathway": "Explore the {{role}} pathway",
+    "moreWeeksLabel": "More weeks to explore",
+    "beginRhythm": "Begin your rhythm"
+  },
+  "contactPage": {
+    "heading": "Get started now",
+    "subheading": "Tell us about your organization and we'll set up your CROS™ workspace.",
+    "nameLabel": "Name *",
+    "emailLabel": "Email *",
+    "organizationLabel": "Organization",
+    "archetypeLabel": "Mission archetype",
+    "archetypePlaceholder": "Choose one…",
+    "messageLabel": "Tell us about your mission",
+    "sendButton": "Send request",
+    "rateLimitError": "Please wait a moment before submitting again.",
+    "nameEmailRequired": "Name and email are required.",
+    "invalidEmail": "Please enter a valid email.",
+    "serverError": "Something went wrong. Please try again.",
+    "successHeading": "Thank you",
+    "successBody": "We've received your request and will reach out soon. We're excited to learn about your mission."
+  },
+  "rolesPageCards": {
+    "shepherd": {
+      "title": "Shepherd",
+      "identity": "You carry the vision and hold the story of your community.",
+      "bullets": {
+        "whatYouDo": "Guide the mission, nurture long-term relationships, and notice patterns across people and time.",
+        "whatYouSee": "Relationship journeys, narrative signals, community health — all in a calm, overview format.",
+        "whatYouAvoid": "Alert fatigue, pipeline pressure, and dashboards that demand urgency."
+      },
+      "cta": "See Shepherd view"
+    },
+    "companion": {
+      "title": "Companion",
+      "identity": "You walk alongside people, keeping the thread of care unbroken.",
+      "bullets": {
+        "whatYouDo": "Follow up on conversations, journal reflections, manage day-to-day tasks that emerge from relationships.",
+        "whatYouSee": "Simple next steps, email-linked tasks, reflections, and events — organized around the people you serve.",
+        "whatYouAvoid": "Complex analytics, corporate KPIs, and anything that feels like surveillance."
+      },
+      "cta": "See Companion view"
+    },
+    "visitor": {
+      "title": "Visitor",
+      "identity": "You show up where life happens — and your presence becomes the record.",
+      "bullets": {
+        "whatYouDo": "Visit homes, events, and neighborhoods. Speak a voice note. Done.",
+        "whatYouSee": "A simple, mobile-first screen. No forms. No typing required. Just show up and speak.",
+        "whatYouAvoid": "Complexity, long forms, desktop-only workflows, and anything that slows down presence."
+      },
+      "cta": "See Visitor view"
+    },
+    "steward": {
+      "title": "Steward",
+      "identity": "You set up the workspace and tend to the tools your team needs.",
+      "bullets": {
+        "whatYouDo": "Configure CROS™, invite team members, manage integrations, and ensure the workspace serves the mission.",
+        "whatYouSee": "Admin console, activation checklist, team readiness, and integration status.",
+        "whatYouAvoid": "Doing everything yourself. Once setup is done, CROS™ runs itself."
+      },
+      "cta": "See Steward view"
+    },
+    "bulletLabels": {
+      "whatYouDo": "What you do",
+      "whatYouSee": "What you see",
+      "whatYouAvoid": "What you avoid"
+    }
+  },
+  "roleDeepPage": {
+    "whatYouLoveHeading": "What you'll love",
+    "whatYouDoHeading": "What you'll do",
+    "modulesHeading": "Modules you'll use most",
+    "stewardModulesHeading": "Modules you'll manage",
+    "visitorModulesHeading": "Modules you'll use",
+    "workflowGuidesHeading": "Workflow guides",
+    "setupGuidesHeading": "Setup guides",
+    "storiesHeading": "Stories",
+    "teamFitHeading": "How this fits into your team",
+    "roleInEcosystemHeading": "Your role in the ecosystem",
+    "seePricing": "See pricing",
+    "relatedConceptsHeading": "Related concepts",
+    "seoLinksHeading": "Continue exploring",
+    "shepherd": {
+      "eyebrow": "Shepherd",
+      "heroHeading": "Keep the story",
+      "heroBody": "Shepherds carry the vision. You see the whole arc of relationships — across people, communities, and seasons — and guide the mission with calm confidence.",
+      "dailyRhythmHeading": "A Shepherd's daily rhythm",
+      "teamFitBody": "The Shepherd experience is designed for executive directors, pastors, program leaders, and anyone who holds the long view. Your Companions handle the daily rhythm. Your Visitors bring the field presence. Together, the full story emerges."
+    },
+    "companion": {
+      "eyebrow": "Companion",
+      "heroHeading": "Keep the thread",
+      "heroBody": "Companions walk alongside people. You remember conversations, follow up with care, and make sure no one falls through the cracks — not because of a system, but because you noticed.",
+      "dailyRhythmHeading": "A Companion's daily rhythm",
+      "teamFitBody": "The Companion experience is designed for case workers, outreach staff, program coordinators, and anyone who does the daily work of caring. Your Shepherds hold the long view. Your Visitors extend presence into the field. You keep the thread alive."
+    },
+    "visitor": {
+      "eyebrow": "Visitor",
+      "heroHeading": "Keep the witness",
+      "heroBody": "Visitors show up where life happens — homes, events, neighborhoods. Your presence is the most important thing you bring. CROS™ makes sure it's remembered.",
+      "promiseHeading": "Show up. Speak. Done.",
+      "promiseSubtext": "That's the entire Visitor workflow.",
+      "voiceNoteLabel": "Example voice note",
+      "voiceNoteTranscript": "\"Visited the Johnsons. Kids are doing well in school. Marcus mentioned he's looking for part-time work. Maria asked about the food pantry schedule. They seemed lighter today.\"",
+      "voiceNoteMeta": "30 seconds · Transcribed by NRI™",
+      "dailyRhythmHeading": "A Visitor's rhythm",
+      "teamFitBody": "The Visitor experience is designed for volunteers, home visitors, outreach workers, and community elders. You don't need to learn the whole system. Your Shepherds and Companions handle the bigger picture — you bring the human presence that makes everything meaningful."
+    },
+    "steward": {
+      "eyebrow": "Steward",
+      "heroHeading": "Tend the workspace",
+      "heroBody": "Stewards are workspace caretakers. You set up the environment, invite the team, and ensure CROS™ serves your mission — then you step back and let the roles do their work.",
+      "teamFitBody": "A Steward often wears another hat too — Shepherd or Companion. The Steward role is about the workspace itself: setup, invitations, integrations, and readiness. Once your team is configured, CROS™ runs itself.",
+      "roleInEcosystemHeading": "Your role in the ecosystem"
+    }
+  },
+  "featurePage": {
+    "getStarted": "Get started",
+    "seePricing": "See pricing",
+    "seoLinksHeading": "Continue exploring",
+    "eyebrow": {
+      "story": "CROS Story",
+      "intelligence": "Intelligence",
+      "modules": "Modules",
+      "insight": "CROS Insight"
+    }
+  },
+  "whyCrosPage": {
+    "heroHeading": "Why CROS Exists",
+    "heroBody": "Because organizations that serve people deserve technology that remembers them.",
+    "seoLinksHeading": "Continue exploring"
+  },
+  "nriPage": {
+    "seoLinksHeading": "Explore further",
+    "roleIdentityHeading": "How do you serve?"
+  },
+  "pricingPage": {
+    "seoLinksHeading": "Continue exploring",
+    "monthlyLabel": "Monthly",
+    "annualLabel": "Annual",
+    "saveLabel": "Save",
+    "perMonth": "/mo",
+    "perYear": "/yr",
+    "billedAnnually": "billed annually",
+    "getStarted": "Get started",
+    "contactSales": "Contact sales",
+    "mostPopular": "Most popular",
+    "everythingIn": "Everything in {{tier}}, plus:",
+    "addOnsHeading": "Add-ons",
+    "compareAllHeading": "Compare all plans",
+    "faqHeading": "Frequently asked questions",
+    "calculatorHeading": "Estimate your savings",
+    "activationHeading": "Guided activation",
+    "comparisonModulesHeading": "Modules",
+    "includedLabel": "Included",
+    "addonLabel": "Add-on",
+    "notIncludedLabel": "Not included"
+  },
+  "manifestoPage": {
+    "seoLinksHeading": "From manifesto to practice"
+  },
+  "missionAtlasDetail": {
+    "graphLinksHeading": "Related in the Narrative Graph"
+  }
+}

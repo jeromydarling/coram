@@ -1,0 +1,28 @@
+{
+  "workflow_key": "watchlist_diff",
+  "run_id": "wl-diff-1111-2222-3333-444444444444",
+  "org_id": "org-wl-001",
+  "payload": {
+    "from_snapshot_id": "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee",
+    "to_snapshot_id": "ffffffff-bbbb-cccc-dddd-eeeeeeeeeeee",
+    "diff": {
+      "added": ["New program: Youth Mentorship launched Q1 2026"],
+      "removed": [],
+      "changed": [
+        {
+          "field": "leadership",
+          "from": "Jane Smith, Executive Director",
+          "to": "John Doe, Executive Director"
+        }
+      ]
+    },
+    "signals": [
+      {
+        "signal_type": "leadership_change",
+        "signal_value": "New ED: John Doe replaced Jane Smith",
+        "confidence": 0.88,
+        "source_url": "https://example-nonprofit.org/about"
+      }
+    ]
+  }
+}

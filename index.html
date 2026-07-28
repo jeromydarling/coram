@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta name="google-site-verification" content="pS86vqJGumMAd8M0TxRPwK1CUFu6FEI0-LnsdyTenz8" />
+    <!-- Google Analytics 4 — federated CROS Family stream -->
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-RKF41M29QE"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-RKF41M29QE', { cros_app: 'thecros' });
+    </script>
+    <!-- /Google Analytics -->
+
+    <!-- Watchtower error reporter (inline, zero-dep, safe to ship in <head>) -->
+<script>
+(function(){
+  var ENDPOINT = "https://mgtbbveeqnpbesfmtkng.supabase.co/functions/v1/ingest-error";
+  var SLUG = "thecros";
+  var seen = {}; var DEDUP_MS = 60000;
+  function send(msg, stack){
+    if(!msg) return;
+    var fp = (msg + "|" + (stack||"").slice(0,500)).slice(0,600);
+    var now = Date.now();
+    if(seen[fp] && now - seen[fp] < DEDUP_MS) return;
+    seen[fp] = now;
+    var body = JSON.stringify({slug:SLUG, message:String(msg).slice(0,2000), stack:stack||null, url:location.href, user_agent:navigator.userAgent});
+    try{
+      if(navigator.sendBeacon) navigator.sendBeacon(ENDPOINT, new Blob([body], {type:"application/json"}));
+      else fetch(ENDPOINT, {method:"POST", headers:{"content-type":"application/json"}, body:body, keepalive:true});
+    }catch(e){}
+  }
+  window.addEventListener("error", function(e){ send(e.message, e.error && e.error.stack); });
+  window.addEventListener("unhandledrejection", function(e){ var r=e.reason; send(r && r.message || String(r), r && r.stack); });
+})();
+</script>
+<!-- /Watchtower -->
+
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CROS — Communal Relationship Operating System</title>
+    <link rel="icon" href="/favicon.png" type="image/png">
+    <meta name="description" content="CROS is the operating system for human-centered organizations. Relationship Memory + Community Awareness + Narrative Intelligence.">
+    <meta name="author" content="CROS" />
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#0f172a">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://*.supabase.co https://*.lovable.app https://www.googletagmanager.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: blob: https://*.supabase.co https://*.googleapis.com https://*.googleusercontent.com https://*.unsplash.com https://www.google-analytics.com https://*.google-analytics.com https://*.googletagmanager.com; connect-src 'self' https://*.supabase.co wss://*.supabase.co https://*.lovable.app https://api.firecrawl.dev https://login.microsoftonline.com https://graph.microsoft.com https://www.googleapis.com https://oauth2.googleapis.com https://www.google-analytics.com https://*.google-analytics.com https://*.analytics.google.com https://www.googletagmanager.com https://*.googletagmanager.com; frame-src 'self' https://accounts.google.com; object-src 'none'; base-uri 'self'; form-action 'self';">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="CROS — Communal Relationship Operating System" />
+    <meta property="og:description" content="CROS is the operating system for human-centered organizations. Relationship Memory + Community Awareness + Narrative Intelligence." />
+    <meta property="og:url" content="https://thecros.app/" />
+    <meta property="og:image" content="https://thecros.app/og-image.png" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@thecros" />
+    <meta name="twitter:title" content="CROS — Communal Relationship Operating System" />
+    <meta name="twitter:description" content="CROS is the operating system for human-centered organizations. Relationship Memory + Community Awareness + Narrative Intelligence." />
+    <meta name="twitter:image" content="https://thecros.app/og-image.png" />
+
+    <link rel="canonical" href="https://thecros.app/" />
+
+    <script type="application/ld+json">
+      {"@context":"https://schema.org","@type":"Organization","name":"CROS","url":"https://thecros.app","logo":"https://thecros.app/og-image.png","description":"CROS is the operating system for human-centered organizations. Relationship Memory + Community Awareness + Narrative Intelligence."}
+    </script>
+    <script type="application/ld+json">
+      {"@context":"https://schema.org","@type":"WebSite","name":"CROS","url":"https://thecros.app","potentialAction":{"@type":"SearchAction","target":"https://thecros.app/search?q={search_term_string}","query-input":"required name=search_term_string"}}
+    </script>
+  </head>
+
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

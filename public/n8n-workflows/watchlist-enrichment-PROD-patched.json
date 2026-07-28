@@ -1,0 +1,398 @@
+{
+  "name": "Profunda - Watchlist Deep Dive (v2-patched)",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "watchlist-deep-dive",
+        "responseMode": "onReceived",
+        "options": {}
+      },
+      "id": "webhook-trigger",
+      "name": "Webhook Trigger",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [240, 300],
+      "webhookId": "watchlist-deep-dive-prod"
+    },
+    {
+      "parameters": {
+        "keepOnlySet": false,
+        "values": {
+          "string": [
+            {
+              "name": "SUPABASE_FUNCTIONS_BASE_URL",
+              "value": "https://lxahadqhpubynuzvraxc.supabase.co/functions/v1"
+            },
+            {
+              "name": "ENRICHMENT_WORKER_SECRET",
+              "value": "={{ /* PASTE YOUR ENRICHMENT_WORKER_SECRET HERE */ }}"
+            },
+            {
+              "name": "FIRECRAWL_API_KEY",
+              "value": "={{ /* PASTE YOUR FIRECRAWL_API_KEY HERE */ }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "workflow-constants",
+      "name": "Workflow Constants",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 2,
+      "position": [460, 300],
+      "retryOnFail": true,
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "jsCode": "const webhookData = $('Webhook Trigger').first().json;\nconst b = webhookData.body ?? webhookData;\nconst run_id = b.run_id || b.runId || b.runID;\nconst UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;\n\nif (!run_id) {\n  return [{ json: { ok: false, run_id: null, error: { code: 'MISSING_FIELDS', message: 'run_id is required' } } }];\n}\n\nif (b.workflow_key !== 'watchlist_deep_dive') {\n  return [{ json: { ok: false, run_id, error: { code: 'WRONG_WORKFLOW', message: 'workflow_key must be watchlist_deep_dive, got: ' + b.workflow_key } } }];\n}\n\nif (!b.org_id || typeof b.org_id !== 'string' || !UUID_RE.test(b.org_id)) {\n  return [{ json: { ok: false, run_id, error: { code: 'INVALID_ORG_ID', message: 'org_id must be a valid UUID' } } }];\n}\n\nconst validDepths = ['light', 'standard'];\nconst depth = (typeof b.depth === 'string' && validDepths.includes(b.depth)) ? b.depth : 'standard';\n\nreturn [{ json: { ok: true, run_id, workflow_key: 'watchlist_deep_dive', org_id: b.org_id, org_name: b.org_name || null, website_url: b.website_url || null, depth, triggered_by: b.triggered_by || null } }];"
+      },
+      "id": "validate-input",
+      "name": "Normalize Input",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [680, 300]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "boolean": [
+            {
+              "value1": "={{ $json.ok }}",
+              "operation": "isTrue"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "if-valid",
+      "name": "IF Valid Input?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [900, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('Workflow Constants').first().json.SUPABASE_FUNCTIONS_BASE_URL + '/watchlist-fetch-context' }}",
+        "authentication": "none",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-Api-Key",
+              "value": "={{ $('Workflow Constants').first().json.ENRICHMENT_WORKER_SECRET }}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ org_id: $('Normalize Input').first().json.org_id }) }}",
+        "options": {
+          "response": {},
+          "timeout": 60000
+        }
+      },
+      "id": "fetch-context",
+      "name": "Fetch Org Context",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [1120, 300],
+      "continueOnFail": true,
+      "alwaysOutputData": true,
+      "retryOnFail": true
+    },
+    {
+      "parameters": {
+        "jsCode": "const validated = $('Normalize Input').first().json;\nconst fetchResult = $('Fetch Org Context').first().json;\n\nlet websiteUrl = validated.website_url;\n\n// Try to resolve URL from fetch context if not provided in payload\nif (!websiteUrl && Array.isArray(fetchResult) && fetchResult.length > 0) {\n  websiteUrl = fetchResult[0].website_url;\n} else if (!websiteUrl && fetchResult && fetchResult.website_url) {\n  websiteUrl = fetchResult.website_url;\n}\n\nif (!websiteUrl || typeof websiteUrl !== 'string' || !websiteUrl.trim()) {\n  return [{ json: {\n    run_id: validated.run_id,\n    org_id: validated.org_id,\n    website_url: null,\n    crawl_skipped: true,\n    skip_reason: 'No website URL available for org',\n    watchlist_record: Array.isArray(fetchResult) ? fetchResult[0] || null : fetchResult\n  } }];\n}\n\nlet normalized = websiteUrl.trim();\nif (!/^https?:\\/\\//i.test(normalized)) normalized = 'https://' + normalized;\n\nreturn [{ json: {\n  run_id: validated.run_id,\n  org_id: validated.org_id,\n  depth: validated.depth,\n  website_url: normalized,\n  crawl_skipped: false,\n  watchlist_record: Array.isArray(fetchResult) ? fetchResult[0] || null : fetchResult\n} }];"
+      },
+      "id": "resolve-url",
+      "name": "Resolve URL",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1340, 300],
+      "continueOnFail": true,
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "boolean": [
+            {
+              "value1": "={{ !$json.crawl_skipped }}",
+              "operation": "isTrue"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "if-has-url",
+      "name": "Has URL?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [1560, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.firecrawl.dev/v1/scrape",
+        "authentication": "none",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "={{ 'Bearer ' + $('Workflow Constants').first().json.FIRECRAWL_API_KEY }}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ url: $('Resolve URL').first().json.website_url, formats: ['markdown', 'links'], onlyMainContent: true, waitFor: 5000 }) }}",
+        "options": {
+          "response": {},
+          "timeout": 60000
+        }
+      },
+      "id": "firecrawl-scrape",
+      "name": "Firecrawl Scrape",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [1800, 180],
+      "continueOnFail": true,
+      "alwaysOutputData": true,
+      "retryOnFail": true
+    },
+    {
+      "parameters": {
+        "jsCode": "const resolveData = $('Resolve URL').first().json;\nconst run_id = resolveData.run_id;\nconst org_id = resolveData.org_id;\n\nif (resolveData.crawl_skipped) {\n  return [{ json: { run_id, org_id, signals: [], signal_count: 0, crawl_skipped: true, skip_reason: resolveData.skip_reason } }];\n}\n\nlet scrapeData;\ntry {\n  scrapeData = $('Firecrawl Scrape').first().json;\n} catch (e) {\n  return [{ json: { run_id, org_id, signals: [], signal_count: 0, crawl_error: 'Firecrawl node did not produce output: ' + String(e.message).slice(0, 200) } }];\n}\n\nif (scrapeData.error || !scrapeData.success) {\n  return [{ json: { run_id, org_id, signals: [], signal_count: 0, crawl_error: String(scrapeData.error || 'Firecrawl returned unsuccessful response').slice(0, 500) } }];\n}\n\nconst markdown = scrapeData.data?.markdown || scrapeData.markdown || '';\nconst links = scrapeData.data?.links || scrapeData.links || [];\nconst metadata = scrapeData.data?.metadata || scrapeData.metadata || {};\n\nconst signals = [];\nconst contentLower = markdown.toLowerCase();\n\nif (markdown.length > 0) {\n  signals.push({ signal_type: 'content_size', summary: 'Page content: ' + markdown.length + ' chars, ' + links.length + ' links found', confidence: 1.0, metadata: { char_count: markdown.length, link_count: links.length } });\n}\n\nconst hiringKeywords = ['hiring', 'careers', 'job openings', 'we are growing', 'join our team', 'open positions'];\nconst hiringMatches = hiringKeywords.filter(kw => contentLower.includes(kw));\nif (hiringMatches.length > 0) {\n  signals.push({ signal_type: 'hiring_activity', summary: 'Hiring signals detected: ' + hiringMatches.join(', '), confidence: 0.8, metadata: { matched_keywords: hiringMatches } });\n}\n\nconst expansionKeywords = ['new location', 'expanding', 'partnership', 'launched', 'announcement', 'press release'];\nconst expansionMatches = expansionKeywords.filter(kw => contentLower.includes(kw));\nif (expansionMatches.length > 0) {\n  signals.push({ signal_type: 'expansion_activity', summary: 'Expansion/partnership signals: ' + expansionMatches.join(', '), confidence: 0.7, metadata: { matched_keywords: expansionMatches } });\n}\n\nconst techKeywords = ['digital equity', 'broadband', 'computer', 'device', 'technology access', 'digital inclusion', 'digital literacy'];\nconst techMatches = techKeywords.filter(kw => contentLower.includes(kw));\nif (techMatches.length > 0) {\n  signals.push({ signal_type: 'tech_relevance', summary: 'Digital equity relevance detected: ' + techMatches.join(', '), confidence: 0.85, metadata: { matched_keywords: techMatches } });\n}\n\nconst fundingKeywords = ['funding', 'grant', 'awarded', 'million', 'investment', 'fundrais'];\nconst fundingMatches = fundingKeywords.filter(kw => contentLower.includes(kw));\nif (fundingMatches.length > 0) {\n  signals.push({ signal_type: 'funding_activity', summary: 'Funding/grant signals: ' + fundingMatches.join(', '), confidence: 0.75, metadata: { matched_keywords: fundingMatches } });\n}\n\nif (metadata.title || metadata.description) {\n  signals.push({ signal_type: 'page_metadata', summary: 'Title: ' + (metadata.title || 'N/A').slice(0, 100), confidence: 1.0, metadata: { title: metadata.title, description: (metadata.description || '').slice(0, 300), source_url: metadata.sourceURL || resolveData.website_url } });\n}\n\nreturn [{ json: { run_id, org_id, signals, signal_count: signals.length, source_url: resolveData.website_url, crawl_error: null } }];"
+      },
+      "id": "extract-signals",
+      "name": "Extract Signals",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [2020, 180],
+      "continueOnFail": true,
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "jsCode": "const resolveData = $('Resolve URL').first().json;\nreturn [{ json: {\n  run_id: resolveData.run_id,\n  org_id: resolveData.org_id,\n  signals: [],\n  signal_count: 0,\n  crawl_skipped: true,\n  skip_reason: resolveData.skip_reason || 'No website URL',\n  crawl_error: null\n} }];"
+      },
+      "id": "skip-crawl",
+      "name": "Skip Crawl",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1800, 440],
+      "continueOnFail": true,
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "jsCode": "const validated = $('Normalize Input').first().json;\nlet signalData = null;\nlet error = null;\nlet failed_node = null;\n\n// Try to get data from whichever path executed\ntry {\n  signalData = $('Extract Signals').first().json;\n} catch (e1) {\n  try {\n    signalData = $('Skip Crawl').first().json;\n  } catch (e2) {\n    error = 'Neither Extract Signals nor Skip Crawl produced output';\n    failed_node = 'Extract Signals';\n  }\n}\n\n// CRITICAL FIX: crawl_error from Firecrawl failure is NOT a workflow error.\n// The workflow completed successfully — it just couldn't scrape.\n// Treat it as 'processed' with zero signals and include the crawl_error as metadata.\nlet result = null;\nif (!error && signalData) {\n  result = {\n    signals: signalData.signals || [],\n    signal_count: signalData.signal_count || 0,\n    org_id: signalData.org_id,\n    source_url: signalData.source_url || null,\n    crawl_skipped: signalData.crawl_skipped || false,\n    skip_reason: signalData.skip_reason || null,\n    crawl_error: signalData.crawl_error || null\n  };\n}\n\n// Status is ALWAYS 'processed' unless we had a genuine infrastructure failure\n// (node didn't execute at all). Firecrawl failures and missing URLs are valid outcomes.\nreturn [{ json: {\n  run_id: validated.run_id,\n  workflow_key: 'watchlist_deep_dive',\n  status: error ? 'error' : 'processed',\n  payload: { result, error, failed_node }\n} }];"
+      },
+      "id": "result-envelope",
+      "name": "Result Envelope",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [2260, 300],
+      "continueOnFail": true,
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "boolean": [
+            {
+              "value1": "={{ $json.status === 'processed' }}",
+              "operation": "isTrue"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "if-success",
+      "name": "Check Success",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [2480, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('Workflow Constants').first().json.SUPABASE_FUNCTIONS_BASE_URL + '/n8n-ingest' }}",
+        "authentication": "none",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-Api-Key",
+              "value": "={{ $('Workflow Constants').first().json.ENRICHMENT_WORKER_SECRET }}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ workflow_key: 'watchlist_deep_dive', run_id: $('Result Envelope').first().json.run_id, status: 'processed', payload: $('Result Envelope').first().json.payload.result }) }}",
+        "options": {
+          "response": {},
+          "timeout": 60000
+        }
+      },
+      "id": "success-callback",
+      "name": "Success Callback",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [2720, 180],
+      "alwaysOutputData": true,
+      "retryOnFail": false,
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('Workflow Constants').first().json.SUPABASE_FUNCTIONS_BASE_URL + '/n8n-ingest' }}",
+        "authentication": "none",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-Api-Key",
+              "value": "={{ $('Workflow Constants').first().json.ENRICHMENT_WORKER_SECRET }}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ workflow_key: 'watchlist_deep_dive', run_id: $('Result Envelope').first().json.run_id, status: 'error', payload: { error: $('Result Envelope').first().json.payload.error, failed_node: $('Result Envelope').first().json.payload.failed_node } }) }}",
+        "options": {
+          "response": {},
+          "timeout": 60000
+        }
+      },
+      "id": "error-callback",
+      "name": "Error Callback",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [2720, 440],
+      "alwaysOutputData": true,
+      "retryOnFail": false,
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('Workflow Constants').first().json.SUPABASE_FUNCTIONS_BASE_URL + '/n8n-ingest' }}",
+        "authentication": "none",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-Api-Key",
+              "value": "={{ $('Workflow Constants').first().json.ENRICHMENT_WORKER_SECRET }}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ workflow_key: 'watchlist_deep_dive', run_id: $('Normalize Input').first().json.run_id || 'unknown', status: 'error', payload: { error: $('Normalize Input').first().json.error ? String($('Normalize Input').first().json.error.message || $('Normalize Input').first().json.error.code || 'Invalid input') : 'Invalid input', failed_node: 'Normalize Input' } }) }}",
+        "options": {
+          "response": {},
+          "timeout": 60000
+        }
+      },
+      "id": "validation-error-callback",
+      "name": "Validation Error Callback",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [1120, 540],
+      "alwaysOutputData": true,
+      "retryOnFail": false,
+      "continueOnFail": true
+    }
+  ],
+  "connections": {
+    "Webhook Trigger": {
+      "main": [[{ "node": "Workflow Constants", "type": "main", "index": 0 }]]
+    },
+    "Workflow Constants": {
+      "main": [[{ "node": "Normalize Input", "type": "main", "index": 0 }]]
+    },
+    "Normalize Input": {
+      "main": [[{ "node": "IF Valid Input?", "type": "main", "index": 0 }]]
+    },
+    "IF Valid Input?": {
+      "main": [
+        [{ "node": "Fetch Org Context", "type": "main", "index": 0 }],
+        [{ "node": "Validation Error Callback", "type": "main", "index": 0 }]
+      ]
+    },
+    "Fetch Org Context": {
+      "main": [[{ "node": "Resolve URL", "type": "main", "index": 0 }]]
+    },
+    "Resolve URL": {
+      "main": [[{ "node": "Has URL?", "type": "main", "index": 0 }]]
+    },
+    "Has URL?": {
+      "main": [
+        [{ "node": "Firecrawl Scrape", "type": "main", "index": 0 }],
+        [{ "node": "Skip Crawl", "type": "main", "index": 0 }]
+      ]
+    },
+    "Firecrawl Scrape": {
+      "main": [[{ "node": "Extract Signals", "type": "main", "index": 0 }]]
+    },
+    "Extract Signals": {
+      "main": [[{ "node": "Result Envelope", "type": "main", "index": 0 }]]
+    },
+    "Skip Crawl": {
+      "main": [[{ "node": "Result Envelope", "type": "main", "index": 0 }]]
+    },
+    "Result Envelope": {
+      "main": [[{ "node": "Check Success", "type": "main", "index": 0 }]]
+    },
+    "Check Success": {
+      "main": [
+        [{ "node": "Success Callback", "type": "main", "index": 0 }],
+        [{ "node": "Error Callback", "type": "main", "index": 0 }]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": true,
+    "timeSavedMode": "fixed",
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "versionId": "v2-patched-crawl-skip-fix",
+  "meta": {
+    "instanceId": "93beede2a90582294d7ef06720d87eff3641b0d88433511d1e55f0a191940c61"
+  },
+  "tags": [
+    { "name": "profunda", "createdAt": "2026-02-11T00:00:00.000Z", "updatedAt": "2026-02-11T00:00:00.000Z" },
+    { "name": "watchlist", "createdAt": "2026-02-11T00:00:00.000Z", "updatedAt": "2026-02-11T00:00:00.000Z" }
+  ]
+}

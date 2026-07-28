@@ -1,0 +1,1 @@
+UPDATE operator_app_errors SET status = 'resolved', owner_notes = 'Auto-resolved: transient cache/deploy artifact' WHERE status != 'resolved' AND (message ILIKE '%Failed to fetch dynamically imported module%' OR message ILIKE '%Minified React error #300%');

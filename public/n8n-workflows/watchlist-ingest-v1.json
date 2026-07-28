@@ -1,0 +1,219 @@
+{
+  "name": "Profunda - Watchlist Ingest (v1)",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "watchlist-ingest",
+        "responseMode": "onReceived",
+        "options": {}
+      },
+      "id": "webhook-trigger",
+      "name": "Webhook Trigger",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [240, 300],
+      "webhookId": "watchlist-ingest"
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "{\n  \"N8N_SHARED_SECRET\": \"YOUR_SHARED_SECRET_HERE\",\n  \"SUPABASE_FUNCTIONS_BASE_URL\": \"https://lxahadqhpubynuzvraxc.supabase.co/functions/v1\",\n  \"SUPABASE_SERVICE_ROLE_KEY\": \"YOUR_SERVICE_ROLE_KEY_HERE\",\n  \"FIRECRAWL_API_KEY\": \"YOUR_FIRECRAWL_API_KEY_HERE\"\n}",
+        "options": {}
+      },
+      "id": "workflow-constants",
+      "name": "Workflow Constants",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [460, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "const crypto = require('crypto');\nconst webhookBody = $('Webhook Trigger').first().json.body;\nconst headers = $('Webhook Trigger').first().json.headers;\nconst secret = $('Workflow Constants').first().json.N8N_SHARED_SECRET;\n\nconst signature = headers['x-profunda-signature'];\nif (!signature) throw new Error('Missing x-profunda-signature header');\nif (!webhookBody || typeof webhookBody !== 'object') throw new Error('Missing or invalid webhook body');\nif (webhookBody.workflow_key !== 'watchlist_ingest') throw new Error('workflow_key must be watchlist_ingest');\nif (!webhookBody.run_id) throw new Error('Missing run_id');\n\nconst bodyStr = JSON.stringify(webhookBody);\nconst hmac = crypto.createHmac('sha256', secret).update(bodyStr).digest('hex');\nif (hmac !== signature) throw new Error('Invalid HMAC signature');\n\nreturn [{ json: webhookBody }];"
+      },
+      "id": "verify-signature",
+      "name": "Verify Signature",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [680, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "const input = $('Verify Signature').first().json;\nconst UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;\n\nif (!input.org_id || typeof input.org_id !== 'string' || !UUID_RE.test(input.org_id)) {\n  throw new Error('org_id must be a valid UUID');\n}\n\nlet website_url = input.website_url || null;\nif (website_url && typeof website_url === 'string') {\n  website_url = website_url.trim();\n  if (!/^https?:\\/\\//i.test(website_url)) website_url = 'https://' + website_url;\n}\n\nreturn [{\n  json: {\n    run_id: input.run_id,\n    workflow_key: 'watchlist_ingest',\n    org_id: input.org_id,\n    org_name: input.org_name || null,\n    website_url\n  }\n}];"
+      },
+      "id": "validate-input",
+      "name": "Validate Input",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [900, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "const validated = $('Validate Input').first().json;\nconst url = validated.website_url;\n\nif (!url) {\n  return [{ json: { run_id: validated.run_id, org_id: validated.org_id, crawl_skipped: true, skip_reason: 'No website URL provided' } }];\n}\n\nreturn [{ json: { run_id: validated.run_id, org_id: validated.org_id, org_name: validated.org_name, website_url: url, crawl_skipped: false } }];"
+      },
+      "id": "resolve-url",
+      "name": "Resolve URL",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1120, 300],
+      "continueOnFail": true,
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": { "caseSensitive": true, "leftValue": "", "typeValidation": "strict" },
+          "conditions": [{ "id": "check-skip", "leftValue": "={{ $json.crawl_skipped }}", "rightValue": true, "operator": { "type": "boolean", "operation": "false" } }],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "if-has-url",
+      "name": "Has URL?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [1340, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.firecrawl.dev/v1/scrape",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "Authorization", "value": "=Bearer {{ $('Workflow Constants').first().json.FIRECRAWL_API_KEY }}" },
+            { "name": "Content-Type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"url\": \"{{ $('Resolve URL').first().json.website_url }}\",\n  \"formats\": [\"markdown\", \"links\"],\n  \"onlyMainContent\": true,\n  \"waitFor\": 5000\n}",
+        "options": { "timeout": 60000, "response": { "response": { "neverError": true } } }
+      },
+      "id": "firecrawl-scrape",
+      "name": "Firecrawl Scrape",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1560, 180],
+      "continueOnFail": true,
+      "alwaysOutputData": true,
+      "retryOnFail": true,
+      "maxTries": 2
+    },
+    {
+      "parameters": {
+        "jsCode": "const resolveData = $('Resolve URL').first().json;\nconst run_id = resolveData.run_id;\nconst org_id = resolveData.org_id;\nconst crypto = require('crypto');\n\nif (resolveData.crawl_skipped) {\n  return [{ json: { run_id, org_id, snapshot: null, facts: [], content_hash: null, crawl_skipped: true } }];\n}\n\nlet scrapeData;\ntry { scrapeData = $('Firecrawl Scrape').first().json; } catch (e) {\n  return [{ json: { run_id, org_id, snapshot: null, facts: [], content_hash: null, crawl_error: 'Firecrawl error: ' + String(e.message).slice(0, 200) } }];\n}\n\nif (scrapeData.error || !scrapeData.success) {\n  return [{ json: { run_id, org_id, snapshot: null, facts: [], content_hash: null, crawl_error: scrapeData.error || 'Unsuccessful' } }];\n}\n\nconst markdown = scrapeData.data?.markdown || '';\nconst metadata = scrapeData.data?.metadata || {};\nconst links = scrapeData.data?.links || [];\n\nconst content_hash = crypto.createHash('sha256').update(markdown).digest('hex');\n\n// Build snapshot\nconst snapshot = {\n  title: (metadata.title || '').slice(0, 200),\n  description: (metadata.description || '').slice(0, 500),\n  content_length: markdown.length,\n  links_count: links.length,\n  source_url: metadata.sourceURL || resolveData.website_url,\n  scraped_at: new Date().toISOString()\n};\n\n// Extract basic facts\nconst facts = [];\nconst contentLower = markdown.toLowerCase();\nconst sectors = ['education', 'healthcare', 'housing', 'technology', 'nonprofit', 'government'];\nfor (const sector of sectors) {\n  if (contentLower.includes(sector)) facts.push({ fact_type: 'sector', value: sector });\n}\n\nreturn [{ json: { run_id, org_id, snapshot, facts, content_hash, crawl_error: null } }];"
+      },
+      "id": "build-snapshot",
+      "name": "Build Snapshot",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1780, 180],
+      "continueOnFail": true,
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "jsCode": "const resolveData = $('Resolve URL').first().json;\nreturn [{ json: { run_id: resolveData.run_id, org_id: resolveData.org_id, snapshot: null, facts: [], content_hash: null, crawl_skipped: true, skip_reason: resolveData.skip_reason || 'No URL', crawl_error: null } }];"
+      },
+      "id": "skip-crawl",
+      "name": "Skip Crawl",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1560, 440]
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "const validated = $('Validate Input').first().json;\nlet data = null;\nlet error = null;\nlet failed_node = null;\n\ntry { data = $('Build Snapshot').first().json; } catch (e1) {\n  try { data = $('Skip Crawl').first().json; } catch (e2) {\n    error = 'No output from snapshot or skip';\n    failed_node = 'Build Snapshot';\n  }\n}\n\nif (data && data.crawl_error) { error = data.crawl_error; failed_node = 'Firecrawl Scrape'; }\n\nlet result = null;\nif (!error && data) {\n  result = { org_id: data.org_id, snapshot: data.snapshot, facts: data.facts || [], content_hash: data.content_hash, crawl_skipped: data.crawl_skipped || false };\n}\n\nreturn [{ json: { run_id: validated.run_id, workflow_key: 'watchlist_ingest', payload: { result, error, failed_node } } }];"
+      },
+      "id": "result-envelope",
+      "name": "Result Envelope",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [2000, 300]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": { "caseSensitive": true, "leftValue": "", "typeValidation": "strict" },
+          "conditions": [{ "id": "check-error", "leftValue": "={{ $json.payload.error }}", "rightValue": "", "operator": { "type": "string", "operation": "empty", "singleValue": true } }],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "if-success",
+      "name": "Check Success",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [2220, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('Workflow Constants').first().json.SUPABASE_FUNCTIONS_BASE_URL }}/n8n-ingest",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "Authorization", "value": "=Bearer {{ $('Workflow Constants').first().json.SUPABASE_SERVICE_ROLE_KEY }}" },
+            { "name": "Content-Type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"workflow_key\": \"watchlist_ingest\",\n  \"run_id\": \"{{ $('Result Envelope').first().json.run_id }}\",\n  \"org_id\": \"{{ $('Validate Input').first().json.org_id }}\",\n  \"status\": \"processed\",\n  \"payload\": {{ JSON.stringify($('Result Envelope').first().json.payload.result) }}\n}",
+        "options": { "timeout": 30000, "response": { "response": { "neverError": true } } }
+      },
+      "id": "success-callback",
+      "name": "Success Callback",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [2460, 180],
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('Workflow Constants').first().json.SUPABASE_FUNCTIONS_BASE_URL }}/n8n-ingest",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "Authorization", "value": "=Bearer {{ $('Workflow Constants').first().json.SUPABASE_SERVICE_ROLE_KEY }}" },
+            { "name": "Content-Type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"workflow_key\": \"watchlist_ingest\",\n  \"run_id\": \"{{ $('Result Envelope').first().json.run_id }}\",\n  \"org_id\": \"{{ $('Validate Input').first().json.org_id }}\",\n  \"status\": \"error\",\n  \"payload\": {\n    \"error\": {{ JSON.stringify($('Result Envelope').first().json.payload.error) }},\n    \"failed_node\": {{ JSON.stringify($('Result Envelope').first().json.payload.failed_node) }}\n  }\n}",
+        "options": { "timeout": 30000, "response": { "response": { "neverError": true } } }
+      },
+      "id": "error-callback",
+      "name": "Error Callback",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [2460, 440],
+      "continueOnFail": true
+    }
+  ],
+  "connections": {
+    "Webhook Trigger": { "main": [[{ "node": "Workflow Constants", "type": "main", "index": 0 }]] },
+    "Workflow Constants": { "main": [[{ "node": "Verify Signature", "type": "main", "index": 0 }]] },
+    "Verify Signature": { "main": [[{ "node": "Validate Input", "type": "main", "index": 0 }]] },
+    "Validate Input": { "main": [[{ "node": "Resolve URL", "type": "main", "index": 0 }]] },
+    "Resolve URL": { "main": [[{ "node": "Has URL?", "type": "main", "index": 0 }]] },
+    "Has URL?": { "main": [[{ "node": "Firecrawl Scrape", "type": "main", "index": 0 }], [{ "node": "Skip Crawl", "type": "main", "index": 0 }]] },
+    "Firecrawl Scrape": { "main": [[{ "node": "Build Snapshot", "type": "main", "index": 0 }]] },
+    "Build Snapshot": { "main": [[{ "node": "Result Envelope", "type": "main", "index": 0 }]] },
+    "Skip Crawl": { "main": [[{ "node": "Result Envelope", "type": "main", "index": 0 }]] },
+    "Result Envelope": { "main": [[{ "node": "Check Success", "type": "main", "index": 0 }]] },
+    "Check Success": { "main": [[{ "node": "Success Callback", "type": "main", "index": 0 }], [{ "node": "Error Callback", "type": "main", "index": 0 }]] }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "saveManualExecutions": true,
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "staticData": null,
+  "tags": [{ "name": "profunda" }, { "name": "watchlist" }],
+  "triggerCount": 1
+}

@@ -1,0 +1,260 @@
+{
+  "export_version": "1.0.0",
+  "export_date": "2026-02-21",
+  "system": "CROS — Communal Relationship Operating System",
+
+  "section_1_roles": [
+    {
+      "role_key": "admin",
+      "display_name": "Platform Admin (Operator)",
+      "primary_permissions": ["full_platform_access", "tenant_impersonation", "user_management", "system_configuration", "qa_execution", "manual_tenant_creation"],
+      "primary_views": ["/operator/nexus", "/operator/console", "/operator/manuals", "/operator/nexus/arrival"]
+    },
+    {
+      "role_key": "steward",
+      "display_name": "Steward (Workspace Caretaker)",
+      "primary_permissions": ["tenant_admin", "user_approval", "activation_checklists", "subscription_management", "full_workspace_toggle", "communio_management"],
+      "primary_views": ["/", "/admin", "/communio", "/relatio", "/testimonium", "/analytics", "/reports"]
+    },
+    {
+      "role_key": "shepherd",
+      "display_name": "Shepherd (Relationship Builder)",
+      "primary_permissions": ["relationship_management", "journey_management", "reflection_creation", "campaign_management", "narrative_access", "grant_management"],
+      "primary_views": ["/", "/metros", "/opportunities", "/campaigns", "/grants", "/testimonium", "/analytics"]
+    },
+    {
+      "role_key": "companion",
+      "display_name": "Companion (Support Role)",
+      "primary_permissions": ["contact_management", "activity_logging", "event_management", "volunteer_coordination", "grant_browsing"],
+      "primary_views": ["/", "/opportunities", "/people", "/calendar", "/events", "/volunteers", "/grants"]
+    },
+    {
+      "role_key": "visitor",
+      "display_name": "Visitor (Minimal Access)",
+      "primary_permissions": ["visit_logging", "voice_note_recording", "basic_contact_view"],
+      "primary_views": ["/visits"]
+    },
+    {
+      "role_key": "regional_lead",
+      "display_name": "Regional Lead",
+      "primary_permissions": ["regional_oversight", "metro_management", "reporting"],
+      "primary_views": ["/", "/metros", "/analytics", "/reports"]
+    },
+    {
+      "role_key": "leadership",
+      "display_name": "Leadership",
+      "primary_permissions": ["strategic_oversight", "reporting", "testimonium_access"],
+      "primary_views": ["/", "/testimonium", "/analytics", "/reports"]
+    },
+    {
+      "role_key": "warehouse_manager",
+      "display_name": "Warehouse Manager",
+      "primary_permissions": ["provisions_management", "inventory_tracking"],
+      "primary_views": ["/provisions"]
+    }
+  ],
+
+  "section_2_navigation": {
+    "standalone_items": [
+      { "group": null, "label": "Command Center", "route": "/", "role_visibility": ["steward", "shepherd", "companion"] },
+      { "group": null, "label": "Testimonium", "route": "/testimonium", "role_visibility": ["steward", "shepherd"] },
+      { "group": null, "label": "Analytics", "route": "/analytics", "role_visibility": ["steward", "shepherd", "companion"] },
+      { "group": null, "label": "Reports", "route": "/reports", "role_visibility": ["steward", "shepherd"] },
+      { "group": null, "label": "Settings", "route": "/settings", "role_visibility": ["steward", "shepherd", "companion", "visitor"] },
+      { "group": null, "label": "Help", "route": "/help", "role_visibility": ["steward", "shepherd", "companion", "visitor"] }
+    ],
+    "grouped_items": [
+      {
+        "group": "Metros",
+        "role_visibility": ["steward", "shepherd"],
+        "items": [
+          { "label": "Metros", "route": "/metros" },
+          { "label": "Intel Feed", "route": "/intel-feed" },
+          { "label": "Narratives", "route": "/narratives" },
+          { "label": "Momentum", "route": "/momentum" }
+        ]
+      },
+      {
+        "group": "Partners",
+        "role_visibility": ["steward", "shepherd", "companion"],
+        "items": [
+          { "label": "Opportunities", "route": "/opportunities" },
+          { "label": "Radar", "route": "/radar" },
+          { "label": "Pipeline", "route": "/pipeline" },
+          { "label": "Anchors", "route": "/anchors" },
+          { "label": "Prōvīsiō", "route": "/provisions" },
+          { "label": "People", "route": "/people" },
+          { "label": "Find People", "route": "/find-people" },
+          { "label": "Graph", "route": "/graph" }
+        ]
+      },
+      {
+        "group": "Scheduling",
+        "role_visibility": ["steward", "shepherd", "companion"],
+        "items": [
+          { "label": "Calendar", "route": "/calendar" },
+          { "label": "Events", "route": "/events" },
+          { "label": "Find Events", "route": "/find-events" },
+          { "label": "Activities", "route": "/activities" }
+        ]
+      },
+      {
+        "group": "Outreach",
+        "role_visibility": ["steward", "shepherd"],
+        "items": [
+          { "label": "Campaigns", "route": "/campaigns" }
+        ]
+      },
+      {
+        "group": "Grants",
+        "role_visibility": ["steward", "shepherd", "companion"],
+        "items": [
+          { "label": "Grants", "route": "/grants" },
+          { "label": "Find Grants", "route": "/find-grants" }
+        ]
+      },
+      {
+        "group": "Community",
+        "role_visibility": ["steward", "shepherd", "companion"],
+        "items": [
+          { "label": "Voluntārium", "route": "/volunteers" },
+          { "label": "Import", "route": "/import" }
+        ]
+      },
+      {
+        "group": "Relatio",
+        "role_visibility": ["steward", "shepherd"],
+        "items": [
+          { "label": "Relatio", "route": "/relatio" }
+        ]
+      },
+      {
+        "group": "Communio",
+        "role_visibility": ["steward", "shepherd"],
+        "items": [
+          { "label": "Communio", "route": "/communio" }
+        ]
+      },
+      {
+        "group": "Admin",
+        "role_visibility": ["steward", "shepherd"],
+        "items": [
+          { "label": "Admin", "route": "/admin" },
+          { "label": "Activation", "route": "/admin/activation" },
+          { "label": "Admin Guide", "route": "/admin/guide" }
+        ]
+      }
+    ]
+  },
+
+  "section_3_workflows": {
+    "activation": {
+      "primary_pages": ["/admin/activation", "/operator/nexus/arrival"],
+      "core_actions": ["schedule_guided_session", "complete_checklist_items", "track_readiness_score", "operator_impersonation"],
+      "ai_involvement": "None directly — checklist templates are static; operator provides human guidance during sessions."
+    },
+    "qa_and_stability": {
+      "primary_pages": ["/operator/nexus (QA section)", "/operator/console"],
+      "core_actions": ["run_playwright_test_suites", "generate_repair_packs", "review_test_results", "batch_fix_generation"],
+      "ai_involvement": "Repair Pack generation uses AI to propose code fixes from test failures."
+    },
+    "migration": {
+      "primary_pages": ["/relatio", "/operator/nexus (Migration section)"],
+      "core_actions": ["csv_import", "connector_health_check", "migration_history_review", "data_mapping"],
+      "ai_involvement": "AI-assisted field mapping during CSV import; connector status monitoring."
+    },
+    "expansion": {
+      "primary_pages": ["/operator/nexus (Expansion section)", "/metros", "/momentum"],
+      "core_actions": ["monitor_metro_growth_signals", "identify_expansion_candidates", "track_momentum_rankings"],
+      "ai_involvement": "NRI generates momentum signals and metro narrative recommendations via n8n workflows."
+    },
+    "communio": {
+      "primary_pages": ["/communio"],
+      "core_actions": ["create_group", "invite_tenants", "configure_sharing_levels", "share_events_and_signals", "governance_flag_review"],
+      "ai_involvement": "None — Communio is a human-driven collaboration layer."
+    },
+    "outreach": {
+      "primary_pages": ["/campaigns"],
+      "core_actions": ["create_email_campaign", "select_recipients", "send_via_gmail", "track_delivery_status", "manage_unsubscribes"],
+      "ai_involvement": "Campaign suggestions generated by NRI based on relationship signals; AI drafts subject lines and body templates."
+    },
+    "scheduling": {
+      "primary_pages": ["/calendar", "/events", "/activities"],
+      "core_actions": ["log_activities", "schedule_events", "discover_local_events", "google_calendar_sync", "track_attendance"],
+      "ai_involvement": "Local Pulse event discovery uses Firecrawl + n8n; AI suggests follow-up activities."
+    },
+    "narrative_intelligence": {
+      "primary_pages": ["/testimonium", "/narratives", "/intel-feed", "/momentum"],
+      "core_actions": ["generate_metro_narratives", "detect_drift", "produce_reconnection_signals", "create_story_exports", "track_momentum"],
+      "ai_involvement": "Core NRI engine — all narrative generation, drift detection, momentum scoring, and recommendation production runs through n8n workflows calling LLMs. AI assists but never replaces human voice."
+    }
+  },
+
+  "section_4_voice_note_system": {
+    "storage_behavior": {
+      "audio_storage": "Supabase Storage bucket 'voice-notes'; configurable via tenant_voice_settings",
+      "retention_policy": "Admins can disable audio retention (store_audio=false) to keep transcripts only",
+      "file_format": "WebM/MP3 captured from browser MediaRecorder API",
+      "privacy": "Audio scoped to tenant_id + user_id; RLS enforced"
+    },
+    "transcription_pipeline": {
+      "edge_function": "voice-transcribe",
+      "model": "Gemini 2.5 Flash via Lovable AI gateway",
+      "flow": "1) Audio uploaded to storage → 2) Edge function invoked with file path → 3) Gemini transcribes → 4) Transcript stored in voice_notes table → 5) Activity auto-created",
+      "language_support": "Auto-detected by Gemini; primarily English",
+      "error_handling": "Failed transcriptions stored with status='failed' and error message retained"
+    },
+    "activity_injection": {
+      "target_table": "activities",
+      "activity_type": "Visit Note",
+      "linked_fields": ["opportunity_id", "contact_id", "metro_id"],
+      "notes_field": "Contains full transcript text",
+      "nri_visibility": "Injected activities are immediately available for NRI narrative ingestion via standard testimonium event pipeline"
+    }
+  },
+
+  "section_5_operator_nexus_workflows": {
+    "new_arrivals": {
+      "purpose": "Stewardship moment for new tenant onboarding — calm, guided awareness",
+      "data_sources": ["tenants", "operator_tenant_stats", "testimonium_events", "guided_activation_sessions"],
+      "primary_actions": ["view_arrival_summary", "follow_guidance_checklist", "login_as_tenant_admin", "open_activation_session", "review_7_day_timeline"],
+      "alerts_or_signals": ["tenant_created_within_48h", "status_awaiting_activation", "operator_sponsored_badge", "settling_in / needs_guidance / ready_for_expansion badges"]
+    },
+    "activation": {
+      "purpose": "Track and manage guided activation sessions and readiness checklists",
+      "data_sources": ["activation_checklists", "activation_checklist_items", "activation_sessions", "activation_offers"],
+      "primary_actions": ["schedule_session", "complete_checklist_items", "track_readiness_score", "manage_session_status"],
+      "alerts_or_signals": ["pending_sessions", "low_readiness_score", "overdue_checklist_items"]
+    },
+    "qa": {
+      "purpose": "Automated system stability monitoring and self-healing repair generation",
+      "data_sources": ["qa_test_results (external)", "automation_runs"],
+      "primary_actions": ["trigger_test_suite", "review_failures", "generate_repair_pack", "batch_apply_fixes"],
+      "alerts_or_signals": ["test_failure_count", "critical_regression_detected"]
+    },
+    "migrations": {
+      "purpose": "Monitor CRM migration and connector health for onboarding tenants",
+      "data_sources": ["automation_runs", "tenant connector configs"],
+      "primary_actions": ["check_connector_health", "review_migration_history", "open_migration_harness"],
+      "alerts_or_signals": ["connector_offline", "migration_stalled", "data_mapping_incomplete"]
+    },
+    "support": {
+      "purpose": "Human-centered feedback triage and care — not a ticket system",
+      "data_sources": ["feedback submissions", "testimonium_events"],
+      "primary_actions": ["review_feedback", "respond_to_tenant", "escalate_to_care"],
+      "alerts_or_signals": ["unread_feedback", "sentiment_drift", "repeated_friction_signals"]
+    },
+    "expansion": {
+      "purpose": "Monitor metro growth signals and identify expansion opportunities",
+      "data_sources": ["metro_momentum_signals", "operator_tenant_stats", "ai_recommendations"],
+      "primary_actions": ["review_growth_signals", "identify_expansion_metros", "track_regional_momentum"],
+      "alerts_or_signals": ["high_momentum_metro", "expansion_candidate_detected", "regional_growth_trend"]
+    },
+    "knowledge": {
+      "purpose": "Internal playbook and procedure management for operator reference",
+      "data_sources": ["ai_knowledge_documents", "ai_knowledge_document_versions"],
+      "primary_actions": ["browse_playbooks", "edit_knowledge_articles", "version_history_review"],
+      "alerts_or_signals": ["outdated_document", "new_version_published"]
+    }
+  }
+}

@@ -1,0 +1,59 @@
+{
+  "window_hours": 24,
+  "counts_by_workflow": [
+    { "workflow_key": "partner_enrich", "total": 5, "processed": 4, "error": 1, "running": 0, "dispatched": 0 },
+    { "workflow_key": "recommendations_generate", "total": 3, "processed": 1, "error": 1, "running": 0, "dispatched": 1 }
+  ],
+  "error_rate_by_workflow": [
+    { "workflow_key": "partner_enrich", "error_rate": 20.0 },
+    { "workflow_key": "recommendations_generate", "error_rate": 33.3 }
+  ],
+  "avg_duration_seconds_by_workflow": [
+    { "workflow_key": "partner_enrich", "avg_duration_seconds": 14.2 },
+    { "workflow_key": "recommendations_generate", "avg_duration_seconds": 120.5 }
+  ],
+  "latest_by_workflow": [
+    {
+      "workflow_key": "partner_enrich",
+      "run_id": "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee",
+      "status": "processed",
+      "created_at": "2026-02-07T20:00:00.000Z",
+      "processed_at": "2026-02-07T20:00:14.200Z",
+      "error_message": null,
+      "triggered_by": "00000000-0000-0000-0000-000000000001"
+    }
+  ],
+  "stuck_runs": [
+    {
+      "run_id": "11111111-2222-3333-4444-555555555555",
+      "workflow_key": "recommendations_generate",
+      "created_at": "2026-02-07T18:00:00.000Z",
+      "status": "dispatched",
+      "processed_at": null,
+      "error_message": null,
+      "triggered_by": null
+    }
+  ],
+  "recent_runs": [
+    {
+      "run_id": "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee",
+      "workflow_key": "partner_enrich",
+      "status": "processed",
+      "created_at": "2026-02-07T20:00:00.000Z",
+      "processed_at": "2026-02-07T20:00:14.200Z",
+      "error_message": null,
+      "triggered_by": "00000000-0000-0000-0000-000000000001"
+    }
+  ],
+  "recent_errors": [
+    {
+      "run_id": "ffffffff-eeee-dddd-cccc-bbbbbbbbbbbb",
+      "workflow_key": "partner_enrich",
+      "status": "error",
+      "created_at": "2026-02-07T19:00:00.000Z",
+      "processed_at": "2026-02-07T19:00:01.000Z",
+      "error_message": "n8n 500: No Respond to Webhook node found in the workflow",
+      "triggered_by": "00000000-0000-0000-0000-000000000001"
+    }
+  ]
+}

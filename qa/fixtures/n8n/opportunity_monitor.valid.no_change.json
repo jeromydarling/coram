@@ -1,0 +1,10 @@
+{
+  "workflow_key": "opportunity_monitor",
+  "run_id": "eeeeeeee-1111-2222-3333-444444444444",
+  "opportunity_id": "opp-002",
+  "payload": {
+    "result": {
+      "signals": []
+    }
+  }
+}

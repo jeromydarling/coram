@@ -1,0 +1,27 @@
+{
+  "description": "Sample resend candidates response",
+  "eligible_categories": ["provider_temp", "quota", "unknown"],
+  "excluded_categories": ["invalid_address", "bounce", "provider_perm"],
+  "candidates": [
+    {
+      "id": "00000000-0000-0000-0000-000000000001",
+      "campaign_id": "00000000-0000-0000-0000-000000000010",
+      "email": "retry@example.com",
+      "name": "Retry User",
+      "failure_category": "quota",
+      "failure_code": "429_quota",
+      "error_message": "quota_exceeded:403",
+      "sent_at": null
+    },
+    {
+      "id": "00000000-0000-0000-0000-000000000002",
+      "campaign_id": "00000000-0000-0000-0000-000000000010",
+      "email": "temp@example.com",
+      "name": "Temp Fail",
+      "failure_category": "provider_temp",
+      "failure_code": "server_error",
+      "error_message": "timeout_or_network:timeout",
+      "sent_at": null
+    }
+  ]
+}

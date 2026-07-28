@@ -1,0 +1,18 @@
+{
+  "event_type": "campaign_send_summary",
+  "org_id": null,
+  "user_id": "user-rim-001",
+  "metadata": {
+    "campaign_id": "camp-88888888-aaaa-bbbb-cccc-dddddddddddd",
+    "campaign_name": "Q1 Outreach",
+    "sent_count": 45,
+    "failed_count": 3
+  },
+  "priority": "low",
+  "fingerprint": "campaign_send:camp-88888888-aaaa-bbbb-cccc-dddddddddddd:1739318400000",
+  "tier": "T2",
+  "deep_link": "/campaigns/camp-88888888-aaaa-bbbb-cccc-dddddddddddd",
+  "title": "📧 Campaign send complete",
+  "body": "Q1 Outreach: 45/48 delivered — details available if needed.",
+  "bundle_key": "campaign_send:camp-88888888-aaaa-bbbb-cccc-dddddddddddd"
+}

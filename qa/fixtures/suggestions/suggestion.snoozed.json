@@ -1,0 +1,11 @@
+{
+  "_comment": "When an org has a snoozed suggestion with snoozed_until in the future, new signals for that org should NOT create new suggestions.",
+  "org_id": "org-wl-001",
+  "snoozed_suggestion": {
+    "id": "sug-44444444-aaaa-bbbb-cccc-dddddddddddd",
+    "status": "snoozed",
+    "snoozed_until": "2026-02-14T00:00:00Z"
+  },
+  "new_signal_at": "2026-02-08T10:00:00Z",
+  "expected_behavior": "Skip suggestion creation because snoozed_until (Feb 14) is after signal timestamp (Feb 8)"
+}

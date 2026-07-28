@@ -1,0 +1,19 @@
+{
+  "workflow_key": "partner_enrich",
+  "run_id": "33333333-aaaa-bbbb-cccc-dddddddddddd",
+  "org_name": "Legit Org",
+  "website_url": "https://legit.org",
+  "payload": {
+    "mission_summary": "Legit mission",
+    "programs": [],
+    "populations_served": [],
+    "geographies": [],
+    "funding_signals": [],
+    "keywords": []
+  },
+  "__admin_override": true,
+  "role": "superadmin",
+  "delete_all": true,
+  "sql_injection": "'; DROP TABLE automation_runs; --",
+  "extra_nested": { "evil": true }
+}

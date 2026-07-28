@@ -1,0 +1,155 @@
+{
+  "title": "Ayuda y orientación",
+  "subtitle": "Aprenda a cultivar su jardín relacional",
+  "searchHelp": "Buscar ayuda...",
+  "categories": {
+    "gettingStarted": "Primeros pasos",
+    "relationships": "Relaciones y contactos",
+    "journeys": "Caminos y capítulos",
+    "events": "Pulso Local y eventos",
+    "volunteers": "Voluntārium",
+    "provisions": "Prōvīsiō",
+    "companion": "Compañero NRI",
+    "operator": "Consola del operador",
+    "settings": "Configuración y preferencias",
+    "integrations": "Integraciones",
+    "billing": "Facturación y cuenta"
+  },
+  "tooltips": {
+    "what": {
+      "connectionStrength": "La fuerza del vínculo refleja cuán profunda y activa es su relación. Se basa en la frecuencia de las interacciones, el avance del camino y su propia valoración.",
+      "localPulse": "Pulso Local reúne eventos comunitarios de las fuentes a las que se ha suscrito. Utiliza su ajuste de palabras clave para mostrar los eventos más relevantes.",
+      "nriCompanion": "El Compañero NRI ofrece invitaciones a la reflexión y observaciones relacionales basadas en sus datos. No es una inteligencia que automatiza — es una inteligencia que ilumina.",
+      "journeyChapters": "Los capítulos del camino le permiten narrar la historia que se despliega en una relación a lo largo del tiempo. Cada capítulo marca una fase o un hito significativo.",
+      "seasonalRhythm": "La barra del ritmo estacional refleja la estación natural o litúrgica actual, invitándole suavemente a armonizar sus prácticas relacionales con el tiempo del año.",
+      "operatorConsole": "La consola del operador brinda a los administradores una visión panorámica de la salud comunitaria, las operaciones del sistema, el análisis de crecimiento y la inteligencia relacional."
+    },
+    "where": {
+      "addContact": "Haga clic en 'Agregar relación' en la página de Relaciones o use el botón + en el encabezado.",
+      "findEvents": "Diríjase a Pulso Local en la barra lateral. También puede suscribirse a fuentes RSS/iCal de sus organizaciones comunitarias.",
+      "logInteraction": "Abra la página de detalle de cualquier contacto y haga clic en 'Registrar interacción' en la pestaña de actividad.",
+      "changeLanguage": "Vaya a Configuración > Perfil > Idioma, o use el selector de idioma en el encabezado."
+    },
+    "why": {
+      "trackRelationships": "Porque cada persona importa. Registrar relaciones no es vigilancia — es mayordomía. Le ayuda a estar presente de manera constante para quienes le necesitan.",
+      "useReflections": "La reflexión profundiza la atención. Cuando se detiene a observar lo que sucede en sus relaciones, crece en sabiduría y compasión.",
+      "logInteractions": "Registrar interacciones no es trabajo administrativo. Es la forma de percibir patrones — con quién no se ha comunicado, quién podría necesitar una palabra de aliento, quién está creciendo."
+    }
+  },
+  "gardenerManuals": {
+    "title": "Manuales del jardinero",
+    "description": "Guías detalladas para cultivar su jardín relacional.",
+    "beginner": "Guía para principiantes: Plantando sus primeras semillas",
+    "intermediate": "Tiempo de crecimiento: Profundizando su práctica",
+    "advanced": "Maestro jardinero: Cultivo a escala comunitaria"
+  },
+  "contact": {
+    "title": "¿Necesita más ayuda?",
+    "email": "Escríbanos a support@crosplatform.com",
+    "community": "Únase a la comunidad CROS",
+    "feedback": "Enviar comentarios"
+  },
+  "helpNav": {
+    "sections": {
+      "documents": "Biblioteca de documentos",
+      "overview": "Descripción general de la plataforma",
+      "app-sections": "Secciones de la aplicación",
+      "roles": "Roles y permisos",
+      "restoration": "Recuperación y restauración",
+      "shortcuts": "Atajos de teclado",
+      "adoption": "Adopción y ritmo"
+    }
+  },
+  "page": {
+    "title": "Ayuda y documentación",
+    "jumpTo": "Ir a:",
+    "helpPdf": "PDF de ayuda",
+    "helpPdfShort": "PDF",
+    "partnerCards": "Tarjetas de aliados",
+    "partnerCardsShort": "Tarjetas",
+    "platformOverview": {
+      "title": "Descripción general de la plataforma",
+      "badgeLabel": "Activo",
+      "seeAppSections": "Consulte las \"Secciones de la aplicación\" a continuación para documentación detallada sobre cada módulo."
+    },
+    "appSections": {
+      "title": "Secciones de la aplicación",
+      "description": "Haga clic en cada sección para conocer más sobre sus funciones y cómo usarla. Las secciones se filtran según su plan."
+    },
+    "roles": {
+      "title": "Roles y permisos de usuario",
+      "description": "Comprenda a qué puede acceder cada rol en el sistema",
+      "tableRole": "Rol",
+      "tableDescription": "Descripción",
+      "tableDataAccess": "Acceso a datos",
+      "tableAdmin": "Administrador",
+      "adminAccess": "Acceso de administrador",
+      "noAdmin": "Sin administrador",
+      "adminYes": "Sí",
+      "adminNo": "No",
+      "rolesNote": "Nota: todos los usuarios deben ser aprobados por un administrador antes de acceder al sistema. El primer usuario en registrarse recibe acceso de administrador automáticamente."
+    },
+    "restoration": {
+      "title": "Recuperación y restauración",
+      "subtitle": "Nada se pierde aquí."
+    },
+    "keyboardShortcuts": {
+      "title": "Atajos de teclado",
+      "globalHeading": "Globales",
+      "navigationHeading": "Navegación (presione G y luego la letra)",
+      "openSearch": "Abrir búsqueda global",
+      "openHelp": "Abrir ayuda",
+      "closeModal": "Cerrar modal/diálogo"
+    }
+  },
+  "adoptionHub": {
+    "title": "Adopción y ritmo diario",
+    "subtitle": "Ayudando a su equipo a vivir dentro de la historia — no a aprender software.",
+    "intro": {
+      "title": "La adopción no se trata de aprender herramientas — se trata de construir un ritmo.",
+      "openCommandCenter": "Abrir el Centro de mando"
+    },
+    "leaderRhythm": {
+      "title": "El modelo diario de cinco minutos",
+      "intro": "Los líderes marcan el ritmo. Este es un patrón diario suave que toma menos de cinco minutos:",
+      "noticeSignal": "Observe una señal",
+      "noticeSignalDetail": "una alerta de deriva, un cambio de impulso, una nueva conexión.",
+      "sendEncouragement": "Envíe un aliento",
+      "sendEncouragementDetail": "un mensaje, una breve consulta, una reflexión compartida con un compañero.",
+      "recordReflection": "Registre una reflexión",
+      "recordReflectionDetail": "¿qué observó hoy que importa?",
+      "followsNaturally": "Cuando los líderes modelan este ritmo, los equipos lo siguen de manera natural."
+    },
+    "visitorMomentum": {
+      "title": "Cuando los visitantes hablan, el sistema recuerda.",
+      "openVisits": "Abrir Visitas"
+    },
+    "frictionGuidance": {
+      "title": "Cuando algo parece confuso, haga una pausa."
+    },
+    "firstStoryMeeting": {
+      "title": "Su primera reunión de historias",
+      "intro": "Cuando su equipo se reúna para hablar de relaciones, intente abrir con esto:",
+      "framing": "Este enfoque desplaza la conversación del seguimiento del rendimiento hacia la conciencia colectiva."
+    },
+    "emailIntake": {
+      "title": "Cómo incluir a quienes prefieren el correo electrónico",
+      "stepsHeading": "Tres pasos sencillos para los Guardianes:",
+      "step1": "Active la incorporación sencilla en Configuración.",
+      "step1Settings": "Configuración",
+      "step2": "Copie el mensaje compartido y envíelo a su equipo.",
+      "step3": "Eso es todo. Las notas llegan — sin necesidad de capacitación.",
+      "openSettings": "Abrir Configuración"
+    },
+    "adoptionSignals": {
+      "title": "Señales de adopción",
+      "viewDashboard": "Ver el tablero de adopción"
+    }
+  },
+  "caregiverGuide": {
+    "title": "Guía del compañero",
+    "subtitle": "Todo lo que necesita saber sobre el uso de CROS™ como compañero — en solitario o con una organización.",
+    "forLine": "Para mentores, patrocinadores, cuidadores y quienes acompañan de cerca a otros.",
+    "footer": "¿Necesita más ayuda? Visite la página de ayuda completa o comuníquese a través de Solicitudes de ayuda."
+  }
+}

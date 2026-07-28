@@ -1,0 +1,188 @@
+{
+  "reports": {
+    "title": "Informes",
+    "subtitle": "Res\u00famenes listos para compartir con l\u00edderes, juntas directivas y colaboradores.",
+    "whatYoureSeeing": "Lo que est\u00e1 viendo",
+    "whatYoureSeingTooltip": "Los informes se adaptan a su arquetipo y sus datos. Las secciones aparecen a medida que su trabajo se profundiza.",
+    "tabs": {
+      "impactView": "Vista de Impacto",
+      "exportPdf": "Exportar PDF",
+      "templates": "Plantillas",
+      "scheduled": "Programados"
+    },
+    "actions": {
+      "exportImpactReport": "Exportar Informe de Impacto",
+      "thoseWhoGave": "Quienes Dieron",
+      "integrationAudit": "Auditor\u00eda de Integraci\u00f3n",
+      "newTemplate": "Nueva Plantilla",
+      "schedule": "Programar"
+    },
+    "scope": {
+      "title": "Alcance del Informe",
+      "allRegions": "Todas las Regiones",
+      "allMetros": "\u00c1reas Metropolitanas"
+    },
+    "preview": {
+      "title": "Vista Previa del Informe",
+      "generating": "Generando...",
+      "downloadPdf": "Descargar PDF",
+      "generatedLabel": "Generado:",
+      "byLabel": "Por:"
+    },
+    "sections": {
+      "countLabel": "{{count}} secciones"
+    },
+    "templates": {
+      "defaultBadge": "Predeterminada"
+    },
+    "schedules": {
+      "noSchedules": "No hay informes programados a\u00fan.",
+      "noSchedulesSubtitle": "D\u00e9jelos llegar con calma, en su propio horario.",
+      "createSchedule": "Crear Programaci\u00f3n",
+      "recipientsCount": "{{count}} destinatarios"
+    },
+    "builder": {
+      "title": "Constructor de Informes",
+      "subtitle": "Cree una plantilla de informe personalizada"
+    }
+  },
+  "buildReport": {
+    "title": "Informe de Construcci\u00f3n de CROS",
+    "downloaded": "Descargado \u2014 Haga clic nuevamente",
+    "downloadPdf": "Descargar PDF"
+  },
+  "impactExport": {
+    "backToReports": "Informes",
+    "allRegions": "Todas las Regiones",
+    "allMetros": "\u00c1reas Metropolitanas",
+    "print": "Imprimir",
+    "generating": "Generando\u2026",
+    "downloadPdf": "Descargar PDF",
+    "coverTitle": "La Historia de Nuestro Impacto",
+    "preparedBy": "Preparado por",
+    "confidential": "Confidencial",
+    "generated": "Generado",
+    "noData": "No hay datos disponibles para el alcance seleccionado."
+  },
+  "testimonium": {
+    "title": "Testimonium",
+    "subtitle": "La historia de su comunidad, contada a trav\u00e9s de experiencias vividas.",
+    "helpContent": "Testimonium transforma sus datos de relaciones existentes en informes narrativos reflexivos y serenos para el liderazgo. La Detecci\u00f3n de Deriva sugiere gentilmente las relaciones que podr\u00edan beneficiarse de una reconex\u00f3n.",
+    "tabs": {
+      "reports": "Informes",
+      "driftDetection": "Detecci\u00f3n de Deriva"
+    },
+    "generateReport": "Generar Informe",
+    "generating": "Generando\u2026",
+    "noStories": {
+      "title": "A\u00fan no hay historias",
+      "description": "Genere su primer informe narrativo para ver el impacto de su comunidad a trav\u00e9s del lente de las relaciones vividas.",
+      "button": "Generar Primer Informe"
+    },
+    "toasts": {
+      "generated": "Informe narrativo generado",
+      "failed": "Error al generar el informe"
+    }
+  },
+  "testimoniumReport": {
+    "loading": "Cargando\u2026",
+    "notFound": "Informe No Encontrado",
+    "notFoundMessage": "Informe no encontrado.",
+    "backToTestimonium": "Volver a Testimonium",
+    "back": "Volver",
+    "generateStoryPdf": "Generar PDF de Historia",
+    "sections": {
+      "communityMovements": "Movimientos Comunitarios",
+      "quietProgress": "Progreso Silencioso"
+    },
+    "metrics": {
+      "relationshipsGrown": "relaciones fortalecidas",
+      "eventsAttended": "eventos asistidos",
+      "reflectionsWritten": "reflexiones escritas"
+    },
+    "pdf": {
+      "themesLabel": "Temas:",
+      "metricsLine": "Relaciones: {{relationships}} \u00b7 Eventos: {{events}} \u00b7 Reflexiones: {{reflections}}"
+    },
+    "toasts": {
+      "pdfDownloaded": "PDF descargado",
+      "pdfFailed": "Error al exportar el PDF"
+    }
+  },
+  "testimoniumExports": {
+    "title": "Historias Atestiguadas",
+    "subtitle": "Res\u00famenes narrativos ensamblados a partir del trabajo que ya realiza.",
+    "builder": {
+      "sectionTitle": "Generar Informe Testimonial",
+      "tooltipWhat": "Ensambla un resumen narrativo a partir de sus momentos de valor y telemetr\u00eda",
+      "tooltipWhere": "testimonium_exports",
+      "tooltipWhy": "Historias listas para la junta directiva, sin redacci\u00f3n",
+      "periodLabel": "Per\u00edodo",
+      "fromLabel": "Desde",
+      "toLabel": "Hasta",
+      "startPlaceholder": "Inicio",
+      "endPlaceholder": "Fin",
+      "generateButton": "Generar",
+      "buildingButton": "Construyendo\u2026",
+      "monthly": "Mensual",
+      "quarterly": "Trimestral",
+      "custom": "Personalizado"
+    },
+    "previousReports": {
+      "title": "Informes Anteriores",
+      "tooltipWhat": "Historial de res\u00famenes narrativos generados",
+      "tooltipWhere": "testimonium_exports",
+      "tooltipWhy": "Revise o descargue informes testimoniales pasados",
+      "previewButton": "Vista previa",
+      "empty": "A\u00fan no hay informes testimoniales. Genere el primero arriba."
+    },
+    "preview": {
+      "title": "Vista Previa Narrativa",
+      "downloadPdf": "Descargar PDF",
+      "briefSuffix": "resumen"
+    },
+    "metrics": {
+      "momentsWitnessed": "momentos atestiguados",
+      "eventsAttended": "eventos asistidos",
+      "growthSignals": "se\u00f1ales de crecimiento"
+    },
+    "tooltipLabels": {
+      "what": "Qu\u00e9:",
+      "where": "D\u00f3nde:",
+      "why": "Por qu\u00e9:"
+    },
+    "toasts": {
+      "generated": "Informe testimonial generado",
+      "buildFailed": "Error al construir la exportaci\u00f3n",
+      "previewFailed": "No se pudo cargar la vista previa",
+      "pdfDownloaded": "PDF descargado"
+    }
+  },
+  "thoseWhoGave": {
+    "title": "Quienes Dieron",
+    "subtitle": "Un registro de generosidad",
+    "helpWhat": "Informe para la junta directiva con las personas que donaron durante el per\u00edodo seleccionado.",
+    "helpWhere": "Secci\u00f3n de Informes.",
+    "helpWhy": "Reconocimiento sereno y agradecido de la generosidad \u2014 no an\u00e1lisis de recaudaci\u00f3n de fondos.",
+    "filters": {
+      "from": "Desde",
+      "to": "Hasta",
+      "print": "Imprimir"
+    },
+    "report": {
+      "heading": "Quienes Dieron",
+      "personSingular": "persona",
+      "peoplePlural": "personas",
+      "gaveLabel": "donaron",
+      "totalLabel": "Total:",
+      "loading": "Cargando...",
+      "empty": "No se encontraron registros de generosidad para este per\u00edodo."
+    },
+    "table": {
+      "name": "Nombre",
+      "total": "Total",
+      "recurring": "Recurrente",
+      "yes": "S\u00ed"
+    }
+  }
+}

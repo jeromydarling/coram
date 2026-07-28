@@ -1,0 +1,319 @@
+{
+  "name": "Profunda - Search Events (Firecrawl) - PROD v5 (Expanded + Filtered)",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "search-events",
+        "options": {}
+      },
+      "id": "ev-webhook-0001",
+      "name": "Webhook Trigger",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [6784, 48],
+      "webhookId": "ev-webhook-id-0001"
+    },
+    {
+      "parameters": {
+        "keepOnlySet": true,
+        "values": {
+          "string": [
+            {
+              "name": "SUPABASE_FUNCTIONS_BASE_URL",
+              "value": "https://lxahadqhpubynuzvraxc.supabase.co/functions/v1"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "ev-constants-0002",
+      "name": "Workflow Constants",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 2,
+      "position": [7024, 48],
+      "retryOnFail": true,
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "jsCode": "// Read webhook body explicitly since Workflow Constants (keepOnlySet) wipes $json\nconst webhookData = $('Webhook Trigger').first().json;\nconst b = webhookData.body ?? webhookData;\nconst run_id = b.run_id || b.runId || b.runID;\nconst query = b.enforced_query || b.query || b.enforcedQuery;\nconst max_results = Number(b.max_results ?? b.maxResults ?? 20);\nif (!run_id || !query) {\n  return [{ json: { ok:false, error:{code:'MISSING_FIELDS', message:'run_id and enforced_query are required'}, run_id: run_id ?? null, query: query ?? null, max_results } }];\n}\nreturn [{ json: { ok:true, run_id, query, max_results: Math.max(1, Math.min(20, max_results)), scope: b.scope ?? null, metro: b.metro ?? null } }];"
+      },
+      "id": "ev-normalize-0003",
+      "name": "Normalize Input",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [7264, 48]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "boolean": [
+            {
+              "value1": "={{ $json.ok }}",
+              "operation": "isTrue"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "ev-ifvalid-0004",
+      "name": "IF Valid Input?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [7488, 48]
+    },
+    {
+      "parameters": {
+        "jsCode": "const ni = $('Normalize Input').first().json;\nconst baseQuery = ni.query;\nconst max = ni.max_results || 10;\nconst neg = ' -tickets -\"buy tickets\" -stubhub -eventbrite.com/checkout -ticketmaster';\n\nconst queries = [\n  { query: baseQuery + neg, limit: max, variant: 'base' },\n  { query: baseQuery + ' upcoming 2025 2026 schedule agenda' + neg, limit: Math.min(max, 10), variant: 'upcoming' },\n  { query: baseQuery + ' nonprofit community digital equity technology' + neg, limit: Math.min(max, 10), variant: 'sector' }\n];\n\nreturn queries.map(q => ({ json: q }));"
+      },
+      "id": "ev-buildq-0005",
+      "name": "Build Queries",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [7728, 48],
+      "alwaysOutputData": true,
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.firecrawl.dev/v1/search",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ query: $json.query, limit: $json.limit }) }}",
+        "options": {
+          "response": {},
+          "timeout": 60000
+        }
+      },
+      "id": "ev-firecrawl-0006",
+      "name": "Firecrawl Search",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [7968, 48],
+      "alwaysOutputData": true,
+      "retryOnFail": true,
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "GJkntTblj2tXySIz",
+          "name": "Firecrawl Auth"
+        }
+      },
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "jsCode": "const ni = $('Normalize Input').first().json;\nconst run_id = ni.run_id;\nconst allItems = $input.all();\n\nlet allResults = [];\nfor (const item of allItems) {\n  const d = item.json;\n  const arr = d.data || d.results || (d.body && (d.body.data || d.body.results)) || [];\n  if (Array.isArray(arr)) allResults = allResults.concat(arr);\n}\n\n// URL blocklist patterns for events\nconst blockedUrlPatterns = [\n  /stubhub\\.com/i, /ticketmaster\\.com/i, /seatgeek\\.com/i,\n  /vividseats\\.com/i, /livenation\\.com/i,\n  /\\/cart\\b/i, /\\/checkout\\b/i, /\\/buy-tickets/i,\n  /facebook\\.com\\/events/i\n];\n\n// Content blocklist keywords for events\nconst blockedContentKeywords = [\n  'buy tickets', 'add to cart', 'sold out', 'ticket price',\n  'vip package', 'general admission price', 'seating chart',\n  'parking pass'\n];\n\nlet filtered_out = 0;\nconst seen = new Set();\nconst filtered = [];\n\nfor (const r of allResults) {\n  const url = (r.url || r.link || r.source_url || '').trim();\n  const title = (r.title || r.name || r.pageTitle || '').trim();\n  const snippet = (r.description || r.snippet || r.text || r.summary || '').trim();\n  const combined = (title + ' ' + snippet).toLowerCase();\n\n  if (url && blockedUrlPatterns.some(p => p.test(url))) { filtered_out++; continue; }\n  if (blockedContentKeywords.some(kw => combined.includes(kw))) { filtered_out++; continue; }\n\n  const canonical = url.toLowerCase().replace(/\\/$/, '').replace(/^https?:\\/\\/www\\./, 'https://');\n  if (canonical && seen.has(canonical)) { filtered_out++; continue; }\n  if (canonical) seen.add(canonical);\n\n  filtered.push({ title, url, snippet });\n  if (filtered.length >= 20) break;\n}\n\nreturn [{ json: { run_id, filtered_results: filtered, filtered_out_count: filtered_out, has_results: filtered.length > 0 } }];"
+      },
+      "id": "ev-prefilter-0007",
+      "name": "Merge & Pre-Filter",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [8208, 48],
+      "alwaysOutputData": true,
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "boolean": [
+            {
+              "value1": "={{ $json.has_results }}",
+              "operation": "isTrue"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "ev-ifresults-0008",
+      "name": "IF Has Results?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [8448, 48]
+    },
+    {
+      "parameters": {
+        "jsCode": "const prev = $('Merge & Pre-Filter').first().json;\nconst run_id = prev.run_id;\nconst results = prev.filtered_results || [];\nconst query = $('Normalize Input').first().json.query;\n\nconst CAP = 12000;\nlet search_context = 'Query: ' + query + '\\n\\nResults:\\n';\nlet charCount = search_context.length;\n\nfor (let i = 0; i < results.length; i++) {\n  const r = results[i];\n  const entry = (i+1) + '. ' + (r.title ?? '') + '\\nURL: ' + (r.url ?? '') + '\\nSnippet: ' + (r.snippet ?? '');\n  if (charCount + entry.length + 2 > CAP) break;\n  search_context += entry + '\\n\\n';\n  charCount += entry.length + 2;\n}\n\nreturn [{ json: { run_id, query, search_context } }];"
+      },
+      "id": "ev-context-0009",
+      "name": "Build Search Context",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [8688, 48],
+      "retryOnFail": true,
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.openai.com/v1/chat/completions",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "openAiApi",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ model: 'gpt-4o-mini', temperature: 0, response_format: { type: 'json_object' }, messages: [{ role: 'system', content: 'You are a CLASSIFIER and EXTRACTOR. You do NOT search or use outside knowledge. You analyze ONLY the provided web page snippets and extract real events mentioned as conferences, summits, workshops, webinars, expos, symposiums, or community events relevant to digital equity, technology access, nonprofits, or community development.\\n\\nRules:\\n- ONLY extract events that have a clear name and at least partial date or location information\\n- NEVER extract ticket sales pages, concert listings, sporting events, or entertainment\\n- Include the organizing body if mentioned in the snippet\\n- If no qualifying events can be extracted, return {\"events\":[]}\\n- Return ONLY valid JSON. No markdown, no commentary.\\n\\nOutput schema:\\n{\"events\":[{\"name\":string,\"description\":string|null,\"date_info\":string|null,\"location\":string|null,\"organization\":string|null,\"url\":string|null,\"event_type\":string|null,\"confidence\":number(0-1)|null}]}' }, { role: 'user', content: $('Build Search Context').first().json.search_context }] }) }}",
+        "options": {
+          "response": {},
+          "timeout": 60000
+        }
+      },
+      "id": "ev-llm-0010",
+      "name": "LLM Extract Events From Results",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [8928, 48],
+      "alwaysOutputData": true,
+      "retryOnFail": true,
+      "credentials": {
+        "openAiApi": {
+          "id": "S65JWr5N3fYHb1YT",
+          "name": "OpenAi account"
+        }
+      },
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "jsCode": "let txt = $json?.choices?.[0]?.message?.content ?? '';\ntxt = String(txt).trim();\nlet parsed;\ntry { parsed = JSON.parse(txt); } catch(e) {\n  const m = txt.match(/\\[[\\s\\S]*\\]/);\n  if (m) parsed = JSON.parse(m[0]); else parsed = [];\n}\nconst events = Array.isArray(parsed) ? parsed : (parsed.events || []);\nconst ni = $('Normalize Input').first().json;\nconst run_id = ni.run_id;\nconst max_results = Number(ni.max_results ?? 20);\nconst cleaned = events.slice(0, max_results).map(e => ({\n  title: e.name ?? 'Unknown Event',\n  description: e.description ?? null,\n  url: e.url ?? null,\n  source: 'firecrawl+llm',\n  location: e.location ?? null,\n  date_info: e.date_info ?? null,\n  organization: e.organization ?? null,\n  contact_name: null,\n  contact_email: null,\n  contact_phone: null,\n  confidence: (typeof e.confidence === 'number') ? e.confidence : null,\n  raw_data: e\n}));\nreturn [{ json: { run_id, status: 'completed', results: cleaned } }];"
+      },
+      "id": "ev-envelope-0011",
+      "name": "Build Callback Envelope",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [9168, 48],
+      "retryOnFail": true,
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('Workflow Constants').first().json.SUPABASE_FUNCTIONS_BASE_URL + \"/search-callback\" }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ $json }}",
+        "options": {
+          "response": {},
+          "timeout": 60000
+        }
+      },
+      "id": "ev-callback-0012",
+      "name": "Callback to Supabase",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [9408, 48],
+      "alwaysOutputData": true,
+      "retryOnFail": false,
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "JZ0bvsdogmHU6USf",
+          "name": "Secret Worker Key"
+        }
+      },
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('Workflow Constants').first().json.SUPABASE_FUNCTIONS_BASE_URL + \"/search-callback\" }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ { run_id: $('Normalize Input').first().json.run_id, status: 'failed', error_message: String($json?.error?.message || 'Unknown error') } }}",
+        "options": {
+          "response": {},
+          "timeout": 60000
+        }
+      },
+      "id": "ev-errcallback-0013",
+      "name": "Error Callback to Supabase",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [7728, 340],
+      "alwaysOutputData": true,
+      "retryOnFail": false,
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "JZ0bvsdogmHU6USf",
+          "name": "Secret Worker Key"
+        }
+      },
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "jsCode": "const run_id = $('Normalize Input').first().json.run_id;\nconst filtered_out = $('Merge & Pre-Filter').first().json.filtered_out_count || 0;\nreturn [{ json: { run_id, status: 'completed', results: [], meta: { filtered_out: true, filtered_out_count: filtered_out } } }];"
+      },
+      "id": "ev-empty-0014",
+      "name": "Build Empty Envelope",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [8688, 340],
+      "alwaysOutputData": true,
+      "continueOnFail": true
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook Trigger": {
+      "main": [[{ "node": "Workflow Constants", "type": "main", "index": 0 }]]
+    },
+    "Workflow Constants": {
+      "main": [[{ "node": "Normalize Input", "type": "main", "index": 0 }]]
+    },
+    "Normalize Input": {
+      "main": [[{ "node": "IF Valid Input?", "type": "main", "index": 0 }]]
+    },
+    "IF Valid Input?": {
+      "main": [
+        [{ "node": "Build Queries", "type": "main", "index": 0 }],
+        [{ "node": "Error Callback to Supabase", "type": "main", "index": 0 }]
+      ]
+    },
+    "Build Queries": {
+      "main": [[{ "node": "Firecrawl Search", "type": "main", "index": 0 }]]
+    },
+    "Firecrawl Search": {
+      "main": [[{ "node": "Merge & Pre-Filter", "type": "main", "index": 0 }]]
+    },
+    "Merge & Pre-Filter": {
+      "main": [[{ "node": "IF Has Results?", "type": "main", "index": 0 }]]
+    },
+    "IF Has Results?": {
+      "main": [
+        [{ "node": "Build Search Context", "type": "main", "index": 0 }],
+        [{ "node": "Build Empty Envelope", "type": "main", "index": 0 }]
+      ]
+    },
+    "Build Search Context": {
+      "main": [[{ "node": "LLM Extract Events From Results", "type": "main", "index": 0 }]]
+    },
+    "LLM Extract Events From Results": {
+      "main": [[{ "node": "Build Callback Envelope", "type": "main", "index": 0 }]]
+    },
+    "Build Callback Envelope": {
+      "main": [[{ "node": "Callback to Supabase", "type": "main", "index": 0 }]]
+    },
+    "Build Empty Envelope": {
+      "main": [[{ "node": "Callback to Supabase", "type": "main", "index": 0 }]]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": true,
+    "timeSavedMode": "fixed",
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "versionId": "v5-events-patched",
+  "meta": {
+    "instanceId": "93beede2a90582294d7ef06720d87eff3641b0d88433511d1e55f0a191940c61"
+  },
+  "tags": []
+}

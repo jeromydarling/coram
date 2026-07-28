@@ -1,0 +1,10 @@
+Id,Name,Website,Phone,BillingStreet,BillingCity,BillingState,BillingPostalCode,Description,Type,Industry
+001A000001,Grace Fellowship Church,https://gracefellowship.org,(512) 555-0101,123 Main St,Austin,TX,78701,A vibrant faith community serving downtown Austin since 1987.,Church,Religious Organizations
+001A000002,Eastside Digital Bridge,,512.555.0202,456 Oak Ave,Austin,Texas,78702,"Nonprofit focused on digital literacy, bridging the gap for underserved communities.",Nonprofit,Technology
+001A000003,"Hope & Restore, Inc.",http://www.hoperestore.org,(512) 555-0303,789 Pine Rd,Round Rock,TX,78664,Refugee resettlement and workforce readiness program.,Nonprofit,Social Services
+001A000004,Metro Workforce Alliance,https://metroworkforce.org,5125550404,,,TX,,Workforce development across three counties.,Government,Government
+001A000005,Sunrise Community Center,https://sunrisecenter.org,(512) 555-0505,321 Elm Street,Austin,TX,78703,Community hub offering after-school programs and senior services.,Nonprofit,Community Development
+001A000006,Café con Código,https://cafeconcodigo.com,(512) 555-0606,100 S Congress Ave,Austin,TX,78704,"Social enterprise café + coding bootcamp for Latín× youth. ¡Bienvenidos!",Social Enterprise,Food & Beverage
+001A000007,Prairie Wind Collective,,,(no address),,,,"Rural broadband advocacy group.
+Founded in 2019 by three farmers who couldn't get internet.",Nonprofit,Telecommunications
+001A000008,DUPLICATE TEST ORG,https://gracefellowship.org,(512) 555-0101,123 Main St,Austin,TX,78701,This is a deliberate duplicate of Grace Fellowship to test dedup logic.,Church,Religious Organizations

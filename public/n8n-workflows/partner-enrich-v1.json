@@ -1,0 +1,226 @@
+{
+  "name": "Profunda - Partner Enrich (v1)",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "partner-enrich",
+        "options": {}
+      },
+      "id": "webhook-trigger",
+      "name": "Webhook Trigger",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [240, 300],
+      "webhookId": "partner-enrich"
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "{\n  \"N8N_SHARED_SECRET\": \"YOUR_SHARED_SECRET_HERE\",\n  \"SUPABASE_FUNCTIONS_BASE_URL\": \"https://lxahadqhpubynuzvraxc.supabase.co/functions/v1\",\n  \"SUPABASE_SERVICE_ROLE_KEY\": \"YOUR_SERVICE_ROLE_KEY_HERE\",\n  \"FIRECRAWL_API_KEY\": \"YOUR_FIRECRAWL_API_KEY_HERE\"\n}",
+        "options": {}
+      },
+      "id": "workflow-constants",
+      "name": "Workflow Constants",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [460, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "const crypto = require('crypto');\nconst webhookBody = $('Webhook Trigger').first().json.body;\nconst headers = $('Webhook Trigger').first().json.headers;\nconst secret = $('Workflow Constants').first().json.N8N_SHARED_SECRET;\n\nconst signature = headers['x-profunda-signature'];\nif (!signature) throw new Error('Missing x-profunda-signature header');\nif (!webhookBody || typeof webhookBody !== 'object') throw new Error('Missing or invalid webhook body');\nif (webhookBody.workflow_key !== 'partner_enrich') throw new Error('workflow_key must be partner_enrich, got: ' + webhookBody.workflow_key);\nif (!webhookBody.run_id || typeof webhookBody.run_id !== 'string') throw new Error('Missing run_id');\n\nconst bodyStr = JSON.stringify(webhookBody);\nconst hmac = crypto.createHmac('sha256', secret).update(bodyStr).digest('hex');\nif (hmac !== signature) throw new Error('Invalid HMAC signature');\n\nreturn [{ json: webhookBody }];"
+      },
+      "id": "verify-signature",
+      "name": "Verify Signature",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [680, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "const input = $('Verify Signature').first().json;\n\nif (!input.org_name || typeof input.org_name !== 'string') {\n  throw new Error('org_name is required for partner_enrich');\n}\n\nlet website_url = input.website_url || null;\nif (website_url && typeof website_url === 'string') {\n  website_url = website_url.trim();\n  if (!/^https?:\\/\\//i.test(website_url)) website_url = 'https://' + website_url;\n}\n\nreturn [{\n  json: {\n    run_id: input.run_id,\n    workflow_key: 'partner_enrich',\n    org_id: input.org_id || null,\n    org_name: input.org_name,\n    website_url: website_url,\n    triggered_by: input.triggered_by || null\n  }\n}];"
+      },
+      "id": "validate-input",
+      "name": "Validate Input",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [900, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "const validated = $('Validate Input').first().json;\nconst websiteUrl = validated.website_url;\n\nif (!websiteUrl) {\n  return [{\n    json: {\n      run_id: validated.run_id,\n      org_id: validated.org_id,\n      org_name: validated.org_name,\n      website_url: null,\n      crawl_skipped: true,\n      skip_reason: 'No website URL provided for org'\n    }\n  }];\n}\n\nreturn [{\n  json: {\n    run_id: validated.run_id,\n    org_id: validated.org_id,\n    org_name: validated.org_name,\n    website_url: websiteUrl,\n    crawl_skipped: false\n  }\n}];"
+      },
+      "id": "resolve-url",
+      "name": "Resolve URL",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1120, 300],
+      "continueOnFail": true,
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": { "caseSensitive": true, "leftValue": "", "typeValidation": "strict" },
+          "conditions": [
+            {
+              "id": "check-skip",
+              "leftValue": "={{ $json.crawl_skipped }}",
+              "rightValue": true,
+              "operator": { "type": "boolean", "operation": "false" }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "if-has-url",
+      "name": "Has URL?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [1340, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.firecrawl.dev/v1/scrape",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "Authorization", "value": "=Bearer {{ $('Workflow Constants').first().json.FIRECRAWL_API_KEY }}" },
+            { "name": "Content-Type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"url\": \"{{ $('Resolve URL').first().json.website_url }}\",\n  \"formats\": [\"markdown\", \"links\"],\n  \"onlyMainContent\": true,\n  \"waitFor\": 5000\n}",
+        "options": { "timeout": 60000, "response": { "response": { "neverError": true } } }
+      },
+      "id": "firecrawl-scrape",
+      "name": "Firecrawl Scrape",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1560, 180],
+      "continueOnFail": true,
+      "alwaysOutputData": true,
+      "retryOnFail": true,
+      "maxTries": 2
+    },
+    {
+      "parameters": {
+        "jsCode": "const resolveData = $('Resolve URL').first().json;\nconst run_id = resolveData.run_id;\nconst org_id = resolveData.org_id;\nconst org_name = resolveData.org_name;\n\nif (resolveData.crawl_skipped) {\n  return [{ json: { run_id, org_id, org_name, enrichment: {}, signals: [], crawl_skipped: true, skip_reason: resolveData.skip_reason } }];\n}\n\nlet scrapeData;\ntry { scrapeData = $('Firecrawl Scrape').first().json; } catch (e) {\n  return [{ json: { run_id, org_id, org_name, enrichment: {}, signals: [], crawl_error: 'Firecrawl did not produce output: ' + String(e.message).slice(0, 200) } }];\n}\n\nif (scrapeData.error || !scrapeData.success) {\n  return [{ json: { run_id, org_id, org_name, enrichment: {}, signals: [], crawl_error: scrapeData.error || 'Firecrawl returned unsuccessful response' } }];\n}\n\nconst markdown = scrapeData.data?.markdown || scrapeData.markdown || '';\nconst links = scrapeData.data?.links || scrapeData.links || [];\nconst metadata = scrapeData.data?.metadata || scrapeData.metadata || {};\nconst contentLower = markdown.toLowerCase();\n\n// Build enrichment object\nconst enrichment = {\n  title: (metadata.title || '').slice(0, 200),\n  description: (metadata.description || '').slice(0, 500),\n  source_url: metadata.sourceURL || resolveData.website_url,\n  content_length: markdown.length,\n  links_found: links.length\n};\n\n// Deterministic signal extraction\nconst signals = [];\nconst hiringKw = ['hiring', 'careers', 'job openings', 'join our team', 'open positions'];\nconst hiringMatches = hiringKw.filter(kw => contentLower.includes(kw));\nif (hiringMatches.length > 0) signals.push({ signal_type: 'hiring_activity', summary: 'Hiring signals: ' + hiringMatches.join(', '), confidence: 0.8 });\n\nconst expansionKw = ['new location', 'expanding', 'partnership', 'launched', 'announcement'];\nconst expansionMatches = expansionKw.filter(kw => contentLower.includes(kw));\nif (expansionMatches.length > 0) signals.push({ signal_type: 'expansion_activity', summary: 'Expansion signals: ' + expansionMatches.join(', '), confidence: 0.7 });\n\nconst techKw = ['digital equity', 'broadband', 'computer', 'device', 'technology access', 'digital inclusion'];\nconst techMatches = techKw.filter(kw => contentLower.includes(kw));\nif (techMatches.length > 0) signals.push({ signal_type: 'tech_relevance', summary: 'Digital equity relevance: ' + techMatches.join(', '), confidence: 0.85 });\n\nconst fundingKw = ['funding', 'grant', 'awarded', 'million', 'investment'];\nconst fundingMatches = fundingKw.filter(kw => contentLower.includes(kw));\nif (fundingMatches.length > 0) signals.push({ signal_type: 'funding_activity', summary: 'Funding signals: ' + fundingMatches.join(', '), confidence: 0.75 });\n\nreturn [{ json: { run_id, org_id, org_name, enrichment, signals, signal_count: signals.length, source_url: resolveData.website_url, crawl_error: null } }];"
+      },
+      "id": "extract-enrichment",
+      "name": "Extract Enrichment",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1780, 180],
+      "continueOnFail": true,
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "jsCode": "const resolveData = $('Resolve URL').first().json;\nreturn [{ json: { run_id: resolveData.run_id, org_id: resolveData.org_id, org_name: resolveData.org_name, enrichment: {}, signals: [], signal_count: 0, crawl_skipped: true, skip_reason: resolveData.skip_reason || 'No website URL', crawl_error: null } }];"
+      },
+      "id": "skip-crawl",
+      "name": "Skip Crawl",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1560, 440]
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "const validated = $('Validate Input').first().json;\nlet data = null;\nlet error = null;\nlet failed_node = null;\n\ntry { data = $('Extract Enrichment').first().json; } catch (e1) {\n  try { data = $('Skip Crawl').first().json; } catch (e2) {\n    error = 'Neither Extract Enrichment nor Skip Crawl produced output';\n    failed_node = 'Extract Enrichment';\n  }\n}\n\nif (data && data.crawl_error) { error = data.crawl_error; failed_node = 'Firecrawl Scrape'; }\n\nlet result = null;\nif (!error && data) {\n  result = { enrichment: data.enrichment || {}, signals: data.signals || [], signal_count: data.signal_count || 0, org_id: data.org_id, org_name: data.org_name, source_url: data.source_url || null, crawl_skipped: data.crawl_skipped || false };\n}\n\nreturn [{ json: { run_id: validated.run_id, workflow_key: 'partner_enrich', payload: { result, error, failed_node } } }];"
+      },
+      "id": "result-envelope",
+      "name": "Result Envelope",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [2000, 300]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": { "caseSensitive": true, "leftValue": "", "typeValidation": "strict" },
+          "conditions": [{ "id": "check-error", "leftValue": "={{ $json.payload.error }}", "rightValue": "", "operator": { "type": "string", "operation": "empty", "singleValue": true } }],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "if-success",
+      "name": "Check Success",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [2220, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('Workflow Constants').first().json.SUPABASE_FUNCTIONS_BASE_URL }}/n8n-ingest",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "Authorization", "value": "=Bearer {{ $('Workflow Constants').first().json.SUPABASE_SERVICE_ROLE_KEY }}" },
+            { "name": "Content-Type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"workflow_key\": \"partner_enrich\",\n  \"run_id\": \"{{ $('Result Envelope').first().json.run_id }}\",\n  \"status\": \"processed\",\n  \"payload\": {{ JSON.stringify($('Result Envelope').first().json.payload.result) }}\n}",
+        "options": { "timeout": 30000, "response": { "response": { "neverError": true } } }
+      },
+      "id": "success-callback",
+      "name": "Success Callback",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [2460, 180],
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('Workflow Constants').first().json.SUPABASE_FUNCTIONS_BASE_URL }}/n8n-ingest",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "Authorization", "value": "=Bearer {{ $('Workflow Constants').first().json.SUPABASE_SERVICE_ROLE_KEY }}" },
+            { "name": "Content-Type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"workflow_key\": \"partner_enrich\",\n  \"run_id\": \"{{ $('Result Envelope').first().json.run_id }}\",\n  \"status\": \"error\",\n  \"payload\": {\n    \"error\": {{ JSON.stringify($('Result Envelope').first().json.payload.error) }},\n    \"failed_node\": {{ JSON.stringify($('Result Envelope').first().json.payload.failed_node) }}\n  }\n}",
+        "options": { "timeout": 30000, "response": { "response": { "neverError": true } } }
+      },
+      "id": "error-callback",
+      "name": "Error Callback",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [2460, 440],
+      "continueOnFail": true
+    }
+  ],
+  "connections": {
+    "Webhook Trigger": { "main": [[{ "node": "Workflow Constants", "type": "main", "index": 0 }]] },
+    "Workflow Constants": { "main": [[{ "node": "Verify Signature", "type": "main", "index": 0 }]] },
+    "Verify Signature": { "main": [[{ "node": "Validate Input", "type": "main", "index": 0 }]] },
+    "Validate Input": { "main": [[{ "node": "Resolve URL", "type": "main", "index": 0 }]] },
+    "Resolve URL": { "main": [[{ "node": "Has URL?", "type": "main", "index": 0 }]] },
+    "Has URL?": { "main": [[{ "node": "Firecrawl Scrape", "type": "main", "index": 0 }], [{ "node": "Skip Crawl", "type": "main", "index": 0 }]] },
+    "Firecrawl Scrape": { "main": [[{ "node": "Extract Enrichment", "type": "main", "index": 0 }]] },
+    "Extract Enrichment": { "main": [[{ "node": "Result Envelope", "type": "main", "index": 0 }]] },
+    "Skip Crawl": { "main": [[{ "node": "Result Envelope", "type": "main", "index": 0 }]] },
+    "Result Envelope": { "main": [[{ "node": "Check Success", "type": "main", "index": 0 }]] },
+    "Check Success": { "main": [[{ "node": "Success Callback", "type": "main", "index": 0 }], [{ "node": "Error Callback", "type": "main", "index": 0 }]] }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "saveManualExecutions": true,
+    "callerPolicy": "workflowsFromSameOwner",
+    "errorWorkflow": ""
+  },
+  "staticData": null,
+  "tags": [{ "name": "profunda" }, { "name": "enrichment" }],
+  "triggerCount": 1
+}

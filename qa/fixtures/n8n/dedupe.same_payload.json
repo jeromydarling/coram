@@ -1,0 +1,14 @@
+{
+  "workflow_key": "partner_enrich",
+  "run_id": "dedup-1111-2222-3333-444444444444",
+  "org_name": "Dedupe Test Org",
+  "website_url": "https://dedupetest.org",
+  "payload": {
+    "mission_summary": "Testing exactly-once dedupe.",
+    "programs": ["Program A"],
+    "populations_served": ["test-pop"],
+    "geographies": ["US"],
+    "funding_signals": [],
+    "keywords": ["dedupe", "test"]
+  }
+}

@@ -1,0 +1,73 @@
+{
+  "page": {
+    "title": "Actividades",
+    "subtitle": "Sus compromisos relacionales — visitas, proyectos, reuniones y más."
+  },
+  "filters": {
+    "searchPlaceholder": "Buscar actividades...",
+    "allActivities": "Todas las Actividades",
+    "meetings": "Reuniones",
+    "calls": "Llamadas",
+    "visits": "Visitas",
+    "projects": "Proyectos",
+    "tasks": "Tareas",
+    "allSources": "Todas las Fuentes",
+    "crmOnly": "Solo CRM",
+    "googleCalendar": "Google Calendar",
+    "viewPlaceholder": "Ver",
+    "sourcePlaceholder": "Fuente"
+  },
+  "counts": {
+    "activity_one": "{{count}} actividad",
+    "activity_other": "{{count}} actividades"
+  },
+  "tooltips": {
+    "what": "Todo su compromiso relacional — reuniones, llamadas, visitas y proyectos de buen trabajo — en una línea de tiempo.",
+    "where": "Actividades en Programación.",
+    "why": "Un hilo coherente de quién, cuándo y qué se compartió."
+  },
+  "buttons": {
+    "newProject": "Nuevo Proyecto",
+    "logActivity": "Registrar Actividad"
+  },
+  "states": {
+    "noActivitiesFound": "No se encontraron actividades",
+    "adjustFilters": "Intente ajustar sus filtros",
+    "getStarted": "Registre una llamada, marque reuniones como asistidas o cree un proyecto para verlos aquí"
+  },
+  "card": {
+    "attended": "Asistido",
+    "next": "Siguiente:",
+    "clickToViewProject": "Clic para ver el proyecto",
+    "clickToViewCalendar": "Clic para ver en el Calendario",
+    "clickToEdit": "Clic para editar"
+  },
+  "myStats": {
+    "title": "Mis Estadísticas",
+    "mobileTitle": "Estadísticas",
+    "subtitle": "Informe de actividad personal para {{name}}",
+    "weekly": "Semanal",
+    "monthly": "Mensual",
+    "yearly": "Anual",
+    "periodThisWeek": "Esta Semana",
+    "periodThisMonth": "Este Mes",
+    "periodThisYear": "Este Año",
+    "noChange": "Sin cambios",
+    "vsPrevious": "vs anterior",
+    "attended": "asistido",
+    "missedOf": "perdidas de {{total}} programadas",
+    "ytdLabel": "Año en curso: {{attended}} asistidas / {{total}} total",
+    "yearToDate": "Año en curso: {{count}}",
+    "meetings": "Reuniones",
+    "events": "Eventos",
+    "tasksCompleted": "Tareas Completadas",
+    "totalActivities": "Total de Actividades",
+    "activityTrends": "Tendencias de Actividad",
+    "ytdAccomplishments": "Logros del Año en Curso",
+    "meetingsAttended": "Reuniones Asistidas",
+    "eventsAttended": "Eventos Asistidos"
+  },
+  "quickLog": {
+    "logType": "Registrar {{type}}"
+  }
+}

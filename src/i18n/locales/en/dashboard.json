@@ -1,0 +1,355 @@
+{
+  "welcome": {
+    "title": "Welcome to CROS",
+    "subtitle": "Your relational community intelligence platform",
+    "greeting": "Good {{timeOfDay}}, {{name}}",
+    "greetingDefault": "Good {{timeOfDay}}",
+    "timeOfDay": {
+      "morning": "morning",
+      "afternoon": "afternoon",
+      "evening": "evening"
+    },
+    "firstVisit": {
+      "title": "Welcome to Your Journey",
+      "message": "CROS helps you see the people around you more clearly and grow together in community. Let's get started.",
+      "step1": "Add your first relationship",
+      "step2": "Explore the dashboard",
+      "step3": "Meet your NRI Companion",
+      "dismiss": "I'll explore on my own"
+    }
+  },
+  "cards": {
+    "activeRelationships": "Active Relationships",
+    "upcomingFollowUps": "Upcoming Follow-Ups",
+    "recentInteractions": "Recent Interactions",
+    "openOpportunities": "Open Opportunities",
+    "eventsThisWeek": "Events This Week",
+    "volunteerHours": "Volunteer Hours",
+    "provisionsActive": "Active Provisions",
+    "journeyMilestones": "Journey Milestones",
+    "communityPulse": "Community Pulse",
+    "reflectionsThisMonth": "Reflections This Month",
+    "overdueActions": "Overdue Actions",
+    "item_one": "item",
+    "item_other": "items",
+    "critical": "{{count}} critical (>7 days)",
+    "daysOverdue_one": "{{count}} day overdue",
+    "daysOverdue_other": "{{count}} days overdue",
+    "moreOverdueItems": "+{{count}} more overdue items"
+  },
+  "modes": {
+    "operational": "Operational",
+    "story": "Story"
+  },
+  "alerts": {
+    "journeyAttentionRequired": "Journey Attention Required",
+    "stuckDescription_one": "{{count}} opportunity stuck for 30+ days",
+    "stuckDescription_other": "{{count}} opportunities stuck for 30+ days",
+    "view": "View",
+    "days": "days"
+  },
+  "activity": {
+    "recentActivity": "Recent Activity",
+    "noRecentActivity": "No recent activity"
+  },
+  "snapshot": {
+    "weeklySnapshot": "Weekly Snapshot",
+    "noScheduledItems": "No scheduled items",
+    "viewFullDetails": "View Full Details",
+    "allMetros": "All Metros",
+    "events": "Events",
+    "meetings": "Meetings",
+    "tasks": "Tasks",
+    "google": "Google",
+    "googleCalendar": "Google Calendar",
+    "contact": "Contact:",
+    "organization": "Organization:",
+    "notes": "Notes:",
+    "description": "Description:",
+    "due": "Due:"
+  },
+  "nextBestActions": {
+    "title": "Next Best Actions",
+    "description": "Ranked actions based on signals, outcomes, and urgency",
+    "highPriority": "High Priority",
+    "medium": "Medium",
+    "low": "Low",
+    "execute": "Execute",
+    "dismiss": "Dismiss",
+    "snooze7d": "Snooze 7d",
+    "noPendingActions": "No pending actions — all caught up!"
+  },
+  "scorecard": {
+    "fridayWeeklyScorecard": "Friday Weekly Scorecard",
+    "thisWeek": "This Week",
+    "newOpportunities": "New Opportunities",
+    "meetingsHeld": "Meetings Held",
+    "eventsAttended": "Events Attended",
+    "anchorCandidates": "Anchor Candidates",
+    "ordersVsTarget": "Orders vs. Quarterly Target",
+    "devices": "devices",
+    "percentOfTarget": "{{percent}}% of target",
+    "targetMet": "Target Met!",
+    "onTrack": "On Track",
+    "toGo": "{{count}} to go",
+    "nextWeekTop3": "Next Week's Top 3 Events",
+    "noNextWeekEvents": "No events or meetings scheduled for next week",
+    "highPotential": "High Potential"
+  },
+  "companion": {
+    "title": "NRI Companion",
+    "trayLabel": "Companion",
+    "thinking": "Reflecting...",
+    "greeting": "How can I help you tend to your relationships today?",
+    "inputPlaceholder": "Ask the NRI Companion...",
+    "suggestedActions": "Suggested for You",
+    "recentInsights": "Recent Insights",
+    "dailyReflection": "Daily Reflection"
+  },
+  "seasonalRhythm": {
+    "title": "Seasonal Rhythm",
+    "currentSeason": "Current Season",
+    "spring": "Spring — Planting & New Beginnings",
+    "summer": "Summer — Growth & Flourishing",
+    "autumn": "Autumn — Harvest & Gratitude",
+    "winter": "Winter — Rest & Reflection",
+    "liturgical": {
+      "advent": "Advent — Waiting & Preparation",
+      "christmas": "Christmas — Joy & Gift",
+      "lent": "Lent — Reflection & Renewal",
+      "easter": "Easter — Resurrection & Hope",
+      "ordinary": "Ordinary Time — Faithful Presence"
+    }
+  },
+  "announcements": {
+    "title": "Announcements",
+    "newFeature": "New Feature",
+    "maintenance": "Scheduled Maintenance",
+    "tip": "Pro Tip",
+    "dismissAll": "Dismiss All"
+  },
+  "quickStats": {
+    "title": "At a Glance",
+    "trend": {
+      "up": "Up {{percent}}% from last month",
+      "down": "Down {{percent}}% from last month",
+      "stable": "Steady from last month"
+    }
+  },
+  "missionRhythm": {
+    "title": "Mission Rhythm",
+    "subtitle": "A calm view of how care, relationships, and work are unfolding.",
+    "helpAffordance": "What you're seeing",
+    "helpTooltip": "These insights adapt to your organization's archetype and the data you've added. As you record visits, reflections, and events, this view deepens.",
+    "thisWeek": {
+      "title": "This Week",
+      "description": "A quiet summary of your team's presence and care.",
+      "noActivity": "No activity yet this week. That's okay — presence builds quietly.",
+      "relationshipsTouched": "Relationships Touched",
+      "visitsCompleted": "Visits Completed",
+      "reflectionsAdded": "Reflections Added",
+      "events": "Events",
+      "volunteersEngaged": "Volunteers Engaged",
+      "careRecorded": "Care Recorded"
+    },
+    "carePresence": {
+      "title": "Care & Presence",
+      "description": "Where care happened and how presence is unfolding.",
+      "emptyState": "Location awareness will deepen as you add visits and events."
+    },
+    "momentum": {
+      "title": "Momentum & Adoption",
+      "description": "How your team is growing into the system."
+    },
+    "discovery": {
+      "title": "Discovery & Community",
+      "description": "What's emerging around your mission.",
+      "emptyState": "Discovery adapts to your mission — shaped by your archetype and enrichment keywords."
+    }
+  },
+  "staleNextSteps": {
+    "title": "Stale Next Steps",
+    "description": "Opportunities with next steps that haven't been updated"
+  },
+  "weeklyStory": {
+    "title": "This Week's Story",
+    "description": "Not a report — just what has quietly taken shape.",
+    "tooltipContent": "Weekly narrative thread built from your team's reflections, visits, and signals.",
+    "hideMoments": "Hide moments",
+    "seeCitedMoments": "See cited moments",
+    "readFullStory": "Read the full story",
+    "emptyState": "The story gathers quietly here. As your team records visits, reflections, and relationships, the threads begin to form."
+  },
+  "formation": {
+    "title": "Gentle Formation",
+    "tooltipContent": "Gentle, role-aware prompts to help you stay present in your daily rhythm."
+  },
+  "storySignals": {
+    "title": "Story Signals",
+    "description": "Gentle observations from this week's relationship activity",
+    "openStory": "Open story",
+    "kinds": {
+      "checkIn": "Check-in",
+      "connection": "Connection",
+      "headsUp": "Heads up",
+      "celebration": "Celebration"
+    }
+  },
+  "localPulse": {
+    "title": "Local Pulse",
+    "thisWeek": "{{count}} this week",
+    "reviewAll": "Review All"
+  },
+  "leadershipBrief": {
+    "title": "Leadership Brief",
+    "noReportYet": "No leadership brief yet",
+    "generateNow": "Generate Now",
+    "viewFullBrief": "View Full Brief",
+    "briefSchedule": "Brief Schedule",
+    "briefScheduleDescription": "Choose when your brief is generated and how far back it looks.",
+    "generateOn": "Generate on",
+    "lookbackPeriod": "Lookback period",
+    "set": "Set",
+    "days": "days",
+    "currently": "Currently: {{day}}s, last {{lookback}} days",
+    "regenerateReport": "Regenerate report",
+    "editBrief": "Edit brief",
+    "downloadPdf": "Download PDF",
+    "cancelEditing": "Cancel editing",
+    "saveChanges": "Save changes",
+    "save": "Save",
+    "sections": {
+      "keyWins": "Key Wins",
+      "relationshipGrowth": "Relationship Growth",
+      "journeyMovement": "Journey Movement",
+      "outreachReport": "Outreach Report",
+      "provisionsDelivered": "Prōvīsiō Delivered",
+      "engagementSignals": "Engagement Signals",
+      "newOpportunities": "New Opportunities",
+      "upcomingFocus": "Upcoming Focus",
+      "concerns": "Concerns",
+      "calendarAhead": "Calendar & Tasks Ahead"
+    }
+  },
+  "relationshipSignals": {
+    "title": "Relationship Signals",
+    "description": "Gentle follow-ups surfaced from your conversations",
+    "careTaskCreated": "Care task created",
+    "createCareTask": "Create care task"
+  },
+  "relationshipStoryRibbon": {
+    "emptyState": "Your relationship focus will appear here."
+  },
+  "teamCapacity": {
+    "title": "Your Team Presence",
+    "tooltipContent": "How many stewards, shepherds, companions, and admins are actively guiding your mission. Visitors, volunteers, and imported contacts are never counted.",
+    "companion_one": "{{count}} companion is actively guiding this work.",
+    "companion_other": "{{count}} companions and shepherds are actively guiding this work.",
+    "visitorsWelcome": "Visitors and volunteers are always welcome.",
+    "overCapacity": "Your team is growing — you may wish to expand capacity so everyone can participate comfortably."
+  },
+  "metroDiscovery": {
+    "title": "Metro Intelligence",
+    "description": "When you're ready to grow beyond your region, Metro Intelligence brings multi-community awareness, expansion signals, and narrative segmentation.",
+    "explore": "Explore Metro Intelligence"
+  },
+  "metroFilter": {
+    "allMetros": "All Metros"
+  },
+  "eventDayBanner": {
+    "todayIsEventDay": "Today is an Event Day"
+  },
+  "recommendations": {
+    "title": "Recommendations",
+    "viewOpportunity": "View opportunity"
+  },
+  "grantKPIs": {
+    "activeGrants": "Active Grants",
+    "pipelineGrants": "Pipeline Grants",
+    "totalRequested": "Total Requested",
+    "totalAwarded": "Total Awarded",
+    "grantsByStage": "Grants by Stage",
+    "grantsByStageDescription": "Distribution across grant pipeline stages",
+    "grantsByFunderType": "Grants by Funder Type",
+    "grantsByFunderTypeDescription": "Amount awarded by funder category"
+  },
+  "learningDashboard": {
+    "whatWorksBest": "What Works Best",
+    "whatWorksBestDescription": "Action types by success rate",
+    "signalSources": "Signal Sources",
+    "signalSourcesDescription": "Which signals lead to success",
+    "topActionsToday": "Top Actions Today",
+    "signalsWithoutActions": "Signals Without Actions",
+    "signalsWithoutActionsDescription": "Orgs with recent signals but no executed actions",
+    "noDataYet": "No data yet",
+    "noPendingActions": "No pending actions",
+    "allSignalsActedUpon": "All signals acted upon"
+  },
+  "anchorTrendChart": {
+    "title": "Anchors Formed",
+    "subtitle": "New anchors reaching first volume by month",
+    "anchorFormed": "anchor formed",
+    "anchorsFormed": "anchors formed"
+  },
+  "eventContactsChart": {
+    "contactsMadeByEvent": "Contacts Made by Event",
+    "topEventsByContacts": "Top Events by Contacts Made",
+    "noContactsLinked": "No contacts linked to events yet",
+    "contactsMade": "contacts made",
+    "convertedToOpportunities": "converted to opportunities",
+    "conversionRate": "conversion rate",
+    "householdsServed": "households served",
+    "contactsMadeBar": "Contacts Made"
+  },
+  "googleEventManager": {
+    "manageGoogleEvents": "Manage Google Events",
+    "googleEvents": "Google Events",
+    "hiddenCount": "{{count}} hidden",
+    "visibleCount": "{{count}} visible",
+    "toggleVisibilityDescription": "Toggle visibility for this week's events. Hidden events won't appear in your Command Center or Calendar.",
+    "noEventsThisWeek": "No Google Calendar events this week",
+    "hidden": "Hidden",
+    "visible": "Visible"
+  },
+  "metroReadinessTable": {
+    "title": "Metro Readiness Index",
+    "subtitle": "Strategic expansion scoring by market",
+    "col": {
+      "metro": "Metro",
+      "readinessIndex": "Readiness Index",
+      "status": "Status",
+      "activeAnchors": "Active Anchors",
+      "pipeline": "Pipeline",
+      "recommendation": "Recommendation"
+    }
+  },
+  "nriBadge": {
+    "active": "NRI Active",
+    "signalsAndReports": "{{signals}} signals this week · {{reports}} reports"
+  },
+  "opportunityDistributionChart": {
+    "opportunity": "opportunity",
+    "opportunities": "opportunities",
+    "clickToFilter": "Click segment to filter",
+    "noDataAvailable": "No data available"
+  },
+  "pipelineChart": {
+    "title": "Journey by Chapter",
+    "subtitle": "Partnerships in development",
+    "opportunity": "opportunity",
+    "opportunities": "opportunities"
+  },
+  "topAnchorsTable": {
+    "title": "Top Performing Anchors",
+    "subtitle": "Ranked by average monthly volume",
+    "col": {
+      "organization": "Organization",
+      "metro": "Metro",
+      "tier": "Tier",
+      "avgVolume": "Avg Volume",
+      "trend": "Trend",
+      "status": "Status",
+      "value": "Value"
+    }
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "id": "sug-44444444-aaaa-bbbb-cccc-dddddddddddd",
+  "org_id": "org-wl-001",
+  "source_type": "watchlist_signal",
+  "source_id": "sig-11111111-aaaa-bbbb-cccc-dddddddddddd",
+  "suggestion_type": "website_change_outreach",
+  "title": "Website update detected — consider outreach",
+  "subject": "Quick question about your recent update",
+  "body_template": "<p>Hi {{first_name}},</p><p>I noticed {{org_name}} recently updated your website ({{signal_summary}}).</p><p>We're exploring partnerships in {{metro_or_region}} and thought it could be a good time to connect.</p><p>Would you be open to a quick call next week?</p><p>— {{sender_name}}</p>",
+  "reason": "Website content changed for Example Nonprofit | diff_id: diff-22222222-aaaa-bbbb-cccc-dddddddddddd | detected: 2026-02-07T12:00:00Z",
+  "confidence": 0.6,
+  "status": "open",
+  "snoozed_until": null,
+  "converted_campaign_id": null,
+  "created_by": null,
+  "created_at": "2026-02-07T12:01:00Z"
+}

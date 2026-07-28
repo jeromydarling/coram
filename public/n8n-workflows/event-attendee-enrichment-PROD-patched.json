@@ -1,0 +1,302 @@
+{
+  "name": "Profunda - Event Attendee Enrich (v2-patched)",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "event-attendee-enrich",
+        "responseMode": "onReceived",
+        "options": {}
+      },
+      "id": "webhook-trigger",
+      "name": "Webhook Trigger",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [240, 300],
+      "webhookId": "event-attendee-enrich-prod"
+    },
+    {
+      "parameters": {
+        "keepOnlySet": false,
+        "values": {
+          "string": [
+            {
+              "name": "SUPABASE_FUNCTIONS_BASE_URL",
+              "value": "https://lxahadqhpubynuzvraxc.supabase.co/functions/v1"
+            },
+            {
+              "name": "ENRICHMENT_WORKER_SECRET",
+              "value": "={{ /* PASTE YOUR ENRICHMENT_WORKER_SECRET HERE */ }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "workflow-constants",
+      "name": "Workflow Constants",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 2,
+      "position": [460, 300],
+      "retryOnFail": true,
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "jsCode": "const webhookData = $('Webhook Trigger').first().json;\nconst b = webhookData.body ?? webhookData;\nconst run_id = b.run_id || b.runId || b.runID;\nconst UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;\n\nif (!run_id) {\n  return [{ json: { ok: false, run_id: null, error: { code: 'MISSING_FIELDS', message: 'run_id is required' } } }];\n}\n\nif (b.workflow_key !== 'event_attendee_enrich') {\n  return [{ json: { ok: false, run_id, error: { code: 'WRONG_WORKFLOW', message: 'workflow_key must be event_attendee_enrich, got: ' + b.workflow_key } } }];\n}\n\nif (!b.event_id || typeof b.event_id !== 'string' || !UUID_RE.test(b.event_id)) {\n  return [{ json: { ok: false, run_id, error: { code: 'INVALID_EVENT_ID', message: 'event_id must be a valid UUID' } } }];\n}\n\nconst result = {\n  ok: true,\n  run_id,\n  workflow_key: 'event_attendee_enrich',\n  event_id: b.event_id,\n  triggered_by: b.triggered_by || null\n};\n\nif (b.attendee_ids !== undefined && b.attendee_ids !== null) {\n  if (!Array.isArray(b.attendee_ids)) {\n    return [{ json: { ok: false, run_id, error: { code: 'INVALID_ATTENDEE_IDS', message: 'attendee_ids must be an array of UUIDs' } } }];\n  }\n  for (const id of b.attendee_ids) {\n    if (typeof id !== 'string' || !UUID_RE.test(id)) {\n      return [{ json: { ok: false, run_id, error: { code: 'INVALID_ATTENDEE_ID', message: 'Each attendee_id must be a valid UUID' } } }];\n    }\n  }\n  const capped = b.attendee_ids.slice(0, 50);\n  if (capped.length > 0) result.attendee_ids = capped;\n}\n\nreturn [{ json: result }];"
+      },
+      "id": "validate-input",
+      "name": "Normalize Input",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [680, 300]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "boolean": [
+            {
+              "value1": "={{ $json.ok }}",
+              "operation": "isTrue"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "if-valid",
+      "name": "IF Valid Input?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [900, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('Workflow Constants').first().json.SUPABASE_FUNCTIONS_BASE_URL + '/event-attendee-fetch' }}",
+        "authentication": "none",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-Api-Key",
+              "value": "={{ $('Workflow Constants').first().json.ENRICHMENT_WORKER_SECRET }}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ event_id: $('Normalize Input').first().json.event_id, attendee_ids: $('Normalize Input').first().json.attendee_ids || null, limit: 50 }) }}",
+        "options": {
+          "response": {},
+          "timeout": 60000
+        }
+      },
+      "id": "fetch-attendees",
+      "name": "Fetch Attendees",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [1120, 300],
+      "continueOnFail": true,
+      "alwaysOutputData": true,
+      "retryOnFail": true
+    },
+    {
+      "parameters": {
+        "jsCode": "const input = $('Normalize Input').first().json;\nconst fetchResult = $('Fetch Attendees').first().json;\n\n// Detect fetch-level errors (HTTP failures caught by continueOnFail)\nconst fetchError = fetchResult?.error || null;\n\n// Defensively extract attendee array from various response shapes\nlet attendees = [];\nif (Array.isArray(fetchResult)) {\n  attendees = fetchResult;\n} else if (fetchResult && Array.isArray(fetchResult.data)) {\n  attendees = fetchResult.data;\n} else if (fetchResult && Array.isArray(fetchResult.attendees)) {\n  attendees = fetchResult.attendees;\n} else if (fetchResult && !fetchError) {\n  // Single-object response — only wrap if it looks like an attendee\n  if (fetchResult.id || fetchResult.attendee_id) {\n    attendees = [fetchResult];\n  }\n}\n\n// Score each attendee for completeness\nconst enriched_attendees = attendees.map(a => {\n  const fields = ['name', 'email', 'title', 'organization', 'phone'];\n  const filled = fields.filter(f => a[f] && String(a[f]).trim().length > 0).length;\n  const completeness = Math.round((filled / fields.length) * 100);\n  return {\n    id: a.id || a.attendee_id || null,\n    contact_id: a.contact_id || null,\n    name: a.name || null,\n    email: a.email || null,\n    title: a.title || null,\n    organization: a.organization || null,\n    phone: a.phone || null,\n    completeness_score: completeness,\n    needs_enrichment: completeness < 60,\n    enrichment_source: 'deterministic_v1'\n  };\n});\n\nreturn [{ json: {\n  run_id: input.run_id,\n  event_id: input.event_id,\n  enriched_attendees,\n  attendee_count: enriched_attendees.length,\n  fetch_error: fetchError,\n  fetch_returned_empty: attendees.length === 0 && !fetchError\n} }];"
+      },
+      "id": "enrich-attendees",
+      "name": "Enrich Attendees",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1340, 300],
+      "continueOnFail": true,
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "jsCode": "const input = $('Normalize Input').first().json;\nlet error = null;\nlet failed_node = null;\n\n// Check Fetch Attendees for hard failures\ntry {\n  const fetchNode = $('Fetch Attendees').first();\n  if (fetchNode.json?.error && typeof fetchNode.json.error === 'string' && fetchNode.json.error.length > 0) {\n    // Only treat as error if it's a real HTTP/network failure, not \"no data\"\n    const errStr = String(fetchNode.json.error);\n    if (!errStr.includes('404') && !errStr.includes('No attendees')) {\n      error = 'Fetch attendees failed: ' + errStr.slice(0, 500);\n      failed_node = 'Fetch Attendees';\n    }\n  }\n} catch (e) {\n  error = 'Fetch Attendees node did not execute: ' + String(e.message).slice(0, 200);\n  failed_node = 'Fetch Attendees';\n}\n\n// Check Enrich Attendees for hard failures\nif (!error) {\n  try {\n    const enrichNode = $('Enrich Attendees').first();\n    if (enrichNode.json?.error) {\n      error = 'Enrich failed: ' + String(enrichNode.json.error).slice(0, 500);\n      failed_node = 'Enrich Attendees';\n    }\n  } catch (e) {\n    error = 'Enrich Attendees node did not execute: ' + String(e.message).slice(0, 200);\n    failed_node = 'Enrich Attendees';\n  }\n}\n\n// Build result — \"no data\" is a valid completed state, not an error\nlet result = null;\nif (!error) {\n  try {\n    const enrichData = $('Enrich Attendees').first().json;\n    result = {\n      enriched_attendees: enrichData.enriched_attendees || [],\n      attendee_count: enrichData.attendee_count || 0,\n      event_id: enrichData.event_id,\n      fetch_returned_empty: enrichData.fetch_returned_empty || false\n    };\n    // fetch_error is informational but NOT a workflow failure if we got empty results\n    // Only mark as error if fetch_error exists AND we didn't get any attendees at all\n    // AND the error is not a simple \"not found\" type\n    if (enrichData.fetch_error && !enrichData.fetch_returned_empty) {\n      error = 'Fetch returned error: ' + String(enrichData.fetch_error).slice(0, 500);\n      failed_node = 'Fetch Attendees';\n    }\n  } catch (e) {\n    error = 'Failed to build result envelope: ' + String(e.message).slice(0, 200);\n    failed_node = 'Result Envelope';\n  }\n}\n\n// CRITICAL: status is 'processed' for both \"got results\" and \"no results\" cases\n// Only 'error' for genuine infrastructure/network failures\nreturn [{ json: {\n  run_id: input.run_id,\n  workflow_key: 'event_attendee_enrich',\n  status: error ? 'error' : 'processed',\n  payload: { result, error, failed_node }\n} }];"
+      },
+      "id": "result-envelope",
+      "name": "Result Envelope",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1560, 300],
+      "continueOnFail": true,
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "boolean": [
+            {
+              "value1": "={{ $json.status === 'processed' }}",
+              "operation": "isTrue"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "if-success",
+      "name": "Check Success",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [1780, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('Workflow Constants').first().json.SUPABASE_FUNCTIONS_BASE_URL + '/n8n-ingest' }}",
+        "authentication": "none",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-Api-Key",
+              "value": "={{ $('Workflow Constants').first().json.ENRICHMENT_WORKER_SECRET }}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ workflow_key: 'event_attendee_enrich', run_id: $('Result Envelope').first().json.run_id, status: 'processed', payload: $('Result Envelope').first().json.payload.result }) }}",
+        "options": {
+          "response": {},
+          "timeout": 60000
+        }
+      },
+      "id": "success-callback",
+      "name": "Success Callback",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [2020, 180],
+      "alwaysOutputData": true,
+      "retryOnFail": false,
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('Workflow Constants').first().json.SUPABASE_FUNCTIONS_BASE_URL + '/n8n-ingest' }}",
+        "authentication": "none",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-Api-Key",
+              "value": "={{ $('Workflow Constants').first().json.ENRICHMENT_WORKER_SECRET }}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ workflow_key: 'event_attendee_enrich', run_id: $('Result Envelope').first().json.run_id, status: 'error', payload: { error: $('Result Envelope').first().json.payload.error, failed_node: $('Result Envelope').first().json.payload.failed_node } }) }}",
+        "options": {
+          "response": {},
+          "timeout": 60000
+        }
+      },
+      "id": "error-callback",
+      "name": "Error Callback",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [2020, 440],
+      "alwaysOutputData": true,
+      "retryOnFail": false,
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('Workflow Constants').first().json.SUPABASE_FUNCTIONS_BASE_URL + '/n8n-ingest' }}",
+        "authentication": "none",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-Api-Key",
+              "value": "={{ $('Workflow Constants').first().json.ENRICHMENT_WORKER_SECRET }}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ workflow_key: 'event_attendee_enrich', run_id: $('Normalize Input').first().json.run_id || 'unknown', status: 'error', payload: { error: $('Normalize Input').first().json.error ? String($('Normalize Input').first().json.error.message || $('Normalize Input').first().json.error.code || 'Invalid input') : 'Invalid input', failed_node: 'Normalize Input' } }) }}",
+        "options": {
+          "response": {},
+          "timeout": 60000
+        }
+      },
+      "id": "validation-error-callback",
+      "name": "Validation Error Callback",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [1120, 540],
+      "alwaysOutputData": true,
+      "retryOnFail": false,
+      "continueOnFail": true
+    }
+  ],
+  "connections": {
+    "Webhook Trigger": {
+      "main": [[{ "node": "Workflow Constants", "type": "main", "index": 0 }]]
+    },
+    "Workflow Constants": {
+      "main": [[{ "node": "Normalize Input", "type": "main", "index": 0 }]]
+    },
+    "Normalize Input": {
+      "main": [[{ "node": "IF Valid Input?", "type": "main", "index": 0 }]]
+    },
+    "IF Valid Input?": {
+      "main": [
+        [{ "node": "Fetch Attendees", "type": "main", "index": 0 }],
+        [{ "node": "Validation Error Callback", "type": "main", "index": 0 }]
+      ]
+    },
+    "Fetch Attendees": {
+      "main": [[{ "node": "Enrich Attendees", "type": "main", "index": 0 }]]
+    },
+    "Enrich Attendees": {
+      "main": [[{ "node": "Result Envelope", "type": "main", "index": 0 }]]
+    },
+    "Result Envelope": {
+      "main": [[{ "node": "Check Success", "type": "main", "index": 0 }]]
+    },
+    "Check Success": {
+      "main": [
+        [{ "node": "Success Callback", "type": "main", "index": 0 }],
+        [{ "node": "Error Callback", "type": "main", "index": 0 }]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": true,
+    "timeSavedMode": "fixed",
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "versionId": "v2-patched-empty-guard",
+  "meta": {
+    "instanceId": "93beede2a90582294d7ef06720d87eff3641b0d88433511d1e55f0a191940c61"
+  },
+  "tags": [
+    { "name": "profunda", "createdAt": "2026-02-11T00:00:00.000Z", "updatedAt": "2026-02-11T00:00:00.000Z" },
+    { "name": "enrichment", "createdAt": "2026-02-11T00:00:00.000Z", "updatedAt": "2026-02-11T00:00:00.000Z" }
+  ]
+}

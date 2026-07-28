@@ -1,0 +1,1 @@
+ALTER TABLE public.search_runs ADD COLUMN IF NOT EXISTS search_brief jsonb;

@@ -1,0 +1,16 @@
+{
+  "event_type": "event_enrichment_ready",
+  "org_id": null,
+  "user_id": "user-rim-001",
+  "metadata": {
+    "event_id": "evt-55555555-aaaa-bbbb-cccc-dddddddddddd",
+    "event_name": "Tech Summit 2026",
+    "match_count": 5
+  },
+  "priority": "normal",
+  "fingerprint": "event_enrichment:evt-55555555-aaaa-bbbb-cccc-dddddddddddd:1739318400000",
+  "tier": "T1",
+  "deep_link": "/events/evt-55555555-aaaa-bbbb-cccc-dddddddddddd/attendees",
+  "title": "🎯 Attendee matches found",
+  "body": "5 matches found for Tech Summit 2026 — available when you're ready."
+}

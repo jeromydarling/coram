@@ -1,0 +1,332 @@
+{
+  "name": "Profunda - Grant Resource Enrichment (v1)",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "grant-enrich-v1",
+        "responseMode": "onReceived",
+        "options": {}
+      },
+      "id": "webhook-trigger",
+      "name": "Webhook Trigger",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [240, 300],
+      "webhookId": "grant-enrich-v1-prod"
+    },
+    {
+      "parameters": {
+        "keepOnlySet": false,
+        "values": {
+          "string": [
+            { "name": "SUPABASE_FUNCTIONS_BASE_URL", "value": "https://lxahadqhpubynuzvraxc.supabase.co/functions/v1" }
+          ]
+        },
+        "options": {}
+      },
+      "id": "workflow-constants",
+      "name": "Workflow Constants",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 2,
+      "position": [460, 300],
+      "retryOnFail": true,
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "jsCode": "const webhookData = $('Webhook Trigger').first().json;\nconst b = webhookData.body ?? webhookData;\nconst run_id = b.run_id || b.runId || b.runID;\nconst UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;\n\nif (!run_id) {\n  return [{ json: { ok: false, run_id: null, error: { code: 'MISSING_FIELDS', message: 'run_id is required' } } }];\n}\n\nif (b.workflow_key !== 'grant_enrich') {\n  return [{ json: { ok: false, run_id, error: { code: 'WRONG_WORKFLOW', message: 'workflow_key must be grant_enrich, got: ' + b.workflow_key } } }];\n}\n\nif (!b.entity_id || typeof b.entity_id !== 'string' || !UUID_RE.test(b.entity_id)) {\n  return [{ json: { ok: false, run_id, error: { code: 'INVALID_ENTITY_ID', message: 'entity_id must be a valid UUID' } } }];\n}\n\nif (!b.source_url || typeof b.source_url !== 'string') {\n  return [{ json: { ok: false, run_id, error: { code: 'MISSING_URL', message: 'source_url is required' } } }];\n}\n\nreturn [{ json: {\n  ok: true,\n  run_id,\n  workflow_key: 'grant_enrich',\n  entity_id: b.entity_id,\n  entity_type: 'grant',\n  source_url: b.source_url,\n  grant_name: b.grant_name || 'Unknown Grant'\n} }];"
+      },
+      "id": "validate-input",
+      "name": "Normalize Input",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [680, 300]
+    },
+    {
+      "parameters": {
+        "conditions": { "boolean": [{ "value1": "={{ $json.ok }}", "operation": "isTrue" }] },
+        "options": {}
+      },
+      "id": "if-valid",
+      "name": "IF Valid Input?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [900, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.firecrawl.dev/v1/scrape",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ url: $('Normalize Input').first().json.source_url, formats: ['markdown', 'links'], onlyMainContent: true, waitFor: 5000 }) }}",
+        "options": { "response": {}, "timeout": 90000 }
+      },
+      "id": "firecrawl-scrape",
+      "name": "Firecrawl Scrape",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [1120, 180],
+      "continueOnFail": true,
+      "alwaysOutputData": true,
+      "retryOnFail": true,
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "GJkntTblj2tXySIz",
+          "name": "Firecrawl Auth"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const input = $('Normalize Input').first().json;\nlet scrapeData;\ntry {\n  scrapeData = $('Firecrawl Scrape').first().json;\n} catch (e) {\n  return [{ json: { ...input, markdown: '', links: [], scrape_ok: false, scrape_bytes: 0, scrape_error: 'Firecrawl node failed: ' + String(e.message).slice(0, 200) } }];\n}\n\nif (scrapeData.error || !scrapeData.success) {\n  return [{ json: { ...input, markdown: '', links: [], scrape_ok: false, scrape_bytes: 0, scrape_error: String(scrapeData.error || 'Firecrawl returned unsuccessful response').slice(0, 500) } }];\n}\n\nconst markdown = scrapeData.data?.markdown || scrapeData.markdown || '';\nconst links = scrapeData.data?.links || scrapeData.links || [];\n\n// Truncate to ~30k chars for LLM context window\nconst truncated = markdown.length > 30000 ? markdown.slice(0, 30000) + '\\n[TRUNCATED]' : markdown;\n\nreturn [{ json: { ...input, markdown: truncated, links, scrape_ok: true, scrape_bytes: markdown.length } }];"
+      },
+      "id": "prepare-llm-input",
+      "name": "Prepare LLM Input",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1340, 180],
+      "continueOnFail": true,
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "conditions": { "boolean": [{ "value1": "={{ $json.scrape_ok }}", "operation": "isTrue" }] },
+        "options": {}
+      },
+      "id": "if-scrape-ok",
+      "name": "Scrape OK?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [1560, 180]
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Grant: {{ $json.grant_name }}\n\nPage URL: {{ $json.source_url }}\n\nPage content:\n{{ $json.markdown }}\n\nLinks found on page:\n{{ ($json.links || []).slice(0, 50).join('\\n') }}",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "You are a grant research analyst. Extract structured metadata from a grant program webpage. Return a single JSON object with these fields:\n\n- grant_term_start: ISO date string (YYYY-MM-DD) or null\n- grant_term_end: ISO date string (YYYY-MM-DD) or null\n- is_multiyear: boolean or null\n- available_funding: number (total program funding in USD) or null\n- max_award: number (per-grant maximum in USD) or null\n- match_required: boolean or null\n- reporting_required: boolean or null\n- application_url: URL string or null\n- important_dates: array of { label: string, date: string (YYYY-MM-DD), description: string }\n  Examples: application deadline, LOI deadline, info session, award notification, grant start, grant end\n- resources: array of { label: string, url: string, description: string }\n  Examples: FAQ page, eligibility guide, webinar recording, program guidelines\n- downloads: array of { label: string, url: string, description: string }\n  Examples: application PDF, budget template, program guidelines PDF\n- summary: string (1-2 sentence summary of the grant program)\n\nOnly include data that is explicitly stated. Do not guess. Use null for unknown fields. Return ONLY valid JSON."
+        }
+      },
+      "id": "llm-extract",
+      "name": "AI Extract Grant Data",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [1800, 80]
+    },
+    {
+      "parameters": {
+        "model": { "__rl": true, "value": "gpt-4o-mini", "mode": "list", "cachedResultName": "gpt-4o-mini" },
+        "builtInTools": {},
+        "options": {}
+      },
+      "id": "openai-model",
+      "name": "OpenAI Chat Model",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [1880, 320],
+      "credentials": {
+        "openAiApi": {
+          "id": "S65JWr5N3fYHb1YT",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "schemaType": "manual",
+        "inputSchema": "{\"type\":\"object\",\"properties\":{\"grant_term_start\":{\"type\":[\"string\",\"null\"]},\"grant_term_end\":{\"type\":[\"string\",\"null\"]},\"is_multiyear\":{\"type\":[\"boolean\",\"null\"]},\"available_funding\":{\"type\":[\"number\",\"null\"]},\"max_award\":{\"type\":[\"number\",\"null\"]},\"match_required\":{\"type\":[\"boolean\",\"null\"]},\"reporting_required\":{\"type\":[\"boolean\",\"null\"]},\"application_url\":{\"type\":[\"string\",\"null\"]},\"important_dates\":{\"type\":\"array\",\"items\":{\"type\":\"object\",\"properties\":{\"label\":{\"type\":\"string\"},\"date\":{\"type\":\"string\"},\"description\":{\"type\":\"string\"}},\"required\":[\"label\",\"date\"]}},\"resources\":{\"type\":\"array\",\"items\":{\"type\":\"object\",\"properties\":{\"label\":{\"type\":\"string\"},\"url\":{\"type\":\"string\"},\"description\":{\"type\":\"string\"}},\"required\":[\"label\",\"url\"]}},\"downloads\":{\"type\":\"array\",\"items\":{\"type\":\"object\",\"properties\":{\"label\":{\"type\":\"string\"},\"url\":{\"type\":\"string\"},\"description\":{\"type\":\"string\"}},\"required\":[\"label\",\"url\"]}},\"summary\":{\"type\":[\"string\",\"null\"]}},\"required\":[\"important_dates\",\"resources\",\"downloads\"]}",
+        "autoFix": true
+      },
+      "id": "output-parser",
+      "name": "Structured Output Parser",
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [2000, 320]
+    },
+    {
+      "parameters": {
+        "jsCode": "const input = $('Prepare LLM Input').first().json;\nlet llmOutput;\ntry {\n  llmOutput = $('AI Extract Grant Data').first().json;\n} catch (e) {\n  return [{ json: { ...input, enrichment: {}, llm_error: 'LLM node failed: ' + String(e.message).slice(0, 200) } }];\n}\n\n// The structured output parser returns the parsed object directly\nlet enrichment = {};\ntry {\n  // Agent node may wrap in output or return directly\n  if (llmOutput && typeof llmOutput === 'object') {\n    enrichment = llmOutput.output ? (typeof llmOutput.output === 'string' ? JSON.parse(llmOutput.output) : llmOutput.output) : llmOutput;\n  }\n} catch (e) {\n  return [{ json: { ...input, enrichment: {}, llm_error: 'Failed to parse LLM output: ' + String(e.message).slice(0, 200) } }];\n}\n\n// Validate arrays\nif (!Array.isArray(enrichment.important_dates)) enrichment.important_dates = [];\nif (!Array.isArray(enrichment.resources)) enrichment.resources = [];\nif (!Array.isArray(enrichment.downloads)) enrichment.downloads = [];\n\nreturn [{ json: { ...input, enrichment, llm_error: null } }];"
+      },
+      "id": "parse-llm",
+      "name": "Parse LLM Output",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [2200, 80],
+      "continueOnFail": true,
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "jsCode": "let input;\ntry {\n  input = $('Parse LLM Output').first().json;\n} catch (e) {\n  input = $('Prepare LLM Input').first().json;\n}\n\nconst enrichment = input.enrichment || {};\nconst scrapeOk = input.scrape_ok || false;\nconst status = (scrapeOk && !input.llm_error) ? 'success' : (scrapeOk ? 'success' : 'no_data');\n\nreturn [{ json: {\n  run_id: input.run_id,\n  workflow: 'grant_enrich',\n  status,\n  entity_type: 'grant',\n  entity_id: input.entity_id,\n  source_url: input.source_url,\n  scrape: { ok: scrapeOk, bytes: input.scrape_bytes || 0 },\n  enrichment,\n  error: input.scrape_error ? { code: 'SCRAPE_FAILED', message: input.scrape_error } : (input.llm_error ? { code: 'LLM_FAILED', message: input.llm_error } : null),\n  occurred_at: new Date().toISOString()\n} }];"
+      },
+      "id": "result-envelope",
+      "name": "Result Envelope",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [2420, 180],
+      "continueOnFail": true,
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('Workflow Constants').first().json.SUPABASE_FUNCTIONS_BASE_URL + '/enrichment-callback' }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify($json) }}",
+        "options": { "response": {}, "timeout": 60000 }
+      },
+      "id": "success-callback",
+      "name": "Callback to Supabase",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [2640, 180],
+      "alwaysOutputData": true,
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "JZ0bvsdogmHU6USf",
+          "name": "Secret Worker Key"
+        }
+      },
+      "retryOnFail": false,
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('Workflow Constants').first().json.SUPABASE_FUNCTIONS_BASE_URL + '/enrichment-callback' }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ run_id: $('Normalize Input').first().json.run_id || 'unknown', workflow: 'grant_enrich', status: 'error', entity_type: 'grant', entity_id: $('Normalize Input').first().json.entity_id || 'unknown', source_url: $('Normalize Input').first().json.source_url || '', scrape: { ok: false, bytes: 0 }, enrichment: {}, error: { code: 'VALIDATION_FAILED', message: String($('Normalize Input').first().json.error?.message || 'Invalid input').slice(0, 500) }, occurred_at: new Date().toISOString() }) }}",
+        "options": { "response": {}, "timeout": 60000 }
+      },
+      "id": "validation-error-callback",
+      "name": "Validation Error Callback",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [1120, 480],
+      "alwaysOutputData": true,
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "JZ0bvsdogmHU6USf",
+          "name": "Secret Worker Key"
+        }
+      },
+      "retryOnFail": false,
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "jsCode": "const input = $('Prepare LLM Input').first().json;\nreturn [{ json: {\n  run_id: input.run_id,\n  workflow: 'grant_enrich',\n  status: 'no_data',\n  entity_type: 'grant',\n  entity_id: input.entity_id,\n  source_url: input.source_url,\n  scrape: { ok: false, bytes: 0 },\n  enrichment: {},\n  error: { code: 'SCRAPE_FAILED', message: input.scrape_error || 'Unknown scrape error' },\n  occurred_at: new Date().toISOString()\n} }];"
+      },
+      "id": "scrape-fail-envelope",
+      "name": "Scrape Fail Envelope",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1800, 340],
+      "continueOnFail": true,
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('Workflow Constants').first().json.SUPABASE_FUNCTIONS_BASE_URL + '/enrichment-callback' }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify($json) }}",
+        "options": { "response": {}, "timeout": 60000 }
+      },
+      "id": "scrape-fail-callback",
+      "name": "Scrape Fail Callback",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [2020, 340],
+      "alwaysOutputData": true,
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "JZ0bvsdogmHU6USf",
+          "name": "Secret Worker Key"
+        }
+      },
+      "retryOnFail": false,
+      "continueOnFail": true
+    }
+  ],
+  "connections": {
+    "Webhook Trigger": {
+      "main": [[{ "node": "Workflow Constants", "type": "main", "index": 0 }]]
+    },
+    "Workflow Constants": {
+      "main": [[{ "node": "Normalize Input", "type": "main", "index": 0 }]]
+    },
+    "Normalize Input": {
+      "main": [[{ "node": "IF Valid Input?", "type": "main", "index": 0 }]]
+    },
+    "IF Valid Input?": {
+      "main": [
+        [{ "node": "Firecrawl Scrape", "type": "main", "index": 0 }],
+        [{ "node": "Validation Error Callback", "type": "main", "index": 0 }]
+      ]
+    },
+    "Firecrawl Scrape": {
+      "main": [[{ "node": "Prepare LLM Input", "type": "main", "index": 0 }]]
+    },
+    "Prepare LLM Input": {
+      "main": [[{ "node": "Scrape OK?", "type": "main", "index": 0 }]]
+    },
+    "Scrape OK?": {
+      "main": [
+        [{ "node": "AI Extract Grant Data", "type": "main", "index": 0 }],
+        [{ "node": "Scrape Fail Envelope", "type": "main", "index": 0 }]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [[
+        { "node": "AI Extract Grant Data", "type": "ai_languageModel", "index": 0 },
+        { "node": "Structured Output Parser", "type": "ai_languageModel", "index": 0 }
+      ]]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [[{ "node": "AI Extract Grant Data", "type": "ai_outputParser", "index": 0 }]]
+    },
+    "AI Extract Grant Data": {
+      "main": [[{ "node": "Parse LLM Output", "type": "main", "index": 0 }]]
+    },
+    "Parse LLM Output": {
+      "main": [[{ "node": "Result Envelope", "type": "main", "index": 0 }]]
+    },
+    "Result Envelope": {
+      "main": [[{ "node": "Callback to Supabase", "type": "main", "index": 0 }]]
+    },
+    "Scrape Fail Envelope": {
+      "main": [[{ "node": "Scrape Fail Callback", "type": "main", "index": 0 }]]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": true,
+    "timeSavedMode": "fixed",
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "versionId": "grant-enrich-v1",
+  "meta": {
+    "instanceId": "93beede2a90582294d7ef06720d87eff3641b0d88433511d1e55f0a191940c61"
+  },
+  "tags": [
+    { "name": "profunda", "createdAt": "2026-02-13T00:00:00.000Z", "updatedAt": "2026-02-13T00:00:00.000Z" },
+    { "name": "grants", "createdAt": "2026-02-13T00:00:00.000Z", "updatedAt": "2026-02-13T00:00:00.000Z" }
+  ]
+}

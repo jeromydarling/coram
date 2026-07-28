@@ -1,0 +1,208 @@
+{
+  "radar": {
+    "title": "Opportunity Radar",
+    "mobileTitle": "Radar",
+    "subtitle": "What needs your attention now",
+    "stats": {
+      "critical": "Critical",
+      "highPriority": "High Priority",
+      "medium": "Medium",
+      "withSignals": "With Signals"
+    },
+    "tabs": {
+      "attentionQueue": "Attention Queue",
+      "attentionShort": "Attention",
+      "signalFeed": "Signal Feed",
+      "signalsShort": "Signals"
+    },
+    "filters": {
+      "all": "All",
+      "criticalOnly": "Critical Only",
+      "highPlus": "High+",
+      "hasSignals": "Has Signals"
+    },
+    "empty": {
+      "noPendingActions": "No pending actions — all caught up!",
+      "noSignals": "No recent signals detected"
+    }
+  },
+  "momentumMap": {
+    "title": "Momentum Map",
+    "subtitle": "See where momentum is building across your metros",
+    "overlays": "Overlays",
+    "refresh": "Refresh",
+    "overlayOptions": {
+      "stateBoundaries": "State boundaries",
+      "regionGroupings": "Region groupings",
+      "opportunityRadar": "Opportunity Radar",
+      "drift": "Drift",
+      "storyLayers": "Story Layers"
+    },
+    "storyLayers": {
+      "pulse": "Pulse",
+      "partners": "Partners",
+      "ink": "Your Ink"
+    },
+    "loading": "Loading momentum data...",
+    "error": "Failed to load momentum data",
+    "tryAgain": "Try Again",
+    "noMetros": "No metros available",
+    "noMetrosMessage": "Momentum data will appear here once metros have activity."
+  },
+  "momentumRankings": {
+    "title": "Momentum Rankings",
+    "subtitle": "Organization relationship momentum scores, sorted by strength",
+    "searchPlaceholder": "Search organizations or metros...",
+    "filterByTrend": "Filter by trend",
+    "trends": {
+      "all": "All trends",
+      "rising": "Rising",
+      "stable": "Stable",
+      "falling": "Falling"
+    },
+    "summary": {
+      "scoredOrgs": "Scored Orgs",
+      "rising": "Rising",
+      "stable": "Stable",
+      "falling": "Falling"
+    },
+    "rankingsCard": "Rankings",
+    "emptyNoData": "No momentum data yet. Scores are computed automatically from signals, connections, and activity.",
+    "emptyNoMatch": "No results match your filter."
+  },
+  "movementIntelligence": {
+    "title": "Movement Intelligence",
+    "subtitle": "How care, relationships, and presence are unfolding across your mission.",
+    "allSectors": "All sectors",
+    "whatYouSeeing": "What you're seeing",
+    "whatYouSeeingTooltip": "These insights adapt to your organization's archetype and the data you've added. As you record visits, reflections, and events, this view deepens.",
+    "sections": {
+      "territoryVitality": "Territory Vitality",
+      "careRhythm": "Care Rhythm",
+      "territoryVitalitySubtitle": "How care and presence are spreading across your territories.",
+      "careRhythmSubtitle": "How your presence is unfolding in your area.",
+      "carePresence": "Care & Presence",
+      "carePresenceSubtitle": "Where care happened and how presence is unfolding.",
+      "relationshipFormation": "Relationship Formation",
+      "relationshipFormationSubtitle": "How new connections are taking root.",
+      "activationEngagement": "Activation & Engagement",
+      "activationEngagementSubtitle": "How deeply your team is engaging.",
+      "discoveryDiscernment": "Discovery & Discernment",
+      "discoveryDiscernmentSubtitle": "What's emerging around your mission.",
+      "restorationMemory": "Restoration & Memory",
+      "restorationMemorySubtitle": "What has been remembered, reclaimed, or honored.",
+      "narrativeThreads": "Narrative Threads",
+      "narrativeThreadsSubtitle": "The story NRI is noticing across your work."
+    },
+    "metrics": {
+      "activatedTerritories": "Activated Territories",
+      "activatedCountries": "Activated Countries",
+      "activityPerTerritory": "Activity per Territory",
+      "activityPerCountry": "Activity per Country",
+      "careMoments": "Care Moments",
+      "trendLabel": "30-day trend",
+      "rising": "Momentum building",
+      "steady": "Holding steady",
+      "declining": "Quieter period",
+      "visits": "Visits",
+      "events": "Events",
+      "careRecorded": "Care Recorded",
+      "reflections": "Reflections",
+      "projects": "Projects",
+      "hoursLogged": "Hours Logged",
+      "newPeople": "New People",
+      "activePartners": "Active Partners",
+      "communioConnections": "Communio Connections",
+      "engagementDepth": "Engagement Depth",
+      "eventsThisMonth": "Events This Month",
+      "volunteersActive": "Volunteers Active",
+      "opportunitiesExplored": "Opportunities Explored",
+      "grantsPursued": "Grants Pursued",
+      "recordsRestored": "Records Restored",
+      "lifeEvents": "Life Events",
+      "memorials": "Memorials",
+      "milestones": "Milestones"
+    },
+    "noActivity": "No activity recorded yet this period. That's okay — presence builds quietly.",
+    "memoryEmpty": "Memory signals will appear as life events and recoveries are recorded.",
+    "dominantDirection": "Dominant Direction: ",
+    "providenceThreads": "Providence Threads",
+    "compassLabels": {
+      "north": "Narrative",
+      "east": "Discernment",
+      "south": "Care",
+      "west": "Restoration"
+    }
+  },
+  "intelligenceFeed": {
+    "title": "Intelligence Feed",
+    "subtitle": "Signals and insights prioritized for your metro",
+    "refresh": "Refresh",
+    "priority": {
+      "high": "High Priority",
+      "medium": "Medium",
+      "low": "Low"
+    },
+    "empty": "No intelligence signals yet. Run searches and enrichments to generate insights."
+  },
+  "commandCenter": {
+    "title": "Regional Command Center",
+    "mobileTitle": "Command Center",
+    "subtitleTemplate": "Welcome back{{name}} — here's your focus for the week",
+    "storyTitle": "Your Day",
+    "storyMobileTitle": "Story",
+    "storySubtitle": "A gentle snapshot of what's unfolding around you.",
+    "focusItems": {
+      "title": "Top Focus Items",
+      "description": "Priority actions based on urgency and impact",
+      "items": "{{count}} items",
+      "allCaughtUp": "All caught up!",
+      "noUrgent": "No urgent items require attention right now."
+    },
+    "quickActions": {
+      "staleOpportunities": "Stale Opportunities",
+      "nearConversion": "Near Conversion",
+      "grantDeadlines": "Grant Deadlines",
+      "overdueFollowups": "Overdue Follow-ups"
+    },
+    "anchorVelocity": {
+      "title": "Anchor Velocity",
+      "noAnchors": "No anchors yet",
+      "daysSinceLastAnchor": "Days since last anchor",
+      "inRamp": "In Ramp",
+      "atScale": "At Scale",
+      "viewAnchors": "View Anchors"
+    },
+    "adminTasks": {
+      "title": "Admin Tasks",
+      "followupsOverdue": "Follow-ups overdue",
+      "reportsDue": "Reports due"
+    },
+    "badges": {
+      "stale": "Stale",
+      "nearWin": "Near Win",
+      "grant": "Grant",
+      "overdue": "Overdue",
+      "task": "Task"
+    }
+  },
+  "commandCenterStory": {
+    "yourMetroToday": "Your Metro Today",
+    "yourFocusToday": "Your Focus Today",
+    "whereYouCanShowUp": "Where You Can Show Up",
+    "relationshipFocus": "Relationship Focus",
+    "todaysNarrative": "Today's Narrative",
+    "metricsSignals": "Metrics & Signals",
+    "actionGroups": {
+      "gentleNudges": "Gentle Nudges",
+      "relationshipMoments": "Relationship Moments",
+      "inYourMetro": "In Your Metro"
+    },
+    "emptyText": {
+      "nudges": "Nothing pressing right now.",
+      "relationships": "Connections are steady.",
+      "metro": "Your community is quiet today."
+    },
+    "noActions": "No suggested actions right now. You're in good shape."
+  }
+}

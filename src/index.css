@@ -1,0 +1,659 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700;800&family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,400&display=swap');
+
+@layer base {
+  :root {
+    /* Core Brand - Warm Earthy */
+    --background: 30 20% 96%;
+    --foreground: 25 30% 14%;
+
+    /* Marketing theme tokens (RadiatingHope-inspired) */
+    --marketing-navy: 220 40% 16%;
+    --marketing-blue: 209 75% 56%;
+    --marketing-surface: 220 20% 97%;
+    --marketing-border: 220 15% 90%;
+
+    /* Cards & Surfaces */
+    --card: 35 25% 98%;
+    --card-foreground: 25 30% 14%;
+
+    --popover: 35 25% 98%;
+    --popover-foreground: 25 30% 14%;
+
+    /* Primary - Muted Forest Green */
+    --primary: 155 25% 35%;
+    --primary-foreground: 40 20% 97%;
+
+    /* Secondary - Warm Stone */
+    --secondary: 30 15% 93%;
+    --secondary-foreground: 25 30% 14%;
+
+    /* Muted */
+    --muted: 30 15% 93%;
+    --muted-foreground: 25 10% 50%;
+
+    /* Accent - Soft Sage */
+    --accent: 145 18% 45%;
+    --accent-foreground: 40 20% 97%;
+
+    /* Destructive - Muted Clay */
+    --destructive: 8 45% 52%;
+    --destructive-foreground: 40 20% 97%;
+
+    /* Status Colors - Desaturated */
+    --success: 145 30% 42%;
+    --success-foreground: 40 20% 97%;
+    --warning: 35 55% 52%;
+    --warning-foreground: 40 20% 97%;
+    --info: 185 25% 45%;
+    --info-foreground: 40 20% 97%;
+
+    /* Journey Chapter Colors - Earthy Spectrum */
+    --stage-target: 25 35% 50%;
+    --stage-contacted: 185 25% 45%;
+    --stage-discovery: 155 25% 38%;
+    --stage-proposal: 35 55% 50%;
+    --stage-agreement: 15 40% 48%;
+    --stage-signed: 145 30% 42%;
+    --stage-volume: 140 20% 40%;
+
+    /* Metro Status */
+    --status-expansion: 145 30% 42%;
+    --status-anchor-build: 35 55% 52%;
+    --status-ecosystem: 185 25% 45%;
+
+    /* Borders & Inputs */
+    --border: 30 15% 88%;
+    --input: 30 15% 88%;
+    --ring: 155 25% 35%;
+
+    --radius: 0.75rem;
+
+    /* Ignatian / Indoles Warm Palette */
+    --ignatian-deep: 25 35% 18%;
+    --ignatian-brown: 25 28% 29%;
+    --ignatian-gold: 30 29% 43%;
+    --ignatian-gold-light: 38 42% 51%;
+    --ignatian-muted: 28 13% 47%;
+    --ignatian-tan: 30 18% 69%;
+    --ignatian-border: 30 18% 80%;
+    --ignatian-cream: 30 33% 92%;
+    --ignatian-cream-dark: 30 30% 87%;
+    --ignatian-bg: 30 25% 97%;
+    --ignatian-bg-end: 30 22% 91%;
+
+    /* Sidebar - Deep Warm Charcoal */
+    --sidebar-background: 25 20% 12%;
+    --sidebar-foreground: 30 15% 90%;
+    --sidebar-primary: 155 25% 50%;
+    --sidebar-primary-foreground: 40 20% 97%;
+    --sidebar-accent: 25 18% 18%;
+    --sidebar-accent-foreground: 30 15% 90%;
+    --sidebar-border: 25 18% 18%;
+    --sidebar-ring: 155 25% 50%;
+
+    /* Chart Colors - Earthy */
+    --chart-1: 155 25% 38%;
+    --chart-2: 145 18% 45%;
+    --chart-3: 35 55% 52%;
+    --chart-4: 25 35% 50%;
+    --chart-5: 185 25% 45%;
+  }
+
+  .dark {
+    --background: 25 20% 9%;
+    --foreground: 30 15% 90%;
+
+    --card: 25 18% 12%;
+    --card-foreground: 30 15% 90%;
+
+    --popover: 25 18% 12%;
+    --popover-foreground: 30 15% 90%;
+
+    --primary: 155 25% 45%;
+    --primary-foreground: 40 20% 97%;
+
+    --secondary: 25 18% 18%;
+    --secondary-foreground: 30 15% 90%;
+
+    --muted: 25 18% 18%;
+    --muted-foreground: 25 10% 58%;
+
+    --accent: 145 18% 50%;
+    --accent-foreground: 40 20% 97%;
+
+    --destructive: 8 40% 45%;
+    --destructive-foreground: 40 20% 97%;
+
+    --border: 25 18% 20%;
+    --input: 25 18% 20%;
+    --ring: 155 25% 45%;
+
+    --sidebar-background: 25 20% 7%;
+    --sidebar-foreground: 30 15% 90%;
+    --sidebar-primary: 155 25% 50%;
+    --sidebar-primary-foreground: 40 20% 97%;
+    --sidebar-accent: 25 18% 14%;
+    --sidebar-accent-foreground: 30 15% 90%;
+    --sidebar-border: 25 18% 14%;
+    --sidebar-ring: 155 25% 50%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+    font-family: 'Inter', system-ui, sans-serif;
+  }
+
+  h1, h2, h3 {
+    @apply font-serif font-normal tracking-tight;
+  }
+
+  h4, h5, h6 {
+    @apply font-serif font-normal tracking-tight uppercase;
+  }
+}
+
+@layer components {
+  /* KPI Card Styles */
+  .kpi-card {
+    @apply relative overflow-hidden rounded-xl bg-card p-6 shadow-sm border border-border/50 transition-all duration-200 hover:shadow-md hover:border-border;
+  }
+
+  .kpi-card-accent {
+    @apply absolute top-0 left-0 right-0 h-1 rounded-t-xl;
+  }
+
+  .kpi-value {
+    @apply text-3xl font-bold tracking-tight;
+  }
+
+  .kpi-label {
+    @apply text-sm font-medium text-muted-foreground;
+  }
+
+  .kpi-trend-up {
+    @apply text-[hsl(var(--success))] flex items-center gap-1 text-sm font-medium;
+  }
+
+  .kpi-trend-down {
+    @apply text-[hsl(var(--destructive))] flex items-center gap-1 text-sm font-medium;
+  }
+
+  /* Status Badges */
+  .status-badge {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium;
+  }
+
+  .status-expansion-ready {
+    @apply bg-[hsl(var(--success)/0.15)] text-[hsl(var(--success))];
+  }
+
+  .status-anchor-build {
+    @apply bg-[hsl(var(--warning)/0.15)] text-[hsl(var(--warning))];
+  }
+
+  .status-ecosystem-dev {
+    @apply bg-[hsl(var(--info)/0.15)] text-[hsl(var(--info))];
+  }
+
+  /* Pipeline Stage Badges */
+  .stage-badge {
+    @apply inline-flex items-center px-2.5 py-1 rounded-md text-xs font-semibold uppercase tracking-wider;
+  }
+
+  .stage-target { @apply bg-[hsl(var(--stage-target)/0.15)] text-[hsl(var(--stage-target))]; }
+  .stage-contacted { @apply bg-[hsl(var(--stage-contacted)/0.15)] text-[hsl(var(--stage-contacted))]; }
+  .stage-discovery { @apply bg-[hsl(var(--stage-discovery)/0.15)] text-[hsl(var(--stage-discovery))]; }
+  .stage-proposal { @apply bg-[hsl(var(--stage-proposal)/0.15)] text-[hsl(var(--stage-proposal))]; }
+  .stage-agreement { @apply bg-[hsl(var(--stage-agreement)/0.15)] text-[hsl(var(--stage-agreement))]; }
+  .stage-signed { @apply bg-[hsl(var(--stage-signed)/0.15)] text-[hsl(var(--stage-signed))]; }
+  .stage-volume { @apply bg-[hsl(var(--stage-volume)/0.15)] text-[hsl(var(--stage-volume))]; }
+
+  /* Data Table Styles */
+  .data-table {
+    @apply w-full text-sm;
+  }
+
+  .data-table th {
+    @apply text-left font-semibold text-muted-foreground px-4 py-3 bg-muted/50 first:rounded-tl-lg last:rounded-tr-lg;
+  }
+
+  .data-table td {
+    @apply px-4 py-3 border-b border-border/50;
+  }
+
+  .data-table tr:hover td {
+    @apply bg-muted/30;
+  }
+
+  /* Sidebar Navigation */
+  .nav-item {
+    @apply flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-150;
+  }
+
+  .nav-item-active {
+    @apply bg-sidebar-accent text-sidebar-primary;
+  }
+
+  .nav-item-inactive {
+    @apply text-sidebar-foreground/70 hover:bg-sidebar-accent/50 hover:text-sidebar-foreground;
+  }
+
+  /* Score Indicator */
+  .score-bar {
+    @apply h-2 rounded-full bg-muted overflow-hidden;
+  }
+
+  .score-fill {
+    @apply h-full rounded-full transition-all duration-500;
+  }
+
+  /* Recommendation Pills */
+  .recommendation-invest {
+    @apply bg-[hsl(var(--success)/0.15)] text-[hsl(var(--success))] border border-[hsl(var(--success)/0.3)];
+  }
+
+  .recommendation-build {
+    @apply bg-[hsl(var(--warning)/0.15)] text-[hsl(var(--warning))] border border-[hsl(var(--warning)/0.3)];
+  }
+
+  .recommendation-hold {
+    @apply bg-[hsl(var(--muted-foreground)/0.15)] text-muted-foreground border border-border;
+  }
+
+  .recommendation-triage {
+    @apply bg-[hsl(var(--destructive)/0.15)] text-[hsl(var(--destructive))] border border-[hsl(var(--destructive)/0.3)];
+  }
+}
+
+/* TipTap Editor Styles — outside @layer for higher specificity */
+.tiptap-editor {
+  color: hsl(var(--foreground));
+  font-size: 0.875rem;
+  line-height: 1.625;
+}
+
+.tiptap-editor:focus {
+  outline: none;
+}
+
+.tiptap-editor.is-editor-empty:first-child::before,
+.tiptap-editor p.is-editor-empty:first-child::before {
+  color: hsl(var(--muted-foreground));
+  pointer-events: none;
+  float: left;
+  height: 0;
+  content: attr(data-placeholder);
+}
+
+.tiptap-editor h1 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
+  line-height: 1.3;
+}
+
+.tiptap-editor h2 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-top: 0.75rem;
+  margin-bottom: 0.5rem;
+  line-height: 1.35;
+}
+
+.tiptap-editor h3 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin-top: 0.5rem;
+  margin-bottom: 0.25rem;
+  line-height: 1.4;
+}
+
+.tiptap-editor strong {
+  font-weight: 700;
+}
+
+.tiptap-editor em {
+  font-style: italic;
+}
+
+.tiptap-editor ul,
+.tiptap-editor ol {
+  padding-left: 1rem;
+  margin: 0.25rem 0;
+}
+
+.tiptap-editor ul {
+  list-style-type: disc;
+}
+
+.tiptap-editor ol {
+  list-style-type: decimal;
+}
+
+.tiptap-editor blockquote {
+  border-left: 4px solid hsl(var(--primary) / 0.4);
+  padding-left: 1rem;
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+  font-style: italic;
+  color: hsl(var(--muted-foreground));
+  margin: 0.75rem 0;
+  background: hsl(var(--muted) / 0.2);
+  border-radius: 0 0.25rem 0.25rem 0;
+}
+
+.tiptap-editor p {
+  margin: 0.25rem 0;
+}
+
+.tiptap-editor p:first-child {
+  margin-top: 0;
+}
+
+.tiptap-editor p:last-child {
+  margin-bottom: 0;
+}
+
+@layer utilities {
+  .glass-effect {
+    @apply backdrop-blur-xl bg-card/80;
+  }
+
+  .gradient-primary {
+    background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--accent)) 100%);
+  }
+
+  .gradient-success {
+    background: linear-gradient(135deg, hsl(var(--success)) 0%, hsl(173 80% 40%) 100%);
+  }
+
+  .text-gradient {
+    @apply bg-clip-text text-transparent;
+    background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--accent)) 100%);
+  }
+
+  .animate-fade-in {
+    animation: fadeIn 0.3s ease-out forwards;
+  }
+
+  .animate-slide-up {
+    animation: slideUp 0.4s ease-out forwards;
+  }
+
+  .animate-scale-in {
+    animation: scaleIn 0.2s ease-out forwards;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  @keyframes slideUp {
+    from { 
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to { 
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes scaleIn {
+    from { 
+      opacity: 0;
+      transform: scale(0.95);
+    }
+    to { 
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  .stagger-1 { animation-delay: 0.05s; }
+  .stagger-2 { animation-delay: 0.1s; }
+  .stagger-3 { animation-delay: 0.15s; }
+  .stagger-4 { animation-delay: 0.2s; }
+  .stagger-5 { animation-delay: 0.25s; }
+}
+
+/* ─── Compass Glow — calm presence pulse ─── */
+@keyframes compass-glow-pulse {
+  0%, 100% {
+    box-shadow: 0 0 8px 2px hsl(var(--primary) / 0.15);
+  }
+  50% {
+    box-shadow: 0 0 20px 6px hsl(var(--primary) / 0.3);
+  }
+}
+
+.compass-glow {
+  animation: compass-glow-pulse 4s ease-in-out infinite;
+}
+
+/* ─── Posture label breathing transition ─── */
+.posture-label-enter {
+  transition: opacity 0.6s ease-in-out;
+  opacity: 0.9;
+}
+
+.posture-label-rest {
+  transition: opacity 1.5s ease-in-out;
+  opacity: 0.7;
+}
+
+/* ═══════════════════════════════════════════════════════
+   ACCESSIBILITY MODE — WCAG 2.2 AA overrides
+   Applied when html.a11y-mode is active.
+   ═══════════════════════════════════════════════════════ */
+
+/* ─── High-Contrast Theme Tokens ─── */
+html.a11y-mode {
+  --background: 230 25% 8%;
+  --foreground: 0 0% 100%;
+
+  --card: 230 22% 11%;
+  --card-foreground: 0 0% 100%;
+
+  --popover: 230 22% 11%;
+  --popover-foreground: 0 0% 100%;
+
+  --primary: 50 100% 50%;
+  --primary-foreground: 230 25% 8%;
+
+  --secondary: 230 18% 18%;
+  --secondary-foreground: 0 0% 100%;
+
+  --muted: 230 18% 16%;
+  --muted-foreground: 0 0% 78%;
+
+  --accent: 50 100% 50%;
+  --accent-foreground: 230 25% 8%;
+
+  --destructive: 0 72% 55%;
+  --destructive-foreground: 0 0% 100%;
+
+  --success: 120 50% 50%;
+  --success-foreground: 0 0% 100%;
+  --warning: 45 100% 55%;
+  --warning-foreground: 230 25% 8%;
+  --info: 200 80% 60%;
+  --info-foreground: 230 25% 8%;
+
+  --border: 230 15% 28%;
+  --input: 230 15% 28%;
+  --ring: 50 100% 50%;
+
+  --sidebar-background: 230 25% 6%;
+  --sidebar-foreground: 0 0% 100%;
+  --sidebar-primary: 50 100% 50%;
+  --sidebar-primary-foreground: 230 25% 8%;
+  --sidebar-accent: 230 18% 14%;
+  --sidebar-accent-foreground: 0 0% 100%;
+  --sidebar-border: 230 18% 20%;
+  --sidebar-ring: 50 100% 50%;
+}
+
+/* ─── Typography: readability ─── */
+html.a11y-mode body {
+  font-size: 16px;
+  line-height: 1.6;
+  letter-spacing: 0.04em;
+}
+
+html.a11y-mode h1,
+html.a11y-mode h2,
+html.a11y-mode h3,
+html.a11y-mode h4,
+html.a11y-mode h5,
+html.a11y-mode h6 {
+  text-transform: none;
+  letter-spacing: 0.02em;
+}
+
+html.a11y-mode p {
+  margin-bottom: 1em;
+}
+
+html.a11y-mode .text-xs {
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+html.a11y-mode .text-\[10px\] {
+  font-size: 0.75rem;
+  line-height: 1.5;
+}
+
+/* ─── Focus rings: 3px solid, high contrast (WCAG 2.4.11) ─── */
+html.a11y-mode :focus-visible {
+  outline: 3px solid hsl(50 100% 50%);
+  outline-offset: 3px;
+  box-shadow: none;
+}
+
+html.a11y-mode :focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* ─── Kill all motion (WCAG 2.3.3) ─── */
+html.a11y-mode *,
+html.a11y-mode *::before,
+html.a11y-mode *::after {
+  animation-duration: 0.001ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.001ms !important;
+  scroll-behavior: auto !important;
+}
+
+/* ─── Target size: minimum 44×44px for primary actions (WCAG 2.5.8) ─── */
+html.a11y-mode button,
+html.a11y-mode a[role="button"],
+html.a11y-mode [role="button"],
+html.a11y-mode input[type="checkbox"],
+html.a11y-mode input[type="radio"] {
+  min-height: 44px;
+  min-width: 44px;
+}
+
+/* Icon-only buttons in menus can be slightly smaller */
+html.a11y-mode button[data-size="icon"] {
+  min-height: 36px;
+  min-width: 36px;
+}
+
+/* ─── Links: always underlined (WCAG 1.4.1 — not color-only) ─── */
+html.a11y-mode a:not([role="button"]):not(.nav-item) {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* ─── Badges/status: ensure icon+label, not color-only ─── */
+html.a11y-mode .status-badge {
+  border: 2px solid currentColor;
+}
+
+html.a11y-mode .stage-badge {
+  border: 2px solid currentColor;
+}
+
+/* ─── Cards: increased spacing ─── */
+html.a11y-mode .kpi-card {
+  padding: 1.5rem;
+}
+
+/* ─── Compass Drawer: NRI accessibility surfaces ─── */
+html.a11y-mode .compass-drawer {
+  border-left: 3px solid hsl(50 100% 50%);
+}
+
+html.a11y-mode .compass-nudge-card {
+  border: 2px solid hsl(var(--border));
+  padding: 1rem;
+}
+
+html.a11y-mode .compass-nudge-card:focus-visible {
+  border-color: hsl(50 100% 50%);
+  outline: 3px solid hsl(50 100% 50%);
+  outline-offset: 2px;
+}
+
+/* Chat bubbles: enhanced contrast */
+html.a11y-mode [role="log"] .bg-muted {
+  border: 1px solid hsl(var(--border));
+}
+
+html.a11y-mode [role="log"] .bg-primary {
+  border: 2px solid hsl(50 100% 70%);
+}
+
+/* Quick prompts: larger targets, visible borders */
+html.a11y-mode [aria-label="Suggested prompts"] button {
+  min-height: 48px;
+  border: 2px solid hsl(var(--border));
+  font-size: 0.9375rem;
+}
+
+html.a11y-mode [aria-label="Suggested prompts"] button:focus-visible {
+  border-color: hsl(50 100% 50%);
+}
+
+/* Voice button: prominent in a11y mode */
+html.a11y-mode .compass-drawer button[aria-label*="voice"] {
+  min-height: 48px;
+  min-width: 48px;
+  border: 2px solid hsl(var(--border));
+}
+
+/* Voice hint visible in a11y mode */
+html.a11y-mode .a11y-voice-hint {
+  display: block !important;
+}
+
+/* ─── Reduced motion media query (independent of toggle) ─── */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .compass-glow {
+    animation: none;
+  }
+}

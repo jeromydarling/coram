@@ -1,0 +1,15 @@
+{
+  "workflow_key": "partner_enrich",
+  "run_id": "aaaaaaaa-1111-2222-3333-444444444444",
+  "org_id": "org-001",
+  "org_name": "Habitat for Humanity",
+  "website_url": "https://habitat.org",
+  "payload": {
+    "mission_summary": "Building homes, communities and hope.",
+    "programs": ["ReStore", "Global Village"],
+    "populations_served": ["low-income families"],
+    "geographies": ["US", "Canada"],
+    "funding_signals": ["USAID grant 2025"],
+    "keywords": ["housing", "nonprofit", "construction"]
+  }
+}

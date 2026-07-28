@@ -1,0 +1,9 @@
+{
+  "workflow_key": "watchlist_ingest",
+  "run_id": "wl-ingest-invalid-missing-fields",
+  "org_id": "org-wl-001",
+  "payload": {
+    "url": "https://example.org",
+    "raw_text": "Some text but no content_hash"
+  }
+}

@@ -1,0 +1,420 @@
+{
+  "name": "Profunda - Search People (Firecrawl) - PROD v6 (High-Recall)",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "search-people",
+        "options": {}
+      },
+      "id": "2a577af5-2056-4349-868e-218ae8ba13a0",
+      "name": "Webhook Trigger",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [6784, 48],
+      "webhookId": "2b0b538d-fca9-4378-be65-cec2b724ef72"
+    },
+    {
+      "parameters": {
+        "keepOnlySet": false,
+        "values": {
+          "string": [
+            {
+              "name": "SUPABASE_FUNCTIONS_BASE_URL",
+              "value": "https://lxahadqhpubynuzvraxc.supabase.co/functions/v1"
+            },
+            {
+              "name": "SEARCH_WORKER_SECRET",
+              "value": "={{ /* PASTE YOUR SEARCH_WORKER_SECRET HERE */ }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "c14ddfb9-3810-47e4-857d-19a83a3588bd",
+      "name": "Workflow Constants",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 2,
+      "position": [7024, 48],
+      "retryOnFail": true,
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "jsCode": "const webhookData = $('Webhook Trigger').first().json;\nconst b = webhookData.body ?? webhookData;\nconst run_id = b.run_id || b.runId || b.runID;\nconst query = b.enforced_query || b.query || b.enforcedQuery;\nconst max_results = Number(b.max_results ?? b.maxResults ?? 30);\nif (!run_id || !query) {\n  return [{ json: { ok:false, error:{code:'MISSING_FIELDS', message:'run_id and enforced_query are required'}, run_id: run_id ?? null, query: query ?? null, max_results } }];\n}\nreturn [{ json: { ok:true, run_id, query, max_results: Math.max(1, Math.min(30, max_results)), scope: b.scope ?? null, metro: b.metro ?? null, role_focus: b.role_focus ?? null } }];"
+      },
+      "id": "cfd27b23-99d7-4cff-bd90-971e9dc1c6f0",
+      "name": "Normalize Input",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [7264, 48]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "boolean": [
+            {
+              "value1": "={{ $json.ok }}",
+              "operation": "isTrue"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "5d929dae-ddf7-4981-9b01-917c6346ed65",
+      "name": "IF Valid Input?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [7488, 48]
+    },
+    {
+      "parameters": {
+        "jsCode": "const ni = $('Normalize Input').first().json;\nconst base = ni.query;\nconst run_id = ni.run_id;\nconst FIRECRAWL_LIMIT = 15;\nconst neg = ' -jobs -job -careers -career -hiring -apply -\"job board\" -indeed -ziprecruiter -glassdoor -linkedin.com/jobs';\nconst q1 = base + neg;\nconst q2 = q1 + ' (staff OR team OR leadership OR \"about us\" OR \"our people\" OR board)';\nconst q3 = q1 + ' (leadership OR \"executive team\" OR \"board of directors\")';\nconst q4 = q1 + ' (directory OR \"staff directory\" OR \"our team\" OR \"meet the team\")';\nreturn [\n  { json: { run_id, query_variant: 'base', query: q1, limit: FIRECRAWL_LIMIT } },\n  { json: { run_id, query_variant: 'directory', query: q2, limit: FIRECRAWL_LIMIT } },\n  { json: { run_id, query_variant: 'leadership', query: q3, limit: FIRECRAWL_LIMIT } },\n  { json: { run_id, query_variant: 'team_page', query: q4, limit: FIRECRAWL_LIMIT } }\n];"
+      },
+      "id": "a1b2c3d4-1111-4aaa-bbbb-000000000001",
+      "name": "Build Queries",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [7728, 48],
+      "alwaysOutputData": true,
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.firecrawl.dev/v1/search",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ query: $json.query, limit: $json.limit }) }}",
+        "options": {
+          "response": {},
+          "timeout": 60000
+        }
+      },
+      "id": "b52475fb-16b6-4aa3-8555-92b4288f8dc5",
+      "name": "Firecrawl Search",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [7968, 48],
+      "alwaysOutputData": true,
+      "retryOnFail": true,
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "GJkntTblj2tXySIz",
+          "name": "Firecrawl Auth"
+        }
+      },
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "jsCode": "const ni = $('Normalize Input').first().json;\nconst run_id = ni.run_id;\nconst allItems = $input.all();\nconst queryItems = $('Build Queries').all();\n\nconst blockedUrlPatterns = [\n  /indeed\\.com/i, /glassdoor\\.com/i, /linkedin\\.com\\/jobs/i,\n  /ziprecruiter\\.com/i, /workday\\.com/i, /lever\\.co/i,\n  /greenhouse\\.io/i, /careers\\./i, /\\/jobs\\//i, /\\/careers\\//i,\n  /\\/job\\//i, /\\/hiring/i\n];\nconst blockedContentKeywords = [\n  'apply now', 'job posting', 'job description', 'we are hiring',\n  'open position', 'career opportunities', 'submit your resume',\n  'equal opportunity employer'\n];\n\nconst BUCKET_CAP = 25;\nconst FINAL_CAP = 30;\nconst variants = ['base', 'directory', 'leadership', 'team_page'];\n\nconst buckets = {};\nfor (const v of variants) buckets[v] = [];\nfor (let i = 0; i < allItems.length; i++) {\n  const d = allItems[i].json;\n  const variant = (queryItems[i] && queryItems[i].json.query_variant) || 'base';\n  const arr = d.data || d.results || (d.body && (d.body.data || d.body.results)) || [];\n  if (Array.isArray(arr)) {\n    for (const r of arr) {\n      if (!buckets[variant]) buckets[variant] = [];\n      buckets[variant].push(r);\n    }\n  }\n}\n\nlet filtered_out = 0;\nconst globalSeen = new Set();\n\nfunction canonicalUrl(url) {\n  try {\n    let u = url.toLowerCase().split('?')[0].split('#')[0];\n    u = u.replace(/^https?:\\/\\/www\\./, 'https://');\n    u = u.replace(/\\/$/, '');\n    return u;\n  } catch(e) { return url.toLowerCase(); }\n}\n\nfunction filterBucket(items, variantLabel) {\n  const out = [];\n  for (const r of items) {\n    const url = (r.url || r.link || r.source_url || '').trim();\n    const title = (r.title || r.name || r.pageTitle || '').trim();\n    const snippet = (r.description || r.snippet || r.text || r.summary || '').trim();\n    const combined = (title + ' ' + snippet).toLowerCase();\n    if (url && blockedUrlPatterns.some(p => p.test(url))) { filtered_out++; continue; }\n    if (blockedContentKeywords.some(kw => combined.includes(kw))) { filtered_out++; continue; }\n    const canonical = canonicalUrl(url);\n    if (canonical && globalSeen.has(canonical)) { filtered_out++; continue; }\n    if (canonical) globalSeen.add(canonical);\n    out.push({ title, url, snippet, query_variant: variantLabel });\n  }\n  return out;\n}\n\nconst candidateBuckets = {};\nfor (const v of variants) {\n  candidateBuckets[v] = filterBucket(buckets[v] || [], v).slice(0, BUCKET_CAP);\n}\n\nconst merged = [];\nconst finalSeen = new Set();\nconst pointers = {};\nfor (const v of variants) pointers[v] = 0;\nlet progress = true;\nwhile (merged.length < FINAL_CAP && progress) {\n  progress = false;\n  for (const v of variants) {\n    if (merged.length >= FINAL_CAP) break;\n    while (pointers[v] < candidateBuckets[v].length) {\n      const r = candidateBuckets[v][pointers[v]];\n      pointers[v]++;\n      const canonical = canonicalUrl(r.url);\n      if (canonical && finalSeen.has(canonical)) continue;\n      if (canonical) finalSeen.add(canonical);\n      merged.push(r);\n      progress = true;\n      break;\n    }\n  }\n}\n\nreturn [{ json: { run_id, filtered_results: merged, filtered_out_count: filtered_out, has_results: merged.length > 0 } }];"
+      },
+      "id": "a1b2c3d4-2222-4aaa-bbbb-000000000002",
+      "name": "Merge & Pre-Filter",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [8208, 48],
+      "alwaysOutputData": true,
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "boolean": [
+            {
+              "value1": "={{ $json.has_results }}",
+              "operation": "isTrue"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "a1b2c3d4-3333-4aaa-bbbb-000000000003",
+      "name": "IF Has Results?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [8448, 48]
+    },
+    {
+      "parameters": {
+        "jsCode": "const prev = $('Merge & Pre-Filter').first().json;\nconst run_id = prev.run_id;\nconst results = prev.filtered_results || [];\n\nconst preferredPatterns = [\n  /\\/about/i, /\\/team/i, /\\/leadership/i, /\\/staff/i,\n  /\\/board/i, /\\/our-people/i, /\\/who-we-are/i,\n  /\\/people/i, /\\/directors/i, /\\/management/i\n];\n\nconst scored = results.map(r => {\n  const url = r.url || '';\n  const bonus = preferredPatterns.some(p => p.test(url)) ? 100 : 0;\n  return { ...r, score: bonus };\n});\n\nscored.sort((a, b) => b.score - a.score);\nconst topK = scored.slice(0, 8);\n\nreturn topK.map(r => ({ json: { run_id, url: r.url, title: r.title || '', snippet: r.snippet || '' } }));"
+      },
+      "id": "mcrawl-p-5001-select-top-k",
+      "name": "Select Top K URLs",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [8688, 48],
+      "alwaysOutputData": true,
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.firecrawl.dev/v1/scrape",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ url: $json.url, formats: ['markdown'], onlyMainContent: true }) }}",
+        "options": {
+          "response": {},
+          "timeout": 60000
+        }
+      },
+      "id": "mcrawl-p-5002-scrape-url",
+      "name": "Firecrawl Scrape URL",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [8928, 48],
+      "alwaysOutputData": true,
+      "retryOnFail": false,
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "GJkntTblj2tXySIz",
+          "name": "Firecrawl Auth"
+        }
+      },
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "jsCode": "const allItems = $input.all();\nconst ni = $('Normalize Input').first().json;\nconst run_id = ni.run_id;\nconst query = ni.query;\nconst CAP = 16000;\n\nlet scraped_context = 'Query: ' + query + '\\n\\n';\nlet charCount = scraped_context.length;\nlet scrape_ok = 0;\nlet scrape_fail = 0;\n\nfor (const item of allItems) {\n  const d = item.json;\n  const text = d?.data?.markdown || d?.data?.content || d?.data?.text ||\n               d?.markdown || d?.content || d?.text ||\n               d?.body?.data?.markdown || d?.body?.data?.content || '';\n  const url = d?.data?.metadata?.sourceURL || d?.url || d?.data?.url || '';\n  const title = d?.data?.metadata?.title || d?.title || '';\n\n  if (!text || String(text).trim().length < 50) {\n    scrape_fail++;\n    const snippet = d?.snippet || '';\n    if (snippet) {\n      const entry = '--- Source: ' + url + ' ---\\n' + (title ? title + '\\n' : '') + snippet + '\\n\\n';\n      if (charCount + entry.length <= CAP) {\n        scraped_context += entry;\n        charCount += entry.length;\n      }\n    }\n    continue;\n  }\n\n  scrape_ok++;\n  const trimmed = String(text).trim().slice(0, 2500);\n  const entry = '--- Source: ' + url + ' ---\\n' + (title ? title + '\\n' : '') + trimmed + '\\n\\n';\n  if (charCount + entry.length > CAP) {\n    const remaining = CAP - charCount - 100;\n    if (remaining > 200) {\n      scraped_context += '--- Source: ' + url + ' ---\\n' + trimmed.slice(0, remaining) + '\\n[truncated]\\n\\n';\n    }\n    break;\n  }\n  scraped_context += entry;\n  charCount += entry.length;\n}\n\nreturn [{ json: { run_id, query, scraped_context, meta: { scrape_ok, scrape_fail, scrape_failed: scrape_ok === 0 } } }];"
+      },
+      "id": "mcrawl-p-5003-merge-scrapes",
+      "name": "Merge Scrapes to Context",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [9168, 48],
+      "alwaysOutputData": true,
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "jsCode": "const merged = $('Merge Scrapes to Context').first().json;\nconst run_id = merged.run_id;\nconst query = merged.query;\nlet search_context = merged.scraped_context || '';\n\n// Always append the full filtered_results list (30 items) so the LLM sees all of them\nconst prev = $('Merge & Pre-Filter').first().json;\nconst results = prev.filtered_results || [];\nconst CAP = 16000;\nconst FULL_DETAIL_LIMIT = 20;\n\nif (!search_context || search_context.length < 100) {\n  search_context = 'Query: ' + query + '\\n\\n';\n}\n\nsearch_context += '\\n--- ALL SEARCH RESULTS ---\\n';\nlet charCount = search_context.length;\nfor (let i = 0; i < results.length; i++) {\n  const r = results[i];\n  let entry;\n  if (i < FULL_DETAIL_LIMIT) {\n    entry = (i+1) + '. ' + (r.title ?? '') + '\\nURL: ' + (r.url ?? '') + '\\nSnippet: ' + (r.snippet ?? '');\n  } else {\n    entry = (i+1) + '. ' + (r.title ?? '') + '\\nURL: ' + (r.url ?? '');\n  }\n  if (charCount + entry.length + 2 > CAP) break;\n  search_context += entry + '\\n\\n';\n  charCount += entry.length + 2;\n}\n\nreturn [{ json: { run_id, query, search_context } }];"
+      },
+      "id": "d188e9a0-eee8-4830-adff-df29fd51b0da",
+      "name": "Build Search Context",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [9408, 48],
+      "retryOnFail": true,
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.openai.com/v1/chat/completions",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "openAiApi",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ model: 'gpt-4o-mini', temperature: 0, max_tokens: 4000, response_format: { type: 'json_object' }, messages: [{ role: 'system', content: 'You are a HIGH-RECALL people extractor. Your job is to find EVERY person mentioned as staff, leadership, board member, or team member in the provided text.\\n\\nCRITICAL RULES:\\n1. A single page may list MANY people — extract ALL of them individually. A staff directory listing 20 people should produce 20 results, not 3.\\n2. Do NOT summarize or consolidate. Each distinct person is a separate item.\\n3. Include people even with partial information (name + organization is enough).\\n4. NEVER extract people from job postings, career pages, news articles, or testimonials.\\n5. Only include email/phone if EXPLICITLY stated in the snippet text.\\n6. Deduplicate people; keep the entry with highest confidence.\\n7. Target: extract 15-30 items. If fewer exist, return what you find. If more exist, return all of them.\\n8. If no qualifying people can be extracted, return {\"people\":[]}.\\n9. Return ONLY valid JSON. No markdown, no commentary.\\n\\nOutput schema:\\n{\"people\":[{\"name\":string|null,\"title\":string|null,\"organization_name\":string|null,\"email\":string|null,\"phone\":string|null,\"source_url\":string|null,\"evidence\":string|null,\"confidence\":number(0-1)|null}]}' }, { role: 'user', content: $('Build Search Context').first().json.search_context }] }) }}",
+        "options": {
+          "response": {},
+          "timeout": 60000
+        }
+      },
+      "id": "c4852443-4ef4-42e7-95f0-097a30a0467b",
+      "name": "LLM Extract People From Results",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [9648, 48],
+      "alwaysOutputData": true,
+      "retryOnFail": true,
+      "credentials": {
+        "openAiApi": {
+          "id": "S65JWr5N3fYHb1YT",
+          "name": "OpenAi account"
+        }
+      },
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.openai.com/v1/chat/completions",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "openAiApi",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ model: 'gpt-4o-mini', temperature: 0.2, response_format: { type: 'json_object' }, messages: [{ role: 'system', content: 'You are generating a \"Search Brief\" to help a user quickly understand and act on results.\\n\\nYou must:\\n- Summarize only the provided data.\\n- Do NOT invent specific people, events, or grants.\\n- You MAY suggest general resource sites or directories, but do not claim they contain specific items.\\n- Be concise and practical.\\n- Return JSON only.\\n\\nOutput schema:\\n{\"summary\":string,\"what_we_found\":string[],\"what_may_be_missing\":string[],\"helpful_sites\":[{\"name\":string,\"url\":string,\"why\":string}],\"suggested_queries\":string[],\"confidence\":number|null,\"caveats\":string[]}\\n\\nMODULE: People\\nSuggest staff directories, association member lists, foundation staff pages, LinkedIn org pages.' }, { role: 'user', content: 'Query: ' + $('Normalize Input').first().json.query + '\\n\\nExtracted entities:\\n' + ($('LLM Extract People From Results').first().json?.choices?.[0]?.message?.content ?? '[]').slice(0, 3000) + '\\n\\nTop search results:\\n' + ($('Merge & Pre-Filter').first().json.filtered_results || []).slice(0, 10).map((r, i) => (i+1) + '. ' + r.title + ' - ' + r.url).join('\\n') }] }) }}",
+        "options": {
+          "response": {},
+          "timeout": 60000
+        }
+      },
+      "id": "brief-p-6001-llm-build-search-brief",
+      "name": "LLM Build Search Brief",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [9888, 48],
+      "alwaysOutputData": true,
+      "retryOnFail": false,
+      "credentials": {
+        "openAiApi": {
+          "id": "S65JWr5N3fYHb1YT",
+          "name": "OpenAi account"
+        }
+      },
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "jsCode": "let txt = $('LLM Extract People From Results').first().json?.choices?.[0]?.message?.content ?? '';\ntxt = String(txt).trim();\nlet parsed;\ntry { parsed = JSON.parse(txt); } catch(e) {\n  const m = txt.match(/\\[[\\s\\S]*\\]/);\n  if (m) parsed = JSON.parse(m[0]); else parsed = [];\n}\nconst people = Array.isArray(parsed) ? parsed : (parsed.people || []);\nconst ni = $('Normalize Input').first().json;\nconst run_id = ni.run_id;\nconst scrapeMeta = $('Merge Scrapes to Context').first().json.meta || {};\nconst cleaned = people.map(p => ({\n  title: (p.name ?? 'Unknown') + (p.title ? ' - ' + p.title : ''),\n  description: p.evidence ?? null,\n  url: p.source_url ?? p.url ?? null,\n  source: 'firecrawl+llm',\n  organization: p.organization_name ?? p.organization ?? null,\n  contact_name: p.name ?? null,\n  contact_email: p.email ?? null,\n  contact_phone: p.phone ?? null,\n  confidence: (typeof p.confidence === 'number') ? p.confidence : null,\n  raw_data: p\n}));\n\n// Parse brief\nlet brief = null;\ntry {\n  const briefTxt = $('LLM Build Search Brief').first().json?.choices?.[0]?.message?.content ?? '';\n  if (briefTxt.trim()) brief = JSON.parse(briefTxt.trim());\n} catch(e) { brief = null; }\n\n// Reconcile brief summary with actual parsed result count\nif (brief && brief.summary) {\n  const actualCount = cleaned.length;\n  brief.summary = brief.summary.replace(/\\b\\d+\\s+(people|contacts?|results?|items?|individuals?)\\b/gi, actualCount + ' $1');\n}\n\nreturn [{ json: { run_id, status: 'completed', results: cleaned, brief, meta: { micro_crawl: true, scrape_ok: scrapeMeta.scrape_ok ?? 0, scrape_fail: scrapeMeta.scrape_fail ?? 0 } } }];"
+      },
+      "id": "904ae8c6-8839-45cd-bfb3-d23fd1ad6ea3",
+      "name": "Build Callback Envelope",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [10128, 48],
+      "retryOnFail": true,
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('Workflow Constants').first().json.SUPABASE_FUNCTIONS_BASE_URL + \"/search-callback\" }}",
+        "authentication": "none",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "Authorization", "value": "=Bearer {{ $('Workflow Constants').first().json.SEARCH_WORKER_SECRET }}" },
+            { "name": "X-Api-Key", "value": "={{ $('Workflow Constants').first().json.SEARCH_WORKER_SECRET }}" },
+            { "name": "Content-Type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ $json }}",
+        "options": {
+          "response": {},
+          "timeout": 60000
+        }
+      },
+      "id": "5b16f14c-faf3-4255-a504-55cdfc6eda6c",
+      "name": "Callback to Supabase",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [10368, 48],
+      "alwaysOutputData": true,
+      "retryOnFail": false,
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('Workflow Constants').first().json.SUPABASE_FUNCTIONS_BASE_URL + \"/search-callback\" }}",
+        "authentication": "none",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "Authorization", "value": "=Bearer {{ $('Workflow Constants').first().json.SEARCH_WORKER_SECRET }}" },
+            { "name": "X-Api-Key", "value": "={{ $('Workflow Constants').first().json.SEARCH_WORKER_SECRET }}" },
+            { "name": "Content-Type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ { run_id: $('Normalize Input').first().json.run_id, status: 'failed', error_message: String($json?.error?.message || 'Unknown error') } }}",
+        "options": {
+          "response": {},
+          "timeout": 60000
+        }
+      },
+      "id": "730f6f18-9922-4c8d-9ad2-774b3c482c61",
+      "name": "Error Callback to Supabase",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [7728, 340],
+      "alwaysOutputData": true,
+      "retryOnFail": false,
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "jsCode": "const run_id = $('Normalize Input').first().json.run_id;\nconst filtered_out = $('Merge & Pre-Filter').first().json.filtered_out_count || 0;\nreturn [{ json: { run_id, status: 'completed', results: [], brief: null, meta: { filtered_out: true, filtered_out_count: filtered_out } } }];"
+      },
+      "id": "a1b2c3d4-4444-4aaa-bbbb-000000000004",
+      "name": "Build Empty Envelope",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [8688, 340],
+      "alwaysOutputData": true,
+      "continueOnFail": true
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook Trigger": {
+      "main": [[{ "node": "Workflow Constants", "type": "main", "index": 0 }]]
+    },
+    "Workflow Constants": {
+      "main": [[{ "node": "Normalize Input", "type": "main", "index": 0 }]]
+    },
+    "Normalize Input": {
+      "main": [[{ "node": "IF Valid Input?", "type": "main", "index": 0 }]]
+    },
+    "IF Valid Input?": {
+      "main": [
+        [{ "node": "Build Queries", "type": "main", "index": 0 }],
+        [{ "node": "Error Callback to Supabase", "type": "main", "index": 0 }]
+      ]
+    },
+    "Build Queries": {
+      "main": [[{ "node": "Firecrawl Search", "type": "main", "index": 0 }]]
+    },
+    "Firecrawl Search": {
+      "main": [[{ "node": "Merge & Pre-Filter", "type": "main", "index": 0 }]]
+    },
+    "Merge & Pre-Filter": {
+      "main": [[{ "node": "IF Has Results?", "type": "main", "index": 0 }]]
+    },
+    "IF Has Results?": {
+      "main": [
+        [{ "node": "Select Top K URLs", "type": "main", "index": 0 }],
+        [{ "node": "Build Empty Envelope", "type": "main", "index": 0 }]
+      ]
+    },
+    "Select Top K URLs": {
+      "main": [[{ "node": "Firecrawl Scrape URL", "type": "main", "index": 0 }]]
+    },
+    "Firecrawl Scrape URL": {
+      "main": [[{ "node": "Merge Scrapes to Context", "type": "main", "index": 0 }]]
+    },
+    "Merge Scrapes to Context": {
+      "main": [[{ "node": "Build Search Context", "type": "main", "index": 0 }]]
+    },
+    "Build Search Context": {
+      "main": [[{ "node": "LLM Extract People From Results", "type": "main", "index": 0 }]]
+    },
+    "LLM Extract People From Results": {
+      "main": [[{ "node": "LLM Build Search Brief", "type": "main", "index": 0 }]]
+    },
+    "LLM Build Search Brief": {
+      "main": [[{ "node": "Build Callback Envelope", "type": "main", "index": 0 }]]
+    },
+    "Build Callback Envelope": {
+      "main": [[{ "node": "Callback to Supabase", "type": "main", "index": 0 }]]
+    },
+    "Build Empty Envelope": {
+      "main": [[{ "node": "Callback to Supabase", "type": "main", "index": 0 }]]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": true,
+    "timeSavedMode": "fixed",
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "versionId": "v8-high-recall",
+  "meta": {
+    "instanceId": "93beede2a90582294d7ef06720d87eff3641b0d88433511d1e55f0a191940c61"
+  },
+  "id": "mf82MrIja9vFFps6zG7ms",
+  "tags": []
+}

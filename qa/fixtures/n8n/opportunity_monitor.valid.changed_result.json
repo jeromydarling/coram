@@ -1,0 +1,28 @@
+{
+  "workflow_key": "opportunity_monitor",
+  "run_id": "dddddddd-1111-2222-3333-555555555555",
+  "opportunity_id": "opp-001",
+  "org_id": "org-001",
+  "org_name": "Acme Corp",
+  "result": {
+    "since": "2026-01-31T00:00:00Z",
+    "scope": {},
+    "counts": { "total": 2, "changed": 1, "new": 0, "stale": 1 },
+    "changes": [
+      {
+        "opportunity_id": "opp-001",
+        "title": "Acme Partnership",
+        "status": "Active",
+        "fields_changed": ["stage"],
+        "summary": "Stage changed to Discovery Held"
+      }
+    ],
+    "recommendations": [
+      {
+        "type": "info",
+        "message": "1 opportunity has been updated",
+        "priority": "low"
+      }
+    ]
+  }
+}

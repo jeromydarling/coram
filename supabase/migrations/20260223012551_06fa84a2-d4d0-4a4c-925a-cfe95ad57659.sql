@@ -1,0 +1,2 @@
+ALTER TABLE public.operator_content_drafts DROP CONSTRAINT IF EXISTS operator_content_drafts_status_check;
+ALTER TABLE public.operator_content_drafts ADD CONSTRAINT operator_content_drafts_status_check CHECK (status IN ('draft','review','published','archived','dismissed'));

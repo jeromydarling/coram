@@ -1,0 +1,121 @@
+{
+  "name": "Profunda - Emit Relationship Edges (Standalone)",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "emit-edges",
+        "options": {}
+      },
+      "id": "edge-trig-0001-0001-0001-000000000001",
+      "name": "Webhook Trigger",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [840, 340],
+      "webhookId": "emit-edges-webhook-001"
+    },
+    {
+      "parameters": {
+        "keepOnlySet": true,
+        "values": {
+          "string": [
+            {
+              "name": "SUPABASE_FUNCTIONS_BASE_URL",
+              "value": "https://lxahadqhpubynuzvraxc.supabase.co/functions/v1"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "edge-const-0001-0001-0001-000000000002",
+      "name": "Workflow Constants",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 2,
+      "position": [1080, 340],
+      "retryOnFail": true,
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "jsCode": "// Extract results from search callback envelope\n// Accepts: { run_id, results: [...], status }\nconst b = $('Webhook Trigger').first().json.body ?? $('Webhook Trigger').first().json;\nconst results = b.results || [];\nconst run_id = b.run_id || 'unknown';\n\nconst edges = [];\n\nfor (const r of results) {\n  // person -> organization edges\n  if (r.contact_name && r.organization) {\n    edges.push({\n      source_type: 'person',\n      source_id: run_id,\n      target_type: 'organization',\n      target_id: run_id,\n      edge_reason: (r.contact_name + ' works at ' + r.organization + ' (via search)').slice(0, 500)\n    });\n  }\n\n  // grant edges\n  if (r.raw_data && r.raw_data.grant_name && r.organization) {\n    edges.push({\n      source_type: 'organization',\n      source_id: run_id,\n      target_type: 'grant',\n      target_id: run_id,\n      edge_reason: (r.organization + ' linked to grant: ' + r.raw_data.grant_name).slice(0, 500)\n    });\n  }\n\n  // event edges\n  if (r.raw_data && r.raw_data.event_name && r.organization) {\n    edges.push({\n      source_type: 'event',\n      source_id: run_id,\n      target_type: 'organization',\n      target_id: run_id,\n      edge_reason: (r.organization + ' connected to event: ' + r.raw_data.event_name).slice(0, 500)\n    });\n  }\n}\n\n// Deduplicate by edge_reason\nconst seen = new Set();\nconst uniqueEdges = edges.filter(e => {\n  const key = e.source_type + ':' + e.target_type + ':' + e.edge_reason;\n  if (seen.has(key)) return false;\n  seen.add(key);\n  return true;\n});\n\nreturn [{ json: { edges: uniqueEdges, edge_count: uniqueEdges.length, run_id } }];"
+      },
+      "id": "edge-emit-0001-0001-0001-000000000003",
+      "name": "Emit Relationship Edges",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1320, 340],
+      "alwaysOutputData": true,
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('Workflow Constants').first().json.SUPABASE_FUNCTIONS_BASE_URL + '/upsert-relationship-edges' }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ { edges: $json.edges || [] } }}",
+        "options": {
+          "response": {},
+          "timeout": 60000
+        }
+      },
+      "id": "edge-post-0001-0001-0001-000000000004",
+      "name": "POST Edges to Supabase",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [1560, 340],
+      "alwaysOutputData": true,
+      "retryOnFail": true,
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "JZ0bvsdogmHU6USf",
+          "name": "Secret Worker Key"
+        }
+      },
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "jsCode": "const edgeCount = $('Emit Relationship Edges').first().json.edge_count || 0;\nconst postResult = $json;\nreturn [{ json: {\n  ok: true,\n  edges_emitted: edgeCount,\n  supabase_response: postResult,\n  completed_at: new Date().toISOString()\n} }];"
+      },
+      "id": "edge-log-0001-0001-0001-000000000005",
+      "name": "Log Results",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1800, 340],
+      "alwaysOutputData": true,
+      "continueOnFail": true
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook Trigger": {
+      "main": [[{ "node": "Workflow Constants", "type": "main", "index": 0 }]]
+    },
+    "Workflow Constants": {
+      "main": [[{ "node": "Emit Relationship Edges", "type": "main", "index": 0 }]]
+    },
+    "Emit Relationship Edges": {
+      "main": [[{ "node": "POST Edges to Supabase", "type": "main", "index": 0 }]]
+    },
+    "POST Edges to Supabase": {
+      "main": [[{ "node": "Log Results", "type": "main", "index": 0 }]]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": true,
+    "timeSavedMode": "fixed",
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "versionId": "emit-edges-v1",
+  "meta": {
+    "instanceId": "93beede2a90582294d7ef06720d87eff3641b0d88433511d1e55f0a191940c61"
+  },
+  "id": "emit-edges-standalone-v1",
+  "tags": []
+}

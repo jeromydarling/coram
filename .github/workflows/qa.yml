@@ -1,0 +1,83 @@
+name: QA Employee — Playwright Smoke
+on:
+  workflow_dispatch:
+    inputs:
+      run_id:
+        description: 'QA run ID from Supabase'
+        required: true
+      suite_key:
+        description: 'Test suite key'
+        required: true
+        default: 'core_smoke_v1'
+      base_url:
+        description: 'Base URL to test against'
+        required: true
+      tenant_id:
+        description: 'Tenant ID for scoping'
+        required: true
+      qa_email:
+        description: 'QA demo user email'
+        required: true
+        default: 'qa-demo@thecros.app'
+      qa_password:
+        description: 'QA demo user password'
+        required: true
+      supabase_url:
+        description: 'Supabase project URL'
+        required: true
+      callback_url:
+        description: 'Edge function URL for results callback'
+        required: true
+      config_url:
+        description: 'Edge function URL for suite config'
+        required: true
+      qa_enable_stripe_tests:
+        description: 'Set to 1 to enable Stripe E2E tests'
+        required: false
+        default: '0'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install qa-runner dependencies
+        working-directory: qa-runner
+        run: npm install
+
+      - name: Install Playwright browsers
+        working-directory: qa-runner
+        run: npx playwright install --with-deps chromium
+
+      - name: Run QA suite
+        working-directory: qa-runner
+        run: npm run qa:run
+        env:
+          RUN_ID: ${{ inputs.run_id }}
+          SUITE_KEY: ${{ inputs.suite_key }}
+          BASE_URL: ${{ inputs.base_url }}
+          QA_DEFAULT_BASE_URL: ${{ inputs.base_url }}
+          TENANT_ID: ${{ inputs.tenant_id }}
+          QA_EMAIL: ${{ inputs.qa_email }}
+          QA_PASSWORD: ${{ inputs.qa_password }}
+          SUPABASE_URL: ${{ inputs.supabase_url }}
+          CALLBACK_URL: ${{ inputs.callback_url }}
+          CONFIG_URL: ${{ inputs.config_url }}
+          QA_CALLBACK_SECRET: ${{ secrets.QA_CALLBACK_SECRET }}
+          BROWSERBASE_API_KEY: ${{ secrets.BROWSERBASE_API_KEY }}
+          BROWSERBASE_PROJECT_ID: ${{ secrets.BROWSERBASE_PROJECT_ID }}
+          QA_ENABLE_STRIPE_TESTS: ${{ inputs.qa_enable_stripe_tests }}
+
+      - name: Upload artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: qa-screenshots-${{ inputs.run_id }}
+          path: qa-runner/screenshots/
+          retention-days: 14

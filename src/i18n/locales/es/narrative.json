@@ -1,0 +1,215 @@
+{
+  "companion": {
+    "greetings": {
+      "morning": "Buenos días. ¿Qué relaciones lleva hoy en el corazón?",
+      "afternoon": "Buenas tardes. ¿Cómo se ha manifestado su comunidad hoy?",
+      "evening": "Buenas noches. Dedique un momento a recordar: ¿a quién encontró hoy en su camino?",
+      "return": "Bienvenido de nuevo. Su jardín relacional le ha estado esperando.",
+      "firstTime": "Bienvenido. Estoy aquí para ayudarle a ver con mayor claridad a las personas que le rodean — no para sustituir su criterio, sino para profundizar su atención."
+    },
+    "prompts": {
+      "followUp": "No se ha comunicado con {{name}} en {{days}} días. ¿Le gustaría acercarse?",
+      "reflection": "Ha sido una semana rica. ¿Desea hacer una pausa y reflexionar sobre lo que ha observado?",
+      "journeyMilestone": "El camino de {{name}} ha llegado a un nuevo capítulo. Dedique un momento a reconocer cuánto han recorrido juntos.",
+      "seasonalInvitation": "A medida que se despliega {{season}}, considere: ¿qué se está sembrando, creciendo, cosechando o descansando en sus relaciones?",
+      "dormantConnection": "{{name}} ha estado en silencio por un tiempo. A veces el silencio es paz. A veces es un llamado. ¿Qué percibe usted?",
+      "gratitude": "Antes de cerrar el día — ¿hay alguien por quien sienta gratitud? Incluso una oración silenciosa de agradecimiento es una forma de cuidado.",
+      "communityNeed": "Ha surgido una necesidad en su red: {{need}}. Quizá usted pueda ayudar — o conectar a alguien que pueda hacerlo."
+    },
+    "insights": {
+      "connectionTrend": "Su red relacional ha {{trend}} este mes. {{interpretation}}",
+      "trendGrown": "crecido",
+      "trendSteadied": "permanecido estable",
+      "trendQuieted": "aquietado",
+      "interpretationGrown": "Nuevas semillas han sido plantadas. Cuídelas con esmero.",
+      "interpretationSteadied": "La constancia es, en sí misma, una forma de fidelidad.",
+      "interpretationQuieted": "La quietud puede ser fructífera. Pero verifique — ¿hay alguien esperando noticias suyas?",
+      "topConnections": "Sus vínculos más profundos este mes: {{names}}. Ellos son su jardín interior.",
+      "neglectedArea": "Sus relaciones en el área de {{area}} podrían beneficiarse de algo de atención. Incluso un pequeño gesto tiene gran alcance."
+    },
+    "encouragement": {
+      "afterLogging": "Registrado. Los pequeños actos de atención son los que más importan.",
+      "afterReflection": "Gracias por hacer una pausa. La reflexión es la tierra donde crece la sabiduría.",
+      "afterJourneyUpdate": "Un capítulo más escrito. La historia continúa.",
+      "afterProvision": "Una necesidad atendida, un vínculo fortalecido. Esto es comunidad.",
+      "milestoneReached": "Ha alcanzado {{milestone}}. Este es el fruto de una presencia paciente y fiel."
+    }
+  },
+  "companionTray": {
+    "ariaLabel": "Bandeja de orientación del compañero"
+  },
+  "microGuidanceCard": {
+    "dismissAriaLabel": "Descartar orientación"
+  },
+  "narrativeStudio": {
+    "title": "Estudio Narrativo",
+    "subtitle": "Historias que brotan del trabajo que usted ya realiza.",
+    "actions": {
+      "witnessReports": "Informes de testimonio",
+      "refreshStories": "Renovar historias"
+    },
+    "emergingStories": {
+      "heading": "Historias emergentes",
+      "tooltipWhat": "Andamios narrativos ligeros ensamblados a partir de sus momentos de valor",
+      "tooltipWhere": "narrative_story_drafts",
+      "tooltipWhy": "Vea qué historias están tomando forma a partir de su trabajo diario",
+      "outlineForming": "El esquema está tomando forma…",
+      "emptyTitle": "Las historias crecerán a medida que usted trabaje.",
+      "emptyMessage": "Las reflexiones, los eventos y los movimientos del camino se entrelazan en narrativa con el tiempo."
+    },
+    "storyThreads": {
+      "heading": "Hilos de la historia",
+      "tooltipWhat": "Momentos de valor individuales detectados a partir de su actividad",
+      "tooltipWhere": "narrative_value_moments",
+      "tooltipWhy": "Cada momento es un hilo que se teje en su historia más amplia",
+      "emptyMessage": "Aún no hay hilos narrativos. Surgen a medida que usted reflexiona, asiste a eventos y cultiva relaciones."
+    },
+    "momentLabels": {
+      "growth": "Crecimiento",
+      "momentum": "Impulso",
+      "reconnection": "Reconexión",
+      "community_presence": "Presencia",
+      "collaboration": "Colaboración"
+    },
+    "toasts": {
+      "outlineRefreshed": "Esquema narrativo renovado",
+      "noMoments": "Aún no hay momentos suficientes para construir.",
+      "couldNotBuild": "No fue posible construir el esquema"
+    }
+  },
+  "narrativeThreads": {
+    "title": "Hilos narrativos",
+    "mobileTitle": "Historias",
+    "subtitle": "La historia se reúne en silencio a partir de los momentos que su equipo ha registrado.",
+    "tabs": {
+      "thisWeek": "Esta semana",
+      "archive": "Archivo"
+    },
+    "weekOf": "Semana del {{date}}",
+    "threadCard": {
+      "hideCitedMoments": "Ocultar momentos citados",
+      "seeCitedMoments": "Ver momentos citados",
+      "citationsIntro": "Este es un hilo construido a partir de momentos que su equipo registró — reflexiones, visitas y pequeñas señales de cambio.",
+      "noCitedMoments": "No hay momentos citados para este hilo."
+    },
+    "emptyThisWeek": "La historia se reúne aquí en silencio. A medida que su equipo registre visitas, reflexiones y relaciones, los hilos comenzarán a formarse.",
+    "emptyArchive": "Aún no hay hilos anteriores."
+  },
+  "emptyStates": {
+    "dashboard": {
+      "title": "Su jardín le aguarda",
+      "message": "Todo gran jardín comienza con una sola semilla. Agregue su primera relación y vea cómo cobra vida su comunidad."
+    },
+    "relationships": {
+      "title": "Nadie camina solo",
+      "message": "Las personas en su vida son su mayor tesoro. Comience agregando a alguien a quien acompaña en el camino."
+    },
+    "journeys": {
+      "title": "Todo camino comienza con un solo paso",
+      "message": "Los caminos capturan la historia que se despliega en sus relaciones. Inicie uno y permita que la narrativa crezca."
+    },
+    "events": {
+      "title": "La comunidad se reúne",
+      "message": "Suscríbase a fuentes de eventos locales o agregue los suyos. El pulso de su comunidad comienza aquí."
+    },
+    "volunteers": {
+      "title": "Muchas manos, una sola misión",
+      "message": "Comience a coordinar a quienes sirven. Cada hora entregada es un don para la comunidad."
+    },
+    "provisions": {
+      "title": "Dar y recibir con gracia",
+      "message": "Registre las formas tangibles en que su comunidad se provee mutuamente. Ninguna necesidad es demasiado pequeña."
+    },
+    "reflections": {
+      "title": "Quédese quieto y reconozca",
+      "message": "La reflexión convierte la experiencia en sabiduría. Haga una pausa, observe y deje que el silencio hable."
+    },
+    "interactions": {
+      "title": "La presencia es el primer don",
+      "message": "Cada conversación, cada visita, cada oración — registre los momentos que tejen su comunidad."
+    }
+  },
+  "communio": {
+    "title": "Communio",
+    "subtitle": "Intercambio narrativo voluntario entre espacios de trabajo CROS",
+    "profileBanner": {
+      "message": "Comparta su presencia con la red",
+      "description": "Únase al directorio de Communio para que las organizaciones vecinas puedan descubrirle.",
+      "cta": "Configurar perfil"
+    },
+    "noGroups": {
+      "heading": "Aún no hay grupos",
+      "description": "Communio le permite compartir señales narrativas anonimizadas con organizaciones vecinas. Cree o únase a un grupo para comenzar a construir conciencia comunitaria compartida.",
+      "cta": "Crear un grupo"
+    },
+    "tabs": {
+      "myGroups": "Mis grupos",
+      "sharedPulse": "Pulso compartido",
+      "networkTrends": "Tendencias de red",
+      "sharedSignals": "Señales compartidas",
+      "collaboration": "Colaboración",
+      "governance": "Gobernanza",
+      "requests": "Solicitudes"
+    },
+    "signals": {
+      "loading": "Cargando señales…",
+      "empty": "Aún no hay señales compartidas. A medida que las organizaciones de sus grupos compartan perspectivas narrativas, aparecerán aquí."
+    },
+    "events": {
+      "loading": "Cargando eventos…",
+      "sharedEvent": "Evento compartido desde otro espacio de trabajo",
+      "visibility": "Visibilidad: {{level}}",
+      "empty": "Aún no hay eventos de colaboración. Cuando las organizaciones asociadas compartan eventos, aparecerán aquí."
+    }
+  },
+  "caregiverNetwork": {
+    "title": "Red de Cuidadores",
+    "subtitle": "Un espacio tranquilo para el apoyo mutuo y el acompañamiento",
+    "safetyTitle": "Seguridad y privacidad",
+    "safetyMessage": "Esta red es para el acompañamiento y el apoyo práctico. Nunca comparta detalles privados sobre las personas a su cuidado. Toda la mensajería es mediada — su información de contacto permanece privada a menos que decida compartirla.",
+    "tabs": {
+      "presence": "Presencia",
+      "browse": "Explorar",
+      "requests": "Solicitudes",
+      "messages": "Mensajes"
+    }
+  },
+  "impulsus": {
+    "title": "Impulsus",
+    "subtitle": "Un registro íntimo de las relaciones que estoy cultivando.",
+    "captureSettings": "Configuración de captura"
+  },
+  "voice": {
+    "principles": {
+      "tone": "pastoral, cálido, contemplativo, nunca urgente",
+      "perspective": "segunda persona formal (usted) — siempre hablando al usuario como un compañero de confianza",
+      "metaphor": "jardinería, estaciones, camino, luz",
+      "avoid": "lenguaje de ventas, urgencia, manipulación, gamificación, obsesión con métricas"
+    }
+  },
+  "seasonal": {
+    "spring": {
+      "invitation": "La primavera es tiempo de nuevos comienzos. ¿Qué relaciones nuevas están brotando? ¿Qué conexiones en reposo comienzan a despertar?",
+      "reflection": "Así como la tierra despierta, también lo hacen las oportunidades. Siembre con intención."
+    },
+    "summer": {
+      "invitation": "El verano nos llama hacia afuera. Su comunidad está floreciendo — ¿quién necesita su presencia en esta estación de abundancia?",
+      "reflection": "El crecimiento sucede a su alrededor. Deténgase a observarlo y a celebrarlo."
+    },
+    "autumn": {
+      "invitation": "El otoño es estación de cosecha y gratitud. ¿Qué frutos han dado sus relaciones este año?",
+      "reflection": "Recoja lo que ha crecido. Dé gracias. Prepárese para la estación más quieta que viene."
+    },
+    "winter": {
+      "invitation": "El invierno nos invita hacia adentro. Esta es una estación de descanso, reflexión y fidelidad callada.",
+      "reflection": "No todo crecimiento es visible. Las raíces más profundas crecen en el silencio."
+    },
+    "liturgical": {
+      "advent": "El Adviento nos recuerda que las mejores cosas llegan a quienes esperan con expectación. ¿Con quién espera usted?",
+      "christmas": "La luz ha venido. En esta estación de don y alegría, ¿a quién puede llevar luz?",
+      "lent": "La Cuaresma nos llama a la sencillez y la renovación. ¿Qué necesita ser podado en su vida relacional? ¿Qué necesita raíces más profundas?",
+      "easter": "Ha resucitado. En esta estación de resurrección, ¿qué relaciones están siendo renovadas?",
+      "ordinary": "El Tiempo Ordinario no tiene nada de ordinario. La presencia fiel, día tras día, es lo más extraordinario que puede ofrecer."
+    }
+  }
+}

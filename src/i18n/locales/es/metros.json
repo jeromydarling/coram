@@ -1,0 +1,128 @@
+{
+  "metros": {
+    "title": "Metros",
+    "subtitle": "Disposición del mercado y planificación de expansión",
+    "searchPlaceholder": "Buscar metros...",
+    "addMetro": "Agregar Metro",
+    "noMetrosFound": "No se encontraron metros",
+    "filters": {
+      "allStatuses": "Todos los estados",
+      "allRegions": "Todas las regiones",
+      "unassigned": "Sin asignar",
+      "expansionReady": "Listo para Expansión",
+      "anchorBuild": "Construcción de Anclas",
+      "ecosystemDev": "Desarrollo de Ecosistema"
+    },
+    "card": {
+      "readinessIndex": "Índice de Disposición",
+      "anchor": "Ancla",
+      "demand": "Demanda",
+      "ops": "Ops",
+      "anchors": "anclas",
+      "pipeline": "cartera",
+      "recommendation": "Recomendación"
+    },
+    "deleteDialog": {
+      "title": "Eliminar Metro",
+      "description": "¿Está seguro de que desea eliminar \"{{name}}\"? Esta acción no se puede deshacer.",
+      "cancel": "Cancelar",
+      "delete": "Eliminar"
+    },
+    "addDialog": {
+      "title": "Agregar Metro",
+      "description": "Crear una nueva área metro",
+      "metroName": "Nombre del Metro",
+      "metroNamePlaceholder": "p. ej. Ciudad de Kansas",
+      "region": "Región",
+      "regionPlaceholder": "Seleccione una región (opcional)",
+      "noRegion": "Sin región asignada",
+      "cancel": "Cancelar",
+      "creating": "Creando…",
+      "create": "Crear Metro"
+    },
+    "regionCount": "({{count}} metros)"
+  },
+  "metroDetail": {
+    "loading": "Cargando…",
+    "notFound": "Metro No Encontrado",
+    "notFoundMessage": "Este metro no pudo encontrarse.",
+    "backToMetros": "Volver a Metros",
+    "subtitle": "Detalles e inteligencia del metro",
+    "save": "Guardar",
+    "tabs": {
+      "details": "Detalles",
+      "operations": "Operaciones",
+      "story": "Historia",
+      "newsSources": "Fuentes de Noticias",
+      "expansionPlan": "Plan de Expansión",
+      "activation": "Activación",
+      "keywords": "Palabras Clave",
+      "notes": "Notas"
+    },
+    "details": {
+      "region": "Región",
+      "regionUnassigned": "Sin asignar",
+      "scores": {
+        "anchorScore": "Puntaje de Ancla",
+        "demandScore": "Puntaje de Demanda",
+        "opsScore": "Puntaje de Ops"
+      },
+      "demandMetrics": "Métricas de Demanda",
+      "referralsPerMonth": "Derivaciones / Mes",
+      "partnerInquiriesPerMonth": "Consultas de Socios / Mes",
+      "waitlistSize": "Tamaño de Lista de Espera",
+      "partnerNetwork": "Red de Socios",
+      "workforcePartners": "Socios Laborales",
+      "housingRefugeePartners": "Socios de Vivienda/Refugiados",
+      "schoolsLibraries": "Escuelas/Bibliotecas",
+      "recommendation": "Recomendación",
+      "recommendations": {
+        "invest": "Invertir",
+        "buildAnchors": "Construir Anclas",
+        "hold": "Mantener",
+        "triage": "Clasificar"
+      }
+    },
+    "operations": {
+      "staffCoverage": "Cobertura de Personal (1-5)",
+      "coverageOptions": {
+        "1": "1 - Mínima",
+        "2": "2 - Limitada",
+        "3": "3 - Adecuada",
+        "4": "4 - Buena",
+        "5": "5 - Cobertura Completa"
+      },
+      "operationalReadiness": "Disposición Operacional",
+      "distributionPartner": "Socio de Distribución",
+      "distributionPartnerDesc": "Tiene un socio de distribución establecido",
+      "storageReady": "Almacenamiento Listo",
+      "storageReadyDesc": "Las instalaciones de almacenamiento están disponibles",
+      "quarterlyTarget": "Objetivo Trimestral (dispositivos/mes)",
+      "quarterlyTargetHint": "Objetivo de volumen mensual de dispositivos usado en el seguimiento del embudo del Cuadro de Mando del Viernes",
+      "activeAnchors": "Anclas Activas",
+      "inPipeline": "En Cartera"
+    },
+    "notes": {
+      "label": "Notas Generales",
+      "placeholder": "Agregue notas sobre este metro...",
+      "charCount": "{{count}}/2000"
+    },
+    "readiness": "Disposición: "
+  },
+  "metroNews": {
+    "title": "Narrativas de Metro",
+    "subtitle": "Historias comunitarias y patrones emergentes en los metros",
+    "allMetros": "Todos los Metros",
+    "noStories": "Aún no hay historias",
+    "noStoriesMessage": "Las narrativas de metro aparecerán aquí una vez generadas.",
+    "card": {
+      "emergingPatterns": "Patrones Emergentes",
+      "partnerResponses": "Respuestas de Socios",
+      "showLess": "Ver menos",
+      "readFull": "Leer la historia completa",
+      "orgsCount": "{{count}} orgs",
+      "signalsCount": "{{count}} señales",
+      "risingCount": "{{count}} en ascenso"
+    }
+  }
+}

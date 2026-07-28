@@ -1,0 +1,108 @@
+{
+  "_description": "n8n nightly scheduler for Profunda Momentum Engine. Calls Supabase edge functions for batch recompute + alert evaluation. n8n does NOT compute scores — it only schedules.",
+  "name": "Profunda - Momentum Nightly - PROD",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [{ "triggerAtHour": 3 }]
+        }
+      },
+      "id": "cron-trigger",
+      "name": "Nightly 3AM",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.1,
+      "position": [200, 300]
+    },
+    {
+      "parameters": {
+        "url": "={{ $env.SUPABASE_URL }}/functions/v1/momentum-recalculate",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "Content-Type", "value": "application/json" },
+            { "name": "X-Api-Key", "value": "={{ $env.N8N_SHARED_SECRET }}" }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            { "name": "mode", "value": "batch" }
+          ]
+        },
+        "options": {
+          "timeout": 60000,
+          "redirect": { "redirect": {} }
+        }
+      },
+      "id": "recompute-call",
+      "name": "Momentum Recompute (Batch)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [440, 300],
+      "continueOnFail": true,
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "url": "={{ $env.SUPABASE_URL }}/functions/v1/momentum-alerts-evaluate",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "Content-Type", "value": "application/json" },
+            { "name": "X-Api-Key", "value": "={{ $env.N8N_SHARED_SECRET }}" }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            { "name": "force", "value": "false" }
+          ]
+        },
+        "options": {
+          "timeout": 60000
+        }
+      },
+      "id": "alerts-eval",
+      "name": "Evaluate Alerts",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [680, 300],
+      "continueOnFail": true,
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "url": "={{ $env.SUPABASE_URL }}/functions/v1/n8n-ingest",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "Content-Type", "value": "application/json" },
+            { "name": "X-Api-Key", "value": "={{ $env.N8N_SHARED_SECRET }}" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ workflow_key: 'momentum_nightly', run_id: $runId || 'nightly-' + Date.now(), status: $json.ok ? 'completed' : 'failed', error_message: $json.ok ? null : JSON.stringify($json).slice(0, 500), payload: { total_computed: $('Momentum Recompute (Batch)').first().json.total_computed || 0, alerts_created: $json.alerts_created || 0 } }) }}",
+        "options": { "timeout": 15000 }
+      },
+      "id": "callback-log",
+      "name": "Log Result to automation_runs",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [920, 300],
+      "continueOnFail": true,
+      "alwaysOutputData": true
+    }
+  ],
+  "connections": {
+    "Nightly 3AM": { "main": [[{ "node": "Momentum Recompute (Batch)", "type": "main", "index": 0 }]] },
+    "Momentum Recompute (Batch)": { "main": [[{ "node": "Evaluate Alerts", "type": "main", "index": 0 }]] },
+    "Evaluate Alerts": { "main": [[{ "node": "Log Result to automation_runs", "type": "main", "index": 0 }]] }
+  },
+  "settings": {
+    "executionTimeout": 120,
+    "saveDataErrorExecution": "all",
+    "saveDataSuccessExecution": "all"
+  }
+}

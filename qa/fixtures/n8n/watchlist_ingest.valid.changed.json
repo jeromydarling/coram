@@ -1,0 +1,23 @@
+{
+  "workflow_key": "watchlist_ingest",
+  "run_id": "wl-ingest-changed-2222-3333-444444444444",
+  "org_id": "org-wl-001",
+  "payload": {
+    "url": "https://example-nonprofit.org/about",
+    "content_hash": "b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3",
+    "raw_text": "Example Nonprofit has expanded to serve rural communities through new education and housing programs launched in 2026.",
+    "crawled_at": "2026-02-09T12:00:00Z",
+    "meta": {
+      "status_code": 200,
+      "content_type": "text/html",
+      "word_count": 1800
+    },
+    "facts": {
+      "mission": "Serving communities through education and housing",
+      "programs": ["After-School Tutoring", "Community Housing Initiative", "Rural Outreach"],
+      "leadership": ["Jane Smith, Executive Director"],
+      "recent_news": ["Expanded to rural communities (Feb 2026)"]
+    },
+    "model_version": "google/gemini-3-flash-preview"
+  }
+}

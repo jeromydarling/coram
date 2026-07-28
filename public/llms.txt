@@ -1,0 +1,132 @@
+# CROS - Communal Relationship Operating System
+
+> CROS is the operating system for human-centered organizations. Where most platforms track transactions, CROS remembers people. Where traditional AI analyzes data, NRI learns from human experience.
+
+> For the full content of every marketing page, see: https://thecros.app/llms-full.txt
+
+CROS replaces CRM with relationship memory, community awareness, and narrative intelligence -- helping churches, nonprofits, social enterprises, and mission-driven organizations grow without losing their humanity.
+
+## Core Pages
+
+- [Homepage](https://thecros.app/): Primary landing — manifesto hero, archetype signals, and conversion pathways. CROS is not another CRM. It is a living relationship system.
+- [Manifesto](https://thecros.app/manifesto): The founding narrative — why CROS exists. Long-form editorial positioning that establishes the philosophy of relationship memory over transaction tracking.
+- [CROS™ Feature Overview](https://thecros.app/cros): What CROS is — the relationship operating system overview. Explains Civitas, NRI, and the Latin module structure.
+- [NRI™ (Neary)](https://thecros.app/nri): Narrative Relational Intelligence — how CROS uses human-first signals instead of traditional AI analytics. NRI is not artificial intelligence; it is human-first intelligence built from reflections, events, conversations, and community signals.
+- [Profunda™ Origin](https://thecros.app/profunda): The founding story — how Profunda became CROS. The internal instance that inspired the platform.
+- [Pricing](https://thecros.app/pricing): Tier breakdown — CROS Core (free foundation), CROS Insight (patterns & signals), CROS Story (impact narratives), CROS Bridge (CRM migration).
+- [Contact](https://thecros.app/contact): Inquiry form for prospective organizations exploring CROS.
+- [Security](https://thecros.app/security): Data boundaries, row-level security, privacy commitments, and privacy-first architecture.
+
+## Feature Modules
+
+- [Features Overview](https://thecros.app/features): Unified feature map connecting all CROS modules.
+- [Signum](https://thecros.app/signum): Discovery & signal intelligence — surfaces community events, partner movements, and local pulse without manual searching.
+- [Testimonium](https://thecros.app/testimonium-feature): Narrative storytelling & insight layer — transforms daily field observations into board-ready stories.
+- [Communio](https://thecros.app/communio-feature): Inter-organization collaboration network — organizations share anonymized signals and form Familia groups.
+- [Impulsus](https://thecros.app/impulsus): Private impact scrapbook journal — a sacred, personal space for leaders to capture observations.
+- [Voluntārium](https://thecros.app/voluntarium): Volunteer management with availability tracking, role assignments, and gentle scheduling rhythms.
+- [Prōvīsiō](https://thecros.app/provisio): Technology provisions & internal resource requests.
+- [Relatio Campaigns](https://thecros.app/relatio-campaigns): Email campaign orchestration — relationship-centered outreach powered by contact journey context.
+- [Integrations](https://thecros.app/integrations): CRM bridge — HubSpot, Salesforce, Dynamics 365 two-way sync via Relatio™.
+
+## Roles
+
+CROS recognizes four identity roles. Each person in a mission-driven organization sees the system through their own lens.
+
+- [Roles Index](https://thecros.app/roles): Overview of all CROS roles — Shepherd, Companion, Visitor, Steward.
+- [Shepherd](https://thecros.app/roles/shepherd): The Regional Impact Manager — those who hold the longer story and carry the mission across relationships.
+- [Companion](https://thecros.app/roles/companion): The daily relationship keeper — staff who follow up, remember details, and maintain connection threads.
+- [Visitor](https://thecros.app/roles/visitor): The mobile-first field worker — those who go where the people are, recording voice notes and site visits.
+- [Steward](https://thecros.app/roles/steward): The operations & admin role — those who keep systems clean, data accurate, and teams equipped.
+
+## Archetypes — A Week Inside CROS
+
+Each organization type experiences CROS differently. These 7-day narrative stories show realistic daily rhythms.
+
+- [Archetypes Index](https://thecros.app/archetypes): Mission archetype selector — Church, Nonprofit, Social Enterprise, Community Network, Ministry Outreach.
+- [Church Week](https://thecros.app/archetypes/church-week): Monday through Sunday with a church using CROS — morning prayers, pastoral visits, Sunday reflections.
+- [Nonprofit Week](https://thecros.app/archetypes/nonprofit-week): Digital inclusion nonprofit — site visits, partner engagement, board narrative.
+- [Social Enterprise Week](https://thecros.app/archetypes/social-enterprise-week): Purpose-driven business tracking social impact alongside revenue relationships.
+- [Community Network Week](https://thecros.app/archetypes/community-network-week): Coalition coordinating across multiple organizations and shared geography.
+- [Ministry Outreach Week](https://thecros.app/archetypes/ministry-outreach-week): Parish team using CROS for pastoral care, home visits, and small groups.
+- [For Companions](https://thecros.app/for-companions): Landing for Companion archetypes — Solo and Organization modes with privacy-first positioning.
+
+## Pilgrim Pathways — Identity-First Onboarding
+
+- [Shepherd Pathway](https://thecros.app/path/shepherd): "You hold the longer story." For mission leaders and executive directors.
+- [Companion Pathway](https://thecros.app/path/companion): "You keep the thread." For field staff and relationship keepers.
+- [Steward Pathway](https://thecros.app/path/steward): "You keep the systems running." For operations and admin leaders.
+- [Visitor Pathway](https://thecros.app/path/visitor): "You go where the people are." For mobile field workers.
+
+## Callings — Mission Themes
+
+- [Home Visitation](https://thecros.app/calling/home-visitation): The ministry of presence — home visitation software and field visit tools.
+- [Parish Outreach](https://thecros.app/calling/parish-outreach): Reaching beyond the walls — church community engagement.
+- [Community Support](https://thecros.app/calling/community-support): Sustaining the daily work of caring — community support software.
+
+## Comparison & Proof
+
+- [Compare Index](https://thecros.app/compare): CROS vs traditional CRMs — positions CROS as a relationship system, not a sales pipeline.
+- [Proof](https://thecros.app/proof): Evidence and social proof — testimonials, usage signals, and trust indicators.
+- [Our Story](https://thecros.app/case-study-humanity): Universal humanity case study — the founding story through the lens of community impact.
+- [Relational Fundraising](https://thecros.app/fundraising-without-a-donor-crm): Why fundraising works better without a donor CRM.
+- [See People](https://thecros.app/see-people): "What if your system saw people, not records?" Manifesto-style conversion page.
+- [Imagine This](https://thecros.app/imagine-this): Scenario-based storytelling — three mission contexts showing daily life with CROS.
+
+## Lexicon — CROS Vocabulary
+
+CROS defines its own civic ontology — terms like "relationship memory," "narrative intelligence," and "communal stewardship."
+
+- [Lexicon Index](https://thecros.app/lexicon): All defined terms in the CROS vocabulary with schema.org DefinedTerm markup.
+
+## Library — Knowledge Hub
+
+- [Library Index](https://thecros.app/library): Calm discovery space connecting roles, archetypes, philosophy, and concepts.
+
+## Field Journal & Insights
+
+- [Field Journal](https://thecros.app/field-journal): Role-based narrative entries from the perspective of Shepherds, Companions, Visitors, and Stewards.
+- [Insights](https://thecros.app/insights): Thought leadership — deeper explorations of relationship-centered work and community technology.
+- [Why Traditional CRMs Fail Nonprofits](https://thecros.app/insights/why-crm-fails-nonprofits): Sales pipelines were never designed for community work.
+- [Relationship Memory Matters](https://thecros.app/insights/relationship-memory-matters): Why organizations forget the people they serve.
+- [Essays](https://thecros.app/essays): Living essay library — long-form pieces generated from platform signals.
+- [Reflections](https://thecros.app/reflections): Monthly contemplative content connecting platform movement to narrative insight.
+
+## Mission Atlas
+
+Geographic narrative surfaces showing how mission work happens across different metro types and organization archetypes.
+
+- [Mission Atlas Index](https://thecros.app/mission-atlas): Browsable map connecting archetypes to metro types.
+
+## Network & Public Presence
+
+- [Network Directory](https://thecros.app/network): Public communio directory — organizations using CROS, filtered by archetype and metro.
+- [Authority Hub](https://thecros.app/authority): Trust signals aggregating all content that establishes CROS as a credible voice in community technology.
+
+## Legal
+
+- [Terms of Service](https://thecros.app/legal/terms): Plain-language legal framework for CROS usage.
+- [Privacy Policy](https://thecros.app/legal/privacy): Data handling, retention, and user rights.
+- [Data Processing Agreement](https://thecros.app/legal/data-processing): GDPR-aligned DPA for organizations handling sensitive community data.
+- [Acceptable Use](https://thecros.app/legal/acceptable-use): Usage boundaries aligned with CROS values of dignity and privacy.
+- [AI Transparency](https://thecros.app/legal/ai-transparency): How NRI uses AI — transparency about what AI does and doesn't do in CROS.
+
+## Key Concepts
+
+- **Relationship Memory**: The institutional knowledge that lives in human connections — visits, reflections, conversations, and shared experiences. CROS preserves this memory so it doesn't leave when staff does.
+- **NRI (Narrative Relational Intelligence)**: Human-first intelligence built from reflections, events attended, conversations, and community signals. AI assists the system, but the intelligence belongs to the human relationships.
+- **Communio**: An opt-in inter-organization collaboration network where anonymized signals flow between CROS tenants, creating collective awareness without exposing private data.
+- **Signum**: The signal intelligence layer that surfaces community events, partner movements, and local pulse — so organizations notice what matters without manual searching.
+- **Testimonium**: The narrative storytelling layer that transforms daily field observations into board-ready impact stories and anonymized public signals.
+- **Impulsus**: A private, sacred journal for leaders — observations that never feed metrics or reports.
+- **Drift Detection**: Gentle awareness of relationships that may need attention — no alarms, just quiet noticing.
+- **Journey Chapters**: Instead of CRM pipeline stages, CROS uses narrative chapters that honor the complexity of human relationships.
+
+## About
+
+CROS was born from Profunda — a relationship memory system built for Regional Impact Managers in nonprofit ecosystems. It was never a sales CRM. It focused on relationship memory, community awareness, and narrative intelligence. Profunda is now the founding internal instance that inspired CROS.
+
+CROS stands for Communal Relationship Operating System. For 40 years, technology has been driven by Operating Systems and Artificial Intelligence — both invented by humans, but both largely remained cold, data-driven, and impersonal. CROS replaces the OS with a human touch. It is the bridge between an organization and the community it serves.
+
+Website: https://thecros.app
+Contact: https://thecros.app/contact

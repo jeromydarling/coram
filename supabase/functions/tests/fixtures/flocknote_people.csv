@@ -1,0 +1,11 @@
+external_id,first_name,last_name,email,phone,address,city,state,zip
+fn_001,Grace,Johnson,grace.johnson@example.org,612-555-0101,123 Cedar Ave S,Minneapolis,MN,55404
+fn_002,Michael,Reyes,michael.reyes@example.org,612-555-0102,88 Lake St E,Minneapolis,MN,55408
+fn_003,Amina,Hassan,amina.hassan@example.org,612-555-0103,4100 Nicollet Ave,Minneapolis,MN,55409
+fn_004,Thomas,Nguyen,thomas.nguyen@example.org,612-555-0104,2500 Hennepin Ave,Minneapolis,MN,55405
+fn_005,Sarah,Olsen,sarah.olsen@example.org,612-555-0105,901 Broadway St NE,Minneapolis,MN,55413
+fn_006,David,Kim,david.kim@example.org,612-555-0106,1400 Washington Ave S,Minneapolis,MN,55454
+fn_007,Elena,Martinez,elena.martinez@example.org,612-555-0107,720 University Ave SE,Minneapolis,MN,55414
+fn_008,Paul,Williams,paul.williams@example.org,612-555-0108,3300 Lyndale Ave S,Minneapolis,MN,55408
+fn_009,Noah,Brown,noah.brown@example.org,612-555-0109,55 10th St N,Minneapolis,MN,55403
+fn_010,Mary,Chen,mary.chen@example.org,612-555-0110,1600 Franklin Ave E,Minneapolis,MN,55404

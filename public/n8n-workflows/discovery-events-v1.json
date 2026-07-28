@@ -1,0 +1,147 @@
+{
+  "name": "Discovery Events v1",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "discovery-events",
+        "options": {}
+      },
+      "id": "de-trigger",
+      "name": "Webhook Trigger",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [200, 300],
+      "webhookId": "discovery-events"
+    },
+    {
+      "parameters": {
+        "jsCode": "const input = $input.first().json;\nconst { run_id, module, scope, metro_id, opportunity_id, query_profile, callback_url } = input;\n\nconst orgName = query_profile?.organization || '';\nconst metro = query_profile?.metro || '';\n\nconst queries = [];\n\nif (scope === 'opportunity' && orgName) {\n  queries.push(`${orgName} upcoming events conferences 2025 2026`);\n  queries.push(`${orgName} community outreach events`);\n  queries.push(`digital equity broadband events near ${orgName}`);\n} else if (scope === 'metro' && metro) {\n  queries.push(`${metro} digital equity broadband events 2025 2026`);\n  queries.push(`${metro} nonprofit technology conference`);\n  queries.push(`${metro} community development events upcoming`);\n}\n\nif (queries.length === 0) {\n  queries.push('digital equity broadband nonprofit events 2025 2026');\n}\n\nreturn queries.map((q, i) => ({\n  json: { run_id, module, scope, metro_id, opportunity_id, callback_url, query: q, query_index: i, limit: 10 }\n}));"
+      },
+      "id": "de-build-queries",
+      "name": "Build Queries",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [420, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.firecrawl.dev/v1/search",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "firecrawlApi",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ query: $json.query, limit: $json.limit }) }}",
+        "options": { "timeout": 60000 }
+      },
+      "id": "de-firecrawl",
+      "name": "Firecrawl Search",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [640, 300],
+      "continueOnFail": true,
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "jsCode": "const allItems = $input.all();\nconst seenUrls = new Set();\nconst results = [];\n\nfor (const item of allItems) {\n  const data = item.json?.data || item.json?.results || [];\n  if (!Array.isArray(data)) continue;\n  for (const r of data) {\n    const url = (r.url || r.sourceUrl || '').toLowerCase().trim();\n    if (!url || seenUrls.has(url)) continue;\n    seenUrls.add(url);\n    results.push({\n      url: r.url || r.sourceUrl || '',\n      title: r.title || r.metadata?.title || '',\n      snippet: r.markdown?.substring(0, 500) || r.description || '',\n      source: r.metadata?.sourceURL || url\n    });\n  }\n}\n\nconst ctx = $input.first()?.json || {};\nreturn [{ json: { run_id: ctx.run_id, module: ctx.module, scope: ctx.scope, metro_id: ctx.metro_id, opportunity_id: ctx.opportunity_id, callback_url: ctx.callback_url, results, result_count: results.length } }];"
+      },
+      "id": "de-merge",
+      "name": "Merge & Pre-Filter",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [860, 300]
+    },
+    {
+      "parameters": {
+        "model": "gpt-4o-mini",
+        "messages": {
+          "values": [
+            {
+              "role": "system",
+              "content": "Extract structured event data from search results. Return ONLY valid JSON:\n{\"events\":[{\"name\":\"string\",\"description\":\"string|null\",\"date_info\":\"string|null\",\"event_date\":\"YYYY-MM-DD|null\",\"location\":\"string|null\",\"organization\":\"string|null\",\"url\":\"string|null\",\"event_type\":\"string|null\",\"confidence\":0.0}]}\n\nRules:\n- event_date must be ISO date or null\n- confidence 0-1\n- Only extract real events, not general pages"
+            },
+            {
+              "role": "user",
+              "content": "=Extract events:\n\n{{ JSON.stringify($json.results.slice(0, 20)) }}"
+            }
+          ]
+        },
+        "options": { "temperature": 0.1, "timeout": 60000, "response_format": { "type": "json_object" } }
+      },
+      "id": "de-extract",
+      "name": "LLM Extract Events",
+      "type": "n8n-nodes-base.openAi",
+      "typeVersion": 1.8,
+      "position": [1080, 200],
+      "continueOnFail": true,
+      "alwaysOutputData": true,
+      "credentials": { "openAiApi": { "id": "openai", "name": "OpenAI" } }
+    },
+    {
+      "parameters": {
+        "model": "gpt-4o-mini",
+        "messages": {
+          "values": [
+            {
+              "role": "system",
+              "content": "Create a discovery briefing for events. Return ONLY valid JSON:\n{\"highlights\":[{\"title\":\"string\",\"why_it_matters\":\"string\",\"url\":\"string|null\",\"confidence\":0.0}],\"urgent\":[{\"title\":\"string\",\"date_info\":\"string|null\",\"url\":\"string|null\",\"why_this_week\":\"string\"}],\"new_items\":[{\"title\":\"string\",\"url\":\"string|null\",\"one_liner\":\"string\"}],\"what_changed\":[{\"title\":\"string\",\"url\":\"string|null\",\"change_summary\":\"string\"}],\"gaps_and_next_queries\":[\"string\"],\"helpful_sources\":[{\"name\":\"string\",\"url\":\"string\",\"why\":\"string\"}]}\n\nMark events within 14 days as urgent."
+            },
+            {
+              "role": "user",
+              "content": "=Create events briefing:\n\nResults: {{ JSON.stringify($json.results.slice(0, 15)) }}\nExtracted: {{ $node['LLM Extract Events'].json.message?.content || '[]' }}"
+            }
+          ]
+        },
+        "options": { "temperature": 0.2, "timeout": 60000, "response_format": { "type": "json_object" } }
+      },
+      "id": "de-briefing",
+      "name": "LLM Briefing",
+      "type": "n8n-nodes-base.openAi",
+      "typeVersion": 1.8,
+      "position": [1080, 420],
+      "continueOnFail": true,
+      "alwaysOutputData": true,
+      "credentials": { "openAiApi": { "id": "openai", "name": "OpenAI" } }
+    },
+    {
+      "parameters": {
+        "jsCode": "const mergeData = $node['Merge & Pre-Filter'].json;\nconst extractRaw = $node['LLM Extract Events'].json?.message?.content || '{\"events\":[]}';\nconst briefingRaw = $node['LLM Briefing'].json?.message?.content || '{}';\n\nlet extracted = { events: [] };\ntry { extracted = JSON.parse(extractRaw); } catch(e) { extracted = { events: [] }; }\n\nlet briefingJson = {};\ntry { briefingJson = JSON.parse(briefingRaw); } catch(e) { briefingJson = { highlights: [], urgent: [], new_items: [], what_changed: [], gaps_and_next_queries: [], helpful_sources: [] }; }\n\nconst items = (extracted.events || []).map(e => ({\n  canonical_url: e.url || `event:${(e.name||'unknown').toLowerCase().replace(/\\s+/g, '-')}`,\n  source_url: e.url || null,\n  title: e.name || 'Unknown Event',\n  snippet: e.description || '',\n  organization_name: e.organization || null,\n  event_date: e.event_date || null,\n  extracted: e\n}));\n\nconst lines = ['# Events Discovery Briefing\\n'];\nif (briefingJson.highlights?.length) {\n  lines.push('## Highlights');\n  briefingJson.highlights.forEach(h => lines.push(`- **${h.title}**: ${h.why_it_matters}`));\n  lines.push('');\n}\nif (briefingJson.urgent?.length) {\n  lines.push('## ⚡ Urgent (Next 14 Days)');\n  briefingJson.urgent.forEach(u => lines.push(`- **${u.title}** (${u.date_info || 'soon'}): ${u.why_this_week}`));\n  lines.push('');\n}\nif (briefingJson.new_items?.length) {\n  lines.push('## New Events');\n  briefingJson.new_items.forEach(n => lines.push(`- **${n.title}**: ${n.one_liner}`));\n  lines.push('');\n}\n\nreturn [{ json: {\n  run_id: mergeData.run_id,\n  status: 'completed',\n  module: 'events',\n  scope: mergeData.scope,\n  metro_id: mergeData.metro_id || null,\n  opportunity_id: mergeData.opportunity_id || null,\n  items,\n  briefing_json: briefingJson,\n  briefing_md: lines.join('\\n'),\n  stats: { search_results: mergeData.result_count || 0, events_extracted: items.length }\n} }];"
+      },
+      "id": "de-build-callback",
+      "name": "Build Callback",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1300, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $json.callback_url || $node['Merge & Pre-Filter'].json.callback_url }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify($json) }}",
+        "options": { "timeout": 30000 }
+      },
+      "id": "de-callback",
+      "name": "Callback to Supabase",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1520, 300],
+      "credentials": { "httpHeaderAuth": { "id": "worker-key", "name": "Secret Worker Key" } }
+    }
+  ],
+  "connections": {
+    "Webhook Trigger": { "main": [[{ "node": "Build Queries", "type": "main", "index": 0 }]] },
+    "Build Queries": { "main": [[{ "node": "Firecrawl Search", "type": "main", "index": 0 }]] },
+    "Firecrawl Search": { "main": [[{ "node": "Merge & Pre-Filter", "type": "main", "index": 0 }]] },
+    "Merge & Pre-Filter": { "main": [[{ "node": "LLM Extract Events", "type": "main", "index": 0 }, { "node": "LLM Briefing", "type": "main", "index": 0 }]] },
+    "LLM Extract Events": { "main": [[{ "node": "Build Callback", "type": "main", "index": 0 }]] },
+    "LLM Briefing": { "main": [[{ "node": "Build Callback", "type": "main", "index": 0 }]] },
+    "Build Callback": { "main": [[{ "node": "Callback to Supabase", "type": "main", "index": 0 }]] }
+  },
+  "settings": { "executionOrder": "v1" }
+}

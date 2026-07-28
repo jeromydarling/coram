@@ -1,0 +1,16 @@
+{
+  "event_type": "automation_failed",
+  "org_id": null,
+  "user_id": null,
+  "metadata": {
+    "workflow_key": "watchlist_ingest",
+    "run_id": "run-77777777-aaaa-bbbb-cccc-dddddddddddd",
+    "error_message": "Firecrawl API timeout after 30s"
+  },
+  "priority": "high",
+  "fingerprint": "automation_failed:run-77777777-aaaa-bbbb-cccc-dddddddddddd",
+  "tier": "T1",
+  "deep_link": "/admin/automations",
+  "title": "⚠️ Automation needs attention",
+  "body": "watchlist_ingest encountered an issue — details available in admin panel."
+}

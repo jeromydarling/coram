@@ -1,0 +1,7 @@
+{
+  "workflow_key": "watchlist_ingest",
+  "run_id": "wl-ingest-bad-2222-3333-444444444444",
+  "payload": {
+    "raw_text": "Missing org_id and url"
+  }
+}

@@ -1,0 +1,199 @@
+{
+  "title": "Voluntārium",
+  "subtitle": "Coordine y honre el servicio voluntario",
+  "addVolunteer": "Agregar voluntario",
+  "addOpportunity": "Agregar oportunidad de servicio",
+  "noVolunteers": "No hay voluntarios registrados",
+  "noVolunteersMessage": "Comience a construir su comunidad de voluntarios agregando a quienes sirven.",
+  "noOpportunities": "No hay oportunidades de servicio",
+  "noOpportunitiesMessage": "Cree oportunidades de servicio para conectar voluntarios con un trabajo significativo.",
+  "tabs": {
+    "volunteers": "Voluntarios",
+    "opportunities": "Oportunidades",
+    "schedule": "Horario",
+    "hours": "Registro de horas",
+    "recognition": "Reconocimiento"
+  },
+  "volunteer": {
+    "name": "Nombre del voluntario",
+    "skills": "Habilidades y dones",
+    "availability": "Disponibilidad",
+    "totalHours": "Horas totales",
+    "lastServed": "Último servicio",
+    "status": "Estado",
+    "team": "Equipo",
+    "notes": "Notas",
+    "statuses": {
+      "active": "Activo",
+      "onBreak": "En descanso",
+      "new": "Nuevo",
+      "inactive": "Inactivo"
+    }
+  },
+  "opportunity": {
+    "title": "Título de la oportunidad",
+    "description": "Descripción",
+    "date": "Fecha",
+    "time": "Hora",
+    "location": "Ubicación",
+    "spotsAvailable": "{{count}} lugares disponibles",
+    "spotsFilled": "{{filled}} de {{total}} lugares ocupados",
+    "allSpotsFilled": "Todos los lugares ocupados",
+    "signUp": "Inscribirse",
+    "withdraw": "Retirarse",
+    "contactLead": "Contactar al líder",
+    "skills_needed": "Habilidades requeridas",
+    "commitment": "Compromiso de tiempo"
+  },
+  "hours": {
+    "logHours": "Registrar horas",
+    "date": "Fecha",
+    "hoursServed": "Horas de servicio",
+    "activity": "Actividad",
+    "totalThisMonth": "Total este mes",
+    "totalThisYear": "Total este año",
+    "totalAllTime": "Total acumulado"
+  },
+  "recognition": {
+    "title": "Reconocimiento y gratitud",
+    "milestones": "Hitos",
+    "thankYou": "Enviar agradecimiento",
+    "anniversary": "Aniversario de servicio",
+    "hoursReached": "{{hours}} horas alcanzadas",
+    "spotlight": "Voluntario destacado"
+  },
+  "schedule": {
+    "title": "Horario de servicio",
+    "thisWeek": "Esta semana",
+    "upcoming": "Próximos",
+    "myShifts": "Mis turnos",
+    "openShifts": "Turnos disponibles",
+    "swapRequest": "Solicitar cambio",
+    "coverRequest": "Solicitar cobertura"
+  },
+  "tagSelector": {
+    "addTags": "Agregar etiquetas",
+    "placeholder": "Nueva etiqueta…",
+    "noTagsYet": "Aún no hay etiquetas",
+    "tagsCount": "Etiquetas ({{count}}/25)"
+  },
+  "page": {
+    "title": "Voluntarios",
+    "subtitle": "Registre las horas y la confiabilidad de los voluntarios",
+    "searchPlaceholder": "Buscar por nombre o correo electrónico...",
+    "filterAll": "Todos",
+    "filterActive": "Activos",
+    "filterInactive": "Inactivos",
+    "copy": "Copiar",
+    "noVolunteersFound": "No se encontraron voluntarios",
+    "hoursInstructions": {
+      "title": "Cómo enviar horas por correo electrónico",
+      "subtitle": "Los voluntarios pueden enviar sus horas utilizando este formato en el cuerpo del correo:"
+    }
+  },
+  "table": {
+    "name": "Nombre",
+    "tags": "Etiquetas",
+    "email": "Correo electrónico",
+    "lastVolunteered": "Último servicio",
+    "lifetimeHours": "Horas acumuladas",
+    "reliability": "Confiabilidad",
+    "status": "Estado"
+  },
+  "createDialog": {
+    "title": "Agregar voluntario",
+    "firstNameLabel": "Nombre *",
+    "lastNameLabel": "Apellido *",
+    "emailLabel": "Correo electrónico *",
+    "phoneLabel": "Teléfono",
+    "notesLabel": "Notas",
+    "cancel": "Cancelar",
+    "create": "Crear"
+  },
+  "toast": {
+    "templateCopied": "Plantilla copiada al portapapeles",
+    "nameEmailRequired": "El nombre y el correo electrónico son obligatorios"
+  },
+  "detail": {
+    "backToVolunteers": "Volver a Voluntarios",
+    "edit": "Editar",
+    "logHours": "Registrar horas",
+    "lifetimeHours": "Horas acumuladas",
+    "reliability": "Confiabilidad",
+    "status": "Estado",
+    "totalShifts": "Turnos totales",
+    "detailsCard": "Detalles",
+    "phone": "Teléfono",
+    "address": "Dirección",
+    "notes": "Notas",
+    "shiftHistory": "Historial de turnos",
+    "noShiftsYet": "Aún no hay turnos registrados",
+    "notFound": "Voluntario no encontrado",
+    "date": "Fecha",
+    "hours": "Horas",
+    "location": "Lugar",
+    "source": "Fuente",
+    "warehouse": "Bodega",
+    "event": "Evento"
+  },
+  "editDialog": {
+    "title": "Editar voluntario",
+    "firstName": "Nombre",
+    "lastName": "Apellido",
+    "email": "Correo electrónico",
+    "phone": "Teléfono",
+    "status": "Estado",
+    "active": "Activo",
+    "inactive": "Inactivo",
+    "notes": "Notas",
+    "cancel": "Cancelar",
+    "save": "Guardar"
+  },
+  "logHoursDialog": {
+    "title": "Registrar horas del voluntario",
+    "date": "Fecha",
+    "hours": "Horas",
+    "location": "Lugar",
+    "warehouse": "Bodega",
+    "event": "Evento",
+    "selectEvent": "Seleccionar evento",
+    "cancel": "Cancelar",
+    "logHours": "Registrar horas"
+  },
+  "inbox": {
+    "title": "Bandeja de horas de voluntarios",
+    "subtitle": "Revise y apruebe las horas enviadas por correo electrónico",
+    "tabNeedsReview": "Pendiente de revisión",
+    "tabParsed": "Procesado",
+    "tabRejected": "Rechazado",
+    "colFrom": "De",
+    "colSubject": "Asunto",
+    "colReceived": "Recibido",
+    "colReason": "Motivo",
+    "colActions": "Acciones",
+    "noItems": "Sin elementos",
+    "reviewDialog": {
+      "title": "Revisar envío",
+      "from": "De",
+      "subject": "Asunto",
+      "reason": "Motivo",
+      "rawText": "Texto sin procesar",
+      "volunteer": "Voluntario",
+      "selectVolunteer": "Seleccionar voluntario",
+      "date": "Fecha",
+      "hours": "Horas",
+      "location": "Lugar",
+      "warehouse": "Bodega",
+      "event": "Evento",
+      "selectEvent": "Seleccionar evento",
+      "reject": "Rechazar",
+      "approveAndLog": "Aprobar y registrar"
+    },
+    "toast": {
+      "approved": "Horas aprobadas y registradas",
+      "rejected": "Elemento rechazado",
+      "fillRequired": "Complete todos los campos obligatorios",
+      "invalidHours": "Horas no válidas"
+    }
+  }
+}

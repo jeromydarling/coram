@@ -1,0 +1,82 @@
+{
+  "page": {
+    "title": "Calendario",
+    "subtitle": "Eventos, reuniones y actividades"
+  },
+  "legend": {
+    "events": "Eventos",
+    "meetings": "Reuniones",
+    "activities": "Actividades",
+    "googleCalendar": "Google Calendar"
+  },
+  "buttons": {
+    "scheduleMeeting": "Programar Reunión"
+  },
+  "googleSync": {
+    "googleSync": "Sincronizar Google",
+    "connectGoogle": "Conectar Google",
+    "googleCalendar": "Google Calendar",
+    "connected": "Conectado",
+    "disconnected": "Desconectado",
+    "syncedDescription": "Su calendario está sincronizado con Google Calendar. Los eventos y reuniones aparecerán automáticamente en ambos lugares.",
+    "lastSynced": "Última sincronización: {{time}}",
+    "syncNow": "Sincronizar Ahora",
+    "notConnectedDescription": "Conecte su Google Calendar para sincronizar eventos y reuniones automáticamente.",
+    "connectGoogleCalendar": "Conectar Google Calendar",
+    "syncSuccess": "Calendario sincronizado correctamente",
+    "syncError": "Error al sincronizar el calendario"
+  },
+  "toasts": {
+    "googleConnected": "¡Google Calendar conectado exitosamente!",
+    "loginToConnect": "Por favor inicie sesión para conectar Google Calendar",
+    "loginToSync": "Por favor inicie sesión para sincronizar",
+    "syncFailed": "Sincronización fallida",
+    "calendarUpToDate": "El calendario está al día",
+    "syncedItems": "Sincronizado: {{items}}",
+    "syncWithErrors": "Sincronización completada con {{count}} errores",
+    "disconnected": "Google Calendar desconectado",
+    "disconnectFailed": "Error al desconectar Google Calendar",
+    "connectFailed": "Error al conectar Google Calendar"
+  },
+  "eventDetail": {
+    "title": "Detalle del Evento",
+    "loading": "Cargando...",
+    "notFound": "Evento No Encontrado",
+    "notFoundMessage": "Este evento no pudo ser encontrado.",
+    "backToCalendar": "Volver al Calendario",
+    "back": "Volver",
+    "untitledMeeting": "Reunión Sin Título",
+    "attended": "Asistido",
+    "markAsAttended": "Marcar como Asistido",
+    "markedAttended": "Marcado como asistido",
+    "markedNotAttended": "Marcado como no asistido",
+    "linkToContact": "Vincular a Contacto",
+    "contactLinked": "Contacto vinculado",
+    "contactUnlinked": "Contacto desvinculado",
+    "selectContact": "Seleccione un contacto...",
+    "meetingNotesOutcome": "Notas y Resultado de la Reunión",
+    "outcome": "Resultado",
+    "notes": "Notas",
+    "notesPlaceholder": "Puntos clave o temas discutidos...",
+    "nextAction": "Próxima Acción",
+    "nextActionPlaceholder": "¿Cuál es el siguiente paso?",
+    "saving": "Guardando...",
+    "updateMeeting": "Actualizar Reunión",
+    "saveMeeting": "Guardar Reunión",
+    "meetingSaved": "Reunión guardada",
+    "meetingNotes": "Notas de la Reunión",
+    "summary": "Resumen",
+    "actionItems": "Elementos de Acción",
+    "yours": "Suyos",
+    "watchRecording": "Ver Grabación",
+    "attendees": "Asistentes ({{count}})",
+    "organizer": "Organizador"
+  },
+  "outcomes": {
+    "connected": "Conectado",
+    "movedStage": "Avanzó Etapa",
+    "followUpNeeded": "Requiere Seguimiento",
+    "noResponse": "Sin Respuesta",
+    "notAFit": "No es Compatible"
+  }
+}

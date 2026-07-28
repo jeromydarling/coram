@@ -1,0 +1,22 @@
+{
+  "workflow_key": "watchlist_ingest",
+  "run_id": "wl-ingest-1111-2222-3333-444444444444",
+  "org_id": "org-wl-001",
+  "payload": {
+    "url": "https://example-nonprofit.org/about",
+    "content_hash": "a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2",
+    "raw_text": "Example Nonprofit is dedicated to serving low-income communities through education and housing programs.",
+    "meta": {
+      "status_code": 200,
+      "content_type": "text/html",
+      "word_count": 1542
+    },
+    "facts": {
+      "mission": "Serving low-income communities through education and housing",
+      "programs": ["After-School Tutoring", "Community Housing Initiative"],
+      "leadership": ["Jane Smith, Executive Director"],
+      "recent_news": ["Awarded $2M grant from Ford Foundation (Jan 2026)"]
+    },
+    "model_version": "google/gemini-3-flash-preview"
+  }
+}

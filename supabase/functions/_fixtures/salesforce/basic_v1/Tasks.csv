@@ -1,0 +1,11 @@
+Id,WhoId,WhatId,Subject,Status,Priority,ActivityDate,Description
+00T000001,003C000001,001A000001,Follow up on grant application,Completed,High,2025-03-15,Called María to discuss the pending CDBG grant application status.
+00T000002,003C000003,001A000002,Schedule digital literacy workshop,Open,Normal,03/22/2025,"Need to coordinate with Fatima on spring workshop dates.
+She mentioned wanting to do Saturdays."
+00T000003,003C000005,001A000003,Volunteer orientation prep,In Progress,High,2025-04-01,Prepare orientation materials for new refugee mentors.
+00T000004,003C000006,001A000004,Quarterly report submission,Completed,Normal,Jan 15 2025,Submit Q4 workforce metrics to state office.
+00T000005,003C000007,001A000005,Youth program evaluation,Open,Low,2025/05/01,Annual evaluation of after-school STEM program effectiveness.
+00T000006,003C000009,001A000006,Health permit renewal,Completed,High,12-15-2024,Renewed health department permit for café kitchen.
+00T000007,,001A000007,Board meeting prep,Open,Normal,2025-06-01,"Prepare agenda for quarterly board meeting.
+Include broadband progress update.
+Invite guest speaker from FCC."

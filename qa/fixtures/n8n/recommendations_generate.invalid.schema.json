@@ -1,0 +1,8 @@
+{
+  "workflow_key": "recommendations_generate",
+  "run_id": "22222222-aaaa-bbbb-cccc-dddddddddddd",
+  "payload": {
+    "recommendation_type": "expansion",
+    "title": "Missing metro_id and inputs_hash"
+  }
+}

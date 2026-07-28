@@ -1,0 +1,351 @@
+{
+  "name": "Profunda - Search Grants (Firecrawl) - PROD v8 (Exhaustive Recall)",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "search-grants",
+        "responseMode": "onReceived",
+        "options": {}
+      },
+      "id": "2a577af5-2056-4349-868e-218ae8ba13a0",
+      "name": "Webhook Trigger",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [6784, 48],
+      "webhookId": "search-grants-prod"
+    },
+    {
+      "parameters": {
+        "keepOnlySet": false,
+        "values": {
+          "string": [
+            { "name": "SUPABASE_FUNCTIONS_BASE_URL", "value": "https://lxahadqhpubynuzvraxc.supabase.co/functions/v1" },
+            { "name": "SEARCH_WORKER_SECRET", "value": "={{ /* PASTE YOUR SEARCH_WORKER_SECRET HERE */ }}" },
+            { "name": "FIRECRAWL_API_KEY", "value": "={{ /* PASTE YOUR FIRECRAWL_API_KEY HERE */ }}" }
+          ]
+        },
+        "options": {}
+      },
+      "id": "c14ddfb9-3810-47e4-857d-19a83a3588bd",
+      "name": "Workflow Constants",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 2,
+      "position": [7024, 48],
+      "retryOnFail": true,
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "jsCode": "const webhookData = $('Webhook Trigger').first().json;\nconst b = webhookData.body ?? webhookData;\nconst run_id = b.run_id || b.runId || b.runID;\nconst query = b.enforced_query || b.query || b.enforcedQuery;\nconst max_results = Number(b.max_results ?? b.maxResults ?? 30);\nif (!run_id || !query) {\n  return [{ json: { ok:false, error:{code:'MISSING_FIELDS', message:'run_id and enforced_query are required'}, run_id: run_id ?? null, query: query ?? null, max_results } }];\n}\nreturn [{ json: { ok:true, run_id, query, max_results: Math.max(1, Math.min(30, max_results)), scope: b.scope ?? null, metro: b.metro ?? null } }];"
+      },
+      "id": "cfd27b23-99d7-4cff-bd90-971e9dc1c6f0",
+      "name": "Normalize Input",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [7264, 48]
+    },
+    {
+      "parameters": {
+        "conditions": { "boolean": [{ "value1": "={{ $json.ok }}", "operation": "isTrue" }] },
+        "options": {}
+      },
+      "id": "5d929dae-ddf7-4981-9b01-917c6346ed65",
+      "name": "IF Valid Input?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [7488, 48]
+    },
+    {
+      "parameters": {
+        "jsCode": "const ni = $('Normalize Input').first().json;\nlet base = ni.query;\nconst run_id = ni.run_id;\nconst FIRECRAWL_LIMIT = 20;\n\n// Strip trailing 'grant' or 'grants' that the frontend appends as search_type\n// to avoid doubling (user already typed 'Grants' in query)\nbase = base.replace(/\\s+grants?\\s*$/i, '').trim();\n\nconst neg = ' -jobs -job -careers -hiring -indeed -ziprecruiter -glassdoor -linkedin.com/jobs -course -certification -\"grant writing course\" -\"how to write a grant\" -udemy -coursera -skillshare -youtube';\n\n// VARIANT STRATEGY: Keep the user's topic words DOMINANT.\n// Append only minimal structural modifiers so search engines\n// don't deprioritize the user's actual intent keywords.\n\n// V1: Direct — user query + minimal grant signal\nconst q1 = base + ' grants funding opportunities' + neg;\n\n// V2: Funder-centric — who funds this topic area\nconst q2 = base + ' foundation funder \"grant program\"' + neg;\n\n// V3: Government/aggregator portals\nconst q3 = base + ' grants site:grants.gov OR site:mn.gov OR site:candid.org' + neg;\n\n// V4: Deadline/application focused\nconst q4 = base + ' grants \"accepting applications\" OR \"deadline 2025\" OR \"deadline 2026\"' + neg;\n\nreturn [\n  { json: { run_id, query_variant: 'direct', query: q1, limit: FIRECRAWL_LIMIT } },\n  { json: { run_id, query_variant: 'funder', query: q2, limit: FIRECRAWL_LIMIT } },\n  { json: { run_id, query_variant: 'aggregator', query: q3, limit: FIRECRAWL_LIMIT } },\n  { json: { run_id, query_variant: 'deadline', query: q4, limit: FIRECRAWL_LIMIT } }\n];"
+      },
+      "id": "a1b2c3d4-1111-4aaa-bbbb-000000000001",
+      "name": "Build Queries",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [7728, 48],
+      "alwaysOutputData": true,
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.firecrawl.dev/v1/search",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ query: $json.query, limit: $json.limit }) }}",
+        "options": { "response": {}, "timeout": 60000 }
+      },
+      "id": "b52475fb-16b6-4aa3-8555-92b4288f8dc5",
+      "name": "Firecrawl Search",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [7968, 48],
+      "alwaysOutputData": true,
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "GJkntTblj2tXySIz",
+          "name": "Firecrawl Auth"
+        }
+      },
+      "retryOnFail": true,
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "jsCode": "const ni = $('Normalize Input').first().json;\nconst run_id = ni.run_id;\nconst allItems = $input.all();\nconst queryItems = $('Build Queries').all();\n\nconst blockedUrlPatterns = [\n  /udemy\\.com/i, /coursera\\.org/i, /skillshare\\.com/i,\n  /youtube\\.com/i, /teachable\\.com/i, /masterclass\\.com/i\n];\nconst blockedContentKeywords = [\n  'grant writing course', 'how to write a grant', 'grant writing certification',\n  'grant writing template', 'grant writing tips', 'grant writing workshop',\n  'grant writing training', 'grant writing class'\n];\n\nconst BUCKET_CAP = 25;\nconst FINAL_CAP = 50;\nconst variants = ['direct', 'funder', 'aggregator', 'deadline'];\n\nconst buckets = {};\nfor (const v of variants) buckets[v] = [];\nfor (let i = 0; i < allItems.length; i++) {\n  const d = allItems[i].json;\n  const variant = (queryItems[i] && queryItems[i].json.query_variant) || 'direct';\n  const arr = d.data || d.results || (d.body && (d.body.data || d.body.results)) || [];\n  if (Array.isArray(arr)) {\n    for (const r of arr) {\n      if (!buckets[variant]) buckets[variant] = [];\n      buckets[variant].push(r);\n    }\n  }\n}\n\nlet filtered_out = 0;\nconst globalSeen = new Set();\n\nfunction canonicalUrl(url) {\n  try {\n    let u = url.toLowerCase().split('?')[0].split('#')[0];\n    u = u.replace(/^https?:\\/\\/www\\./, 'https://');\n    u = u.replace(/\\/$/, '');\n    return u;\n  } catch(e) { return url.toLowerCase(); }\n}\n\nfunction filterBucket(items, variantLabel) {\n  const out = [];\n  for (const r of items) {\n    const url = (r.url || r.link || r.source_url || '').trim();\n    const title = (r.title || r.name || r.pageTitle || '').trim();\n    const snippet = (r.description || r.snippet || r.text || r.summary || '').trim();\n    const combined = (title + ' ' + snippet).toLowerCase();\n    if (url && blockedUrlPatterns.some(p => p.test(url))) { filtered_out++; continue; }\n    if (blockedContentKeywords.some(kw => combined.includes(kw))) { filtered_out++; continue; }\n    const canonical = canonicalUrl(url);\n    if (canonical && globalSeen.has(canonical)) { filtered_out++; continue; }\n    if (canonical) globalSeen.add(canonical);\n    out.push({ title, url, snippet, query_variant: variantLabel });\n  }\n  return out;\n}\n\nconst candidateBuckets = {};\nfor (const v of variants) {\n  candidateBuckets[v] = filterBucket(buckets[v] || [], v).slice(0, BUCKET_CAP);\n}\n\nconst merged = [];\nconst finalSeen = new Set();\nconst pointers = {};\nfor (const v of variants) pointers[v] = 0;\nlet progress = true;\nwhile (merged.length < FINAL_CAP && progress) {\n  progress = false;\n  for (const v of variants) {\n    if (merged.length >= FINAL_CAP) break;\n    while (pointers[v] < candidateBuckets[v].length) {\n      const r = candidateBuckets[v][pointers[v]];\n      pointers[v]++;\n      const canonical = canonicalUrl(r.url);\n      if (canonical && finalSeen.has(canonical)) continue;\n      if (canonical) finalSeen.add(canonical);\n      merged.push(r);\n      progress = true;\n      break;\n    }\n  }\n}\n\nreturn [{ json: { run_id, filtered_results: merged, filtered_out_count: filtered_out, has_results: merged.length > 0 } }];"
+      },
+      "id": "a1b2c3d4-2222-4aaa-bbbb-000000000002",
+      "name": "Merge & Pre-Filter",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [8208, 48],
+      "alwaysOutputData": true,
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "conditions": { "boolean": [{ "value1": "={{ $json.has_results }}", "operation": "isTrue" }] },
+        "options": {}
+      },
+      "id": "a1b2c3d4-3333-4aaa-bbbb-000000000003",
+      "name": "IF Has Results?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [8448, 48]
+    },
+    {
+      "parameters": {
+        "jsCode": "const prev = $('Merge & Pre-Filter').first().json;\nconst run_id = prev.run_id;\nconst results = prev.filtered_results || [];\n\nconst preferredPatterns = [\n  /grant/i, /funding/i, /rfp/i, /eligibility/i,\n  /deadline/i, /guidelines/i, /nofo/i, /program/i,\n  /application/i, /solicitation/i,\n  /grants\\.gov/i, /foundation/i, /directory/i, /listing/i\n];\n\nconst scored = results.map(r => {\n  const url = r.url || '';\n  const titleSnippet = ((r.title || '') + ' ' + (r.snippet || '')).toLowerCase();\n  const urlBonus = preferredPatterns.some(p => p.test(url)) ? 100 : 0;\n  const contentBonus = preferredPatterns.filter(p => p.test(titleSnippet)).length * 10;\n  const aggregatorBonus = /list|directory|database|search|results|opportunities|available|all grants/i.test(titleSnippet) ? 50 : 0;\n  return { ...r, score: urlBonus + contentBonus + aggregatorBonus };\n});\n\nscored.sort((a, b) => b.score - a.score);\nconst topK = scored.slice(0, 12);\n\nreturn topK.map(r => ({ json: { run_id, url: r.url, title: r.title || '', snippet: r.snippet || '' } }));"
+      },
+      "id": "mcrawl-g-5001-select-top-k",
+      "name": "Select Top K URLs",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [8688, 48],
+      "alwaysOutputData": true,
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.firecrawl.dev/v1/scrape",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ url: $json.url, formats: ['markdown'], onlyMainContent: true }) }}",
+        "options": { "response": {}, "timeout": 60000 }
+      },
+      "id": "mcrawl-g-5002-scrape-url",
+      "name": "Firecrawl Scrape URL",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [8928, 48],
+      "alwaysOutputData": true,
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "GJkntTblj2tXySIz",
+          "name": "Firecrawl Auth"
+        }
+      },
+      "retryOnFail": false,
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "jsCode": "const allItems = $input.all();\nconst ni = $('Normalize Input').first().json;\nconst run_id = ni.run_id;\nconst query = ni.query;\nconst CAP = 32000;\n\nlet scraped_context = 'Query: ' + query + '\\n\\n';\nlet charCount = scraped_context.length;\nlet scrape_ok = 0;\nlet scrape_fail = 0;\n\nfor (const item of allItems) {\n  const d = item.json;\n  const text = d?.data?.markdown || d?.data?.content || d?.data?.text ||\n               d?.markdown || d?.content || d?.text ||\n               d?.body?.data?.markdown || d?.body?.data?.content || '';\n  const url = d?.data?.metadata?.sourceURL || d?.url || d?.data?.url || '';\n  const title = d?.data?.metadata?.title || d?.title || '';\n\n  if (!text || String(text).trim().length < 50) {\n    scrape_fail++;\n    const snippet = d?.snippet || '';\n    if (snippet) {\n      const entry = '--- Source: ' + url + ' ---\\n' + (title ? title + '\\n' : '') + snippet + '\\n\\n';\n      if (charCount + entry.length <= CAP) {\n        scraped_context += entry;\n        charCount += entry.length;\n      }\n    }\n    continue;\n  }\n\n  scrape_ok++;\n  const trimmed = String(text).trim().slice(0, 5000);\n  const entry = '--- Source: ' + url + ' ---\\n' + (title ? title + '\\n' : '') + trimmed + '\\n\\n';\n  if (charCount + entry.length > CAP) {\n    const remaining = CAP - charCount - 100;\n    if (remaining > 200) {\n      scraped_context += '--- Source: ' + url + ' ---\\n' + trimmed.slice(0, remaining) + '\\n[truncated]\\n\\n';\n    }\n    break;\n  }\n  scraped_context += entry;\n  charCount += entry.length;\n}\n\nreturn [{ json: { run_id, query, scraped_context, meta: { scrape_ok, scrape_fail, scrape_failed: scrape_ok === 0 } } }];"
+      },
+      "id": "mcrawl-g-5003-merge-scrapes",
+      "name": "Merge Scrapes to Context",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [9168, 48],
+      "alwaysOutputData": true,
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "jsCode": "const merged = $('Merge Scrapes to Context').first().json;\nconst run_id = merged.run_id;\nconst query = merged.query;\nlet search_context = merged.scraped_context || '';\n\nconst prev = $('Merge & Pre-Filter').first().json;\nconst results = prev.filtered_results || [];\nconst CAP = 40000;\nconst FULL_DETAIL_LIMIT = 30;\n\nif (!search_context || search_context.length < 100) {\n  search_context = 'Query: ' + query + '\\n\\n';\n}\n\nsearch_context += '\\n--- ALL SEARCH RESULTS ---\\n';\nlet charCount = search_context.length;\nfor (let i = 0; i < results.length; i++) {\n  const r = results[i];\n  let entry;\n  if (i < FULL_DETAIL_LIMIT) {\n    entry = (i+1) + '. ' + (r.title ?? '') + '\\nURL: ' + (r.url ?? '') + '\\nSnippet: ' + (r.snippet ?? '');\n  } else {\n    entry = (i+1) + '. ' + (r.title ?? '') + '\\nURL: ' + (r.url ?? '');\n  }\n  if (charCount + entry.length + 2 > CAP) break;\n  search_context += entry + '\\n\\n';\n  charCount += entry.length + 2;\n}\n\nreturn [{ json: { run_id, query, search_context } }];"
+      },
+      "id": "d188e9a0-eee8-4830-adff-df29fd51b0da",
+      "name": "Build Search Context",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [9408, 48],
+      "retryOnFail": true,
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.openai.com/v1/chat/completions",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "openAiApi",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ model: 'gpt-4o', temperature: 0, max_tokens: 6000, response_format: { type: 'json_object' }, messages: [{ role: 'system', content: 'You are an EXHAUSTIVE grant extractor. Your job is to find EVERY SINGLE grant, funding opportunity, RFP, NOFO, or foundation initiative mentioned in the provided text. You must be thorough — missing a grant is a critical failure.\\n\\nThe user\\'s search topic is provided for context. Use it to RANK results by relevance (set higher confidence for matches) but do NOT use it to EXCLUDE grants. Extract ALL grants you find, even if they seem tangentially related. Let the downstream system handle filtering.\\n\\nCRITICAL RULES:\\n1. EXTRACT EVERYTHING: Every grant, funding opportunity, RFP, NOFO mentioned in the text. Do NOT skip grants because they seem off-topic — the user\\'s search already filtered the pages.\\n2. A single page may list MANY grants — extract ALL of them individually. A directory page listing 15 grants MUST produce 15 results, not 1.\\n3. Do NOT summarize or consolidate. Each distinct funding opportunity is a SEPARATE item.\\n4. Include items even with partial information (name + URL is enough). Do NOT skip items because they lack details.\\n5. NEVER extract grant writing courses, templates, how-to guides, or training programs.\\n6. If a page lists multiple programs under one funder, each program is a separate grant.\\n7. Target: extract 15-50 items. If fewer exist, return what you find. If more exist, return ALL of them.\\n8. Do NOT reject a grant because deadline, amount, or eligibility is missing.\\n9. Scan EVERY source page thoroughly — do not stop after finding a few items from one page.\\n10. If a listing page shows grant names as links, extract each one even if you only have the name.\\n11. Set confidence higher (0.7-1.0) for grants clearly matching the user\\'s topic, lower (0.3-0.6) for tangential ones.\\n12. If no qualifying grants exist, return {\\\"grants\\\":[]}.\\n13. Return ONLY valid JSON.\\n\\nOutput schema:\\n{\\\"grants\\\":[{\\\"name\\\":string,\\\"funder\\\":string|null,\\\"amount\\\":string|null,\\\"deadline\\\":string|null,\\\"eligibility\\\":string|null,\\\"summary\\\":string|null,\\\"url\\\":string|null,\\\"confidence\\\":number(0-1)|null}]}' }, { role: 'user', content: 'USER SEARCH TOPIC (for ranking, not filtering): ' + $('Normalize Input').first().json.query + '\\n\\nExtract ALL grants from the following context. Set higher confidence for grants matching the topic above.\\n\\n' + $('Build Search Context').first().json.search_context }] }) }}",
+        "options": { "response": {}, "timeout": 90000 }
+      },
+      "id": "c4852443-4ef4-42e7-95f0-097a30a0467b",
+      "name": "LLM Extract Grants From Results",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [9648, 48],
+      "alwaysOutputData": true,
+      "retryOnFail": true,
+      "credentials": {
+        "openAiApi": {
+          "id": "S65JWr5N3fYHb1YT",
+          "name": "OpenAi account"
+        }
+      },
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.openai.com/v1/chat/completions",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "openAiApi",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ model: 'gpt-4o-mini', temperature: 0.2, response_format: { type: 'json_object' }, messages: [{ role: 'system', content: 'You are generating a \"Search Brief\" to help a user quickly understand and act on results.\\n\\nYou must:\\n- Summarize only the provided data.\\n- Do NOT invent specific people, events, or grants.\\n- You MAY suggest general resource sites or directories, but do not claim they contain specific items.\\n- Be concise and practical.\\n- Return JSON only.\\n\\nOutput schema:\\n{\"summary\":string,\"what_we_found\":string[],\"what_may_be_missing\":string[],\"helpful_sites\":[{\"name\":string,\"url\":string,\"why\":string}],\"suggested_queries\":string[],\"confidence\":number|null,\"caveats\":string[]}\\n\\nMODULE: Grants\\nSuggest state portals, community foundations, agency RFP pages, major funder databases.' }, { role: 'user', content: 'Query: ' + $('Normalize Input').first().json.query + '\\n\\nExtracted entities:\\n' + ($('LLM Extract Grants From Results').first().json?.choices?.[0]?.message?.content ?? '[]').slice(0, 3000) + '\\n\\nTop search results:\\n' + ($('Merge & Pre-Filter').first().json.filtered_results || []).slice(0, 10).map((r, i) => (i+1) + '. ' + r.title + ' - ' + r.url).join('\\n') }] }) }}",
+        "options": { "response": {}, "timeout": 60000 }
+      },
+      "id": "brief-g-6001-llm-build-search-brief",
+      "name": "LLM Build Search Brief",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [9888, 48],
+      "alwaysOutputData": true,
+      "retryOnFail": false,
+      "credentials": {
+        "openAiApi": {
+          "id": "S65JWr5N3fYHb1YT",
+          "name": "OpenAi account"
+        }
+      },
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "jsCode": "let txt = $('LLM Extract Grants From Results').first().json?.choices?.[0]?.message?.content ?? '';\ntxt = String(txt).trim();\nlet parsed;\ntry { parsed = JSON.parse(txt); } catch(e) {\n  const m = txt.match(/\\[[\\s\\S]*\\]/);\n  if (m) parsed = JSON.parse(m[0]); else parsed = [];\n}\nconst grants = Array.isArray(parsed) ? parsed : (parsed.grants || []);\nconst ni = $('Normalize Input').first().json;\nconst run_id = ni.run_id;\nconst scrapeMeta = $('Merge Scrapes to Context').first().json.meta || {};\nconst cleaned = grants.map(g => ({\n  title: g.name ?? 'Unknown Grant',\n  description: g.summary ?? null,\n  url: g.url ?? null,\n  source: 'firecrawl+llm',\n  organization: g.funder ?? null,\n  location: null,\n  date_info: g.deadline ?? null,\n  contact_name: null,\n  contact_email: null,\n  contact_phone: null,\n  confidence: (typeof g.confidence === 'number') ? g.confidence : null,\n  raw_data: g\n}));\n\nlet brief = null;\ntry {\n  const briefTxt = $('LLM Build Search Brief').first().json?.choices?.[0]?.message?.content ?? '';\n  if (briefTxt.trim()) brief = JSON.parse(briefTxt.trim());\n} catch(e) { brief = null; }\n\n// Reconcile brief summary with actual parsed result count\nif (brief && brief.summary) {\n  const actualCount = cleaned.length;\n  brief.summary = brief.summary.replace(/\\b\\d+\\s+(grants?|results?|items?|opportunities?)\\b/gi, actualCount + ' $1');\n}\n\nreturn [{ json: { run_id, status: 'completed', results: cleaned, brief, meta: { micro_crawl: true, scrape_ok: scrapeMeta.scrape_ok ?? 0, scrape_fail: scrapeMeta.scrape_fail ?? 0 } } }];"
+      },
+      "id": "904ae8c6-8839-45cd-bfb3-d23fd1ad6ea3",
+      "name": "Build Callback Envelope",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [10128, 48],
+      "retryOnFail": true,
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('Workflow Constants').first().json.SUPABASE_FUNCTIONS_BASE_URL + '/search-callback' }}",
+        "authentication": "none",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "Authorization", "value": "=Bearer {{ $('Workflow Constants').first().json.SEARCH_WORKER_SECRET }}" },
+            { "name": "X-Api-Key", "value": "={{ $('Workflow Constants').first().json.SEARCH_WORKER_SECRET }}" },
+            { "name": "Content-Type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ $json }}",
+        "options": { "response": {}, "timeout": 60000 }
+      },
+      "id": "5b16f14c-faf3-4255-a504-55cdfc6eda6c",
+      "name": "Callback to Supabase",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [10368, 48],
+      "alwaysOutputData": true,
+      "retryOnFail": false,
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('Workflow Constants').first().json.SUPABASE_FUNCTIONS_BASE_URL + '/search-callback' }}",
+        "authentication": "none",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "Authorization", "value": "=Bearer {{ $('Workflow Constants').first().json.SEARCH_WORKER_SECRET }}" },
+            { "name": "X-Api-Key", "value": "={{ $('Workflow Constants').first().json.SEARCH_WORKER_SECRET }}" },
+            { "name": "Content-Type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ { run_id: $('Normalize Input').first().json.run_id, status: 'failed', error_message: String($json?.error?.message || 'Unknown error') } }}",
+        "options": { "response": {}, "timeout": 60000 }
+      },
+      "id": "730f6f18-9922-4c8d-9ad2-774b3c482c61",
+      "name": "Error Callback to Supabase",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [7728, 340],
+      "alwaysOutputData": true,
+      "retryOnFail": false,
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "jsCode": "const run_id = $('Normalize Input').first().json.run_id;\nconst filtered_out = $('Merge & Pre-Filter').first().json.filtered_out_count || 0;\nreturn [{ json: { run_id, status: 'completed', results: [], brief: null, meta: { filtered_out: true, filtered_out_count: filtered_out } } }];"
+      },
+      "id": "a1b2c3d4-4444-4aaa-bbbb-000000000004",
+      "name": "Build Empty Envelope",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [8688, 340],
+      "alwaysOutputData": true,
+      "continueOnFail": true
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook Trigger": { "main": [[{ "node": "Workflow Constants", "type": "main", "index": 0 }]] },
+    "Workflow Constants": { "main": [[{ "node": "Normalize Input", "type": "main", "index": 0 }]] },
+    "Normalize Input": { "main": [[{ "node": "IF Valid Input?", "type": "main", "index": 0 }]] },
+    "IF Valid Input?": { "main": [
+      [{ "node": "Build Queries", "type": "main", "index": 0 }],
+      [{ "node": "Error Callback to Supabase", "type": "main", "index": 0 }]
+    ]},
+    "Build Queries": { "main": [[{ "node": "Firecrawl Search", "type": "main", "index": 0 }]] },
+    "Firecrawl Search": { "main": [[{ "node": "Merge & Pre-Filter", "type": "main", "index": 0 }]] },
+    "Merge & Pre-Filter": { "main": [[{ "node": "IF Has Results?", "type": "main", "index": 0 }]] },
+    "IF Has Results?": { "main": [
+      [{ "node": "Select Top K URLs", "type": "main", "index": 0 }],
+      [{ "node": "Build Empty Envelope", "type": "main", "index": 0 }]
+    ]},
+    "Select Top K URLs": { "main": [[{ "node": "Firecrawl Scrape URL", "type": "main", "index": 0 }]] },
+    "Firecrawl Scrape URL": { "main": [[{ "node": "Merge Scrapes to Context", "type": "main", "index": 0 }]] },
+    "Merge Scrapes to Context": { "main": [[{ "node": "Build Search Context", "type": "main", "index": 0 }]] },
+    "Build Search Context": { "main": [[{ "node": "LLM Extract Grants From Results", "type": "main", "index": 0 }]] },
+    "LLM Extract Grants From Results": { "main": [[{ "node": "LLM Build Search Brief", "type": "main", "index": 0 }]] },
+    "LLM Build Search Brief": { "main": [[{ "node": "Build Callback Envelope", "type": "main", "index": 0 }]] },
+    "Build Callback Envelope": { "main": [[{ "node": "Callback to Supabase", "type": "main", "index": 0 }]] },
+    "Build Empty Envelope": { "main": [[{ "node": "Callback to Supabase", "type": "main", "index": 0 }]] }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": true,
+    "timeSavedMode": "fixed",
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "versionId": "v8-exhaustive-recall",
+  "meta": {
+    "instanceId": "93beede2a90582294d7ef06720d87eff3641b0d88433511d1e55f0a191940c61"
+  },
+  "tags": []
+}

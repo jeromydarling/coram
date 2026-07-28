@@ -1,0 +1,16 @@
+{
+  "event_type": "campaign_suggestion_ready",
+  "org_id": "org-cs-001",
+  "user_id": "user-rim-001",
+  "metadata": {
+    "suggestion_id": "sug-44444444-aaaa-bbbb-cccc-dddddddddddd",
+    "suggestion_type": "website_change_outreach"
+  },
+  "priority": "normal",
+  "fingerprint": "campaign_suggestion:sug-44444444-aaaa-bbbb-cccc-dddddddddddd",
+  "tier": "T1",
+  "deep_link": "/campaigns/suggestions",
+  "title": "💡 New outreach suggestion",
+  "body": "Website update detected — consider outreach — if helpful, it's ready for your review.",
+  "bundle_key": "campaign_sug:org-cs-001"
+}

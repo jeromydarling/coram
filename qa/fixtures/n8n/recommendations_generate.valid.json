@@ -1,0 +1,13 @@
+{
+  "workflow_key": "recommendations_generate",
+  "run_id": "11111111-aaaa-bbbb-cccc-dddddddddddd",
+  "metro_id": "metro-001",
+  "inputs_hash": "abc123def456",
+  "payload": {
+    "recommendation_type": "expansion",
+    "title": "Expand to North Metro",
+    "body": "Based on recent signals, the north metro area shows strong growth potential.",
+    "priority": "high",
+    "metadata": { "source_signals": 5 }
+  }
+}

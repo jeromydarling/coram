@@ -1,0 +1,141 @@
+{
+  "name": "Profunda - Recommendations Generate (v1)",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "recommendations-generate",
+        "responseMode": "onReceived",
+        "options": {}
+      },
+      "id": "webhook-trigger",
+      "name": "Webhook Trigger",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [240, 300],
+      "webhookId": "recommendations-generate"
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "{\n  \"N8N_SHARED_SECRET\": \"YOUR_SHARED_SECRET_HERE\",\n  \"SUPABASE_FUNCTIONS_BASE_URL\": \"https://lxahadqhpubynuzvraxc.supabase.co/functions/v1\",\n  \"SUPABASE_SERVICE_ROLE_KEY\": \"YOUR_SERVICE_ROLE_KEY_HERE\",\n  \"OPENAI_API_KEY\": \"YOUR_OPENAI_API_KEY_HERE\"\n}",
+        "options": {}
+      },
+      "id": "workflow-constants",
+      "name": "Workflow Constants",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [460, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "const crypto = require('crypto');\nconst webhookBody = $('Webhook Trigger').first().json.body;\nconst headers = $('Webhook Trigger').first().json.headers;\nconst secret = $('Workflow Constants').first().json.N8N_SHARED_SECRET;\n\nconst signature = headers['x-profunda-signature'];\nif (!signature) throw new Error('Missing x-profunda-signature header');\nif (!webhookBody || typeof webhookBody !== 'object') throw new Error('Missing or invalid webhook body');\nif (webhookBody.workflow_key !== 'recommendations_generate') throw new Error('workflow_key must be recommendations_generate');\nif (!webhookBody.run_id) throw new Error('Missing run_id');\n\nconst bodyStr = JSON.stringify(webhookBody);\nconst hmac = crypto.createHmac('sha256', secret).update(bodyStr).digest('hex');\nif (hmac !== signature) throw new Error('Invalid HMAC signature');\n\nreturn [{ json: webhookBody }];"
+      },
+      "id": "verify-signature",
+      "name": "Verify Signature",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [680, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "const input = $('Verify Signature').first().json;\nconst UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;\n\nif (!input.metro_id || typeof input.metro_id !== 'string' || !UUID_RE.test(input.metro_id)) {\n  throw new Error('metro_id must be a valid UUID');\n}\n\nconst horizon_days = (typeof input.horizon_days === 'number' && input.horizon_days > 0) ? Math.min(input.horizon_days, 365) : 30;\nconst opportunities = Array.isArray(input.opportunities) ? input.opportunities.slice(0, 30) : [];\nconst recent_signals = Array.isArray(input.recent_signals) ? input.recent_signals.slice(0, 50) : [];\nconst org_facts = Array.isArray(input.org_facts) ? input.org_facts.slice(0, 50) : [];\nconst watchlist_signals = Array.isArray(input.watchlist_signals) ? input.watchlist_signals.slice(0, 50) : [];\n\nreturn [{\n  json: {\n    run_id: input.run_id,\n    workflow_key: 'recommendations_generate',\n    metro_id: input.metro_id,\n    horizon_days,\n    opportunities,\n    recent_signals,\n    org_facts,\n    watchlist_signals\n  }\n}];"
+      },
+      "id": "validate-input",
+      "name": "Validate Input",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [900, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "const v = $('Validate Input').first().json;\n\n// Build context for LLM\nconst oppSummary = v.opportunities.map((o, i) => `${i+1}. ${o.org_name || 'Unknown Org'} (stage: ${o.stage || 'unknown'})`).join('\\n');\nconst signalSummary = v.recent_signals.map(s => `- ${s.signal_type || s.type}: ${s.summary || s.signal_value || ''}`).join('\\n');\nconst factSummary = v.org_facts.map(f => `- ${f.org_name || ''}: ${f.fact || f.summary || ''}`).join('\\n');\nconst watchlistSummary = v.watchlist_signals.map(w => `- ${w.org_name || ''}: ${w.signal_type || ''} - ${w.summary || ''}`).join('\\n');\n\nconst context = `Metro Opportunities (${v.opportunities.length}):\\n${oppSummary || 'None'}\\n\\nRecent Signals (${v.recent_signals.length}):\\n${signalSummary || 'None'}\\n\\nOrg Facts (${v.org_facts.length}):\\n${factSummary || 'None'}\\n\\nWatchlist Signals (${v.watchlist_signals.length}):\\n${watchlistSummary || 'None'}\\n\\nHorizon: ${v.horizon_days} days`;\n\nreturn [{ json: { run_id: v.run_id, metro_id: v.metro_id, context, horizon_days: v.horizon_days } }];"
+      },
+      "id": "build-context",
+      "name": "Build Context",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1120, 300],
+      "continueOnFail": true,
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.openai.com/v1/chat/completions",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "Authorization", "value": "=Bearer {{ $('Workflow Constants').first().json.OPENAI_API_KEY }}" },
+            { "name": "Content-Type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"model\": \"gpt-4o-mini\",\n  \"temperature\": 0.3,\n  \"response_format\": { \"type\": \"json_object\" },\n  \"messages\": [\n    { \"role\": \"system\", \"content\": \"You generate relationship-focused recommendations for a Regional Impact Manager. Output JSON: {\\\"recommendations\\\":[{\\\"title\\\":string,\\\"body\\\":string,\\\"priority\\\":\\\"high\\\"|\\\"medium\\\"|\\\"low\\\",\\\"recommendation_type\\\":\\\"check_in\\\"|\\\"deepen\\\"|\\\"introduce\\\"|\\\"research\\\",\\\"opportunity_ids\\\":[string]}]}. Max 5 recommendations. Tone: calm, supportive, story-like. NEVER use urgency language.\" },\n    { \"role\": \"user\", \"content\": {{ JSON.stringify($('Build Context').first().json.context) }} }\n  ]\n}",
+        "options": { "timeout": 60000, "response": { "response": { "neverError": true } } }
+      },
+      "id": "llm-generate",
+      "name": "LLM Generate Recommendations",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1340, 300],
+      "continueOnFail": true,
+      "alwaysOutputData": true,
+      "retryOnFail": true,
+      "maxTries": 2
+    },
+    {
+      "parameters": {
+        "jsCode": "const ctx = $('Build Context').first().json;\nlet txt = '';\ntry { txt = $('LLM Generate Recommendations').first().json?.choices?.[0]?.message?.content || ''; } catch(e) { txt = ''; }\n\nlet recommendations = [];\ntry {\n  const parsed = JSON.parse(txt);\n  recommendations = Array.isArray(parsed.recommendations) ? parsed.recommendations.slice(0, 5) : [];\n} catch(e) {\n  recommendations = [];\n}\n\n// Clean each recommendation\nconst cleaned = recommendations.map(r => ({\n  title: String(r.title || '').slice(0, 200),\n  body: String(r.body || '').slice(0, 1000),\n  priority: ['high','medium','low'].includes(r.priority) ? r.priority : 'medium',\n  recommendation_type: ['check_in','deepen','introduce','research'].includes(r.recommendation_type) ? r.recommendation_type : 'check_in',\n  opportunity_ids: Array.isArray(r.opportunity_ids) ? r.opportunity_ids : []\n}));\n\nreturn [{\n  json: {\n    run_id: ctx.run_id,\n    workflow_key: 'recommendations_generate',\n    payload: {\n      result: { metro_id: ctx.metro_id, recommendations: cleaned, recommendation_count: cleaned.length, horizon_days: ctx.horizon_days },\n      error: null,\n      failed_node: null\n    }\n  }\n}];"
+      },
+      "id": "result-envelope",
+      "name": "Result Envelope",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1560, 300],
+      "continueOnFail": true,
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('Workflow Constants').first().json.SUPABASE_FUNCTIONS_BASE_URL }}/n8n-ingest",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "Authorization", "value": "=Bearer {{ $('Workflow Constants').first().json.SUPABASE_SERVICE_ROLE_KEY }}" },
+            { "name": "Content-Type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"workflow_key\": \"recommendations_generate\",\n  \"run_id\": \"{{ $('Result Envelope').first().json.run_id }}\",\n  \"status\": \"processed\",\n  \"metro_id\": \"{{ $('Build Context').first().json.metro_id }}\",\n  \"payload\": {{ JSON.stringify($('Result Envelope').first().json.payload.result) }}\n}",
+        "options": { "timeout": 30000, "response": { "response": { "neverError": true } } }
+      },
+      "id": "success-callback",
+      "name": "Success Callback",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1780, 300],
+      "continueOnFail": true
+    }
+  ],
+  "connections": {
+    "Webhook Trigger": { "main": [[{ "node": "Workflow Constants", "type": "main", "index": 0 }]] },
+    "Workflow Constants": { "main": [[{ "node": "Verify Signature", "type": "main", "index": 0 }]] },
+    "Verify Signature": { "main": [[{ "node": "Validate Input", "type": "main", "index": 0 }]] },
+    "Validate Input": { "main": [[{ "node": "Build Context", "type": "main", "index": 0 }]] },
+    "Build Context": { "main": [[{ "node": "LLM Generate Recommendations", "type": "main", "index": 0 }]] },
+    "LLM Generate Recommendations": { "main": [[{ "node": "Result Envelope", "type": "main", "index": 0 }]] },
+    "Result Envelope": { "main": [[{ "node": "Success Callback", "type": "main", "index": 0 }]] }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "saveManualExecutions": true,
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "staticData": null,
+  "tags": [{ "name": "profunda" }, { "name": "recommendations" }],
+  "triggerCount": 1
+}

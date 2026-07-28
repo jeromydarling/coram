@@ -1,0 +1,82 @@
+{
+  "page": {
+    "title": "Calendar",
+    "subtitle": "Events, meetings, and activities"
+  },
+  "legend": {
+    "events": "Events",
+    "meetings": "Meetings",
+    "activities": "Activities",
+    "googleCalendar": "Google Calendar"
+  },
+  "buttons": {
+    "scheduleMeeting": "Schedule Meeting"
+  },
+  "googleSync": {
+    "googleSync": "Google Sync",
+    "connectGoogle": "Connect Google",
+    "googleCalendar": "Google Calendar",
+    "connected": "Connected",
+    "disconnected": "Disconnected",
+    "syncedDescription": "Your calendar is synced with Google Calendar. Events and meetings will automatically appear in both places.",
+    "lastSynced": "Last synced: {{time}}",
+    "syncNow": "Sync Now",
+    "notConnectedDescription": "Connect your Google Calendar to sync events and meetings automatically.",
+    "connectGoogleCalendar": "Connect Google Calendar",
+    "syncSuccess": "Calendar synced successfully",
+    "syncError": "Failed to sync calendar"
+  },
+  "toasts": {
+    "googleConnected": "Google Calendar connected successfully!",
+    "loginToConnect": "Please log in to connect Google Calendar",
+    "loginToSync": "Please log in to sync",
+    "syncFailed": "Sync failed",
+    "calendarUpToDate": "Calendar is up to date",
+    "syncedItems": "Synced: {{items}}",
+    "syncWithErrors": "Sync completed with {{count}} errors",
+    "disconnected": "Google Calendar disconnected",
+    "disconnectFailed": "Failed to disconnect Google Calendar",
+    "connectFailed": "Failed to connect Google Calendar"
+  },
+  "eventDetail": {
+    "title": "Event Detail",
+    "loading": "Loading...",
+    "notFound": "Event Not Found",
+    "notFoundMessage": "This event could not be found.",
+    "backToCalendar": "Back to Calendar",
+    "back": "Back",
+    "untitledMeeting": "Untitled Meeting",
+    "attended": "Attended",
+    "markAsAttended": "Mark as Attended",
+    "markedAttended": "Marked as attended",
+    "markedNotAttended": "Marked as not attended",
+    "linkToContact": "Link to Contact",
+    "contactLinked": "Contact linked",
+    "contactUnlinked": "Contact unlinked",
+    "selectContact": "Select a contact...",
+    "meetingNotesOutcome": "Meeting Notes & Outcome",
+    "outcome": "Outcome",
+    "notes": "Notes",
+    "notesPlaceholder": "Key takeaways or discussion points...",
+    "nextAction": "Next Action",
+    "nextActionPlaceholder": "What's next?",
+    "saving": "Saving...",
+    "updateMeeting": "Update Meeting",
+    "saveMeeting": "Save Meeting",
+    "meetingSaved": "Meeting saved",
+    "meetingNotes": "Meeting Notes",
+    "summary": "Summary",
+    "actionItems": "Action Items",
+    "yours": "Yours",
+    "watchRecording": "Watch Recording",
+    "attendees": "Attendees ({{count}})",
+    "organizer": "Organizer"
+  },
+  "outcomes": {
+    "connected": "Connected",
+    "movedStage": "Moved Stage",
+    "followUpNeeded": "Follow-up Needed",
+    "noResponse": "No Response",
+    "notAFit": "Not a Fit"
+  }
+}

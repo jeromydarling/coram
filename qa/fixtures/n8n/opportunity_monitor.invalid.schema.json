@@ -1,0 +1,8 @@
+{
+  "workflow_key": "opportunity_monitor",
+  "run_id": "ffffffff-1111-2222-3333-444444444444",
+  "opportunity_id": 999,
+  "payload": {
+    "result": "not-an-object"
+  }
+}

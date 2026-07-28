@@ -1,0 +1,344 @@
+{
+  "name": "Profunda - Event Attendee Enrich (v1)",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "event-attendee-enrich",
+        "responseMode": "onReceived",
+        "options": {}
+      },
+      "id": "webhook-trigger",
+      "name": "Webhook Trigger",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [240, 300],
+      "webhookId": "event-attendee-enrich"
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "{\n  \"N8N_SHARED_SECRET\": \"YOUR_SHARED_SECRET_HERE\",\n  \"SUPABASE_FUNCTIONS_BASE_URL\": \"https://lxahadqhpubynuzvraxc.supabase.co/functions/v1\",\n  \"SUPABASE_SERVICE_ROLE_KEY\": \"YOUR_SERVICE_ROLE_KEY_HERE\"\n}",
+        "options": {}
+      },
+      "id": "workflow-constants",
+      "name": "Workflow Constants",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [460, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Verify HMAC signature\nconst crypto = require('crypto');\n\nconst webhookBody = $('Webhook Trigger').first().json.body;\nconst headers = $('Webhook Trigger').first().json.headers;\nconst secret = $('Workflow Constants').first().json.N8N_SHARED_SECRET;\n\nconst signature = headers['x-profunda-signature'];\nif (!signature) {\n  throw new Error('Missing x-profunda-signature header');\n}\n\nif (!webhookBody || typeof webhookBody !== 'object') {\n  throw new Error('Missing or invalid webhook body');\n}\n\nif (webhookBody.workflow_key !== 'event_attendee_enrich') {\n  throw new Error('workflow_key must be event_attendee_enrich, got: ' + webhookBody.workflow_key);\n}\n\nif (!webhookBody.run_id || typeof webhookBody.run_id !== 'string') {\n  throw new Error('Missing run_id');\n}\n\n// Compute HMAC over the raw body JSON\nconst bodyStr = JSON.stringify(webhookBody);\nconst hmac = crypto.createHmac('sha256', secret).update(bodyStr).digest('hex');\n\nif (hmac !== signature) {\n  throw new Error('Invalid HMAC signature');\n}\n\nreturn [{ json: webhookBody }];"
+      },
+      "id": "verify-signature",
+      "name": "Verify Signature",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [680, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "const input = $('Verify Signature').first().json;\nconst UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;\n\nif (!input.event_id || typeof input.event_id !== 'string' || !UUID_RE.test(input.event_id)) {\n  throw new Error('event_id must be a valid UUID');\n}\n\nconst result = {\n  run_id: input.run_id,\n  workflow_key: 'event_attendee_enrich',\n  event_id: input.event_id,\n  triggered_by: input.triggered_by || null\n};\n\n// Optional attendee_ids\nif (input.attendee_ids !== undefined && input.attendee_ids !== null) {\n  if (!Array.isArray(input.attendee_ids)) {\n    throw new Error('attendee_ids must be an array of UUIDs');\n  }\n  for (const id of input.attendee_ids) {\n    if (typeof id !== 'string' || !UUID_RE.test(id)) {\n      throw new Error('Each attendee_id must be a valid UUID');\n    }\n  }\n  const capped = input.attendee_ids.slice(0, 50);\n  if (capped.length > 0) {\n    result.attendee_ids = capped;\n  }\n}\n\nreturn [{ json: result }];"
+      },
+      "id": "validate-input",
+      "name": "Validate Input",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [900, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('Workflow Constants').first().json.SUPABASE_FUNCTIONS_BASE_URL }}/rest/v1/rpc/get_event_attendees_for_enrich",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "apikey",
+              "value": "={{ $('Workflow Constants').first().json.SUPABASE_SERVICE_ROLE_KEY }}"
+            },
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $('Workflow Constants').first().json.SUPABASE_SERVICE_ROLE_KEY }}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"p_event_id\": \"{{ $('Validate Input').first().json.event_id }}\",\n  \"p_attendee_ids\": {{ $('Validate Input').first().json.attendee_ids ? JSON.stringify($('Validate Input').first().json.attendee_ids) : 'null' }},\n  \"p_limit\": 50\n}",
+        "options": {
+          "timeout": 60000,
+          "retry": {
+            "maxTries": 2
+          },
+          "response": {
+            "response": {
+              "neverError": true
+            }
+          },
+          "allowUnauthorizedCerts": false
+        }
+      },
+      "id": "fetch-attendees",
+      "name": "Fetch Attendees",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1120, 300],
+      "continueOnFail": true,
+      "alwaysOutputData": true,
+      "retryOnFail": true,
+      "maxTries": 2
+    },
+    {
+      "parameters": {
+        "jsCode": "// Deterministic enrichment: normalize attendee data, compute completeness scores\nconst input = $('Validate Input').first().json;\nconst fetchResult = $('Fetch Attendees').first().json;\n\n// Check if fetch failed\nconst fetchError = $('Fetch Attendees').first().json?.error || null;\nconst fetchStatusCode = $('Fetch Attendees').first().json?.statusCode;\n\nlet attendees = [];\nif (Array.isArray(fetchResult)) {\n  attendees = fetchResult;\n} else if (fetchResult && Array.isArray(fetchResult.data)) {\n  attendees = fetchResult.data;\n} else if (fetchResult && !fetchError) {\n  // Single object or unexpected shape\n  attendees = [fetchResult];\n}\n\nconst enriched_attendees = attendees.map(a => {\n  const fields = ['name', 'email', 'title', 'organization', 'phone'];\n  const filled = fields.filter(f => a[f] && String(a[f]).trim().length > 0).length;\n  const completeness = Math.round((filled / fields.length) * 100);\n\n  return {\n    id: a.id || a.attendee_id || null,\n    contact_id: a.contact_id || null,\n    name: a.name || null,\n    email: a.email || null,\n    title: a.title || null,\n    organization: a.organization || null,\n    phone: a.phone || null,\n    completeness_score: completeness,\n    needs_enrichment: completeness < 60,\n    enrichment_source: 'deterministic_v1'\n  };\n});\n\nreturn [{\n  json: {\n    run_id: input.run_id,\n    event_id: input.event_id,\n    enriched_attendees,\n    attendee_count: enriched_attendees.length,\n    fetch_error: fetchError\n  }\n}];"
+      },
+      "id": "enrich-attendees",
+      "name": "Enrich Attendees",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1340, 300],
+      "continueOnFail": true,
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "const input = $('Validate Input').first().json;\n\n// Check each upstream node for errors\nlet error = null;\nlet failed_node = null;\n\ntry {\n  const fetchNode = $('Fetch Attendees').first();\n  if (fetchNode.json?.error) {\n    error = 'Fetch attendees failed: ' + String(fetchNode.json.error).slice(0, 500);\n    failed_node = 'Fetch Attendees';\n  }\n} catch (e) {\n  error = 'Fetch Attendees node did not execute: ' + String(e.message).slice(0, 200);\n  failed_node = 'Fetch Attendees';\n}\n\nif (!error) {\n  try {\n    const enrichNode = $('Enrich Attendees').first();\n    if (enrichNode.json?.error) {\n      error = 'Enrich failed: ' + String(enrichNode.json.error).slice(0, 500);\n      failed_node = 'Enrich Attendees';\n    }\n  } catch (e) {\n    error = 'Enrich Attendees node did not execute: ' + String(e.message).slice(0, 200);\n    failed_node = 'Enrich Attendees';\n  }\n}\n\nlet result = null;\nif (!error) {\n  try {\n    const enrichData = $('Enrich Attendees').first().json;\n    result = {\n      enriched_attendees: enrichData.enriched_attendees || [],\n      attendee_count: enrichData.attendee_count || 0,\n      event_id: enrichData.event_id\n    };\n    if (enrichData.fetch_error) {\n      error = 'Fetch returned error: ' + String(enrichData.fetch_error).slice(0, 500);\n      failed_node = 'Fetch Attendees';\n    }\n  } catch (e) {\n    error = 'Failed to build result envelope: ' + String(e.message).slice(0, 200);\n    failed_node = 'Result Envelope';\n  }\n}\n\nreturn [{\n  json: {\n    run_id: input.run_id,\n    workflow_key: 'event_attendee_enrich',\n    payload: {\n      result: result,\n      error: error,\n      failed_node: failed_node\n    }\n  }\n}];"
+      },
+      "id": "result-envelope",
+      "name": "Result Envelope",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1560, 300]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "check-error",
+              "leftValue": "={{ $json.payload.error }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "empty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "if-success",
+      "name": "Check Success",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [1780, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('Workflow Constants').first().json.SUPABASE_FUNCTIONS_BASE_URL }}/n8n-ingest",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $('Workflow Constants').first().json.SUPABASE_SERVICE_ROLE_KEY }}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"workflow_key\": \"event_attendee_enrich\",\n  \"run_id\": \"{{ $('Result Envelope').first().json.run_id }}\",\n  \"status\": \"processed\",\n  \"payload\": {{ JSON.stringify($('Result Envelope').first().json.payload.result) }}\n}",
+        "options": {
+          "timeout": 30000,
+          "response": {
+            "response": {
+              "neverError": true
+            }
+          }
+        }
+      },
+      "id": "success-callback",
+      "name": "Success Callback",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [2020, 180],
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('Workflow Constants').first().json.SUPABASE_FUNCTIONS_BASE_URL }}/n8n-ingest",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $('Workflow Constants').first().json.SUPABASE_SERVICE_ROLE_KEY }}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"workflow_key\": \"event_attendee_enrich\",\n  \"run_id\": \"{{ $('Result Envelope').first().json.run_id }}\",\n  \"status\": \"error\",\n  \"payload\": {\n    \"error\": {{ JSON.stringify($('Result Envelope').first().json.payload.error) }},\n    \"failed_node\": {{ JSON.stringify($('Result Envelope').first().json.payload.failed_node) }}\n  }\n}",
+        "options": {
+          "timeout": 30000,
+          "response": {
+            "response": {
+              "neverError": true
+            }
+          }
+        }
+      },
+      "id": "error-callback",
+      "name": "Error Callback",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [2020, 440],
+      "continueOnFail": true
+    }
+  ],
+  "connections": {
+    "Webhook Trigger": {
+      "main": [
+        [
+          {
+            "node": "Workflow Constants",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Workflow Constants": {
+      "main": [
+        [
+          {
+            "node": "Verify Signature",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Verify Signature": {
+      "main": [
+        [
+          {
+            "node": "Validate Input",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validate Input": {
+      "main": [
+        [
+          {
+            "node": "Fetch Attendees",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch Attendees": {
+      "main": [
+        [
+          {
+            "node": "Enrich Attendees",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Enrich Attendees": {
+      "main": [
+        [
+          {
+            "node": "Result Envelope",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Result Envelope": {
+      "main": [
+        [
+          {
+            "node": "Check Success",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Success": {
+      "main": [
+        [
+          {
+            "node": "Success Callback",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Error Callback",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "saveManualExecutions": true,
+    "callerPolicy": "workflowsFromSameOwner",
+    "errorWorkflow": ""
+  },
+  "staticData": null,
+  "tags": [
+    {
+      "name": "profunda",
+      "createdAt": "2026-02-11T00:00:00.000Z",
+      "updatedAt": "2026-02-11T00:00:00.000Z"
+    },
+    {
+      "name": "enrichment",
+      "createdAt": "2026-02-11T00:00:00.000Z",
+      "updatedAt": "2026-02-11T00:00:00.000Z"
+    }
+  ],
+  "triggerCount": 1,
+  "updatedAt": "2026-02-11T00:00:00.000Z",
+  "versionId": "1"
+}

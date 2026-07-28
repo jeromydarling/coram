@@ -1,0 +1,7 @@
+{
+  "_comment": "When a second signal arrives for the same org within 48h, it appends to the existing open suggestion rather than creating a new one.",
+  "existing_suggestion_id": "sug-44444444-aaaa-bbbb-cccc-dddddddddddd",
+  "new_signal_id": "sig-55555555-aaaa-bbbb-cccc-dddddddddddd",
+  "expected_behavior": "Insert into campaign_suggestion_items linking new signal to existing suggestion. Do NOT create a new campaign_suggestions row.",
+  "anti_spam_window_hours": 48
+}

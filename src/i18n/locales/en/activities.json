@@ -1,0 +1,73 @@
+{
+  "page": {
+    "title": "Activities",
+    "subtitle": "Your relational engagements — visits, projects, meetings, and more."
+  },
+  "filters": {
+    "searchPlaceholder": "Search activities...",
+    "allActivities": "All Activities",
+    "meetings": "Meetings",
+    "calls": "Calls",
+    "visits": "Visits",
+    "projects": "Projects",
+    "tasks": "Tasks",
+    "allSources": "All Sources",
+    "crmOnly": "CRM Only",
+    "googleCalendar": "Google Calendar",
+    "viewPlaceholder": "View",
+    "sourcePlaceholder": "Source"
+  },
+  "counts": {
+    "activity_one": "{{count}} activity",
+    "activity_other": "{{count}} activities"
+  },
+  "tooltips": {
+    "what": "All your relational engagement — meetings, calls, visits, and good work projects — in one timeline.",
+    "where": "Activities under Scheduling.",
+    "why": "One coherent thread of who, when, and what was shared."
+  },
+  "buttons": {
+    "newProject": "New Project",
+    "logActivity": "Log Activity"
+  },
+  "states": {
+    "noActivitiesFound": "No activities found",
+    "adjustFilters": "Try adjusting your filters",
+    "getStarted": "Log a call, mark meetings as attended, or create a project to see them here"
+  },
+  "card": {
+    "attended": "Attended",
+    "next": "Next:",
+    "clickToViewProject": "Click to view project",
+    "clickToViewCalendar": "Click to view in Calendar",
+    "clickToEdit": "Click to edit"
+  },
+  "myStats": {
+    "title": "My Stats",
+    "mobileTitle": "Stats",
+    "subtitle": "Personal activity report for {{name}}",
+    "weekly": "Weekly",
+    "monthly": "Monthly",
+    "yearly": "Yearly",
+    "periodThisWeek": "This Week",
+    "periodThisMonth": "This Month",
+    "periodThisYear": "This Year",
+    "noChange": "No change",
+    "vsPrevious": "vs previous",
+    "attended": "attended",
+    "missedOf": "missed of {{total}} scheduled",
+    "ytdLabel": "YTD: {{attended}} attended / {{total}} total",
+    "yearToDate": "Year to date: {{count}}",
+    "meetings": "Meetings",
+    "events": "Events",
+    "tasksCompleted": "Tasks Completed",
+    "totalActivities": "Total Activities",
+    "activityTrends": "Activity Trends",
+    "ytdAccomplishments": "Year-to-Date Accomplishments",
+    "meetingsAttended": "Meetings Attended",
+    "eventsAttended": "Events Attended"
+  },
+  "quickLog": {
+    "logType": "Log {{type}}"
+  }
+}

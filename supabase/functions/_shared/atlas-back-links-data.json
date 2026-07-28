@@ -1,0 +1,647 @@
+{
+  "propria": [
+    {
+      "id": "ministry-outreach-urban",
+      "archetype": "ministry_outreach",
+      "metro_type": "urban",
+      "title": "Ministry Outreach · Urban",
+      "url": "https://thecros.app/mission-atlas/ministry-outreach-urban"
+    },
+    {
+      "id": "ministry-outreach-rural",
+      "archetype": "ministry_outreach",
+      "metro_type": "rural",
+      "title": "Ministry Outreach · Rural",
+      "url": "https://thecros.app/mission-atlas/ministry-outreach-rural"
+    },
+    {
+      "id": "companion-solo-urban",
+      "archetype": "caregiver_solo",
+      "metro_type": "urban",
+      "title": "Companion (Solo) · Urban",
+      "url": "https://thecros.app/mission-atlas/companion-solo-urban"
+    },
+    {
+      "id": "companion-org-urban",
+      "archetype": "caregiver_agency",
+      "metro_type": "urban",
+      "title": "Companion Organization · Urban",
+      "url": "https://thecros.app/mission-atlas/companion-org-urban"
+    },
+    {
+      "id": "companion-org-suburban",
+      "archetype": "caregiver_agency",
+      "metro_type": "suburban",
+      "title": "Companion Organization · Suburban",
+      "url": "https://thecros.app/mission-atlas/companion-org-suburban"
+    }
+  ],
+  "communicare": [
+    {
+      "id": "ministry-outreach-urban",
+      "archetype": "ministry_outreach",
+      "metro_type": "urban",
+      "title": "Ministry Outreach · Urban",
+      "url": "https://thecros.app/mission-atlas/ministry-outreach-urban"
+    },
+    {
+      "id": "ministry-outreach-rural",
+      "archetype": "ministry_outreach",
+      "metro_type": "rural",
+      "title": "Ministry Outreach · Rural",
+      "url": "https://thecros.app/mission-atlas/ministry-outreach-rural"
+    },
+    {
+      "id": "companion-org-urban",
+      "archetype": "caregiver_agency",
+      "metro_type": "urban",
+      "title": "Companion Organization · Urban",
+      "url": "https://thecros.app/mission-atlas/companion-org-urban"
+    },
+    {
+      "id": "companion-org-suburban",
+      "archetype": "caregiver_agency",
+      "metro_type": "suburban",
+      "title": "Companion Organization · Suburban",
+      "url": "https://thecros.app/mission-atlas/companion-org-suburban"
+    }
+  ],
+  "custodia": [
+    {
+      "id": "refugee-support-urban",
+      "archetype": "refugee_support",
+      "metro_type": "urban",
+      "title": "Refugee Support · Urban",
+      "url": "https://thecros.app/mission-atlas/refugee-support-urban"
+    },
+    {
+      "id": "companion-org-urban",
+      "archetype": "caregiver_agency",
+      "metro_type": "urban",
+      "title": "Companion Organization · Urban",
+      "url": "https://thecros.app/mission-atlas/companion-org-urban"
+    },
+    {
+      "id": "companion-org-suburban",
+      "archetype": "caregiver_agency",
+      "metro_type": "suburban",
+      "title": "Companion Organization · Suburban",
+      "url": "https://thecros.app/mission-atlas/companion-org-suburban"
+    }
+  ],
+  "refugium": [
+    {
+      "id": "refugee-support-urban",
+      "archetype": "refugee_support",
+      "metro_type": "urban",
+      "title": "Refugee Support · Urban",
+      "url": "https://thecros.app/mission-atlas/refugee-support-urban"
+    },
+    {
+      "id": "ministry-outreach-urban",
+      "archetype": "ministry_outreach",
+      "metro_type": "urban",
+      "title": "Ministry Outreach · Urban",
+      "url": "https://thecros.app/mission-atlas/ministry-outreach-urban"
+    },
+    {
+      "id": "ministry-outreach-rural",
+      "archetype": "ministry_outreach",
+      "metro_type": "rural",
+      "title": "Ministry Outreach · Rural",
+      "url": "https://thecros.app/mission-atlas/ministry-outreach-rural"
+    }
+  ],
+  "resurrectio": [
+    {
+      "id": "catholic-outreach-urban",
+      "archetype": "catholic_outreach",
+      "metro_type": "urban",
+      "title": "Catholic Outreach · Urban",
+      "url": "https://thecros.app/mission-atlas/catholic-outreach-urban"
+    },
+    {
+      "id": "catholic-outreach-rural",
+      "archetype": "catholic_outreach",
+      "metro_type": "rural",
+      "title": "Catholic Outreach · Rural",
+      "url": "https://thecros.app/mission-atlas/catholic-outreach-rural"
+    },
+    {
+      "id": "ministry-outreach-urban",
+      "archetype": "ministry_outreach",
+      "metro_type": "urban",
+      "title": "Ministry Outreach · Urban",
+      "url": "https://thecros.app/mission-atlas/ministry-outreach-urban"
+    },
+    {
+      "id": "ministry-outreach-rural",
+      "archetype": "ministry_outreach",
+      "metro_type": "rural",
+      "title": "Ministry Outreach · Rural",
+      "url": "https://thecros.app/mission-atlas/ministry-outreach-rural"
+    }
+  ],
+  "convivium": [
+    {
+      "id": "catholic-outreach-urban",
+      "archetype": "catholic_outreach",
+      "metro_type": "urban",
+      "title": "Catholic Outreach · Urban",
+      "url": "https://thecros.app/mission-atlas/catholic-outreach-urban"
+    },
+    {
+      "id": "catholic-outreach-rural",
+      "archetype": "catholic_outreach",
+      "metro_type": "rural",
+      "title": "Catholic Outreach · Rural",
+      "url": "https://thecros.app/mission-atlas/catholic-outreach-rural"
+    },
+    {
+      "id": "community-network-urban",
+      "archetype": "community_network",
+      "metro_type": "urban",
+      "title": "Community Network · Urban",
+      "url": "https://thecros.app/mission-atlas/community-network-urban"
+    },
+    {
+      "id": "community-network-suburban",
+      "archetype": "community_network",
+      "metro_type": "suburban",
+      "title": "Community Network · Suburban",
+      "url": "https://thecros.app/mission-atlas/community-network-suburban"
+    },
+    {
+      "id": "community-network-rural",
+      "archetype": "community_network",
+      "metro_type": "rural",
+      "title": "Community Network · Rural",
+      "url": "https://thecros.app/mission-atlas/community-network-rural"
+    }
+  ],
+  "transitus": [
+    {
+      "id": "catholic-outreach-urban",
+      "archetype": "catholic_outreach",
+      "metro_type": "urban",
+      "title": "Catholic Outreach · Urban",
+      "url": "https://thecros.app/mission-atlas/catholic-outreach-urban"
+    },
+    {
+      "id": "catholic-outreach-rural",
+      "archetype": "catholic_outreach",
+      "metro_type": "rural",
+      "title": "Catholic Outreach · Rural",
+      "url": "https://thecros.app/mission-atlas/catholic-outreach-rural"
+    },
+    {
+      "id": "ministry-outreach-urban",
+      "archetype": "ministry_outreach",
+      "metro_type": "urban",
+      "title": "Ministry Outreach · Urban",
+      "url": "https://thecros.app/mission-atlas/ministry-outreach-urban"
+    },
+    {
+      "id": "ministry-outreach-rural",
+      "archetype": "ministry_outreach",
+      "metro_type": "rural",
+      "title": "Ministry Outreach · Rural",
+      "url": "https://thecros.app/mission-atlas/ministry-outreach-rural"
+    }
+  ],
+  "vigilia": [
+    {
+      "id": "catholic-outreach-urban",
+      "archetype": "catholic_outreach",
+      "metro_type": "urban",
+      "title": "Catholic Outreach · Urban",
+      "url": "https://thecros.app/mission-atlas/catholic-outreach-urban"
+    },
+    {
+      "id": "catholic-outreach-rural",
+      "archetype": "catholic_outreach",
+      "metro_type": "rural",
+      "title": "Catholic Outreach · Rural",
+      "url": "https://thecros.app/mission-atlas/catholic-outreach-rural"
+    },
+    {
+      "id": "ministry-outreach-urban",
+      "archetype": "ministry_outreach",
+      "metro_type": "urban",
+      "title": "Ministry Outreach · Urban",
+      "url": "https://thecros.app/mission-atlas/ministry-outreach-urban"
+    },
+    {
+      "id": "ministry-outreach-rural",
+      "archetype": "ministry_outreach",
+      "metro_type": "rural",
+      "title": "Ministry Outreach · Rural",
+      "url": "https://thecros.app/mission-atlas/ministry-outreach-rural"
+    }
+  ],
+  "sanctum": [
+    {
+      "id": "church-urban",
+      "archetype": "church",
+      "metro_type": "urban",
+      "title": "Church / Faith Community · Urban",
+      "url": "https://thecros.app/mission-atlas/church-urban"
+    },
+    {
+      "id": "church-rural",
+      "archetype": "church",
+      "metro_type": "rural",
+      "title": "Church / Faith Community · Rural",
+      "url": "https://thecros.app/mission-atlas/church-rural"
+    },
+    {
+      "id": "ministry-outreach-urban",
+      "archetype": "ministry_outreach",
+      "metro_type": "urban",
+      "title": "Ministry Outreach · Urban",
+      "url": "https://thecros.app/mission-atlas/ministry-outreach-urban"
+    },
+    {
+      "id": "ministry-outreach-rural",
+      "archetype": "ministry_outreach",
+      "metro_type": "rural",
+      "title": "Ministry Outreach · Rural",
+      "url": "https://thecros.app/mission-atlas/ministry-outreach-rural"
+    }
+  ],
+  "communis": [
+    {
+      "id": "church-urban",
+      "archetype": "church",
+      "metro_type": "urban",
+      "title": "Church / Faith Community · Urban",
+      "url": "https://thecros.app/mission-atlas/church-urban"
+    },
+    {
+      "id": "church-rural",
+      "archetype": "church",
+      "metro_type": "rural",
+      "title": "Church / Faith Community · Rural",
+      "url": "https://thecros.app/mission-atlas/church-rural"
+    },
+    {
+      "id": "catholic-outreach-urban",
+      "archetype": "catholic_outreach",
+      "metro_type": "urban",
+      "title": "Catholic Outreach · Urban",
+      "url": "https://thecros.app/mission-atlas/catholic-outreach-urban"
+    },
+    {
+      "id": "catholic-outreach-rural",
+      "archetype": "catholic_outreach",
+      "metro_type": "rural",
+      "title": "Catholic Outreach · Rural",
+      "url": "https://thecros.app/mission-atlas/catholic-outreach-rural"
+    },
+    {
+      "id": "community-network-urban",
+      "archetype": "community_network",
+      "metro_type": "urban",
+      "title": "Community Network · Urban",
+      "url": "https://thecros.app/mission-atlas/community-network-urban"
+    },
+    {
+      "id": "community-network-suburban",
+      "archetype": "community_network",
+      "metro_type": "suburban",
+      "title": "Community Network · Suburban",
+      "url": "https://thecros.app/mission-atlas/community-network-suburban"
+    },
+    {
+      "id": "community-network-rural",
+      "archetype": "community_network",
+      "metro_type": "rural",
+      "title": "Community Network · Rural",
+      "url": "https://thecros.app/mission-atlas/community-network-rural"
+    }
+  ],
+  "bitoku": [
+    {
+      "id": "social-enterprise-urban",
+      "archetype": "social_enterprise",
+      "metro_type": "urban",
+      "title": "Social Enterprise · Urban",
+      "url": "https://thecros.app/mission-atlas/social-enterprise-urban"
+    },
+    {
+      "id": "social-enterprise-suburban",
+      "archetype": "social_enterprise",
+      "metro_type": "suburban",
+      "title": "Social Enterprise · Suburban",
+      "url": "https://thecros.app/mission-atlas/social-enterprise-suburban"
+    },
+    {
+      "id": "community-network-urban",
+      "archetype": "community_network",
+      "metro_type": "urban",
+      "title": "Community Network · Urban",
+      "url": "https://thecros.app/mission-atlas/community-network-urban"
+    },
+    {
+      "id": "community-network-suburban",
+      "archetype": "community_network",
+      "metro_type": "suburban",
+      "title": "Community Network · Suburban",
+      "url": "https://thecros.app/mission-atlas/community-network-suburban"
+    },
+    {
+      "id": "community-network-rural",
+      "archetype": "community_network",
+      "metro_type": "rural",
+      "title": "Community Network · Rural",
+      "url": "https://thecros.app/mission-atlas/community-network-rural"
+    }
+  ],
+  "hortus": [
+    {
+      "id": "social-enterprise-urban",
+      "archetype": "social_enterprise",
+      "metro_type": "urban",
+      "title": "Social Enterprise · Urban",
+      "url": "https://thecros.app/mission-atlas/social-enterprise-urban"
+    },
+    {
+      "id": "social-enterprise-suburban",
+      "archetype": "social_enterprise",
+      "metro_type": "suburban",
+      "title": "Social Enterprise · Suburban",
+      "url": "https://thecros.app/mission-atlas/social-enterprise-suburban"
+    },
+    {
+      "id": "community-network-urban",
+      "archetype": "community_network",
+      "metro_type": "urban",
+      "title": "Community Network · Urban",
+      "url": "https://thecros.app/mission-atlas/community-network-urban"
+    },
+    {
+      "id": "community-network-suburban",
+      "archetype": "community_network",
+      "metro_type": "suburban",
+      "title": "Community Network · Suburban",
+      "url": "https://thecros.app/mission-atlas/community-network-suburban"
+    },
+    {
+      "id": "community-network-rural",
+      "archetype": "community_network",
+      "metro_type": "rural",
+      "title": "Community Network · Rural",
+      "url": "https://thecros.app/mission-atlas/community-network-rural"
+    }
+  ],
+  "culina": [
+    {
+      "id": "social-enterprise-urban",
+      "archetype": "social_enterprise",
+      "metro_type": "urban",
+      "title": "Social Enterprise · Urban",
+      "url": "https://thecros.app/mission-atlas/social-enterprise-urban"
+    },
+    {
+      "id": "social-enterprise-suburban",
+      "archetype": "social_enterprise",
+      "metro_type": "suburban",
+      "title": "Social Enterprise · Suburban",
+      "url": "https://thecros.app/mission-atlas/social-enterprise-suburban"
+    },
+    {
+      "id": "community-network-urban",
+      "archetype": "community_network",
+      "metro_type": "urban",
+      "title": "Community Network · Urban",
+      "url": "https://thecros.app/mission-atlas/community-network-urban"
+    },
+    {
+      "id": "community-network-suburban",
+      "archetype": "community_network",
+      "metro_type": "suburban",
+      "title": "Community Network · Suburban",
+      "url": "https://thecros.app/mission-atlas/community-network-suburban"
+    },
+    {
+      "id": "community-network-rural",
+      "archetype": "community_network",
+      "metro_type": "rural",
+      "title": "Community Network · Rural",
+      "url": "https://thecros.app/mission-atlas/community-network-rural"
+    }
+  ],
+  "8s": [],
+  "inmotu": [
+    {
+      "id": "social-enterprise-urban",
+      "archetype": "social_enterprise",
+      "metro_type": "urban",
+      "title": "Social Enterprise · Urban",
+      "url": "https://thecros.app/mission-atlas/social-enterprise-urban"
+    },
+    {
+      "id": "social-enterprise-suburban",
+      "archetype": "social_enterprise",
+      "metro_type": "suburban",
+      "title": "Social Enterprise · Suburban",
+      "url": "https://thecros.app/mission-atlas/social-enterprise-suburban"
+    }
+  ],
+  "successio": [
+    {
+      "id": "social-enterprise-urban",
+      "archetype": "social_enterprise",
+      "metro_type": "urban",
+      "title": "Social Enterprise · Urban",
+      "url": "https://thecros.app/mission-atlas/social-enterprise-urban"
+    },
+    {
+      "id": "social-enterprise-suburban",
+      "archetype": "social_enterprise",
+      "metro_type": "suburban",
+      "title": "Social Enterprise · Suburban",
+      "url": "https://thecros.app/mission-atlas/social-enterprise-suburban"
+    },
+    {
+      "id": "workforce-urban",
+      "archetype": "workforce",
+      "metro_type": "urban",
+      "title": "Workforce Development · Urban",
+      "url": "https://thecros.app/mission-atlas/workforce-urban"
+    },
+    {
+      "id": "workforce-suburban",
+      "archetype": "workforce",
+      "metro_type": "suburban",
+      "title": "Workforce Development · Suburban",
+      "url": "https://thecros.app/mission-atlas/workforce-suburban"
+    }
+  ],
+  "fabrica-forge": [
+    {
+      "id": "social-enterprise-urban",
+      "archetype": "social_enterprise",
+      "metro_type": "urban",
+      "title": "Social Enterprise · Urban",
+      "url": "https://thecros.app/mission-atlas/social-enterprise-urban"
+    },
+    {
+      "id": "social-enterprise-suburban",
+      "archetype": "social_enterprise",
+      "metro_type": "suburban",
+      "title": "Social Enterprise · Suburban",
+      "url": "https://thecros.app/mission-atlas/social-enterprise-suburban"
+    },
+    {
+      "id": "workforce-urban",
+      "archetype": "workforce",
+      "metro_type": "urban",
+      "title": "Workforce Development · Urban",
+      "url": "https://thecros.app/mission-atlas/workforce-urban"
+    },
+    {
+      "id": "workforce-suburban",
+      "archetype": "workforce",
+      "metro_type": "suburban",
+      "title": "Workforce Development · Suburban",
+      "url": "https://thecros.app/mission-atlas/workforce-suburban"
+    }
+  ],
+  "rehearso": [
+    {
+      "id": "social-enterprise-urban",
+      "archetype": "social_enterprise",
+      "metro_type": "urban",
+      "title": "Social Enterprise · Urban",
+      "url": "https://thecros.app/mission-atlas/social-enterprise-urban"
+    },
+    {
+      "id": "social-enterprise-suburban",
+      "archetype": "social_enterprise",
+      "metro_type": "suburban",
+      "title": "Social Enterprise · Suburban",
+      "url": "https://thecros.app/mission-atlas/social-enterprise-suburban"
+    },
+    {
+      "id": "education-access-urban",
+      "archetype": "education_access",
+      "metro_type": "urban",
+      "title": "Education Access · Urban",
+      "url": "https://thecros.app/mission-atlas/education-access-urban"
+    }
+  ],
+  "theschola": [
+    {
+      "id": "catholic-outreach-urban",
+      "archetype": "catholic_outreach",
+      "metro_type": "urban",
+      "title": "Catholic Outreach · Urban",
+      "url": "https://thecros.app/mission-atlas/catholic-outreach-urban"
+    },
+    {
+      "id": "catholic-outreach-rural",
+      "archetype": "catholic_outreach",
+      "metro_type": "rural",
+      "title": "Catholic Outreach · Rural",
+      "url": "https://thecros.app/mission-atlas/catholic-outreach-rural"
+    },
+    {
+      "id": "education-access-urban",
+      "archetype": "education_access",
+      "metro_type": "urban",
+      "title": "Education Access · Urban",
+      "url": "https://thecros.app/mission-atlas/education-access-urban"
+    }
+  ],
+  "directio": [
+    {
+      "id": "catholic-outreach-urban",
+      "archetype": "catholic_outreach",
+      "metro_type": "urban",
+      "title": "Catholic Outreach · Urban",
+      "url": "https://thecros.app/mission-atlas/catholic-outreach-urban"
+    },
+    {
+      "id": "catholic-outreach-rural",
+      "archetype": "catholic_outreach",
+      "metro_type": "rural",
+      "title": "Catholic Outreach · Rural",
+      "url": "https://thecros.app/mission-atlas/catholic-outreach-rural"
+    },
+    {
+      "id": "education-access-urban",
+      "archetype": "education_access",
+      "metro_type": "urban",
+      "title": "Education Access · Urban",
+      "url": "https://thecros.app/mission-atlas/education-access-urban"
+    }
+  ],
+  "thegreatnave": [
+    {
+      "id": "catholic-outreach-urban",
+      "archetype": "catholic_outreach",
+      "metro_type": "urban",
+      "title": "Catholic Outreach · Urban",
+      "url": "https://thecros.app/mission-atlas/catholic-outreach-urban"
+    },
+    {
+      "id": "catholic-outreach-rural",
+      "archetype": "catholic_outreach",
+      "metro_type": "rural",
+      "title": "Catholic Outreach · Rural",
+      "url": "https://thecros.app/mission-atlas/catholic-outreach-rural"
+    },
+    {
+      "id": "ministry-outreach-urban",
+      "archetype": "ministry_outreach",
+      "metro_type": "urban",
+      "title": "Ministry Outreach · Urban",
+      "url": "https://thecros.app/mission-atlas/ministry-outreach-urban"
+    },
+    {
+      "id": "ministry-outreach-rural",
+      "archetype": "ministry_outreach",
+      "metro_type": "rural",
+      "title": "Ministry Outreach · Rural",
+      "url": "https://thecros.app/mission-atlas/ministry-outreach-rural"
+    }
+  ],
+  "via-publica": [
+    {
+      "id": "community-network-urban",
+      "archetype": "community_network",
+      "metro_type": "urban",
+      "title": "Community Network · Urban",
+      "url": "https://thecros.app/mission-atlas/community-network-urban"
+    },
+    {
+      "id": "community-network-suburban",
+      "archetype": "community_network",
+      "metro_type": "suburban",
+      "title": "Community Network · Suburban",
+      "url": "https://thecros.app/mission-atlas/community-network-suburban"
+    },
+    {
+      "id": "community-network-rural",
+      "archetype": "community_network",
+      "metro_type": "rural",
+      "title": "Community Network · Rural",
+      "url": "https://thecros.app/mission-atlas/community-network-rural"
+    },
+    {
+      "id": "digital-inclusion-urban",
+      "archetype": "digital_inclusion",
+      "metro_type": "urban",
+      "title": "Digital Inclusion · Urban",
+      "url": "https://thecros.app/mission-atlas/digital-inclusion-urban"
+    },
+    {
+      "id": "digital-inclusion-suburban",
+      "archetype": "digital_inclusion",
+      "metro_type": "suburban",
+      "title": "Digital Inclusion · Suburban",
+      "url": "https://thecros.app/mission-atlas/digital-inclusion-suburban"
+    }
+  ]
+}

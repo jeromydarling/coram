@@ -1,0 +1,193 @@
+{
+  "name": "Profunda - Opportunity Monitor (v1)",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "opportunity-monitor",
+        "responseMode": "onReceived",
+        "options": {}
+      },
+      "id": "webhook-trigger",
+      "name": "Webhook Trigger",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [240, 300],
+      "webhookId": "opportunity-monitor"
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "{\n  \"N8N_SHARED_SECRET\": \"YOUR_SHARED_SECRET_HERE\",\n  \"SUPABASE_FUNCTIONS_BASE_URL\": \"https://lxahadqhpubynuzvraxc.supabase.co/functions/v1\",\n  \"SUPABASE_SERVICE_ROLE_KEY\": \"YOUR_SERVICE_ROLE_KEY_HERE\",\n  \"FIRECRAWL_API_KEY\": \"YOUR_FIRECRAWL_API_KEY_HERE\"\n}",
+        "options": {}
+      },
+      "id": "workflow-constants",
+      "name": "Workflow Constants",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [460, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "const crypto = require('crypto');\nconst webhookBody = $('Webhook Trigger').first().json.body;\nconst headers = $('Webhook Trigger').first().json.headers;\nconst secret = $('Workflow Constants').first().json.N8N_SHARED_SECRET;\n\nconst signature = headers['x-profunda-signature'];\nif (!signature) throw new Error('Missing x-profunda-signature header');\nif (!webhookBody || typeof webhookBody !== 'object') throw new Error('Missing or invalid webhook body');\nif (webhookBody.workflow_key !== 'opportunity_monitor') throw new Error('workflow_key must be opportunity_monitor, got: ' + webhookBody.workflow_key);\nif (!webhookBody.run_id) throw new Error('Missing run_id');\n\nconst bodyStr = JSON.stringify(webhookBody);\nconst hmac = crypto.createHmac('sha256', secret).update(bodyStr).digest('hex');\nif (hmac !== signature) throw new Error('Invalid HMAC signature');\n\nreturn [{ json: webhookBody }];"
+      },
+      "id": "verify-signature",
+      "name": "Verify Signature",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [680, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "const input = $('Verify Signature').first().json;\n\nconst opportunity_id = input.opportunity_id || null;\nconst since = input.since || null;\nif (!opportunity_id && !since) throw new Error('opportunity_monitor requires either opportunity_id or since');\n\nconst monitor_urls = Array.isArray(input.monitor_urls) ? input.monitor_urls.slice(0, 6).filter(u => typeof u === 'string' && u.trim()) : [];\nconst previous_hashes = Array.isArray(input.previous_hashes) ? input.previous_hashes.filter(h => typeof h === 'string').slice(0, 50) : [];\n\nreturn [{\n  json: {\n    run_id: input.run_id,\n    workflow_key: 'opportunity_monitor',\n    opportunity_id,\n    since,\n    org_id: input.org_id || null,\n    org_name: input.org_name || null,\n    monitor_urls,\n    previous_hashes,\n    metro_ids: Array.isArray(input.metro_ids) ? input.metro_ids.slice(0, 20) : []\n  }\n}];"
+      },
+      "id": "validate-input",
+      "name": "Validate Input",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [900, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "const validated = $('Validate Input').first().json;\nconst urls = validated.monitor_urls || [];\n\nif (urls.length === 0) {\n  return [{ json: { run_id: validated.run_id, org_id: validated.org_id, changes: [], recommendations: [], crawl_skipped: true, skip_reason: 'No monitor_urls provided' } }];\n}\n\n// Output each URL as a separate item for parallel crawl\nreturn urls.map((url, i) => ({\n  json: { run_id: validated.run_id, org_id: validated.org_id, url_index: i, url, previous_hashes: validated.previous_hashes }\n}));"
+      },
+      "id": "fan-out-urls",
+      "name": "Fan Out URLs",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1120, 300],
+      "continueOnFail": true,
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.firecrawl.dev/v1/scrape",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "Authorization", "value": "=Bearer {{ $('Workflow Constants').first().json.FIRECRAWL_API_KEY }}" },
+            { "name": "Content-Type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"url\": \"{{ $json.url }}\",\n  \"formats\": [\"markdown\"],\n  \"onlyMainContent\": true,\n  \"waitFor\": 5000\n}",
+        "options": { "timeout": 60000, "response": { "response": { "neverError": true } } }
+      },
+      "id": "firecrawl-scrape",
+      "name": "Firecrawl Scrape",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1340, 300],
+      "continueOnFail": true,
+      "alwaysOutputData": true,
+      "retryOnFail": true,
+      "maxTries": 2
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "const validated = $('Validate Input').first().json;\nconst items = $input.all();\n\nconst changes = [];\nconst crypto = require('crypto');\n\nfor (const item of items) {\n  const scrape = item.json;\n  const markdown = scrape?.data?.markdown || scrape?.markdown || '';\n  if (!markdown) continue;\n\n  const hash = crypto.createHash('sha256').update(markdown).digest('hex');\n  const url = scrape?.data?.metadata?.sourceURL || item.json.url || '';\n\n  // Check against previous hashes\n  const prevHashes = validated.previous_hashes || [];\n  if (prevHashes.includes(hash)) continue; // No change\n\n  changes.push({\n    url,\n    content_hash: hash,\n    summary: 'Content changed on ' + url,\n    fields_changed: ['page_content'],\n    char_count: markdown.length\n  });\n}\n\nreturn [{\n  json: {\n    run_id: validated.run_id,\n    workflow_key: 'opportunity_monitor',\n    changes,\n    recommendations: changes.length > 0 ? [{ type: 'review', message: changes.length + ' page(s) have updated content' }] : [],\n    change_count: changes.length\n  }\n}];"
+      },
+      "id": "detect-changes",
+      "name": "Detect Changes",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1560, 300],
+      "continueOnFail": true,
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "const data = $('Detect Changes').first().json;\nconst error = data.crawl_error || null;\n\nreturn [{\n  json: {\n    run_id: data.run_id,\n    workflow_key: 'opportunity_monitor',\n    payload: {\n      result: error ? null : { changes: data.changes || [], recommendations: data.recommendations || [], change_count: data.change_count || 0 },\n      error,\n      failed_node: error ? 'Detect Changes' : null\n    }\n  }\n}];"
+      },
+      "id": "result-envelope",
+      "name": "Result Envelope",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1780, 300]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": { "caseSensitive": true, "leftValue": "", "typeValidation": "strict" },
+          "conditions": [{ "id": "check-error", "leftValue": "={{ $json.payload.error }}", "rightValue": "", "operator": { "type": "string", "operation": "empty", "singleValue": true } }],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "if-success",
+      "name": "Check Success",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [2000, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('Workflow Constants').first().json.SUPABASE_FUNCTIONS_BASE_URL }}/n8n-ingest",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "Authorization", "value": "=Bearer {{ $('Workflow Constants').first().json.SUPABASE_SERVICE_ROLE_KEY }}" },
+            { "name": "Content-Type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"workflow_key\": \"opportunity_monitor\",\n  \"run_id\": \"{{ $('Result Envelope').first().json.run_id }}\",\n  \"status\": \"processed\",\n  \"payload\": {{ JSON.stringify($('Result Envelope').first().json.payload.result) }}\n}",
+        "options": { "timeout": 30000, "response": { "response": { "neverError": true } } }
+      },
+      "id": "success-callback",
+      "name": "Success Callback",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [2220, 180],
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('Workflow Constants').first().json.SUPABASE_FUNCTIONS_BASE_URL }}/n8n-ingest",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "Authorization", "value": "=Bearer {{ $('Workflow Constants').first().json.SUPABASE_SERVICE_ROLE_KEY }}" },
+            { "name": "Content-Type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"workflow_key\": \"opportunity_monitor\",\n  \"run_id\": \"{{ $('Result Envelope').first().json.run_id }}\",\n  \"status\": \"error\",\n  \"payload\": {\n    \"error\": {{ JSON.stringify($('Result Envelope').first().json.payload.error) }},\n    \"failed_node\": {{ JSON.stringify($('Result Envelope').first().json.payload.failed_node) }}\n  }\n}",
+        "options": { "timeout": 30000, "response": { "response": { "neverError": true } } }
+      },
+      "id": "error-callback",
+      "name": "Error Callback",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [2220, 440],
+      "continueOnFail": true
+    }
+  ],
+  "connections": {
+    "Webhook Trigger": { "main": [[{ "node": "Workflow Constants", "type": "main", "index": 0 }]] },
+    "Workflow Constants": { "main": [[{ "node": "Verify Signature", "type": "main", "index": 0 }]] },
+    "Verify Signature": { "main": [[{ "node": "Validate Input", "type": "main", "index": 0 }]] },
+    "Validate Input": { "main": [[{ "node": "Fan Out URLs", "type": "main", "index": 0 }]] },
+    "Fan Out URLs": { "main": [[{ "node": "Firecrawl Scrape", "type": "main", "index": 0 }]] },
+    "Firecrawl Scrape": { "main": [[{ "node": "Detect Changes", "type": "main", "index": 0 }]] },
+    "Detect Changes": { "main": [[{ "node": "Result Envelope", "type": "main", "index": 0 }]] },
+    "Result Envelope": { "main": [[{ "node": "Check Success", "type": "main", "index": 0 }]] },
+    "Check Success": { "main": [[{ "node": "Success Callback", "type": "main", "index": 0 }], [{ "node": "Error Callback", "type": "main", "index": 0 }]] }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "saveManualExecutions": true,
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "staticData": null,
+  "tags": [{ "name": "profunda" }, { "name": "monitoring" }],
+  "triggerCount": 1
+}

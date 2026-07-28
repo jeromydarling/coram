@@ -1,0 +1,199 @@
+{
+  "title": "Voluntārium",
+  "subtitle": "Coordinate and honor voluntary service",
+  "addVolunteer": "Add Volunteer",
+  "addOpportunity": "Add Service Opportunity",
+  "noVolunteers": "No volunteers registered",
+  "noVolunteersMessage": "Begin building your volunteer community by adding those who serve.",
+  "noOpportunities": "No service opportunities",
+  "noOpportunitiesMessage": "Create service opportunities to match volunteers with meaningful work.",
+  "tabs": {
+    "volunteers": "Volunteers",
+    "opportunities": "Opportunities",
+    "schedule": "Schedule",
+    "hours": "Hours Log",
+    "recognition": "Recognition"
+  },
+  "volunteer": {
+    "name": "Volunteer Name",
+    "skills": "Skills & Gifts",
+    "availability": "Availability",
+    "totalHours": "Total Hours",
+    "lastServed": "Last Served",
+    "status": "Status",
+    "team": "Team",
+    "notes": "Notes",
+    "statuses": {
+      "active": "Active",
+      "onBreak": "On Break",
+      "new": "New",
+      "inactive": "Inactive"
+    }
+  },
+  "opportunity": {
+    "title": "Opportunity Title",
+    "description": "Description",
+    "date": "Date",
+    "time": "Time",
+    "location": "Location",
+    "spotsAvailable": "{{count}} spots available",
+    "spotsFilled": "{{filled}} of {{total}} spots filled",
+    "allSpotsFilled": "All spots filled",
+    "signUp": "Sign Up",
+    "withdraw": "Withdraw",
+    "contactLead": "Contact Lead",
+    "skills_needed": "Skills Needed",
+    "commitment": "Time Commitment"
+  },
+  "hours": {
+    "logHours": "Log Hours",
+    "date": "Date",
+    "hoursServed": "Hours Served",
+    "activity": "Activity",
+    "totalThisMonth": "Total This Month",
+    "totalThisYear": "Total This Year",
+    "totalAllTime": "Total All-Time"
+  },
+  "recognition": {
+    "title": "Recognition & Gratitude",
+    "milestones": "Milestones",
+    "thankYou": "Send Thank You",
+    "anniversary": "Service Anniversary",
+    "hoursReached": "{{hours}} Hours Reached",
+    "spotlight": "Volunteer Spotlight"
+  },
+  "schedule": {
+    "title": "Service Schedule",
+    "thisWeek": "This Week",
+    "upcoming": "Upcoming",
+    "myShifts": "My Shifts",
+    "openShifts": "Open Shifts",
+    "swapRequest": "Request Swap",
+    "coverRequest": "Request Cover"
+  },
+  "tagSelector": {
+    "addTags": "Add tags",
+    "placeholder": "New tag…",
+    "noTagsYet": "No tags yet",
+    "tagsCount": "Tags ({{count}}/25)"
+  },
+  "page": {
+    "title": "Volunteers",
+    "subtitle": "Track volunteer hours and reliability",
+    "searchPlaceholder": "Search by name or email...",
+    "filterAll": "All",
+    "filterActive": "Active",
+    "filterInactive": "Inactive",
+    "copy": "Copy",
+    "noVolunteersFound": "No volunteers found",
+    "hoursInstructions": {
+      "title": "How to submit hours via email",
+      "subtitle": "Volunteers can email their hours using this format in the email body:"
+    }
+  },
+  "table": {
+    "name": "Name",
+    "tags": "Tags",
+    "email": "Email",
+    "lastVolunteered": "Last Volunteered",
+    "lifetimeHours": "Lifetime Hours",
+    "reliability": "Reliability",
+    "status": "Status"
+  },
+  "createDialog": {
+    "title": "Add Volunteer",
+    "firstNameLabel": "First Name *",
+    "lastNameLabel": "Last Name *",
+    "emailLabel": "Email *",
+    "phoneLabel": "Phone",
+    "notesLabel": "Notes",
+    "cancel": "Cancel",
+    "create": "Create"
+  },
+  "toast": {
+    "templateCopied": "Template copied to clipboard",
+    "nameEmailRequired": "Name and email are required"
+  },
+  "detail": {
+    "backToVolunteers": "Back to Volunteers",
+    "edit": "Edit",
+    "logHours": "Log Hours",
+    "lifetimeHours": "Lifetime Hours",
+    "reliability": "Reliability",
+    "status": "Status",
+    "totalShifts": "Total Shifts",
+    "detailsCard": "Details",
+    "phone": "Phone",
+    "address": "Address",
+    "notes": "Notes",
+    "shiftHistory": "Shift History",
+    "noShiftsYet": "No shifts recorded yet",
+    "notFound": "Volunteer not found",
+    "date": "Date",
+    "hours": "Hours",
+    "location": "Location",
+    "source": "Source",
+    "warehouse": "Warehouse",
+    "event": "Event"
+  },
+  "editDialog": {
+    "title": "Edit Volunteer",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "email": "Email",
+    "phone": "Phone",
+    "status": "Status",
+    "active": "Active",
+    "inactive": "Inactive",
+    "notes": "Notes",
+    "cancel": "Cancel",
+    "save": "Save"
+  },
+  "logHoursDialog": {
+    "title": "Log Volunteer Hours",
+    "date": "Date",
+    "hours": "Hours",
+    "location": "Location",
+    "warehouse": "Warehouse",
+    "event": "Event",
+    "selectEvent": "Select event",
+    "cancel": "Cancel",
+    "logHours": "Log Hours"
+  },
+  "inbox": {
+    "title": "Volunteer Hours Inbox",
+    "subtitle": "Review and approve volunteer hour submissions from email",
+    "tabNeedsReview": "Needs Review",
+    "tabParsed": "Parsed",
+    "tabRejected": "Rejected",
+    "colFrom": "From",
+    "colSubject": "Subject",
+    "colReceived": "Received",
+    "colReason": "Reason",
+    "colActions": "Actions",
+    "noItems": "No items",
+    "reviewDialog": {
+      "title": "Review Submission",
+      "from": "From",
+      "subject": "Subject",
+      "reason": "Reason",
+      "rawText": "Raw Text",
+      "volunteer": "Volunteer",
+      "selectVolunteer": "Select volunteer",
+      "date": "Date",
+      "hours": "Hours",
+      "location": "Location",
+      "warehouse": "Warehouse",
+      "event": "Event",
+      "selectEvent": "Select event",
+      "reject": "Reject",
+      "approveAndLog": "Approve & Log"
+    },
+    "toast": {
+      "approved": "Hours approved and logged",
+      "rejected": "Item rejected",
+      "fillRequired": "Fill all required fields",
+      "invalidHours": "Invalid hours"
+    }
+  }
+}

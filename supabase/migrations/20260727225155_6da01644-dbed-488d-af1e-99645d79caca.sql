@@ -1,0 +1,1 @@
+ALTER TABLE public.email_unsubscribe_tokens RENAME TO campaign_unsubscribe_tokens;

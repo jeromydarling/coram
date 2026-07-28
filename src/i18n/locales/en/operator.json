@@ -1,0 +1,68 @@
+{
+  "title": "Operator Console",
+  "subtitle": "Multi-community management and system intelligence",
+  "modules": {
+    "cura": {
+      "title": "CURA",
+      "subtitle": "Care & Relationship Oversight",
+      "description": "Monitor the health of relationships across your communities. Surface those who may be falling through the cracks.",
+      "atRiskRelationships": "At-Risk Relationships",
+      "dormantConnections": "Dormant Connections",
+      "followUpOverdue": "Overdue Follow-Ups",
+      "relationshipHealth": "Relationship Health Score",
+      "communityPulse": "Community Pulse"
+    },
+    "machina": {
+      "title": "MACHINA",
+      "subtitle": "System Operations & Automation",
+      "description": "Manage system-level operations, integrations, and automation workflows.",
+      "systemStatus": "System Status",
+      "activeIntegrations": "Active Integrations",
+      "syncStatus": "Sync Status",
+      "automationRules": "Automation Rules",
+      "errorLog": "Error Log",
+      "apiUsage": "API Usage"
+    },
+    "crescere": {
+      "title": "CRESCERE",
+      "subtitle": "Growth & Analytics",
+      "description": "Understand how your community is growing, changing, and deepening over time.",
+      "communityGrowth": "Community Growth",
+      "engagementTrends": "Engagement Trends",
+      "retentionRate": "Retention Rate",
+      "newRelationships": "New Relationships",
+      "activeJourneys": "Active Journeys",
+      "seasonalPatterns": "Seasonal Patterns",
+      "exportReport": "Export Report"
+    },
+    "scientia": {
+      "title": "SCIENTIA",
+      "subtitle": "Knowledge & Insights",
+      "description": "The intelligence layer. Surfaces patterns, needs, and opportunities across your relational network.",
+      "insights": "Insights",
+      "patterns": "Patterns Detected",
+      "recommendations": "Recommendations",
+      "communityNeeds": "Emerging Needs",
+      "networkMap": "Network Map",
+      "impactSummary": "Impact Summary"
+    }
+  },
+  "communities": {
+    "title": "Communities",
+    "addCommunity": "Add Community",
+    "manageCommunity": "Manage",
+    "communityName": "Community Name",
+    "memberCount": "{{count}} members",
+    "activeSince": "Active since {{date}}",
+    "switchCommunity": "Switch Community"
+  },
+  "alerts": {
+    "title": "Operator Alerts",
+    "critical": "Critical",
+    "warning": "Warning",
+    "info": "Informational",
+    "noAlerts": "No active alerts. All systems healthy.",
+    "acknowledgeAlert": "Acknowledge",
+    "resolveAlert": "Resolve"
+  }
+}

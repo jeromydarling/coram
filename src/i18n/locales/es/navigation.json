@@ -1,0 +1,186 @@
+{
+  "sidebar": {
+    "dashboard": "Panel principal",
+    "relationships": "Relaciones",
+    "opportunities": "Oportunidades",
+    "contacts": "Contactos",
+    "journeys": "Caminos",
+    "events": "Pulso Local",
+    "volunteers": "Voluntārium",
+    "provisions": "Prōvīsiō",
+    "reflections": "Reflexiones",
+    "settings": "Configuración",
+    "help": "Ayuda y orientación",
+    "operator": "Consola del operador",
+    "community": "Communio",
+    "impulsus": "Impulsus",
+    "testimonium": "Testimonium",
+    "signum": "Signum",
+    "commandCenter": "Centro de comando",
+    "todaysVisits": "Visitas de hoy",
+    "fieldNotes": "Notas de campo",
+    "people": "Personas",
+    "calendar": "Calendario",
+    "allMetros": "Todas las metrópolis",
+    "intelFeed": "Fuente de inteligencia",
+    "narratives": "Narrativas",
+    "momentumMap": "Mapa de impulso",
+    "radar": "Radar",
+    "journey": "Camino",
+    "anchors": "Anclas",
+    "findPeople": "Buscar personas",
+    "graph": "Gráfico",
+    "allEvents": "Eventos",
+    "findEvents": "Buscar eventos",
+    "activities": "Actividades",
+    "campaigns": "Campañas",
+    "allGrants": "Todas las subvenciones",
+    "findGrants": "Buscar subvenciones",
+    "marketplace": "Mercado",
+    "sharedNetwork": "Red compartida",
+    "caregiverNetwork": "Red de cuidadores",
+    "intelligence": "Inteligencia",
+    "reports": "Informes",
+    "adminHome": "Inicio de administración",
+    "activation": "Activación",
+    "importCenter": "Centro de importación",
+    "adminGuide": "Guía de administración",
+    "groups": {
+      "metros": "Metrópolis",
+      "partners": "Socios",
+      "people": "Personas",
+      "scheduling": "Programación",
+      "outreach": "Alcance",
+      "grants": "Subvenciones",
+      "scientia": "Scientia",
+      "relatio": "Relatio",
+      "communio": "Communio",
+      "admin": "Administración"
+    }
+  },
+  "header": {
+    "home": "Inicio",
+    "profile": "Perfil",
+    "notifications": "Notificaciones",
+    "notificationCount": "{{count}} notificación nueva",
+    "notificationCount_plural": "{{count}} notificaciones nuevas",
+    "companionTray": "Compañero NRI",
+    "quickActions": "Acciones rápidas",
+    "searchPlaceholder": "Buscar en CROS...",
+    "fullWorkspace": "Espacio de trabajo completo",
+    "fullWorkspaceDesc": "Todo lo que tienes permitido ver",
+    "guidedView": "Vista guiada",
+    "guidedViewDesc": "Menos ruido. Más presencia.",
+    "exitVisitorMode": "Salir del modo visitante",
+    "switchToVisitorMode": "Cambiar al modo visitante",
+    "exitVisitorModeDesc": "Volver a tu espacio de trabajo completo",
+    "visitorModeDesc": "Simplifica la app para visitas en campo y notas de voz.",
+    "myStats": "Mis estadísticas",
+    "playbooks": "Manuales",
+    "helpReport": "Ayuda / Reportar algo",
+    "settings": "Configuración",
+    "signOut": "Cerrar sesión",
+    "emailsSynced": "Correos sincronizados {{time}}",
+    "emailsSyncedNever": "Correos sincronizados nunca",
+    "roles": {
+      "steward": "Administrador",
+      "leadership": "Liderazgo",
+      "regionalLead": "Líder regional",
+      "staff": "Personal"
+    }
+  },
+  "breadcrumbs": {
+    "home": "Inicio",
+    "dashboard": "Panel principal",
+    "relationships": "Relaciones",
+    "contactDetail": "Detalle del contacto",
+    "opportunityDetail": "Detalle de la oportunidad",
+    "journeyDetail": "Detalle del camino",
+    "eventDetail": "Detalle del evento",
+    "volunteerDetail": "Detalle del voluntario",
+    "provisionDetail": "Detalle de la provisión",
+    "reflectionDetail": "Detalle de la reflexión",
+    "settings": "Configuración",
+    "help": "Ayuda"
+  },
+  "tabs": {
+    "overview": "Vista general",
+    "details": "Detalles",
+    "history": "Historial",
+    "notes": "Notas",
+    "activity": "Actividad",
+    "related": "Relacionados",
+    "timeline": "Cronología",
+    "analytics": "Análisis"
+  },
+  "footer": {
+    "copyright": "© {{year}} CROS™ — Ver a las personas. Crecer juntos.",
+    "privacy": "Privacidad",
+    "terms": "Términos",
+    "support": "Soporte"
+  },
+  "alerts": {
+    "title": "Alertas",
+    "markAllRead": "Marcar todo como leído",
+    "noAlerts": "Sin alertas"
+  },
+  "quickActions": {
+    "title": "Acciones rápidas",
+    "logActivity": "Registrar actividad",
+    "quickCreate": "Creación rápida",
+    "logCall": "Registrar llamada",
+    "logEmail": "Registrar correo",
+    "logMeeting": "Registrar reunión",
+    "logEvent": "Registrar evento",
+    "logSiteVisit": "Registrar visita al sitio",
+    "logIntro": "Registrar presentación",
+    "logOther": "Registrar otro",
+    "newOpportunity": "Nueva oportunidad",
+    "newContact": "Nuevo contacto",
+    "newEvent": "Nuevo evento"
+  },
+  "search": {
+    "placeholder": "Buscar...",
+    "inputPlaceholder": "Buscar oportunidades, personas, eventos, documentos...",
+    "noResults": "No se encontraron resultados.",
+    "typeToSearch": "Escribe al menos 2 caracteres para buscar...",
+    "groups": {
+      "opportunity": "Oportunidades",
+      "contact": "Personas",
+      "event": "Eventos",
+      "pipeline": "Canal",
+      "grant": "Subvenciones",
+      "document": "Documentos",
+      "activity": "Actividades"
+    }
+  },
+  "accessibility": {
+    "skipToContent": "Ir al contenido principal"
+  },
+  "seasons": {
+    "advent": {
+      "label": "Adviento",
+      "secular": "Reflexión de fin de año"
+    },
+    "christmas": {
+      "label": "Navidad",
+      "secular": "Nuevos comienzos"
+    },
+    "lent": {
+      "label": "Cuaresma",
+      "secular": "Preparación de primavera"
+    },
+    "easter": {
+      "label": "Pascua",
+      "secular": "Renovación de primavera"
+    },
+    "pentecost": {
+      "label": "Pentecostés",
+      "secular": "Energía de inicio de verano"
+    },
+    "ordinary": {
+      "label": "Tiempo Ordinario",
+      "secular": "Crecimiento sostenido"
+    }
+  }
+}

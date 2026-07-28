@@ -1,0 +1,319 @@
+{
+  "name": "Profunda - Search People (Firecrawl) - PROD v4 (Header Auth + JSON Fix)",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "search-people",
+        "options": {}
+      },
+      "id": "2a577af5-2056-4349-868e-218ae8ba13a0",
+      "name": "Webhook Trigger",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [6784, 48],
+      "webhookId": "2b0b538d-fca9-4378-be65-cec2b724ef72"
+    },
+    {
+      "parameters": {
+        "keepOnlySet": true,
+        "values": {
+          "string": [
+            {
+              "name": "SUPABASE_FUNCTIONS_BASE_URL",
+              "value": "https://lxahadqhpubynuzvraxc.supabase.co/functions/v1"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "c14ddfb9-3810-47e4-857d-19a83a3588bd",
+      "name": "Workflow Constants",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 2,
+      "position": [7024, 48],
+      "retryOnFail": true,
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "jsCode": "// Expected payload from n8n-dispatch\n// { run_id, enforced_query, max_results, scope, metro, role_focus, ... }\nconst b = $json.body ?? $json;\nconst run_id = b.run_id || b.runId || b.runID;\nconst query = b.enforced_query || b.query || b.enforcedQuery;\nconst max_results = Number(b.max_results ?? b.maxResults ?? 20);\nif (!run_id || !query) {\n  return [{ json: { ok:false, error:{code:'MISSING_FIELDS', message:'run_id and enforced_query are required'}, run_id: run_id ?? null, query: query ?? null, max_results } }];\n}\nreturn [{ json: { ok:true, run_id, query, max_results: Math.max(1, Math.min(20, max_results)), scope: b.scope ?? null, metro: b.metro ?? null, role_focus: b.role_focus ?? null } }];"
+      },
+      "id": "cfd27b23-99d7-4cff-bd90-971e9dc1c6f0",
+      "name": "Normalize Input",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [7264, 48]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "boolean": [
+            {
+              "value1": "={{ $json.ok }}",
+              "operation": "isTrue"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "5d929dae-ddf7-4981-9b01-917c6346ed65",
+      "name": "IF Valid Input?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [7488, 48]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.firecrawl.dev/v1/search",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{\n  {\n    query: $node[\"Normalize Input\"].json.query,\n    limit: $node[\"Normalize Input\"].json.max_results ?? 10\n  }\n}}\n",
+        "options": {
+          "response": {},
+          "timeout": 60000
+        }
+      },
+      "id": "b52475fb-16b6-4aa3-8555-92b4288f8dc5",
+      "name": "Firecrawl Search",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [7728, 48],
+      "alwaysOutputData": true,
+      "retryOnFail": true,
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "GJkntTblj2tXySIz",
+          "name": "Firecrawl Auth"
+        }
+      },
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "jsCode": "// Build compact context for LLM from Firecrawl search response\n// Firecrawl /v1/search typically returns { success, data: [ { title, url, description, ... } ] }\nconst run_id = $node['Normalize Input'].json.run_id;\nconst query = $node['Normalize Input'].json.query;\nconst max_results = $node['Normalize Input'].json.max_results ?? 10;\nconst r = $json;\nconst items = (r && (r.data || r.results || r.items)) || [];\nconst arr = Array.isArray(items) ? items : [];\n\nconst top = arr.slice(0, max_results).map((it, i) => {\n  const title = it.title || it.name || it.pageTitle || null;\n  const url = it.url || it.link || it.source_url || null;\n  const snippet = it.description || it.snippet || it.text || it.summary || null;\n  return `${i+1}. ${title ?? ''}\\nURL: ${url ?? ''}\\nSnippet: ${snippet ?? ''}`.trim();\n});\n\nconst search_context = `Query: ${query}\\n\\nResults:\\n${top.join('\\n\\n')}`;\nreturn [{ json: { run_id, query, search_context, raw_firecrawl: r } }];\n"
+      },
+      "id": "d188e9a0-eee8-4830-adff-df29fd51b0da",
+      "name": "Build Search Context",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [7856, 48],
+      "retryOnFail": true,
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.openai.com/v1/chat/completions",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "openAiApi",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{{\n  model: \"gpt-4o-mini\",\n  temperature: 0,\n  response_format: { type: \"json_object\" },\n  messages: [\n    {\n      role: \"system\",\n      content: \"You extract PEOPLE from web search results. Return ONLY valid JSON. No markdown. Output schema: {\\\"people\\\":[{\\\"name\\\":string|null,\\\"title\\\":string|null,\\\"organization_name\\\":string|null,\\\"email\\\":string|null,\\\"phone\\\":string|null,\\\"source_url\\\":string|null,\\\"evidence\\\":string|null,\\\"confidence\\\":number|null}]}. Only include email/phone if explicitly present in the provided snippets. Use source_url from results.\"\n    },\n    { role: \"user\", content: $node[\"Build Search Context\"].json.search_context }\n  ]\n}}}\n",
+        "options": {
+          "response": {},
+          "timeout": 60000
+        }
+      },
+      "id": "c4852443-4ef4-42e7-95f0-097a30a0467b",
+      "name": "LLM Extract People From Results",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [7968, 48],
+      "alwaysOutputData": true,
+      "retryOnFail": true,
+      "credentials": {
+        "openAiApi": {
+          "id": "S65JWr5N3fYHb1YT",
+          "name": "OpenAi account"
+        }
+      },
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "jsCode": "let txt = $json?.choices?.[0]?.message?.content ?? '';\ntxt = String(txt).trim();\nlet parsed;\ntry { parsed = JSON.parse(txt); } catch(e) {\n  const m = txt.match(/\\[[\\s\\S]*\\]/);\n  if (m) parsed = JSON.parse(m[0]); else parsed = [];\n}\nconst people = Array.isArray(parsed) ? parsed : (parsed.people || []);\nconst run_id = $node['Normalize Input'].json.run_id;\nconst cleaned = people.slice(0, $node['Normalize Input'].json.max_results).map(p => ({\n  name: p.name ?? null,\n  title: p.title ?? null,\n  organization_name: p.organization_name ?? p.organization ?? null,\n  email: p.email ?? null,\n  phone: p.phone ?? null,\n  source_url: p.source_url ?? p.url ?? null,\n  confidence: (typeof p.confidence === 'number') ? p.confidence : null,\n  evidence: p.evidence ?? null,\n}));\nreturn [{ json: { run_id, status:'completed', results: cleaned } }];"
+      },
+      "id": "904ae8c6-8839-45cd-bfb3-d23fd1ad6ea3",
+      "name": "Build Callback Envelope",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [8176, 48],
+      "retryOnFail": true,
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $node[\"Workflow Constants\"].json.SUPABASE_FUNCTIONS_BASE_URL + \"/search-callback\" }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify($json) }}",
+        "options": {
+          "response": {},
+          "timeout": 60000
+        }
+      },
+      "id": "5b16f14c-faf3-4255-a504-55cdfc6eda6c",
+      "name": "Callback to Supabase",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [8384, 48],
+      "alwaysOutputData": true,
+      "retryOnFail": false,
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "JZ0bvsdogmHU6USf",
+          "name": "Secret Worker Key"
+        }
+      },
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $node[\"Workflow Constants\"].json.SUPABASE_FUNCTIONS_BASE_URL + \"/search-callback\" }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ run_id: $node[\"Normalize Input\"].json.run_id, status: \"failed\", error_message: String($json?.error?.message ?? \"Unknown error\") }) }}",
+        "options": {
+          "response": {},
+          "timeout": 60000
+        }
+      },
+      "id": "730f6f18-9922-4c8d-9ad2-774b3c482c61",
+      "name": "Error Callback to Supabase",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [7728, 240],
+      "alwaysOutputData": true,
+      "retryOnFail": false,
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "JZ0bvsdogmHU6USf",
+          "name": "Secret Worker Key"
+        }
+      },
+      "continueOnFail": true
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook Trigger": {
+      "main": [
+        [
+          {
+            "node": "Workflow Constants",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Workflow Constants": {
+      "main": [
+        [
+          {
+            "node": "Normalize Input",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Normalize Input": {
+      "main": [
+        [
+          {
+            "node": "IF Valid Input?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IF Valid Input?": {
+      "main": [
+        [
+          {
+            "node": "Firecrawl Search",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Error Callback to Supabase",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Firecrawl Search": {
+      "main": [
+        [
+          {
+            "node": "Build Search Context",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "LLM Extract People From Results": {
+      "main": [
+        [
+          {
+            "node": "Build Callback Envelope",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build Callback Envelope": {
+      "main": [
+        [
+          {
+            "node": "Callback to Supabase",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build Search Context": {
+      "main": [
+        [
+          {
+            "node": "LLM Extract People From Results",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": true,
+    "timeSavedMode": "fixed",
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "versionId": "v4-header-auth-json-fix",
+  "meta": {
+    "instanceId": "93beede2a90582294d7ef06720d87eff3641b0d88433511d1e55f0a191940c61"
+  },
+  "id": "mf82MrIja9vFFps6zG7ms",
+  "tags": []
+}

@@ -1,0 +1,1 @@
+ALTER TABLE public.opportunities ALTER COLUMN partner_tier TYPE text;

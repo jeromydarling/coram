@@ -1,0 +1,134 @@
+{
+  "page": {
+    "title": "Grants",
+    "subtitle": "Grant tracking and pipeline management"
+  },
+  "filters": {
+    "searchPlaceholder": "Search grants...",
+    "allStages": "All Stages",
+    "allFunders": "All Funders",
+    "allMetros": "All Metros",
+    "allYears": "All Years",
+    "stagePlaceholder": "Stage",
+    "funderTypePlaceholder": "Funder Type",
+    "metroPlaceholder": "Metro",
+    "fyPlaceholder": "FY",
+    "activeFilters": "Active filters:",
+    "clearAll": "Clear all",
+    "stageFilter": "Stage: {{value}}",
+    "statusFilter": "Status: {{value}}",
+    "funderFilter": "Funder: {{value}}",
+    "metroFilter": "Metro: {{value}}",
+    "fiscalYearFilter": "FY: {{value}}",
+    "ratingFilter": "Rating \u2265 {{value}}"
+  },
+  "buttons": {
+    "addGrant": "Add Grant",
+    "export": "Export",
+    "import": "Import",
+    "edit": "Edit {{count}}",
+    "delete": "Delete {{count}}",
+    "selectAll": "All"
+  },
+  "views": {
+    "grid": "Grid view",
+    "list": "List view",
+    "compare": "Year-over-year comparison"
+  },
+  "table": {
+    "grant": "Grant",
+    "funder": "Funder",
+    "stage": "Stage",
+    "type": "Type",
+    "fy": "FY",
+    "amountRequested": "Amount Requested",
+    "metro": "Metro",
+    "rating": "Rating"
+  },
+  "card": {
+    "requested": "Requested:",
+    "viewSource": "View Source",
+    "ends": "Ends:"
+  },
+  "counts": {
+    "showing": "Showing {{filtered}} of {{total}} grants"
+  },
+  "empty": {
+    "noGrantsFound": "No grants found",
+    "adjustFilters": "Try adjusting your filters",
+    "getStarted": "Get started by adding your first grant"
+  },
+  "bulkDelete": {
+    "title_one": "Delete {{count}} Grant?",
+    "title_other": "Delete {{count}} Grants?",
+    "description": "This will delete the selected grants and their associated activities. You'll have 8 seconds to undo this action.",
+    "deleting": "Deleting...",
+    "confirmDelete": "Delete"
+  },
+  "import": {
+    "title": "Import Grants"
+  },
+  "detail": {
+    "loading": "Loading...",
+    "notFound": "Grant Not Found",
+    "notFoundSubtitle": "This grant does not exist",
+    "notFoundMessage": "The grant you're looking for could not be found.",
+    "backToGrants": "Back to Grants",
+    "enrich": "Enrich",
+    "duplicate": "Duplicate",
+    "edit": "Edit",
+    "delete": "Delete",
+    "metro": "Metro:",
+    "opportunity": "Opportunity:",
+    "source": "Source:",
+    "apply": "Apply:",
+    "noUrl": "No URL",
+    "matchRequired": "Match Required:",
+    "reporting": "Reporting:",
+    "notRequired": "Not required",
+    "yes": "Yes",
+    "no": "No",
+    "funding": "Funding",
+    "available": "Available",
+    "requested": "Requested",
+    "awarded": "Awarded",
+    "fiscalYear": "Fiscal Year",
+    "grantTerm": "Grant Term",
+    "startDate": "Start Date",
+    "endDate": "End Date",
+    "multiYear": "Multi-year",
+    "grantTypes": "Grant Types",
+    "strategicFocus": "Strategic Focus",
+    "notes": "Notes",
+    "internalStrategyNotes": "Internal Strategy Notes",
+    "activities": "Activities ({{count}})",
+    "logActivity": "Log Activity",
+    "activityType": "Activity Type",
+    "date": "Date",
+    "notesLabel": "Notes",
+    "notesPlaceholder": "What happened?",
+    "nextAction": "Next Action",
+    "nextActionPlaceholder": "What's next?",
+    "dueDate": "Due Date",
+    "saveActivity": "Save Activity",
+    "cancel": "Cancel",
+    "created": "Created {{date}}",
+    "stageSince": "Stage since {{date}}"
+  },
+  "deleteDialog": {
+    "title": "Delete Grant?",
+    "description": "Are you sure you want to delete this grant? You'll have 8 seconds to undo this action.",
+    "deleting": "Deleting...",
+    "confirm": "Delete",
+    "cancel": "Cancel"
+  },
+  "toasts": {
+    "searchingUrl": "Searching for grant URL…",
+    "extractingDetails": "Extracting grant details…",
+    "foundUrl": "Found URL: {{title}}",
+    "noUrlFound": "Could not find a URL for this grant",
+    "enrichmentStarted": "Grant enrichment started",
+    "enrichmentInProgress": "Enrichment already in progress",
+    "enrichmentFailed": "Enrichment failed"
+  }
+}

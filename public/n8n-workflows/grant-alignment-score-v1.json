@@ -1,0 +1,158 @@
+{
+  "name": "Grant Alignment Score - v1",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "trigger-1",
+      "name": "Webhook Trigger",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [240, 300],
+      "webhookId": "grant-alignment-score"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            { "id": "run_id", "name": "run_id", "value": "={{ $json.body.run_id }}", "type": "string" },
+            { "id": "org_id", "name": "org_id", "value": "={{ $json.body.org_id }}", "type": "string" },
+            { "id": "grant_id", "name": "grant_id", "value": "={{ $json.body.grant_id }}", "type": "string" },
+            { "id": "org_name", "name": "org_name", "value": "={{ $json.body.org_name }}", "type": "string" },
+            { "id": "org_mission", "name": "org_mission", "value": "={{ $json.body.org_mission || '' }}", "type": "string" },
+            { "id": "org_programs", "name": "org_programs", "value": "={{ $json.body.org_programs || '' }}", "type": "string" },
+            { "id": "org_region", "name": "org_region", "value": "={{ $json.body.org_region || '' }}", "type": "string" },
+            { "id": "grant_name", "name": "grant_name", "value": "={{ $json.body.grant_name }}", "type": "string" },
+            { "id": "grant_description", "name": "grant_description", "value": "={{ $json.body.grant_description || '' }}", "type": "string" },
+            { "id": "grant_eligibility", "name": "grant_eligibility", "value": "={{ $json.body.grant_eligibility || '' }}", "type": "string" },
+            { "id": "callback_url", "name": "callback_url", "value": "={{ $json.body.callback_url }}", "type": "string" },
+            { "id": "callback_secret", "name": "callback_secret", "value": "={{ $json.body.callback_secret }}", "type": "string" }
+          ]
+        },
+        "includeOtherFields": false
+      },
+      "id": "set-inputs",
+      "name": "Set Inputs",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [460, 300]
+    },
+    {
+      "parameters": {
+        "model": "gpt-4o-mini",
+        "messages": {
+          "values": [
+            {
+              "role": "system",
+              "content": "You are a grant alignment analyst. Given an organization's mission, programs, and region, and a grant's description and eligibility criteria, produce a JSON object with:\n- score: integer 0-100 representing alignment\n- rationale: 1-2 sentence explanation\n\nConsider: mission alignment, geographic fit, program overlap, eligibility match.\nRespond with ONLY valid JSON, no markdown."
+            },
+            {
+              "role": "user",
+              "content": "Organization: {{ $json.org_name }}\nMission: {{ $json.org_mission }}\nPrograms: {{ $json.org_programs }}\nRegion: {{ $json.org_region }}\n\nGrant: {{ $json.grant_name }}\nDescription: {{ $json.grant_description }}\nEligibility: {{ $json.grant_eligibility }}"
+            }
+          ]
+        },
+        "options": {
+          "temperature": 0.2,
+          "maxTokens": 200,
+          "timeout": 60
+        }
+      },
+      "id": "openai-score",
+      "name": "Score Alignment (OpenAI)",
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [680, 300],
+      "credentials": {
+        "openAiApi": { "id": "S65JWr5N3fYHb1YT", "name": "OpenAi account" }
+      },
+      "continueOnFail": true,
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "parsed",
+              "name": "parsed",
+              "value": "={{ JSON.parse($json.text || '{\"score\":0,\"rationale\":\"Unable to score\"}') }}",
+              "type": "object"
+            }
+          ]
+        },
+        "includeOtherFields": true
+      },
+      "id": "parse-json",
+      "name": "Parse JSON",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [900, 300],
+      "continueOnFail": true,
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('Set Inputs').item.json.callback_url }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "X-Api-Key", "value": "={{ $('Set Inputs').item.json.callback_secret }}" },
+            { "name": "Content-Type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"run_id\": \"{{ $('Set Inputs').item.json.run_id }}\",\n  \"status\": \"completed\",\n  \"results\": [\n    {\n      \"org_id\": \"{{ $('Set Inputs').item.json.org_id }}\",\n      \"grant_id\": \"{{ $('Set Inputs').item.json.grant_id }}\",\n      \"score\": {{ $json.parsed.score || 0 }},\n      \"rationale\": \"{{ ($json.parsed.rationale || 'Unable to determine alignment').replace(/\"/g, '\\\\\"') }}\"\n    }\n  ]\n}",
+        "options": { "timeout": 30000 }
+      },
+      "id": "callback-success",
+      "name": "Callback Success",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1120, 240],
+      "continueOnFail": true,
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('Set Inputs').item.json.callback_url }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "X-Api-Key", "value": "={{ $('Set Inputs').item.json.callback_secret }}" },
+            { "name": "Content-Type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"run_id\": \"{{ $('Set Inputs').item.json.run_id }}\",\n  \"status\": \"failed\",\n  \"error_message\": \"LLM scoring failed or returned invalid response\"\n}",
+        "options": { "timeout": 30000 }
+      },
+      "id": "callback-failure",
+      "name": "Callback Failure",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1120, 420],
+      "continueOnFail": true,
+      "alwaysOutputData": true
+    }
+  ],
+  "connections": {
+    "Webhook Trigger": { "main": [[{ "node": "Set Inputs", "type": "main", "index": 0 }]] },
+    "Set Inputs": { "main": [[{ "node": "Score Alignment (OpenAI)", "type": "main", "index": 0 }]] },
+    "Score Alignment (OpenAI)": { "main": [[{ "node": "Parse JSON", "type": "main", "index": 0 }]] },
+    "Parse JSON": {
+      "main": [
+        [{ "node": "Callback Success", "type": "main", "index": 0 }],
+        [{ "node": "Callback Failure", "type": "main", "index": 0 }]
+      ]
+    }
+  },
+  "settings": {
+    "executionTimeout": 60,
+    "saveManualExecutions": true,
+    "saveExecutionProgress": true
+  }
+}

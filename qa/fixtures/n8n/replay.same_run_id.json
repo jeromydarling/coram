@@ -1,0 +1,14 @@
+{
+  "workflow_key": "partner_enrich",
+  "run_id": "aaaaaaaa-1111-2222-3333-444444444444",
+  "org_name": "Habitat for Humanity",
+  "website_url": "https://habitat.org",
+  "payload": {
+    "mission_summary": "Building homes, communities and hope.",
+    "programs": ["ReStore"],
+    "populations_served": ["low-income families"],
+    "geographies": ["US"],
+    "funding_signals": [],
+    "keywords": ["housing"]
+  }
+}

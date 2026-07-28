@@ -1,0 +1,147 @@
+{
+  "name": "Prospect Pack Generate v1",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "prospect-pack-generate",
+        "options": {}
+      },
+      "id": "webhook-trigger",
+      "name": "Webhook Trigger",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [220, 300],
+      "webhookId": "prospect-pack-generate-v1"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            { "id": "run_id", "name": "run_id", "value": "={{ $json.body.run_id }}", "type": "string" },
+            { "id": "entity_id", "name": "entity_id", "value": "={{ $json.body.entity_id }}", "type": "string" },
+            { "id": "entity_type", "name": "entity_type", "value": "={{ $json.body.entity_type || 'opportunity' }}", "type": "string" },
+            { "id": "org_name", "name": "org_name", "value": "={{ $json.body.org_name }}", "type": "string" },
+            { "id": "website_url", "name": "website_url", "value": "={{ $json.body.website_url || '' }}", "type": "string" },
+            { "id": "org_knowledge", "name": "org_knowledge", "value": "={{ $json.body.org_knowledge || '' }}", "type": "string" },
+            { "id": "neighborhood_insights", "name": "neighborhood_insights", "value": "={{ $json.body.neighborhood_insights || '' }}", "type": "string" },
+            { "id": "callback_url", "name": "callback_url", "value": "={{ $json.body.callback_url }}", "type": "string" },
+            { "id": "callback_secret", "name": "callback_secret", "value": "={{ $json.body.callback_secret }}", "type": "string" }
+          ]
+        },
+        "includeOtherFields": false
+      },
+      "id": "extract-inputs",
+      "name": "Extract Inputs",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [440, 300]
+    },
+    {
+      "parameters": {
+        "model": "gpt-4o",
+        "messages": {
+          "values": [
+            {
+              "content": "You are a nonprofit partnership analyst for PCs for People. Generate a prospect pack briefing for a potential partner organization.\n\nIMPORTANT: Return ONLY valid JSON matching this exact schema:\n{\n  \"org_summary\": \"2-3 sentence overview of what the org does\",\n  \"mission_snapshot\": \"1-2 sentences about their mission and how it relates to digital equity\",\n  \"partnership_angles\": [\"angle1\", \"angle2\", \"angle3\"],\n  \"grant_alignments\": [\"grant_or_program_1\", \"grant_or_program_2\"],\n  \"suggested_outreach_angle\": \"1-2 sentences describing the best approach to reach out\",\n  \"risks_notes\": [\"risk_or_caveat_1\", \"risk_or_caveat_2\"]\n}\n\nFocus on:\n- Digital equity and affordable technology access\n- Community impact potential\n- Existing programs that could synergize\n- Grant/funding alignment opportunities\n- Realistic risks or challenges",
+              "role": "system"
+            },
+            {
+              "content": "=Generate a prospect pack for: {{ $json.org_name }}\n\nWebsite: {{ $json.website_url }}\n\nOrg Knowledge:\n{{ $json.org_knowledge }}\n\nNeighborhood Context:\n{{ $json.neighborhood_insights }}",
+              "role": "user"
+            }
+          ]
+        },
+        "options": {
+          "temperature": 0.3,
+          "maxTokens": 2000,
+          "timeout": 60
+        }
+      },
+      "id": "openai-generate",
+      "name": "Generate Pack (OpenAI)",
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.7,
+      "position": [660, 300],
+      "credentials": {
+        "openAiApi": {
+          "id": "S65JWr5N3fYHb1YT",
+          "name": "OpenAi account"
+        }
+      },
+      "continueOnFail": true,
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "jsCode": "// Parse AI response and prepare callback payload\nconst items = $input.all();\nconst inputData = $('Extract Inputs').first().json;\n\ntry {\n  const aiOutput = items[0]?.json;\n  let packJson;\n  \n  if (aiOutput?.error) {\n    // AI call failed\n    return [{\n      json: {\n        callback_url: inputData.callback_url,\n        callback_secret: inputData.callback_secret,\n        payload: {\n          run_id: inputData.run_id,\n          entity_id: inputData.entity_id,\n          entity_type: inputData.entity_type,\n          status: 'failed',\n          error_message: `AI generation failed: ${aiOutput.error}`\n        }\n      }\n    }];\n  }\n  \n  // Try to parse the AI text response as JSON\n  const text = aiOutput?.text || aiOutput?.message?.content || '';\n  const jsonMatch = text.match(/\\{[\\s\\S]*\\}/);\n  \n  if (jsonMatch) {\n    packJson = JSON.parse(jsonMatch[0]);\n  } else {\n    // Fallback: construct minimal pack from raw text\n    packJson = {\n      org_summary: text.substring(0, 500),\n      mission_snapshot: '',\n      partnership_angles: [],\n      grant_alignments: [],\n      suggested_outreach_angle: '',\n      risks_notes: ['AI output could not be structured automatically']\n    };\n  }\n  \n  return [{\n    json: {\n      callback_url: inputData.callback_url,\n      callback_secret: inputData.callback_secret,\n      payload: {\n        run_id: inputData.run_id,\n        entity_id: inputData.entity_id,\n        entity_type: inputData.entity_type,\n        status: 'completed',\n        pack: packJson\n      }\n    }\n  }];\n} catch (err) {\n  return [{\n    json: {\n      callback_url: inputData.callback_url,\n      callback_secret: inputData.callback_secret,\n      payload: {\n        run_id: inputData.run_id,\n        entity_id: inputData.entity_id,\n        entity_type: inputData.entity_type,\n        status: 'failed',\n        error_message: `Parse error: ${err.message}`\n      }\n    }\n  }];\n}"
+      },
+      "id": "parse-response",
+      "name": "Parse AI Response",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [880, 300],
+      "continueOnFail": true,
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $json.callback_url }}",
+        "authentication": "none",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "Content-Type", "value": "application/json" },
+            { "name": "Authorization", "value": "=Bearer {{ $json.callback_secret }}" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify($json.payload) }}",
+        "options": {
+          "timeout": 30000
+        }
+      },
+      "id": "callback-success",
+      "name": "Callback to Supabase",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1100, 300],
+      "continueOnFail": true,
+      "alwaysOutputData": true
+    }
+  ],
+  "connections": {
+    "Webhook Trigger": {
+      "main": [
+        [{ "node": "Extract Inputs", "type": "main", "index": 0 }]
+      ]
+    },
+    "Extract Inputs": {
+      "main": [
+        [{ "node": "Generate Pack (OpenAI)", "type": "main", "index": 0 }]
+      ]
+    },
+    "Generate Pack (OpenAI)": {
+      "main": [
+        [{ "node": "Parse AI Response", "type": "main", "index": 0 }]
+      ]
+    },
+    "Parse AI Response": {
+      "main": [
+        [{ "node": "Callback to Supabase", "type": "main", "index": 0 }]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "saveManualExecutions": true,
+    "callerPolicy": "workflowsFromSameOwner",
+    "errorWorkflow": ""
+  },
+  "tags": [
+    { "name": "profunda" },
+    { "name": "prospect-pack" }
+  ]
+}

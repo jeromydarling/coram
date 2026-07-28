@@ -1,0 +1,215 @@
+{
+  "companion": {
+    "greetings": {
+      "morning": "Good morning. What relationships are on your heart today?",
+      "afternoon": "Good afternoon. How has your community shown up for you today?",
+      "evening": "Good evening. Take a moment to notice — who did you encounter today?",
+      "return": "Welcome back. Your relational garden has been waiting for you.",
+      "firstTime": "Welcome. I'm here to help you see your people more clearly — not to replace your judgment, but to deepen your attention."
+    },
+    "prompts": {
+      "followUp": "You haven't connected with {{name}} in {{days}} days. Would you like to reach out?",
+      "reflection": "It's been a rich week. Would you like to pause and reflect on what you've noticed?",
+      "journeyMilestone": "{{name}}'s journey has reached a new chapter. Take a moment to acknowledge how far you've come together.",
+      "seasonalInvitation": "As {{season}} unfolds, consider: what is being planted, growing, harvested, or resting in your relationships?",
+      "dormantConnection": "{{name}} has been quiet for a while. Sometimes silence is peaceful. Sometimes it's a call. What do you sense?",
+      "gratitude": "Before you close for the day — is there someone you're grateful for? Even a silent prayer of thanks is a form of care.",
+      "communityNeed": "A need has surfaced in your network: {{need}}. You may be in a position to help — or to connect someone who can."
+    },
+    "insights": {
+      "connectionTrend": "Your relational network has {{trend}} this month. {{interpretation}}",
+      "trendGrown": "grown",
+      "trendSteadied": "remained steady",
+      "trendQuieted": "grown quieter",
+      "interpretationGrown": "New seeds have been planted. Tend them well.",
+      "interpretationSteadied": "Consistency is its own kind of faithfulness.",
+      "interpretationQuieted": "Stillness can be fruitful. But check — is anyone waiting to hear from you?",
+      "topConnections": "Your deepest connections this month: {{names}}. These are your inner garden.",
+      "neglectedArea": "Your {{area}} relationships could use some attention. Even a small gesture goes a long way."
+    },
+    "encouragement": {
+      "afterLogging": "Logged. The small acts of attention are the ones that matter most.",
+      "afterReflection": "Thank you for pausing. Reflection is the soil in which wisdom grows.",
+      "afterJourneyUpdate": "Another chapter written. The story continues.",
+      "afterProvision": "A need met, a connection strengthened. This is community.",
+      "milestoneReached": "You've reached {{milestone}}. This is the work of patient, faithful presence."
+    }
+  },
+  "companionTray": {
+    "ariaLabel": "Companion guidance tray"
+  },
+  "microGuidanceCard": {
+    "dismissAriaLabel": "Dismiss guidance"
+  },
+  "narrativeStudio": {
+    "title": "Narrative Studio",
+    "subtitle": "Stories emerging from the work you're already doing.",
+    "actions": {
+      "witnessReports": "Witness Reports",
+      "refreshStories": "Refresh Stories"
+    },
+    "emergingStories": {
+      "heading": "Emerging Stories",
+      "tooltipWhat": "Lightweight story scaffolds assembled from your value moments",
+      "tooltipWhere": "narrative_story_drafts",
+      "tooltipWhy": "See what stories are forming from your daily work",
+      "outlineForming": "Outline forming…",
+      "emptyTitle": "Stories will grow as you work.",
+      "emptyMessage": "Reflections, events, and journey movements weave into narrative over time."
+    },
+    "storyThreads": {
+      "heading": "Story Threads",
+      "tooltipWhat": "Individual value moments detected from your activity",
+      "tooltipWhere": "narrative_value_moments",
+      "tooltipWhy": "Each moment is a thread that weaves into your larger story",
+      "emptyMessage": "No story threads yet. They emerge as you reflect, attend events, and build relationships."
+    },
+    "momentLabels": {
+      "growth": "Growth",
+      "momentum": "Momentum",
+      "reconnection": "Reconnection",
+      "community_presence": "Presence",
+      "collaboration": "Collaboration"
+    },
+    "toasts": {
+      "outlineRefreshed": "Story outline refreshed",
+      "noMoments": "No moments to build from yet.",
+      "couldNotBuild": "Could not build outline"
+    }
+  },
+  "narrativeThreads": {
+    "title": "Narrative Threads",
+    "mobileTitle": "Stories",
+    "subtitle": "The story gathers quietly from moments your team has recorded.",
+    "tabs": {
+      "thisWeek": "This Week",
+      "archive": "Archive"
+    },
+    "weekOf": "Week of {{date}}",
+    "threadCard": {
+      "hideCitedMoments": "Hide cited moments",
+      "seeCitedMoments": "See cited moments",
+      "citationsIntro": "This is a thread built from moments your team recorded — reflections, visits, and small signs of change.",
+      "noCitedMoments": "No cited moments for this thread."
+    },
+    "emptyThisWeek": "The story gathers quietly here. As your team records visits, reflections, and relationships, the threads begin to form.",
+    "emptyArchive": "No past threads yet."
+  },
+  "emptyStates": {
+    "dashboard": {
+      "title": "Your garden awaits",
+      "message": "Every great garden begins with a single seed. Add your first relationship and watch your community come alive."
+    },
+    "relationships": {
+      "title": "No one walks alone",
+      "message": "The people in your life are your greatest treasure. Begin by adding someone you walk alongside."
+    },
+    "journeys": {
+      "title": "Every journey begins with a single step",
+      "message": "Journeys capture the unfolding story of your relationships. Start one and let the narrative grow."
+    },
+    "events": {
+      "title": "The community is gathering",
+      "message": "Subscribe to local event feeds or add your own. The pulse of your community starts here."
+    },
+    "volunteers": {
+      "title": "Many hands, one mission",
+      "message": "Begin coordinating those who serve. Every hour given is a gift to the community."
+    },
+    "provisions": {
+      "title": "Give and receive with grace",
+      "message": "Track the tangible ways your community provides for one another. No need is too small."
+    },
+    "reflections": {
+      "title": "Be still and know",
+      "message": "Reflection turns experience into wisdom. Pause, notice, and let the quiet speak."
+    },
+    "interactions": {
+      "title": "Presence is the first gift",
+      "message": "Every conversation, every visit, every prayer — log the moments that weave your community together."
+    }
+  },
+  "communio": {
+    "title": "Communio",
+    "subtitle": "Opt-in narrative sharing between CROS workspaces",
+    "profileBanner": {
+      "message": "Share your presence with the network",
+      "description": "Join the Communio directory so neighboring organizations can discover you.",
+      "cta": "Set up profile"
+    },
+    "noGroups": {
+      "heading": "No groups yet",
+      "description": "Communio lets you share anonymized narrative signals with neighboring organizations. Create or join a group to start building shared community awareness.",
+      "cta": "Create a Group"
+    },
+    "tabs": {
+      "myGroups": "My Groups",
+      "sharedPulse": "Shared Pulse",
+      "networkTrends": "Network Trends",
+      "sharedSignals": "Shared Signals",
+      "collaboration": "Collaboration",
+      "governance": "Governance",
+      "requests": "Requests"
+    },
+    "signals": {
+      "loading": "Loading signals…",
+      "empty": "No shared signals yet. As organizations in your groups share narrative insights, they'll appear here."
+    },
+    "events": {
+      "loading": "Loading events…",
+      "sharedEvent": "Shared event from another workspace",
+      "visibility": "Visibility: {{level}}",
+      "empty": "No collaboration events yet. When partner organizations share events, they'll appear here."
+    }
+  },
+  "caregiverNetwork": {
+    "title": "Caregiver Network",
+    "subtitle": "A quiet space for mutual support and companionship",
+    "safetyTitle": "Safety & Privacy",
+    "safetyMessage": "This network is for companionship and practical support. Never share private details about the people you care for. All messaging is mediated — your contact info stays private unless you choose to share it.",
+    "tabs": {
+      "presence": "Presence",
+      "browse": "Browse",
+      "requests": "Requests",
+      "messages": "Messages"
+    }
+  },
+  "impulsus": {
+    "title": "Impulsus",
+    "subtitle": "A quiet record of the relationships I'm growing.",
+    "captureSettings": "Capture settings"
+  },
+  "voice": {
+    "principles": {
+      "tone": "pastoral, warm, contemplative, never urgent",
+      "perspective": "second person — always speaking to the user as a trusted companion",
+      "metaphor": "gardening, seasons, journey, light",
+      "avoid": "sales language, urgency, manipulation, gamification, metrics obsession"
+    }
+  },
+  "seasonal": {
+    "spring": {
+      "invitation": "Spring is a time of new beginnings. What new relationships are budding? What dormant connections are stirring?",
+      "reflection": "As the earth awakens, so does opportunity. Plant intentionally."
+    },
+    "summer": {
+      "invitation": "Summer calls us outward. Your community is flourishing — who needs your presence in this season of abundance?",
+      "reflection": "Growth is happening all around you. Pause to notice and celebrate it."
+    },
+    "autumn": {
+      "invitation": "Autumn is the season of harvest and gratitude. What fruits have your relationships borne this year?",
+      "reflection": "Gather what has grown. Give thanks. Prepare for the quieter season ahead."
+    },
+    "winter": {
+      "invitation": "Winter invites us inward. This is a season of rest, reflection, and quiet faithfulness.",
+      "reflection": "Not all growth is visible. The deepest roots grow in silence."
+    },
+    "liturgical": {
+      "advent": "Advent reminds us that the best things come to those who wait with expectation. Who are you waiting with?",
+      "christmas": "The light has come. In this season of gift and joy, who can you bring light to?",
+      "lent": "Lent calls us to simplicity and renewal. What in your relational life needs pruning? What needs deeper roots?",
+      "easter": "He is risen. In this season of resurrection, what relationships are being made new?",
+      "ordinary": "Ordinary time is anything but ordinary. Faithful presence, day after day, is the most extraordinary thing you can offer."
+    }
+  }
+}

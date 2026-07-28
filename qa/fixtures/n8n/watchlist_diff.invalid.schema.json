@@ -1,0 +1,10 @@
+{
+  "workflow_key": "watchlist_diff",
+  "run_id": "wl-diff-bad-schema-3333-444444444444",
+  "org_id": "org-wl-001",
+  "payload": {
+    "from_snapshot_id": 999,
+    "to_snapshot_id": null,
+    "diff": "not-an-object"
+  }
+}

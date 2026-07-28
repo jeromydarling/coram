@@ -1,0 +1,11 @@
+{
+  "_comment": "Expected diff shape when auto-diff is created by watchlist_ingest",
+  "baseline": false,
+  "changed": true,
+  "from_content_hash": "a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2",
+  "to_content_hash": "b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3",
+  "delta": {
+    "added_chars": 24,
+    "removed_chars": 0
+  }
+}

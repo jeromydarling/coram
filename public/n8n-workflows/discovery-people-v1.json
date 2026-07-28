@@ -1,0 +1,167 @@
+{
+  "name": "Discovery People v1",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "discovery-people",
+        "options": {}
+      },
+      "id": "dp-trigger",
+      "name": "Webhook Trigger",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [200, 300],
+      "webhookId": "discovery-people"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Normalize input and build 3 search queries\nconst input = $input.first().json;\nconst { run_id, module, scope, metro_id, opportunity_id, query_profile, callback_url } = input;\n\nconst orgName = query_profile?.organization || '';\nconst metro = query_profile?.metro || '';\nconst knowledge = query_profile?.knowledge || {};\n\nconst queries = [];\n\nif (scope === 'opportunity' && orgName) {\n  queries.push(`${orgName} leadership team staff directory`);\n  queries.push(`${orgName} new hire executive appointment`);\n  queries.push(`${orgName} board members key personnel`);\n} else if (scope === 'metro' && metro) {\n  queries.push(`${metro} nonprofit leadership changes`);\n  queries.push(`${metro} community organization executive directors`);\n  queries.push(`${metro} digital equity broadband program managers`);\n}\n\nif (queries.length === 0) {\n  queries.push('nonprofit digital equity leadership staff');\n}\n\nreturn queries.map((q, i) => ({\n  json: {\n    run_id,\n    module,\n    scope,\n    metro_id,\n    opportunity_id,\n    callback_url,\n    query: q,\n    query_index: i,\n    limit: 10\n  }\n}));"
+      },
+      "id": "dp-build-queries",
+      "name": "Build Queries",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [420, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.firecrawl.dev/v1/search",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "firecrawlApi",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ query: $json.query, limit: $json.limit }) }}",
+        "options": {
+          "timeout": 60000
+        }
+      },
+      "id": "dp-firecrawl",
+      "name": "Firecrawl Search",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [640, 300],
+      "continueOnFail": true,
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "jsCode": "// Merge and pre-filter results from all queries\nconst allItems = $input.all();\nconst seenUrls = new Set();\nconst results = [];\n\nfor (const item of allItems) {\n  const data = item.json?.data || item.json?.results || [];\n  if (!Array.isArray(data)) continue;\n  \n  for (const r of data) {\n    const url = (r.url || r.sourceUrl || '').toLowerCase().trim();\n    if (!url || seenUrls.has(url)) continue;\n    seenUrls.add(url);\n    \n    results.push({\n      url: r.url || r.sourceUrl || '',\n      title: r.title || r.metadata?.title || '',\n      snippet: r.markdown?.substring(0, 500) || r.description || '',\n      source: r.metadata?.sourceURL || url\n    });\n  }\n}\n\n// Get context from first item\nconst ctx = $input.first()?.json || {};\n\nreturn [{\n  json: {\n    run_id: ctx.run_id,\n    module: ctx.module,\n    scope: ctx.scope,\n    metro_id: ctx.metro_id,\n    opportunity_id: ctx.opportunity_id,\n    callback_url: ctx.callback_url,\n    results,\n    result_count: results.length\n  }\n}];"
+      },
+      "id": "dp-merge",
+      "name": "Merge & Pre-Filter",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [860, 300]
+    },
+    {
+      "parameters": {
+        "model": "gpt-4o-mini",
+        "messages": {
+          "values": [
+            {
+              "role": "system",
+              "content": "You extract structured people data from search results. Return ONLY valid JSON. Schema:\n{\"people\":[{\"name\":\"string|null\",\"title\":\"string|null\",\"organization_name\":\"string|null\",\"email\":\"string|null\",\"phone\":\"string|null\",\"source_url\":\"string|null\",\"evidence\":\"string|null\",\"confidence\":0.0}]}\n\nRules:\n- Extract real people with real titles only\n- confidence 0-1 based on evidence quality\n- If the person appears to be a new leader or recent hire, add is_leadership_change: true to the object"
+            },
+            {
+              "role": "user",
+              "content": "=Extract people from these search results:\n\n{{ JSON.stringify($json.results.slice(0, 20)) }}"
+            }
+          ]
+        },
+        "options": {
+          "temperature": 0.1,
+          "timeout": 60000,
+          "response_format": { "type": "json_object" }
+        }
+      },
+      "id": "dp-extract",
+      "name": "LLM Extract People",
+      "type": "n8n-nodes-base.openAi",
+      "typeVersion": 1.8,
+      "position": [1080, 200],
+      "continueOnFail": true,
+      "alwaysOutputData": true,
+      "credentials": {
+        "openAiApi": { "id": "openai", "name": "OpenAI" }
+      }
+    },
+    {
+      "parameters": {
+        "model": "gpt-4o-mini",
+        "messages": {
+          "values": [
+            {
+              "role": "system",
+              "content": "You create a discovery briefing from search results and extracted data. Return ONLY valid JSON with this schema:\n{\"highlights\":[{\"title\":\"string\",\"why_it_matters\":\"string\",\"url\":\"string|null\",\"confidence\":0.0}],\"urgent\":[{\"title\":\"string\",\"date_info\":\"string|null\",\"url\":\"string|null\",\"why_this_week\":\"string\"}],\"new_items\":[{\"title\":\"string\",\"url\":\"string|null\",\"one_liner\":\"string\"}],\"what_changed\":[{\"title\":\"string\",\"url\":\"string|null\",\"change_summary\":\"string\"}],\"gaps_and_next_queries\":[\"string\"],\"helpful_sources\":[{\"name\":\"string\",\"url\":\"string\",\"why\":\"string\"}]}\n\nFocus on leadership changes, new hires, and key personnel updates."
+            },
+            {
+              "role": "user",
+              "content": "=Create a people discovery briefing from:\n\nSearch results: {{ JSON.stringify($json.results.slice(0, 15)) }}\n\nExtracted people: {{ $node['LLM Extract People'].json.message?.content || '[]' }}"
+            }
+          ]
+        },
+        "options": {
+          "temperature": 0.2,
+          "timeout": 60000,
+          "response_format": { "type": "json_object" }
+        }
+      },
+      "id": "dp-briefing",
+      "name": "LLM Briefing",
+      "type": "n8n-nodes-base.openAi",
+      "typeVersion": 1.8,
+      "position": [1080, 420],
+      "continueOnFail": true,
+      "alwaysOutputData": true,
+      "credentials": {
+        "openAiApi": { "id": "openai", "name": "OpenAI" }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Build callback payload\nconst ctx = $input.first().json;\nconst mergeData = $node['Merge & Pre-Filter'].json;\nconst extractRaw = $node['LLM Extract People'].json?.message?.content || '{\"people\":[]}';\nconst briefingRaw = $node['LLM Briefing'].json?.message?.content || '{}';\n\nlet extracted = { people: [] };\ntry { extracted = JSON.parse(extractRaw); } catch(e) { extracted = { people: [] }; }\n\nlet briefingJson = {};\ntry { briefingJson = JSON.parse(briefingRaw); } catch(e) { briefingJson = { highlights: [], urgent: [], new_items: [], what_changed: [], gaps_and_next_queries: [], helpful_sources: [] }; }\n\n// Build items from extracted people\nconst items = (extracted.people || []).map(p => ({\n  canonical_url: p.source_url || `person:${(p.name||'unknown').toLowerCase().replace(/\\s+/g, '-')}`,\n  source_url: p.source_url || null,\n  title: p.name || 'Unknown',\n  snippet: [p.title, p.organization_name].filter(Boolean).join(' at '),\n  organization_name: p.organization_name || null,\n  extracted: p\n}));\n\n// Build briefing_md from JSON\nconst lines = ['# People Discovery Briefing\\n'];\nif (briefingJson.highlights?.length) {\n  lines.push('## Highlights');\n  briefingJson.highlights.forEach(h => lines.push(`- **${h.title}**: ${h.why_it_matters}`));\n  lines.push('');\n}\nif (briefingJson.urgent?.length) {\n  lines.push('## ⚡ Urgent');\n  briefingJson.urgent.forEach(u => lines.push(`- **${u.title}**: ${u.why_this_week}`));\n  lines.push('');\n}\nif (briefingJson.new_items?.length) {\n  lines.push('## New');\n  briefingJson.new_items.forEach(n => lines.push(`- **${n.title}**: ${n.one_liner}`));\n  lines.push('');\n}\nconst briefingMd = lines.join('\\n');\n\nreturn [{\n  json: {\n    run_id: mergeData.run_id,\n    status: 'completed',\n    module: mergeData.module || 'people',\n    scope: mergeData.scope,\n    metro_id: mergeData.metro_id || null,\n    opportunity_id: mergeData.opportunity_id || null,\n    items,\n    briefing_json: briefingJson,\n    briefing_md: briefingMd,\n    stats: {\n      search_results: mergeData.result_count || 0,\n      people_extracted: items.length\n    }\n  }\n}];"
+      },
+      "id": "dp-build-callback",
+      "name": "Build Callback",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1300, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $json.callback_url || $node['Merge & Pre-Filter'].json.callback_url }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify($json) }}",
+        "options": {
+          "timeout": 30000
+        }
+      },
+      "id": "dp-callback",
+      "name": "Callback to Supabase",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1520, 300],
+      "credentials": {
+        "httpHeaderAuth": { "id": "worker-key", "name": "Secret Worker Key" }
+      }
+    }
+  ],
+  "connections": {
+    "Webhook Trigger": { "main": [[{ "node": "Build Queries", "type": "main", "index": 0 }]] },
+    "Build Queries": { "main": [[{ "node": "Firecrawl Search", "type": "main", "index": 0 }]] },
+    "Firecrawl Search": { "main": [[{ "node": "Merge & Pre-Filter", "type": "main", "index": 0 }]] },
+    "Merge & Pre-Filter": { "main": [[{ "node": "LLM Extract People", "type": "main", "index": 0 }, { "node": "LLM Briefing", "type": "main", "index": 0 }]] },
+    "LLM Extract People": { "main": [[{ "node": "Build Callback", "type": "main", "index": 0 }]] },
+    "LLM Briefing": { "main": [[{ "node": "Build Callback", "type": "main", "index": 0 }]] },
+    "Build Callback": { "main": [[{ "node": "Callback to Supabase", "type": "main", "index": 0 }]] }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  }
+}

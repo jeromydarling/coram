@@ -1,0 +1,28 @@
+[
+  {
+    "table": "opportunity_signals",
+    "action": "insert",
+    "rows": [
+      {
+        "run_id": "dddddddd-1111-2222-3333-444444444444",
+        "opportunity_id": "opp-001",
+        "signal_type": "leadership_change",
+        "signal_value": "New CEO appointed: Jane Doe",
+        "confidence": 0.92,
+        "source_url": "https://example.com/news/ceo",
+        "detected_at": "2026-02-01T00:00:00Z",
+        "signal_fingerprint": "COMPUTED_AT_TEST_TIME"
+      },
+      {
+        "run_id": "dddddddd-1111-2222-3333-444444444444",
+        "opportunity_id": "opp-001",
+        "signal_type": "funding_round",
+        "signal_value": "Series B $50M raised",
+        "confidence": 0.85,
+        "source_url": "https://example.com/funding",
+        "detected_at": "2026-02-02T00:00:00Z",
+        "signal_fingerprint": "COMPUTED_AT_TEST_TIME"
+      }
+    ]
+  }
+]

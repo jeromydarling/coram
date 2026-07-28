@@ -1,0 +1,38 @@
+[
+  {
+    "table": "org_extractions",
+    "action": "insert",
+    "rows": [
+      {
+        "run_id": "aaaaaaaa-1111-2222-3333-444444444444",
+        "org_name": "Habitat for Humanity",
+        "website_url": "https://habitat.org",
+        "raw_extraction": {
+          "mission_summary": "Building homes, communities and hope.",
+          "programs": ["ReStore", "Global Village"],
+          "populations_served": ["low-income families"],
+          "geographies": ["US", "Canada"],
+          "funding_signals": ["USAID grant 2025"],
+          "keywords": ["housing", "nonprofit", "construction"]
+        }
+      }
+    ]
+  },
+  {
+    "table": "org_enrichment_facts",
+    "action": "insert",
+    "rows": [
+      {
+        "extraction_id": "__FROM_PREVIOUS_INSERT__",
+        "run_id": "aaaaaaaa-1111-2222-3333-444444444444",
+        "org_name": "Habitat for Humanity",
+        "mission_summary": "Building homes, communities and hope.",
+        "programs": ["ReStore", "Global Village"],
+        "populations_served": ["low-income families"],
+        "geographies": ["US", "Canada"],
+        "funding_signals": ["USAID grant 2025"],
+        "keywords": ["housing", "nonprofit", "construction"]
+      }
+    ]
+  }
+]

@@ -1,0 +1,186 @@
+{
+  "sidebar": {
+    "dashboard": "Dashboard",
+    "relationships": "Relationships",
+    "opportunities": "Opportunities",
+    "contacts": "Contacts",
+    "journeys": "Journeys",
+    "events": "Local Pulse",
+    "volunteers": "Voluntārium",
+    "provisions": "Prōvīsiō",
+    "reflections": "Reflections",
+    "settings": "Settings",
+    "help": "Help & Guidance",
+    "operator": "Operator Console",
+    "community": "Communio",
+    "impulsus": "Impulsus",
+    "testimonium": "Testimonium",
+    "signum": "Signum",
+    "commandCenter": "Command Center",
+    "todaysVisits": "Today's Visits",
+    "fieldNotes": "Field Notes",
+    "people": "People",
+    "calendar": "Calendar",
+    "allMetros": "All Metros",
+    "intelFeed": "Intel Feed",
+    "narratives": "Narratives",
+    "momentumMap": "Momentum Map",
+    "radar": "Radar",
+    "journey": "Journey",
+    "anchors": "Anchors",
+    "findPeople": "Find People",
+    "graph": "Graph",
+    "allEvents": "Events",
+    "findEvents": "Find Events",
+    "activities": "Activities",
+    "campaigns": "Campaigns",
+    "allGrants": "All Grants",
+    "findGrants": "Find Grants",
+    "marketplace": "Marketplace",
+    "sharedNetwork": "Shared Network",
+    "caregiverNetwork": "Caregiver Network",
+    "intelligence": "Intelligence",
+    "reports": "Reports",
+    "adminHome": "Admin Home",
+    "activation": "Activation",
+    "importCenter": "Import Center",
+    "adminGuide": "Admin Guide",
+    "groups": {
+      "metros": "Metros",
+      "partners": "Partners",
+      "people": "People",
+      "scheduling": "Scheduling",
+      "outreach": "Outreach",
+      "grants": "Grants",
+      "scientia": "Scientia",
+      "relatio": "Relatio",
+      "communio": "Communio",
+      "admin": "Admin"
+    }
+  },
+  "header": {
+    "home": "Home",
+    "profile": "Profile",
+    "notifications": "Notifications",
+    "notificationCount": "{{count}} new notification",
+    "notificationCount_plural": "{{count}} new notifications",
+    "companionTray": "NRI Companion",
+    "quickActions": "Quick Actions",
+    "searchPlaceholder": "Search across CROS...",
+    "fullWorkspace": "Full Workspace",
+    "fullWorkspaceDesc": "Everything you're allowed to see",
+    "guidedView": "Guided View",
+    "guidedViewDesc": "Less noise. More presence.",
+    "exitVisitorMode": "Exit Visitor Mode",
+    "switchToVisitorMode": "Switch to Visitor Mode",
+    "exitVisitorModeDesc": "Return to your full workspace",
+    "visitorModeDesc": "Simplifies the app for in-field visits and voice notes.",
+    "myStats": "My Stats",
+    "playbooks": "Playbooks",
+    "helpReport": "Help / Report something",
+    "settings": "Settings",
+    "signOut": "Sign Out",
+    "emailsSynced": "Emails synced {{time}}",
+    "emailsSyncedNever": "Emails synced never",
+    "roles": {
+      "steward": "Steward",
+      "leadership": "Leadership",
+      "regionalLead": "Regional Lead",
+      "staff": "Staff"
+    }
+  },
+  "breadcrumbs": {
+    "home": "Home",
+    "dashboard": "Dashboard",
+    "relationships": "Relationships",
+    "contactDetail": "Contact Detail",
+    "opportunityDetail": "Opportunity Detail",
+    "journeyDetail": "Journey Detail",
+    "eventDetail": "Event Detail",
+    "volunteerDetail": "Volunteer Detail",
+    "provisionDetail": "Provision Detail",
+    "reflectionDetail": "Reflection Detail",
+    "settings": "Settings",
+    "help": "Help"
+  },
+  "tabs": {
+    "overview": "Overview",
+    "details": "Details",
+    "history": "History",
+    "notes": "Notes",
+    "activity": "Activity",
+    "related": "Related",
+    "timeline": "Timeline",
+    "analytics": "Analytics"
+  },
+  "footer": {
+    "copyright": "© {{year}} CROS™ — See People. Grow Together.",
+    "privacy": "Privacy",
+    "terms": "Terms",
+    "support": "Support"
+  },
+  "alerts": {
+    "title": "Alerts",
+    "markAllRead": "Mark all read",
+    "noAlerts": "No alerts"
+  },
+  "quickActions": {
+    "title": "Quick Actions",
+    "logActivity": "Log Activity",
+    "quickCreate": "Quick Create",
+    "logCall": "Log Call",
+    "logEmail": "Log Email",
+    "logMeeting": "Log Meeting",
+    "logEvent": "Log Event",
+    "logSiteVisit": "Log Site Visit",
+    "logIntro": "Log Intro",
+    "logOther": "Log Other",
+    "newOpportunity": "New Opportunity",
+    "newContact": "New Contact",
+    "newEvent": "New Event"
+  },
+  "search": {
+    "placeholder": "Search...",
+    "inputPlaceholder": "Search opportunities, people, events, documents...",
+    "noResults": "No results found.",
+    "typeToSearch": "Type at least 2 characters to search...",
+    "groups": {
+      "opportunity": "Opportunities",
+      "contact": "People",
+      "event": "Events",
+      "pipeline": "Pipeline",
+      "grant": "Grants",
+      "document": "Documents",
+      "activity": "Activities"
+    }
+  },
+  "accessibility": {
+    "skipToContent": "Skip to main content"
+  },
+  "seasons": {
+    "advent": {
+      "label": "Advent",
+      "secular": "Year End Reflection"
+    },
+    "christmas": {
+      "label": "Christmas",
+      "secular": "New Beginnings"
+    },
+    "lent": {
+      "label": "Lent",
+      "secular": "Spring Preparation"
+    },
+    "easter": {
+      "label": "Easter",
+      "secular": "Spring Renewal"
+    },
+    "pentecost": {
+      "label": "Pentecost",
+      "secular": "Early Summer Energy"
+    },
+    "ordinary": {
+      "label": "Ordinary Time",
+      "secular": "Sustained Growth"
+    }
+  }
+}

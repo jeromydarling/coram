@@ -1,0 +1,1 @@
+DELETE FROM library_essays WHERE slug LIKE 'smoke-test-%';

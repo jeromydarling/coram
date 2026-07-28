@@ -1,0 +1,128 @@
+{
+  "metros": {
+    "title": "Metros",
+    "subtitle": "Market readiness and expansion planning",
+    "searchPlaceholder": "Search metros...",
+    "addMetro": "Add Metro",
+    "noMetrosFound": "No metros found",
+    "filters": {
+      "allStatuses": "All Statuses",
+      "allRegions": "All Regions",
+      "unassigned": "Unassigned",
+      "expansionReady": "Expansion Ready",
+      "anchorBuild": "Anchor Build",
+      "ecosystemDev": "Ecosystem Dev"
+    },
+    "card": {
+      "readinessIndex": "Readiness Index",
+      "anchor": "Anchor",
+      "demand": "Demand",
+      "ops": "Ops",
+      "anchors": "anchors",
+      "pipeline": "pipeline",
+      "recommendation": "Recommendation"
+    },
+    "deleteDialog": {
+      "title": "Delete Metro",
+      "description": "Are you sure you want to delete \"{{name}}\"? This action cannot be undone.",
+      "cancel": "Cancel",
+      "delete": "Delete"
+    },
+    "addDialog": {
+      "title": "Add Metro",
+      "description": "Create a new metro area",
+      "metroName": "Metro Name",
+      "metroNamePlaceholder": "e.g. Kansas City",
+      "region": "Region",
+      "regionPlaceholder": "Select a region (optional)",
+      "noRegion": "No region assigned",
+      "cancel": "Cancel",
+      "creating": "Creating…",
+      "create": "Create Metro"
+    },
+    "regionCount": "({{count}} metros)"
+  },
+  "metroDetail": {
+    "loading": "Loading…",
+    "notFound": "Metro Not Found",
+    "notFoundMessage": "This metro could not be found.",
+    "backToMetros": "Back to Metros",
+    "subtitle": "Metro details and intelligence",
+    "save": "Save",
+    "tabs": {
+      "details": "Details",
+      "operations": "Operations",
+      "story": "Story",
+      "newsSources": "News Sources",
+      "expansionPlan": "Expansion Plan",
+      "activation": "Activation",
+      "keywords": "Keywords",
+      "notes": "Notes"
+    },
+    "details": {
+      "region": "Region",
+      "regionUnassigned": "Unassigned",
+      "scores": {
+        "anchorScore": "Anchor Score",
+        "demandScore": "Demand Score",
+        "opsScore": "Ops Score"
+      },
+      "demandMetrics": "Demand Metrics",
+      "referralsPerMonth": "Referrals / Month",
+      "partnerInquiriesPerMonth": "Partner Inquiries / Month",
+      "waitlistSize": "Waitlist Size",
+      "partnerNetwork": "Partner Network",
+      "workforcePartners": "Workforce Partners",
+      "housingRefugeePartners": "Housing/Refugee Partners",
+      "schoolsLibraries": "Schools/Libraries",
+      "recommendation": "Recommendation",
+      "recommendations": {
+        "invest": "Invest",
+        "buildAnchors": "Build Anchors",
+        "hold": "Hold",
+        "triage": "Triage"
+      }
+    },
+    "operations": {
+      "staffCoverage": "Staff Coverage (1-5)",
+      "coverageOptions": {
+        "1": "1 - Minimal",
+        "2": "2 - Limited",
+        "3": "3 - Adequate",
+        "4": "4 - Good",
+        "5": "5 - Full Coverage"
+      },
+      "operationalReadiness": "Operational Readiness",
+      "distributionPartner": "Distribution Partner",
+      "distributionPartnerDesc": "Has an established distribution partner",
+      "storageReady": "Storage Ready",
+      "storageReadyDesc": "Storage facilities are available",
+      "quarterlyTarget": "Quarterly Target (devices/month)",
+      "quarterlyTargetHint": "Monthly device volume target used in the Friday Scorecard funnel tracking",
+      "activeAnchors": "Active Anchors",
+      "inPipeline": "In Pipeline"
+    },
+    "notes": {
+      "label": "General Notes",
+      "placeholder": "Add notes about this metro...",
+      "charCount": "{{count}}/2000"
+    },
+    "readiness": "Readiness: "
+  },
+  "metroNews": {
+    "title": "Metro Narratives",
+    "subtitle": "Community stories and emerging patterns across metros",
+    "allMetros": "All Metros",
+    "noStories": "No stories yet",
+    "noStoriesMessage": "Metro narratives will appear here once generated.",
+    "card": {
+      "emergingPatterns": "Emerging Patterns",
+      "partnerResponses": "Partner Responses",
+      "showLess": "Show less",
+      "readFull": "Read full story",
+      "orgsCount": "{{count}} orgs",
+      "signalsCount": "{{count}} signals",
+      "risingCount": "{{count}} rising"
+    }
+  }
+}

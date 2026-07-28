@@ -1,0 +1,142 @@
+{
+  "name": "Profunda - Daily Intelligence Feed (Cron)",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 7,
+              "triggerAtMinute": 0
+            }
+          ]
+        }
+      },
+      "id": "cron-feed-0001-0001-0001-000000000001",
+      "name": "Schedule Trigger",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [840, 340]
+    },
+    {
+      "parameters": {
+        "keepOnlySet": true,
+        "values": {
+          "string": [
+            {
+              "name": "SUPABASE_FUNCTIONS_BASE_URL",
+              "value": "https://lxahadqhpubynuzvraxc.supabase.co/functions/v1"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "cron-feed-0001-0001-0001-000000000002",
+      "name": "Workflow Constants",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 2,
+      "position": [1080, 340],
+      "retryOnFail": true,
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $json.SUPABASE_FUNCTIONS_BASE_URL + \"/generate-daily-intelligence-feed\" }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ {} }}",
+        "options": {
+          "response": {},
+          "timeout": 90000
+        }
+      },
+      "id": "cron-feed-0001-0001-0001-000000000003",
+      "name": "Generate Intelligence Feed",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [1320, 340],
+      "alwaysOutputData": true,
+      "retryOnFail": true,
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "JZ0bvsdogmHU6USf",
+          "name": "Secret Worker Key"
+        }
+      },
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('Workflow Constants').first().json.SUPABASE_FUNCTIONS_BASE_URL + \"/recalculate-prospect-priority\" }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ {} }}",
+        "options": {
+          "response": {},
+          "timeout": 90000
+        }
+      },
+      "id": "cron-feed-0001-0001-0001-000000000004",
+      "name": "Recalculate Prospect Priority",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [1560, 340],
+      "alwaysOutputData": true,
+      "retryOnFail": true,
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "JZ0bvsdogmHU6USf",
+          "name": "Secret Worker Key"
+        }
+      },
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "jsCode": "const feedRes = $('Generate Intelligence Feed').first().json;\nconst priorityRes = $('Recalculate Prospect Priority').first().json;\nreturn [{ json: {\n  ok: true,\n  feed: feedRes,\n  priority: priorityRes,\n  completed_at: new Date().toISOString()\n} }];"
+      },
+      "id": "cron-feed-0001-0001-0001-000000000005",
+      "name": "Log Results",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1800, 340],
+      "alwaysOutputData": true,
+      "continueOnFail": true
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Schedule Trigger": {
+      "main": [[{ "node": "Workflow Constants", "type": "main", "index": 0 }]]
+    },
+    "Workflow Constants": {
+      "main": [[{ "node": "Generate Intelligence Feed", "type": "main", "index": 0 }]]
+    },
+    "Generate Intelligence Feed": {
+      "main": [[{ "node": "Recalculate Prospect Priority", "type": "main", "index": 0 }]]
+    },
+    "Recalculate Prospect Priority": {
+      "main": [[{ "node": "Log Results", "type": "main", "index": 0 }]]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": true,
+    "timeSavedMode": "fixed",
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "versionId": "cron-intel-v1",
+  "meta": {
+    "instanceId": "93beede2a90582294d7ef06720d87eff3641b0d88433511d1e55f0a191940c61"
+  },
+  "id": "cron-intel-feed-v1",
+  "tags": []
+}

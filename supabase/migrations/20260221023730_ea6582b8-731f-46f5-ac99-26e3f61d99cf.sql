@@ -1,0 +1,1 @@
+UPDATE qa_test_runs SET status = 'failed', completed_at = now(), error = jsonb_build_object('reason', 'Manually cancelled — workflow file was at wrong path in repo') WHERE id = '4b968d91-e0ea-4a76-a46f-e9289980f9d2';

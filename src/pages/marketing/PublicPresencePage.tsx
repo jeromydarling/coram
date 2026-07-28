@@ -1,0 +1,308 @@
+/**
+ * PublicPresencePage — Soft public mode for Communio profiles.
+ *
+ * WHAT: A calm, narrative-first public presence page for tenants without websites.
+ * WHERE: /p/:tenantSlug
+ * WHY: Dignified public presence without website-builder complexity.
+ */
+import { useEffect } from 'react';
+import { useParams } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
+import { supabase } from '@/integrations/supabase/client';
+import { Card, CardContent } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Globe, Mail, MapPin, Heart } from 'lucide-react';
+import SeoHead from '@/components/seo/SeoHead';
+
+const ARCHETYPE_LABELS: Record<string, string> = {
+  church: 'Faith Community',
+  digital_inclusion: 'Digital Inclusion',
+  social_enterprise: 'Social Enterprise',
+  workforce_development: 'Workforce Development',
+  refugee_support: 'Refugee Support',
+  education_access: 'Education Access',
+  library_system: 'Library System',
+};
+
+const AUTO_STORIES: Record<string, string> = {
+  church: 'A faith community offering spiritual care, fellowship, and service to our neighbors.',
+  digital_inclusion: 'An organization working to bridge the digital divide and ensure equitable access to technology.',
+  social_enterprise: 'A purpose-driven enterprise creating social impact through sustainable business practices.',
+  workforce_development: 'An organization dedicated to building pathways to meaningful employment for our community.',
+  refugee_support: 'A welcoming community providing care, resources, and belonging for displaced families.',
+  education_access: 'An organization opening doors to education and learning for those who need it most.',
+  library_system: 'A community resource center offering knowledge, connection, and shared space for all.',
+};
+
+export default function PublicPresencePage() {
+  const { tenantSlug } = useParams<{ tenantSlug: string }>();
+
+  // Fetch tenant by slug
+  const { data: tenant } = useQuery({
+    queryKey: ['public-tenant-slug', tenantSlug],
+    queryFn: async () => {
+      if (!tenantSlug) return null;
+      const { data } = await supabase
+        .from('tenants')
+        .select('id, slug, name, archetype')
+        .eq('slug', tenantSlug)
+        .maybeSingle();
+      return data as { id: string; slug: string; name: string; archetype: string | null } | null;
+    },
+    enabled: !!tenantSlug,
+  });
+
+  // Fetch compliance posture for this tenant
+  const { data: tenantSettings } = useQuery({
+    queryKey: ['public-tenant-settings', tenant?.id],
+    queryFn: async () => {
+      if (!tenant?.id) return null;
+      const { data } = await supabase
+        .from('tenant_settings')
+        .select('compliance_posture')
+        .eq('tenant_id', tenant.id)
+        .maybeSingle();
+      return data as { compliance_posture?: string } | null;
+    },
+    enabled: !!tenant?.id,
+  });
+
+  const isHipaaSensitive = tenantSettings?.compliance_posture === 'hipaa_sensitive';
+
+  // Fetch public profile
+  const { data: profile, isLoading } = useQuery({
+    queryKey: ['public-presence-profile', tenant?.id],
+    queryFn: async () => {
+      if (!tenant?.id) return null;
+      const { data } = await supabase
+        .from('communio_public_profiles')
+        .select('*')
+        .eq('tenant_id', tenant.id)
+        .eq('visibility', 'public')
+        .maybeSingle();
+      return data as any;
+    },
+    enabled: !!tenant?.id,
+  });
+
+  // Fetch metro name if available
+  const metroIds = profile?.metros ? (typeof profile.metros === 'string' ? JSON.parse(profile.metros) : profile.metros) : [];
+  const { data: metroName } = useQuery({
+    queryKey: ['public-presence-metro', metroIds],
+    queryFn: async () => {
+      if (!metroIds.length) return null;
+      const { data } = await supabase
+        .from('metros')
+        .select('metro')
+        .eq('id', metroIds[0])
+        .maybeSingle();
+      return (data as any)?.metro ?? null;
+    },
+    enabled: metroIds.length > 0,
+  });
+
+  // Fetch upcoming public events for this tenant
+  const { data: publicEvents } = useQuery({
+    queryKey: ['public-presence-events', tenant?.id],
+    queryFn: async () => {
+      if (!tenant?.id) return [];
+      const { data } = await (supabase
+        .from('events')
+        .select('id, event_name, event_date, slug')
+        .eq('tenant_id', tenant.id) as any)
+        .eq('is_public', true)
+        .gte('event_date', new Date().toISOString())
+        .order('event_date', { ascending: true })
+        .limit(5);
+      return (data as any[]) ?? [];
+    },
+    enabled: !!tenant?.id,
+  });
+
+  // Build presence story with fallback
+  const presenceStory = profile?.presence_story ||
+    (profile?.archetype ? AUTO_STORIES[profile.archetype] : null) ||
+    `${profile?.org_name || tenant?.name || 'This organization'} is a community-focused organization sharing its presence in the network.`;
+  const isAutoGenerated = profile?.auto_generated || !profile?.presence_story;
+
+  const orgName = profile?.org_name || tenant?.name || tenantSlug || '';
+  const archetype = profile?.archetype || tenant?.archetype || null;
+  const archetypeLabel = archetype ? (ARCHETYPE_LABELS[archetype] || archetype.replace(/_/g, ' ')) : null;
+
+  // SEO meta
+  useEffect(() => {
+    if (!orgName) return;
+    const metroSuffix = metroName ? ` in ${metroName}` : '';
+    const arcSuffix = archetypeLabel ? ` — ${archetypeLabel}` : '';
+    document.title = `${orgName}${arcSuffix}${metroSuffix} | Communio`;
+
+    const metaDesc = document.querySelector('meta[name="description"]');
+    const desc = presenceStory.slice(0, 160);
+    if (metaDesc) metaDesc.setAttribute('content', desc);
+    else {
+      const el = document.createElement('meta');
+      el.name = 'description';
+      el.content = desc;
+      document.head.appendChild(el);
+    }
+
+    // JSON-LD Organization schema
+    const existingLd = document.querySelector('script[data-presence-ld]');
+    if (existingLd) existingLd.remove();
+    const ld = document.createElement('script');
+    ld.type = 'application/ld+json';
+    ld.setAttribute('data-presence-ld', 'true');
+    ld.textContent = JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'Organization',
+      name: orgName,
+      description: presenceStory.slice(0, 300),
+      ...(profile?.website_url ? { url: profile.website_url } : {}),
+      ...(profile?.contact_email ? { email: profile.contact_email } : {}),
+      ...(metroName ? { areaServed: { '@type': 'City', name: metroName } } : {}),
+    });
+    document.head.appendChild(ld);
+
+    return () => {
+      const el = document.querySelector('script[data-presence-ld]');
+      if (el) el.remove();
+    };
+  }, [orgName, archetypeLabel, metroName, presenceStory, profile]);
+
+  // 404 state
+  if (!isLoading && tenant && !profile) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-background">
+        <div className="text-center space-y-3">
+          <h1 className="text-2xl font-bold">Page not found</h1>
+          <p className="text-muted-foreground text-sm">This organization hasn't shared a public presence yet.</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!isLoading && !tenant) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-background">
+        <div className="text-center space-y-3">
+          <h1 className="text-2xl font-bold">Page not found</h1>
+          <p className="text-muted-foreground text-sm">We couldn't find this organization.</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (isLoading || !profile) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-background">
+        <p className="text-sm text-muted-foreground">Loading…</p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-background">
+      <SeoHead title={`${orgName} — Public Presence on CROS™`} description={`Meet ${orgName}. A public presence shared through the Communio network on CROS.`} />
+      <div className="max-w-2xl mx-auto px-4 py-16 md:py-24 space-y-8">
+        {/* Hero */}
+        <header className="text-center space-y-4">
+          <div className="mx-auto w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center">
+            <Heart className="h-8 w-8 text-primary" />
+          </div>
+          <h1 className="text-3xl md:text-4xl font-bold tracking-tight font-serif">{orgName}</h1>
+          <div className="flex items-center justify-center gap-3 flex-wrap">
+            {archetypeLabel && (
+              <Badge variant="secondary" className="text-xs">
+                {archetypeLabel}
+              </Badge>
+            )}
+            {metroName && (
+              <span className="flex items-center gap-1 text-sm text-muted-foreground">
+                <MapPin className="h-3.5 w-3.5" />
+                {metroName}
+              </span>
+            )}
+          </div>
+        </header>
+
+        {/* Presence Story */}
+        <Card className="rounded-xl">
+          <CardContent className="p-6 md:p-8">
+            <p className="text-base md:text-lg text-foreground font-serif leading-relaxed">
+              {presenceStory}
+            </p>
+            {isAutoGenerated && (
+              <p className="text-xs text-muted-foreground mt-4 italic">
+                Generated from your activity.
+              </p>
+            )}
+          </CardContent>
+        </Card>
+
+        {/* Upcoming Public Events */}
+        {publicEvents && publicEvents.length > 0 && (
+          <section className="space-y-3">
+            <h2 className="text-lg font-semibold font-serif">Upcoming Events</h2>
+            <div className="space-y-2">
+              {publicEvents.map((evt: any) => (
+                <Card key={evt.id} className="rounded-xl">
+                  <CardContent className="p-4 flex items-center justify-between">
+                    <div>
+                      <p className="text-sm font-medium">{evt.event_name}</p>
+                      <p className="text-xs text-muted-foreground">
+                        {new Date(evt.event_date).toLocaleDateString('en-US', {
+                          weekday: 'long',
+                          month: 'long',
+                          day: 'numeric',
+                          year: 'numeric',
+                        })}
+                      </p>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {/* Contact info — hidden in HIPAA-sensitive mode */}
+        {!isHipaaSensitive && (profile.website_url || profile.contact_email) && (
+          <section className="space-y-3">
+            <h2 className="text-lg font-semibold font-serif">Connect</h2>
+            <Card className="rounded-xl">
+              <CardContent className="p-5 space-y-3">
+                {profile.website_url && (
+                  <a
+                    href={profile.website_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-2 text-sm text-primary hover:underline"
+                  >
+                    <Globe className="h-4 w-4" />
+                    {profile.website_url.replace(/^https?:\/\//, '').replace(/\/$/, '')}
+                  </a>
+                )}
+                {profile.contact_email && (
+                  <a
+                    href={`mailto:${profile.contact_email}`}
+                    className="flex items-center gap-2 text-sm text-primary hover:underline"
+                  >
+                    <Mail className="h-4 w-4" />
+                    {profile.contact_email}
+                  </a>
+                )}
+              </CardContent>
+            </Card>
+          </section>
+        )}
+
+        {/* Footer */}
+        <footer className="text-center pt-8 border-t border-border">
+          <p className="text-xs text-muted-foreground">
+            Part of the <a href="/network" className="underline hover:text-foreground">CROS Network</a>
+          </p>
+        </footer>
+      </div>
+    </div>
+  );
+}

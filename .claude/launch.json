@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "CROS Dev Server",
+      "runtimeExecutable": "powershell.exe",
+      "runtimeArgs": ["-NoProfile", "-NonInteractive", "-Command", "npm run dev"],
+      "port": 8080
+    }
+  ]
+}

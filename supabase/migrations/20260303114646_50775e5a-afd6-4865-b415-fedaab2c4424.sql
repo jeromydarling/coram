@@ -1,0 +1,2 @@
+ALTER TABLE public.operator_app_errors ADD COLUMN IF NOT EXISTS alerted_at timestamptz DEFAULT NULL;
+COMMENT ON COLUMN public.operator_app_errors.alerted_at IS 'When this error was last included in an alert digest email';

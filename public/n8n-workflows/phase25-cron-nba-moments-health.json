@@ -1,0 +1,178 @@
+{
+  "name": "Profunda - Phase 2.5 Cron (NBA + Priority Moments + Health Monitor)",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtMinute": 0
+            }
+          ]
+        }
+      },
+      "id": "phase25-cron-0001-0001-000000000001",
+      "name": "Hourly Schedule",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [840, 340]
+    },
+    {
+      "parameters": {
+        "keepOnlySet": true,
+        "values": {
+          "string": [
+            {
+              "name": "SUPABASE_FUNCTIONS_BASE_URL",
+              "value": "https://lxahadqhpubynuzvraxc.supabase.co/functions/v1"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "phase25-cron-0001-0001-000000000002",
+      "name": "Workflow Constants",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 2,
+      "position": [1080, 340],
+      "retryOnFail": true,
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $json.SUPABASE_FUNCTIONS_BASE_URL + '/generate-next-best-actions' }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ {} }}",
+        "options": {
+          "response": {},
+          "timeout": 90000
+        }
+      },
+      "id": "phase25-cron-0001-0001-000000000003",
+      "name": "Generate Next Best Actions",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [1320, 240],
+      "alwaysOutputData": true,
+      "retryOnFail": true,
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "JZ0bvsdogmHU6USf",
+          "name": "Secret Worker Key"
+        }
+      },
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('Workflow Constants').first().json.SUPABASE_FUNCTIONS_BASE_URL + '/detect-priority-moments' }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ {} }}",
+        "options": {
+          "response": {},
+          "timeout": 90000
+        }
+      },
+      "id": "phase25-cron-0001-0001-000000000004",
+      "name": "Detect Priority Moments",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [1320, 440],
+      "alwaysOutputData": true,
+      "retryOnFail": true,
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "JZ0bvsdogmHU6USf",
+          "name": "Secret Worker Key"
+        }
+      },
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('Workflow Constants').first().json.SUPABASE_FUNCTIONS_BASE_URL + '/monitor-automation-health' }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ {} }}",
+        "options": {
+          "response": {},
+          "timeout": 60000
+        }
+      },
+      "id": "phase25-cron-0001-0001-000000000005",
+      "name": "Monitor Automation Health",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [1560, 340],
+      "alwaysOutputData": true,
+      "retryOnFail": true,
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "JZ0bvsdogmHU6USf",
+          "name": "Secret Worker Key"
+        }
+      },
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "jsCode": "const nbaRes = $('Generate Next Best Actions').first().json;\nconst pmRes = $('Detect Priority Moments').first().json;\nconst healthRes = $('Monitor Automation Health').first().json;\nreturn [{ json: {\n  ok: true,\n  nba: nbaRes,\n  priority_moments: pmRes,\n  health: healthRes,\n  completed_at: new Date().toISOString()\n} }];"
+      },
+      "id": "phase25-cron-0001-0001-000000000006",
+      "name": "Log Results",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1800, 340],
+      "alwaysOutputData": true,
+      "continueOnFail": true
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Hourly Schedule": {
+      "main": [[{ "node": "Workflow Constants", "type": "main", "index": 0 }]]
+    },
+    "Workflow Constants": {
+      "main": [
+        [
+          { "node": "Generate Next Best Actions", "type": "main", "index": 0 },
+          { "node": "Detect Priority Moments", "type": "main", "index": 0 }
+        ]
+      ]
+    },
+    "Generate Next Best Actions": {
+      "main": [[{ "node": "Monitor Automation Health", "type": "main", "index": 0 }]]
+    },
+    "Detect Priority Moments": {
+      "main": [[{ "node": "Monitor Automation Health", "type": "main", "index": 0 }]]
+    },
+    "Monitor Automation Health": {
+      "main": [[{ "node": "Log Results", "type": "main", "index": 0 }]]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": true,
+    "timeSavedMode": "fixed",
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "versionId": "phase25-cron-v1",
+  "meta": {
+    "instanceId": "93beede2a90582294d7ef06720d87eff3641b0d88433511d1e55f0a191940c61"
+  },
+  "id": "phase25-cron-v1",
+  "tags": []
+}

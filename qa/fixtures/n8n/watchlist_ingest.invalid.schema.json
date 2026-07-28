@@ -1,0 +1,10 @@
+{
+  "workflow_key": "watchlist_ingest",
+  "run_id": "wl-ingest-bad-schema-3333-444444444444",
+  "org_id": "org-wl-001",
+  "payload": {
+    "url": 12345,
+    "content_hash": null,
+    "raw_text": false
+  }
+}

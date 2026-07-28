@@ -1,0 +1,1 @@
+ALTER TABLE public.contacts ADD COLUMN IF NOT EXISTS has_given_financially boolean NOT NULL DEFAULT false;

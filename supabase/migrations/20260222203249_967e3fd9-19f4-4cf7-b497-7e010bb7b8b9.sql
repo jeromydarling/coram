@@ -1,0 +1,1 @@
+UPDATE qa_test_runs SET status = 'failed', completed_at = now(), error = '{"message": "Manually cancelled — stale batch run"}'::jsonb WHERE status = 'running'

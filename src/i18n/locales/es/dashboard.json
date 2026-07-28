@@ -1,0 +1,355 @@
+{
+  "welcome": {
+    "title": "Bienvenido a CROS",
+    "subtitle": "Su plataforma de inteligencia relacional comunitaria",
+    "greeting": "{{timeOfDay}}, {{name}}",
+    "greetingDefault": "{{timeOfDay}}",
+    "timeOfDay": {
+      "morning": "Buenos días",
+      "afternoon": "Buenas tardes",
+      "evening": "Buenas noches"
+    },
+    "firstVisit": {
+      "title": "Bienvenido a su camino",
+      "message": "CROS le ayuda a ver con mayor claridad a las personas que le rodean y a crecer juntos en comunidad. Comencemos.",
+      "step1": "Agregue su primera relación",
+      "step2": "Explore el panel principal",
+      "step3": "Conozca a su Compañero NRI",
+      "dismiss": "Prefiero explorar por mi cuenta"
+    }
+  },
+  "cards": {
+    "activeRelationships": "Relaciones activas",
+    "upcomingFollowUps": "Seguimientos próximos",
+    "recentInteractions": "Interacciones recientes",
+    "openOpportunities": "Oportunidades abiertas",
+    "eventsThisWeek": "Eventos esta semana",
+    "volunteerHours": "Horas de voluntariado",
+    "provisionsActive": "Provisiones activas",
+    "journeyMilestones": "Hitos del camino",
+    "communityPulse": "Pulso comunitario",
+    "reflectionsThisMonth": "Reflexiones este mes",
+    "overdueActions": "Acciones vencidas",
+    "item_one": "elemento",
+    "item_other": "elementos",
+    "critical": "{{count}} crítico (>7 días)",
+    "daysOverdue_one": "{{count}} día de retraso",
+    "daysOverdue_other": "{{count}} días de retraso",
+    "moreOverdueItems": "+{{count}} elementos vencidos más"
+  },
+  "modes": {
+    "operational": "Operacional",
+    "story": "Historia"
+  },
+  "alerts": {
+    "journeyAttentionRequired": "El camino requiere atención",
+    "stuckDescription_one": "{{count}} oportunidad detenida por más de 30 días",
+    "stuckDescription_other": "{{count}} oportunidades detenidas por más de 30 días",
+    "view": "Ver",
+    "days": "días"
+  },
+  "activity": {
+    "recentActivity": "Actividad reciente",
+    "noRecentActivity": "Sin actividad reciente"
+  },
+  "snapshot": {
+    "weeklySnapshot": "Resumen semanal",
+    "noScheduledItems": "Sin elementos programados",
+    "viewFullDetails": "Ver detalles completos",
+    "allMetros": "Todas las metrópolis",
+    "events": "Eventos",
+    "meetings": "Reuniones",
+    "tasks": "Tareas",
+    "google": "Google",
+    "googleCalendar": "Google Calendar",
+    "contact": "Contacto:",
+    "organization": "Organización:",
+    "notes": "Notas:",
+    "description": "Descripción:",
+    "due": "Vence:"
+  },
+  "nextBestActions": {
+    "title": "Próximas mejores acciones",
+    "description": "Acciones clasificadas según señales, resultados y urgencia",
+    "highPriority": "Alta prioridad",
+    "medium": "Media",
+    "low": "Baja",
+    "execute": "Ejecutar",
+    "dismiss": "Descartar",
+    "snooze7d": "Posponer 7 días",
+    "noPendingActions": "Sin acciones pendientes — ¡todo al día!"
+  },
+  "scorecard": {
+    "fridayWeeklyScorecard": "Marcador semanal del viernes",
+    "thisWeek": "Esta semana",
+    "newOpportunities": "Nuevas oportunidades",
+    "meetingsHeld": "Reuniones realizadas",
+    "eventsAttended": "Eventos asistidos",
+    "anchorCandidates": "Candidatos ancla",
+    "ordersVsTarget": "Pedidos vs. objetivo trimestral",
+    "devices": "dispositivos",
+    "percentOfTarget": "{{percent}}% del objetivo",
+    "targetMet": "¡Objetivo alcanzado!",
+    "onTrack": "En camino",
+    "toGo": "{{count}} restantes",
+    "nextWeekTop3": "Los 3 principales eventos de la próxima semana",
+    "noNextWeekEvents": "No hay eventos ni reuniones programados para la próxima semana",
+    "highPotential": "Alto potencial"
+  },
+  "companion": {
+    "title": "Compañero NRI",
+    "trayLabel": "Compañero",
+    "thinking": "Reflexionando...",
+    "greeting": "¿Cómo puedo ayudarle a cuidar sus relaciones hoy?",
+    "inputPlaceholder": "Pregunte al Compañero NRI...",
+    "suggestedActions": "Sugerencias para usted",
+    "recentInsights": "Observaciones recientes",
+    "dailyReflection": "Reflexión del día"
+  },
+  "seasonalRhythm": {
+    "title": "Ritmo estacional",
+    "currentSeason": "Estación actual",
+    "spring": "Primavera — Siembra y nuevos comienzos",
+    "summer": "Verano — Crecimiento y florecimiento",
+    "autumn": "Otoño — Cosecha y gratitud",
+    "winter": "Invierno — Descanso y reflexión",
+    "liturgical": {
+      "advent": "Adviento — Espera y preparación",
+      "christmas": "Navidad — Alegría y don",
+      "lent": "Cuaresma — Reflexión y renovación",
+      "easter": "Pascua — Resurrección y esperanza",
+      "ordinary": "Tiempo Ordinario — Presencia fiel"
+    }
+  },
+  "announcements": {
+    "title": "Anuncios",
+    "newFeature": "Nueva función",
+    "maintenance": "Mantenimiento programado",
+    "tip": "Consejo",
+    "dismissAll": "Descartar todo"
+  },
+  "quickStats": {
+    "title": "De un vistazo",
+    "trend": {
+      "up": "Aumento del {{percent}}% respecto al mes anterior",
+      "down": "Disminución del {{percent}}% respecto al mes anterior",
+      "stable": "Estable respecto al mes anterior"
+    }
+  },
+  "missionRhythm": {
+    "title": "Ritmo de la misión",
+    "subtitle": "Una visión serena de cómo se despliegan el cuidado, las relaciones y el trabajo.",
+    "helpAffordance": "Lo que está viendo",
+    "helpTooltip": "Estas perspectivas se adaptan al arquetipo de su organización y a los datos que ha agregado. A medida que registre visitas, reflexiones y eventos, esta vista se enriquece.",
+    "thisWeek": {
+      "title": "Esta semana",
+      "description": "Un resumen tranquilo de la presencia y el cuidado de su equipo.",
+      "noActivity": "Aún no hay actividad esta semana. Está bien — la presencia se construye en silencio.",
+      "relationshipsTouched": "Relaciones atendidas",
+      "visitsCompleted": "Visitas realizadas",
+      "reflectionsAdded": "Reflexiones agregadas",
+      "events": "Eventos",
+      "volunteersEngaged": "Voluntarios comprometidos",
+      "careRecorded": "Cuidado registrado"
+    },
+    "carePresence": {
+      "title": "Cuidado y presencia",
+      "description": "Dónde ocurrió el cuidado y cómo se desarrolla la presencia.",
+      "emptyState": "La conciencia de ubicación se profundizará a medida que agregue visitas y eventos."
+    },
+    "momentum": {
+      "title": "Impulso y adopción",
+      "description": "Cómo su equipo va creciendo en el sistema."
+    },
+    "discovery": {
+      "title": "Descubrimiento y comunidad",
+      "description": "Lo que está emergiendo en torno a su misión.",
+      "emptyState": "El descubrimiento se adapta a su misión — configurado por su arquetipo y palabras clave de enriquecimiento."
+    }
+  },
+  "staleNextSteps": {
+    "title": "Próximos pasos sin actualizar",
+    "description": "Oportunidades con próximos pasos que no han sido actualizados"
+  },
+  "weeklyStory": {
+    "title": "La historia de esta semana",
+    "description": "No es un informe — es lo que se ha formado en silencio.",
+    "tooltipContent": "Hilo narrativo semanal construido a partir de las reflexiones, visitas y señales de su equipo.",
+    "hideMoments": "Ocultar momentos",
+    "seeCitedMoments": "Ver momentos citados",
+    "readFullStory": "Leer la historia completa",
+    "emptyState": "La historia se reúne aquí en silencio. A medida que su equipo registre visitas, reflexiones y relaciones, los hilos comenzarán a formarse."
+  },
+  "formation": {
+    "title": "Formación suave",
+    "tooltipContent": "Propuestas suaves y adaptadas al rol para ayudarle a mantenerse presente en su ritmo diario."
+  },
+  "storySignals": {
+    "title": "Señales de historia",
+    "description": "Observaciones suaves de la actividad relacional de esta semana",
+    "openStory": "Abrir historia",
+    "kinds": {
+      "checkIn": "Seguimiento",
+      "connection": "Conexión",
+      "headsUp": "Aviso",
+      "celebration": "Celebración"
+    }
+  },
+  "localPulse": {
+    "title": "Pulso local",
+    "thisWeek": "{{count}} esta semana",
+    "reviewAll": "Revisar todo"
+  },
+  "leadershipBrief": {
+    "title": "Informe de liderazgo",
+    "noReportYet": "Aún no hay informe de liderazgo",
+    "generateNow": "Generar ahora",
+    "viewFullBrief": "Ver informe completo",
+    "briefSchedule": "Programación del informe",
+    "briefScheduleDescription": "Elija cuándo se genera su informe y qué tan atrás mira.",
+    "generateOn": "Generar el",
+    "lookbackPeriod": "Período de retrospección",
+    "set": "Establecer",
+    "days": "días",
+    "currently": "Actualmente: los {{day}}, últimos {{lookback}} días",
+    "regenerateReport": "Regenerar informe",
+    "editBrief": "Editar informe",
+    "downloadPdf": "Descargar PDF",
+    "cancelEditing": "Cancelar edición",
+    "saveChanges": "Guardar cambios",
+    "save": "Guardar",
+    "sections": {
+      "keyWins": "Logros clave",
+      "relationshipGrowth": "Crecimiento relacional",
+      "journeyMovement": "Movimiento del camino",
+      "outreachReport": "Informe de alcance",
+      "provisionsDelivered": "Prōvīsiō entregado",
+      "engagementSignals": "Señales de compromiso",
+      "newOpportunities": "Nuevas oportunidades",
+      "upcomingFocus": "Enfoque próximo",
+      "concerns": "Preocupaciones",
+      "calendarAhead": "Calendario y tareas próximas"
+    }
+  },
+  "relationshipSignals": {
+    "title": "Señales relacionales",
+    "description": "Seguimientos suaves surgidos de sus conversaciones",
+    "careTaskCreated": "Tarea de cuidado creada",
+    "createCareTask": "Crear tarea de cuidado"
+  },
+  "relationshipStoryRibbon": {
+    "emptyState": "Su enfoque relacional aparecerá aquí."
+  },
+  "teamCapacity": {
+    "title": "Presencia de su equipo",
+    "tooltipContent": "Cuántos mayordomos, pastores, compañeros y administradores están guiando activamente su misión. Los visitantes, voluntarios y contactos importados nunca se contabilizan.",
+    "companion_one": "{{count}} compañero está guiando activamente este trabajo.",
+    "companion_other": "{{count}} compañeros y pastores están guiando activamente este trabajo.",
+    "visitorsWelcome": "Los visitantes y voluntarios siempre son bienvenidos.",
+    "overCapacity": "Su equipo está creciendo — puede que desee ampliar la capacidad para que todos puedan participar cómodamente."
+  },
+  "metroDiscovery": {
+    "title": "Inteligencia metropolitana",
+    "description": "Cuando esté listo para crecer más allá de su región, la Inteligencia metropolitana aporta conciencia multicomunitaria, señales de expansión y segmentación narrativa.",
+    "explore": "Explorar la inteligencia metropolitana"
+  },
+  "metroFilter": {
+    "allMetros": "Todas las metrópolis"
+  },
+  "eventDayBanner": {
+    "todayIsEventDay": "Hoy es un día de evento"
+  },
+  "recommendations": {
+    "title": "Recomendaciones",
+    "viewOpportunity": "Ver oportunidad"
+  },
+  "grantKPIs": {
+    "activeGrants": "Subvenciones activas",
+    "pipelineGrants": "Subvenciones en proceso",
+    "totalRequested": "Total solicitado",
+    "totalAwarded": "Total concedido",
+    "grantsByStage": "Subvenciones por etapa",
+    "grantsByStageDescription": "Distribución por etapas del proceso de subvenciones",
+    "grantsByFunderType": "Subvenciones por tipo de financiador",
+    "grantsByFunderTypeDescription": "Monto concedido por categoría de financiador"
+  },
+  "learningDashboard": {
+    "whatWorksBest": "Qué funciona mejor",
+    "whatWorksBestDescription": "Tipos de acción por tasa de éxito",
+    "signalSources": "Fuentes de señales",
+    "signalSourcesDescription": "Qué señales conducen al éxito",
+    "topActionsToday": "Acciones principales de hoy",
+    "signalsWithoutActions": "Señales sin acciones",
+    "signalsWithoutActionsDescription": "Organizaciones con señales recientes pero sin acciones ejecutadas",
+    "noDataYet": "Aún no hay datos",
+    "noPendingActions": "Sin acciones pendientes",
+    "allSignalsActedUpon": "Todas las señales han sido atendidas"
+  },
+  "anchorTrendChart": {
+    "title": "Anclajes formados",
+    "subtitle": "Nuevos anclajes que alcanzan su primer volumen por mes",
+    "anchorFormed": "anclaje formado",
+    "anchorsFormed": "anclajes formados"
+  },
+  "eventContactsChart": {
+    "contactsMadeByEvent": "Contactos realizados por evento",
+    "topEventsByContacts": "Principales eventos por contactos realizados",
+    "noContactsLinked": "Aún no hay contactos vinculados a eventos",
+    "contactsMade": "contactos realizados",
+    "convertedToOpportunities": "convertidos en oportunidades",
+    "conversionRate": "tasa de conversión",
+    "householdsServed": "hogares atendidos",
+    "contactsMadeBar": "Contactos realizados"
+  },
+  "googleEventManager": {
+    "manageGoogleEvents": "Gestionar eventos de Google",
+    "googleEvents": "Eventos de Google",
+    "hiddenCount": "{{count}} oculto",
+    "visibleCount": "{{count}} visible",
+    "toggleVisibilityDescription": "Active o desactive la visibilidad de los eventos de esta semana. Los eventos ocultos no aparecerán en su Centro de comando ni en el Calendario.",
+    "noEventsThisWeek": "No hay eventos de Google Calendar esta semana",
+    "hidden": "Oculto",
+    "visible": "Visible"
+  },
+  "metroReadinessTable": {
+    "title": "Índice de preparación metropolitana",
+    "subtitle": "Puntuación estratégica de expansión por mercado",
+    "col": {
+      "metro": "Metrópolis",
+      "readinessIndex": "Índice de preparación",
+      "status": "Estado",
+      "activeAnchors": "Anclajes activos",
+      "pipeline": "Proceso",
+      "recommendation": "Recomendación"
+    }
+  },
+  "nriBadge": {
+    "active": "NRI Activo",
+    "signalsAndReports": "{{signals}} señales esta semana · {{reports}} informes"
+  },
+  "opportunityDistributionChart": {
+    "opportunity": "oportunidad",
+    "opportunities": "oportunidades",
+    "clickToFilter": "Haga clic en el segmento para filtrar",
+    "noDataAvailable": "No hay datos disponibles"
+  },
+  "pipelineChart": {
+    "title": "Camino por capítulo",
+    "subtitle": "Alianzas en desarrollo",
+    "opportunity": "oportunidad",
+    "opportunities": "oportunidades"
+  },
+  "topAnchorsTable": {
+    "title": "Anclajes de mayor rendimiento",
+    "subtitle": "Clasificados por volumen mensual promedio",
+    "col": {
+      "organization": "Organización",
+      "metro": "Metrópolis",
+      "tier": "Nivel",
+      "avgVolume": "Volumen prom.",
+      "trend": "Tendencia",
+      "status": "Estado",
+      "value": "Valor"
+    }
+  }
+}

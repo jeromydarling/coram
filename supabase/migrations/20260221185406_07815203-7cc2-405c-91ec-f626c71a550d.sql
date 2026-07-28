@@ -1,0 +1,1 @@
+CREATE UNIQUE INDEX IF NOT EXISTS operator_expansion_watch_tenant_metro_uniq ON public.operator_expansion_watch (tenant_id, metro_id);

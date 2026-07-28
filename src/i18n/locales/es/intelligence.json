@@ -1,0 +1,208 @@
+{
+  "radar": {
+    "title": "Radar de Oportunidades",
+    "mobileTitle": "Radar",
+    "subtitle": "Lo que requiere su atención ahora",
+    "stats": {
+      "critical": "Crítico",
+      "highPriority": "Alta Prioridad",
+      "medium": "Medio",
+      "withSignals": "Con Señales"
+    },
+    "tabs": {
+      "attentionQueue": "Cola de Atención",
+      "attentionShort": "Atención",
+      "signalFeed": "Flujo de Señales",
+      "signalsShort": "Señales"
+    },
+    "filters": {
+      "all": "Todos",
+      "criticalOnly": "Solo Críticos",
+      "highPlus": "Alto+",
+      "hasSignals": "Con Señales"
+    },
+    "empty": {
+      "noPendingActions": "Sin acciones pendientes — ¡todo al día!",
+      "noSignals": "No se detectaron señales recientes"
+    }
+  },
+  "momentumMap": {
+    "title": "Mapa de Impulso",
+    "subtitle": "Vea dónde se está generando impulso en sus metros",
+    "overlays": "Capas",
+    "refresh": "Actualizar",
+    "overlayOptions": {
+      "stateBoundaries": "Límites estatales",
+      "regionGroupings": "Agrupaciones regionales",
+      "opportunityRadar": "Radar de Oportunidades",
+      "drift": "Deriva",
+      "storyLayers": "Capas de Historia"
+    },
+    "storyLayers": {
+      "pulse": "Pulso",
+      "partners": "Socios",
+      "ink": "Su Tinta"
+    },
+    "loading": "Cargando datos de impulso...",
+    "error": "Error al cargar datos de impulso",
+    "tryAgain": "Intentar de nuevo",
+    "noMetros": "No hay metros disponibles",
+    "noMetrosMessage": "Los datos de impulso aparecerán aquí cuando los metros tengan actividad."
+  },
+  "momentumRankings": {
+    "title": "Clasificaciones de Impulso",
+    "subtitle": "Puntajes de impulso relacional de organizaciones, ordenados por fortaleza",
+    "searchPlaceholder": "Buscar organizaciones o metros...",
+    "filterByTrend": "Filtrar por tendencia",
+    "trends": {
+      "all": "Todas las tendencias",
+      "rising": "En ascenso",
+      "stable": "Estable",
+      "falling": "En descenso"
+    },
+    "summary": {
+      "scoredOrgs": "Orgs con Puntaje",
+      "rising": "En ascenso",
+      "stable": "Estables",
+      "falling": "En descenso"
+    },
+    "rankingsCard": "Clasificaciones",
+    "emptyNoData": "Aún no hay datos de impulso. Los puntajes se calculan automáticamente a partir de señales, conexiones y actividad.",
+    "emptyNoMatch": "Ningún resultado coincide con su filtro."
+  },
+  "movementIntelligence": {
+    "title": "Inteligencia de Movimiento",
+    "subtitle": "Cómo se despliegan el cuidado, las relaciones y la presencia en su misión.",
+    "allSectors": "Todos los sectores",
+    "whatYouSeeing": "Lo que está viendo",
+    "whatYouSeeingTooltip": "Estos análisis se adaptan al arquetipo de su organización y a los datos que ha registrado. A medida que registra visitas, reflexiones y eventos, esta visión se profundiza.",
+    "sections": {
+      "territoryVitality": "Vitalidad del Territorio",
+      "careRhythm": "Ritmo de Cuidado",
+      "territoryVitalitySubtitle": "Cómo el cuidado y la presencia se extienden por sus territorios.",
+      "careRhythmSubtitle": "Cómo se despliega su presencia en su área.",
+      "carePresence": "Cuidado y Presencia",
+      "carePresenceSubtitle": "Dónde ocurrió el cuidado y cómo se despliega la presencia.",
+      "relationshipFormation": "Formación de Relaciones",
+      "relationshipFormationSubtitle": "Cómo están echando raíces las nuevas conexiones.",
+      "activationEngagement": "Activación y Compromiso",
+      "activationEngagementSubtitle": "Con qué profundidad se compromete su equipo.",
+      "discoveryDiscernment": "Descubrimiento y Discernimiento",
+      "discoveryDiscernmentSubtitle": "Lo que está emergiendo en torno a su misión.",
+      "restorationMemory": "Restauración y Memoria",
+      "restorationMemorySubtitle": "Lo que ha sido recordado, recuperado u honrado.",
+      "narrativeThreads": "Hilos Narrativos",
+      "narrativeThreadsSubtitle": "La historia que NRI está percibiendo en su trabajo."
+    },
+    "metrics": {
+      "activatedTerritories": "Territorios Activados",
+      "activatedCountries": "Países Activados",
+      "activityPerTerritory": "Actividad por Territorio",
+      "activityPerCountry": "Actividad por País",
+      "careMoments": "Momentos de Cuidado",
+      "trendLabel": "Tendencia de 30 días",
+      "rising": "Impulso en desarrollo",
+      "steady": "Manteniendo el rumbo",
+      "declining": "Período más tranquilo",
+      "visits": "Visitas",
+      "events": "Eventos",
+      "careRecorded": "Cuidado Registrado",
+      "reflections": "Reflexiones",
+      "projects": "Proyectos",
+      "hoursLogged": "Horas Registradas",
+      "newPeople": "Personas Nuevas",
+      "activePartners": "Socios Activos",
+      "communioConnections": "Conexiones Communio",
+      "engagementDepth": "Profundidad de Compromiso",
+      "eventsThisMonth": "Eventos Este Mes",
+      "volunteersActive": "Voluntarios Activos",
+      "opportunitiesExplored": "Oportunidades Exploradas",
+      "grantsPursued": "Subvenciones Perseguidas",
+      "recordsRestored": "Registros Restaurados",
+      "lifeEvents": "Eventos Vitales",
+      "memorials": "Memoriales",
+      "milestones": "Hitos"
+    },
+    "noActivity": "Aún no se ha registrado actividad en este período. Está bien — la presencia se construye con calma.",
+    "memoryEmpty": "Las señales de memoria aparecerán a medida que se registren eventos vitales y recuperaciones.",
+    "dominantDirection": "Dirección Dominante: ",
+    "providenceThreads": "Hilos de Providencia",
+    "compassLabels": {
+      "north": "Narrativa",
+      "east": "Discernimiento",
+      "south": "Cuidado",
+      "west": "Restauración"
+    }
+  },
+  "intelligenceFeed": {
+    "title": "Flujo de Inteligencia",
+    "subtitle": "Señales e ideas priorizadas para su metro",
+    "refresh": "Actualizar",
+    "priority": {
+      "high": "Alta Prioridad",
+      "medium": "Media",
+      "low": "Baja"
+    },
+    "empty": "Aún no hay señales de inteligencia. Ejecute búsquedas y enriquecimientos para generar análisis."
+  },
+  "commandCenter": {
+    "title": "Centro de Comando Regional",
+    "mobileTitle": "Centro de Comando",
+    "subtitleTemplate": "Bienvenido de nuevo{{name}} — su enfoque para esta semana",
+    "storyTitle": "Su Día",
+    "storyMobileTitle": "Historia",
+    "storySubtitle": "Un reflejo sereno de lo que se está desplegando a su alrededor.",
+    "focusItems": {
+      "title": "Elementos de Enfoque Principales",
+      "description": "Acciones prioritarias según urgencia e impacto",
+      "items": "{{count}} elementos",
+      "allCaughtUp": "¡Todo al día!",
+      "noUrgent": "No hay elementos urgentes que requieran atención en este momento."
+    },
+    "quickActions": {
+      "staleOpportunities": "Oportunidades Estancadas",
+      "nearConversion": "Próximas a Conversión",
+      "grantDeadlines": "Fechas Límite de Subvenciones",
+      "overdueFollowups": "Seguimientos Vencidos"
+    },
+    "anchorVelocity": {
+      "title": "Velocidad de Anclas",
+      "noAnchors": "Aún no hay anclas",
+      "daysSinceLastAnchor": "Días desde el último ancla",
+      "inRamp": "En Rampa",
+      "atScale": "A Escala",
+      "viewAnchors": "Ver Anclas"
+    },
+    "adminTasks": {
+      "title": "Tareas de Administración",
+      "followupsOverdue": "Seguimientos vencidos",
+      "reportsDue": "Informes pendientes"
+    },
+    "badges": {
+      "stale": "Estancado",
+      "nearWin": "Próximo a Ganar",
+      "grant": "Subvención",
+      "overdue": "Vencido",
+      "task": "Tarea"
+    }
+  },
+  "commandCenterStory": {
+    "yourMetroToday": "Su Metro Hoy",
+    "yourFocusToday": "Su Enfoque Hoy",
+    "whereYouCanShowUp": "Dónde Puede Estar Presente",
+    "relationshipFocus": "Enfoque en Relaciones",
+    "todaysNarrative": "La Narrativa de Hoy",
+    "metricsSignals": "Métricas y Señales",
+    "actionGroups": {
+      "gentleNudges": "Impulsos Suaves",
+      "relationshipMoments": "Momentos de Relación",
+      "inYourMetro": "En Su Metro"
+    },
+    "emptyText": {
+      "nudges": "Nada urgente en este momento.",
+      "relationships": "Las conexiones están estables.",
+      "metro": "Su comunidad está tranquila hoy."
+    },
+    "noActions": "Sin acciones sugeridas en este momento. Todo va bien."
+  }
+}

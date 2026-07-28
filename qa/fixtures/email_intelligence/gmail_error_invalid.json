@@ -1,0 +1,6 @@
+{
+  "error": "Invalid To header: not a valid email address",
+  "status_code": 400,
+  "expected_category": "invalid_address",
+  "expected_code": "invalid_to"
+}

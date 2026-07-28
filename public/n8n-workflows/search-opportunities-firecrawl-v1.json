@@ -1,0 +1,200 @@
+{
+  "name": "Profunda - Search Opportunities (Firecrawl) - PROD v1",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "search-opportunities",
+        "responseMode": "onReceived",
+        "options": {}
+      },
+      "id": "webhook-trigger",
+      "name": "Webhook Trigger",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [240, 300],
+      "webhookId": "search-opportunities-prod"
+    },
+    {
+      "parameters": {
+        "keepOnlySet": false,
+        "values": {
+          "string": [
+            { "name": "SUPABASE_FUNCTIONS_BASE_URL", "value": "https://lxahadqhpubynuzvraxc.supabase.co/functions/v1" },
+            { "name": "SEARCH_WORKER_SECRET", "value": "={{ /* PASTE YOUR SEARCH_WORKER_SECRET HERE */ }}" },
+            { "name": "FIRECRAWL_API_KEY", "value": "={{ /* PASTE YOUR FIRECRAWL_API_KEY HERE */ }}" }
+          ]
+        },
+        "options": {}
+      },
+      "id": "workflow-constants",
+      "name": "Workflow Constants",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 2,
+      "position": [460, 300],
+      "retryOnFail": true,
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "jsCode": "const webhookData = $('Webhook Trigger').first().json;\nconst b = webhookData.body ?? webhookData;\nconst run_id = b.run_id || b.runId || b.runID;\nconst query = b.enforced_query || b.query || b.enforcedQuery;\nconst max_results = Number(b.max_results ?? b.maxResults ?? 20);\nif (!run_id || !query) {\n  return [{ json: { ok:false, error:{code:'MISSING_FIELDS', message:'run_id and enforced_query are required'}, run_id: run_id ?? null, query: query ?? null, max_results } }];\n}\nreturn [{ json: { ok:true, run_id, query, max_results: Math.max(1, Math.min(30, max_results)), scope: b.scope ?? null, metro: b.metro ?? null } }];"
+      },
+      "id": "normalize-input",
+      "name": "Normalize Input",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [680, 300]
+    },
+    {
+      "parameters": {
+        "conditions": { "boolean": [{ "value1": "={{ $json.ok }}", "operation": "isTrue" }] },
+        "options": {}
+      },
+      "id": "if-valid",
+      "name": "IF Valid Input?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [900, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.firecrawl.dev/v1/search",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "Authorization", "value": "=Bearer {{ $('Workflow Constants').first().json.FIRECRAWL_API_KEY }}" },
+            { "name": "Content-Type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"query\": {{ JSON.stringify($('Normalize Input').first().json.query) }},\n  \"limit\": {{ $('Normalize Input').first().json.max_results }}\n}",
+        "options": { "timeout": 60000, "response": { "response": { "neverError": true } } }
+      },
+      "id": "firecrawl-search",
+      "name": "Firecrawl Search",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1120, 180],
+      "continueOnFail": true,
+      "alwaysOutputData": true,
+      "retryOnFail": true,
+      "maxTries": 2
+    },
+    {
+      "parameters": {
+        "jsCode": "const run_id = $('Normalize Input').first().json.run_id;\nconst query = $('Normalize Input').first().json.query;\nconst max_results = $('Normalize Input').first().json.max_results || 20;\nconst r = $json;\nconst items = (r && (r.data || r.results || r.items)) || [];\nconst arr = Array.isArray(items) ? items : [];\n\nconst top = arr.slice(0, max_results).map((it, i) => {\n  const title = it.title || it.name || null;\n  const url = it.url || it.link || null;\n  const snippet = it.description || it.snippet || null;\n  return `${i+1}. ${title ?? ''}\\nURL: ${url ?? ''}\\nSnippet: ${snippet ?? ''}`.trim();\n});\n\nconst search_context = `Query: ${query}\\n\\nResults:\\n${top.join('\\n\\n')}`;\nreturn [{ json: { run_id, query, search_context, result_count: arr.length } }];"
+      },
+      "id": "build-context",
+      "name": "Build Search Context",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1340, 180],
+      "continueOnFail": true,
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.openai.com/v1/chat/completions",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "Authorization", "value": "=Bearer {{ $('Workflow Constants').first().json.SEARCH_WORKER_SECRET }}" },
+            { "name": "Content-Type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"model\": \"gpt-4o-mini\",\n  \"temperature\": 0,\n  \"response_format\": { \"type\": \"json_object\" },\n  \"messages\": [\n    { \"role\": \"system\", \"content\": \"You extract ORGANIZATIONS from web search results. Return ONLY valid JSON. Output schema: {\\\"opportunities\\\":[{\\\"name\\\":string|null,\\\"organization_type\\\":string|null,\\\"website\\\":string|null,\\\"location\\\":string|null,\\\"mission\\\":string|null,\\\"source_url\\\":string|null,\\\"evidence\\\":string|null,\\\"confidence\\\":number|null}]}. Only include info explicitly present in snippets.\" },\n    { \"role\": \"user\", \"content\": {{ JSON.stringify($('Build Search Context').first().json.search_context) }} }\n  ]\n}",
+        "options": { "timeout": 60000, "response": { "response": { "neverError": true } } }
+      },
+      "id": "llm-extract",
+      "name": "LLM Extract Opportunities",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1560, 180],
+      "continueOnFail": true,
+      "alwaysOutputData": true,
+      "retryOnFail": true,
+      "maxTries": 2
+    },
+    {
+      "parameters": {
+        "jsCode": "let txt = $json?.choices?.[0]?.message?.content ?? '';\ntxt = String(txt).trim();\nlet parsed;\ntry { parsed = JSON.parse(txt); } catch(e) {\n  const m = txt.match(/\\[[\\s\\S]*\\]/);\n  if (m) parsed = JSON.parse(m[0]); else parsed = [];\n}\nconst opportunities = Array.isArray(parsed) ? parsed : (parsed.opportunities || []);\nconst run_id = $('Normalize Input').first().json.run_id;\nconst cleaned = opportunities.slice(0, $('Normalize Input').first().json.max_results).map(o => ({\n  name: o.name ?? null,\n  organization_type: o.organization_type ?? null,\n  website: o.website ?? null,\n  location: o.location ?? null,\n  mission: o.mission ?? null,\n  source_url: o.source_url ?? o.url ?? null,\n  confidence: (typeof o.confidence === 'number') ? o.confidence : null,\n  evidence: o.evidence ?? null\n}));\nreturn [{ json: { run_id, status:'completed', results: cleaned } }];"
+      },
+      "id": "build-envelope",
+      "name": "Build Callback Envelope",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1780, 180],
+      "continueOnFail": true,
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('Workflow Constants').first().json.SUPABASE_FUNCTIONS_BASE_URL }}/search-callback",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "Authorization", "value": "=Bearer {{ $('Workflow Constants').first().json.SEARCH_WORKER_SECRET }}" },
+            { "name": "Content-Type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ $json }}",
+        "options": { "timeout": 60000, "response": { "response": { "neverError": true } } }
+      },
+      "id": "success-callback",
+      "name": "Callback to Supabase",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [2000, 180],
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('Workflow Constants').first().json.SUPABASE_FUNCTIONS_BASE_URL }}/search-callback",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "Authorization", "value": "=Bearer {{ $('Workflow Constants').first().json.SEARCH_WORKER_SECRET }}" },
+            { "name": "Content-Type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"run_id\": {{ JSON.stringify($('Normalize Input').first().json.run_id) }},\n  \"status\": \"failed\",\n  \"results\": [],\n  \"error\": { \"code\": \"INVALID_INPUT\", \"message\": {{ JSON.stringify($('Normalize Input').first().json.error?.message || 'Missing required fields') }} }\n}",
+        "options": { "timeout": 60000, "response": { "response": { "neverError": true } } }
+      },
+      "id": "error-callback",
+      "name": "Error Callback to Supabase",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1120, 440],
+      "continueOnFail": true
+    }
+  ],
+  "connections": {
+    "Webhook Trigger": { "main": [[{ "node": "Workflow Constants", "type": "main", "index": 0 }]] },
+    "Workflow Constants": { "main": [[{ "node": "Normalize Input", "type": "main", "index": 0 }]] },
+    "Normalize Input": { "main": [[{ "node": "IF Valid Input?", "type": "main", "index": 0 }]] },
+    "IF Valid Input?": { "main": [[{ "node": "Firecrawl Search", "type": "main", "index": 0 }], [{ "node": "Error Callback to Supabase", "type": "main", "index": 0 }]] },
+    "Firecrawl Search": { "main": [[{ "node": "Build Search Context", "type": "main", "index": 0 }]] },
+    "Build Search Context": { "main": [[{ "node": "LLM Extract Opportunities", "type": "main", "index": 0 }]] },
+    "LLM Extract Opportunities": { "main": [[{ "node": "Build Callback Envelope", "type": "main", "index": 0 }]] },
+    "Build Callback Envelope": { "main": [[{ "node": "Callback to Supabase", "type": "main", "index": 0 }]] }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "saveManualExecutions": true,
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "staticData": null,
+  "tags": [{ "name": "profunda" }, { "name": "search" }],
+  "triggerCount": 1
+}

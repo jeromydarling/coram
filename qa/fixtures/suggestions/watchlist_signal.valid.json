@@ -1,0 +1,11 @@
+{
+  "id": "sig-11111111-aaaa-bbbb-cccc-dddddddddddd",
+  "org_id": "org-wl-001",
+  "diff_id": "diff-22222222-aaaa-bbbb-cccc-dddddddddddd",
+  "snapshot_id": "snap-33333333-aaaa-bbbb-cccc-dddddddddddd",
+  "signal_type": "watchlist_change",
+  "summary": "Website content changed for Example Nonprofit",
+  "confidence": 0.6,
+  "fingerprint": "abc123def456",
+  "created_at": "2026-02-07T12:00:00Z"
+}

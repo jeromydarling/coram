@@ -1,0 +1,27 @@
+{
+  "workflow_key": "opportunity_monitor",
+  "run_id": "dddddddd-1111-2222-3333-444444444444",
+  "opportunity_id": "opp-001",
+  "org_id": "org-001",
+  "org_name": "Acme Corp",
+  "payload": {
+    "result": {
+      "signals": [
+        {
+          "signal_type": "leadership_change",
+          "signal_value": "New CEO appointed: Jane Doe",
+          "source_url": "https://example.com/news/ceo",
+          "confidence": 0.92,
+          "detected_at": "2026-02-01T00:00:00Z"
+        },
+        {
+          "signal_type": "funding_round",
+          "signal_value": "Series B $50M raised",
+          "source_url": "https://example.com/funding",
+          "confidence": 0.85,
+          "detected_at": "2026-02-02T00:00:00Z"
+        }
+      ]
+    }
+  }
+}

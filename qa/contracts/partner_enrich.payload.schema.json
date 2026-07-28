@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2019-09/schema",
+  "$id": "partner_enrich.payload.schema.json",
+  "title": "partner_enrich ingest envelope",
+  "type": "object",
+  "required": ["workflow_key", "run_id", "org_name", "payload"],
+  "additionalProperties": false,
+  "properties": {
+    "workflow_key": { "const": "partner_enrich" },
+    "run_id": { "type": "string", "minLength": 1 },
+    "requested_by": { "type": "string" },
+    "org_id": { "type": "string" },
+    "org_name": { "type": "string", "minLength": 1 },
+    "website_url": { "type": "string" },
+    "payload": {
+      "type": "object",
+      "required": ["mission_summary", "programs", "populations_served", "geographies", "funding_signals", "keywords"],
+      "additionalProperties": false,
+      "properties": {
+        "mission_summary": { "type": "string" },
+        "programs": { "type": "array", "items": { "type": "string" } },
+        "populations_served": { "type": "array", "items": { "type": "string" } },
+        "geographies": { "type": "array", "items": { "type": "string" } },
+        "funding_signals": { "type": "array", "items": { "type": "string" } },
+        "keywords": { "type": "array", "items": { "type": "string" } }
+      }
+    }
+  }
+}
