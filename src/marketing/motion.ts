@@ -46,8 +46,8 @@ function kenBurns() {
   for (const el of document.querySelectorAll<HTMLElement>('[data-motion="ken-burns"]')) {
     animate(
       el,
-      { transform: ['scale(1) translateY(0px)', 'scale(1.06) translateY(-1.5%)'] },
-      { duration: 24, ease: 'linear', repeat: Infinity, repeatType: 'mirror' },
+      { transform: ['scale(1.02) translateY(0px)', 'scale(1.09) translateY(-2%)'] },
+      { duration: 26, ease: 'linear', repeat: Infinity, repeatType: 'mirror' },
     );
   }
 }
@@ -96,8 +96,9 @@ function toolMerge() {
         card,
         {
           transform: [
-            `translate(${x}px, ${y}px) rotate(${(i % 2 ? 1 : -1) * 8}deg) scale(1)`,
-            'translate(0px, 0px) rotate(0deg) scale(0.35)',
+            `translate(${x}px, ${y}px) rotate(${(i % 2 ? 1 : -1) * 14}deg) scale(1.05)`,
+            `translate(${x * 0.35}px, ${y * 0.35}px) rotate(${(i % 2 ? 1 : -1) * 5}deg) scale(0.9)`,
+            'translate(0px, 0px) rotate(0deg) scale(0.3)',
           ],
           opacity: [1, 1, 0],
         },
@@ -114,8 +115,8 @@ function toolMerge() {
       animate(
         mark,
         {
-          opacity: [0, 0, 1],
-          transform: ['scale(0.9)', 'scale(0.9)', 'scale(1)'],
+          opacity: [0, 0, 1, 1],
+          transform: ['scale(0.85)', 'scale(0.85)', 'scale(1.08)', 'scale(1)'],
         },
         { ease: 'easeOut' },
       ),
@@ -147,7 +148,7 @@ function staggerIn() {
       items.forEach((item, i) => {
         animate(
           item,
-          { opacity: 1, transform: 'translateY(0px)' },
+          { opacity: 1, transform: 'translateY(0px) scale(1)' },
           // 60ms apart: enough to read as a cascade, short enough that the
           // eleventh card is not still arriving after the eye has moved on.
           { duration: 0.5, delay: i * 0.06, ease: [0.16, 1, 0.3, 1] },
@@ -157,7 +158,7 @@ function staggerIn() {
 
     for (const item of items) {
       item.style.opacity = '0';
-      item.style.transform = 'translateY(14px)';
+      item.style.transform = 'translateY(22px) scale(0.97)';
     }
 
     inView(grid, reveal, { amount: 0.15 });
@@ -189,7 +190,14 @@ function microDemos() {
         running = parts.map((part, i) =>
           animate(
             part,
-            { opacity: [0.25, 1, 0.25], transform: ['scaleY(0.6)', 'scaleY(1)', 'scaleY(0.6)'] },
+            {
+              opacity: [0.3, 1, 0.3],
+              transform: [
+                'scaleY(0.55) translateY(2px)',
+                'scaleY(1) translateY(0px)',
+                'scaleY(0.55) translateY(2px)',
+              ],
+            },
             {
               duration: 3,
               delay: i * 0.18,
@@ -209,13 +217,81 @@ function microDemos() {
   }
 }
 
+
+/**
+ * The rough underline under "One place."
+ *
+ * Stroked on rather than faded in, because a line that draws itself reads as a
+ * hand and a line that fades reads as a transition. The server renders it fully
+ * drawn — the dash offset lives in a CSS custom property that this overrides —
+ * so with no JavaScript the mark is simply there.
+ */
+function underline() {
+  for (const svg of document.querySelectorAll<SVGSVGElement>('[data-underline]')) {
+    const path = svg.querySelector('path');
+    if (!path) continue;
+
+    const len = path.getTotalLength();
+    path.style.setProperty('--len', String(len));
+    path.style.strokeDasharray = String(len);
+    path.style.strokeDashoffset = String(len);
+
+    animate(
+      path,
+      { strokeDashoffset: [len, 0] },
+      { duration: 0.9, delay: 0.45, ease: [0.22, 1, 0.36, 1] },
+    );
+  }
+}
+
+/**
+ * Count the figures up when they scroll into view.
+ *
+ * Small numbers only — 11, 250, 1, 0 — so this counts in integers and lands
+ * exactly on the value the server rendered. The element already contains the
+ * final text, so a reader without JavaScript sees the number, not a zero.
+ */
+function figures() {
+  for (const el of document.querySelectorAll<HTMLElement>('[data-count]')) {
+    const target = Number(el.dataset.count ?? '0');
+    const suffix = el.dataset.suffix ?? '';
+    if (!Number.isFinite(target) || target === 0) continue;
+
+    const final = el.textContent ?? '';
+    let ran = false;
+
+    inView(
+      el,
+      () => {
+        if (ran) return;
+        ran = true;
+        const started = performance.now();
+        const dur = 900;
+
+        const tick = (now: number) => {
+          const t = Math.min(1, (now - started) / dur);
+          // easeOutCubic, so it decelerates onto the number rather than stopping.
+          const eased = 1 - Math.pow(1 - t, 3);
+          el.textContent = t < 1 ? `${Math.round(target * eased)}${suffix}` : final;
+          if (t < 1) requestAnimationFrame(tick);
+        };
+
+        requestAnimationFrame(tick);
+      },
+      { amount: 0.6 },
+    );
+  }
+}
+
 function start() {
   // Everything below is enhancement. The server already sent a correct page.
   if (reduced()) return;
 
   kenBurns();
+  underline();
   toolMerge();
   staggerIn();
+  figures();
   microDemos();
 }
 

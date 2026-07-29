@@ -3,6 +3,7 @@ import { describe, expect, it } from 'vitest';
 import {
   BANNED,
   DirectionError,
+  EFFECT_CLAUSES,
   FACE_CLAUSES,
   IMAGES,
   MAX_ACCENT_SHARE,
@@ -19,9 +20,22 @@ describe('§8.2 direction', () => {
 
   it('every prompt carries the style preamble', () => {
     for (const spec of IMAGES) {
-      expect(prompt(spec)).toContain('35mm film photograph');
-      expect(prompt(spec)).toContain('muted desaturated color palette');
+      expect(prompt(spec)).toContain('35mm');
+      // The direction was rewritten away from "muted desaturated" after the
+      // first set came back as nine dim empty rooms. Colour and daylight are
+      // the point now, and these assertions exist so a future edit cannot
+      // quietly drift back.
+      expect(prompt(spec)).toContain('rich saturated colour');
+      expect(prompt(spec)).toContain('bright natural daylight');
+      expect(prompt(spec)).not.toContain('muted desaturated');
     }
+  });
+
+  it('puts people in almost every frame', () => {
+    // The old set was mostly furniture. A page about people turning up
+    // together should show people turning up together.
+    const peopled = IMAGES.filter((i) => /people|hands|person|callers|someone/.test(i.subject));
+    expect(peopled.length / IMAGES.length).toBeGreaterThanOrEqual(0.8);
   });
 
   /*
@@ -106,5 +120,41 @@ describe('objectKey', () => {
     expect(objectKey('hero-hall', 1440, 'jpeg')).toBe('hero-hall-1440.jpg');
     expect(objectKey('hero-hall', 1440, 'avif')).toBe('hero-hall-1440.avif');
     expect(objectKey('hero-hall', 1440, 'webp')).toBe('hero-hall-1440.webp');
+  });
+});
+
+/*
+ * Both effect-based clauses have now failed in production the same way: shallow
+ * focus left two phone-bank callers sharp, and motion blur left a dozen faces
+ * sharp in the middle of a crowd. An effect only covers the subjects it happens
+ * to reach. This is the rule that stops the next crowd scene relying on one.
+ */
+describe('effect clauses versus crowds', () => {
+  it('refuses motion blur when the scene contains a crowd', () => {
+    expect(() =>
+      assertOnDirection({
+        ...IMAGES[0],
+        subject: 'a packed hall with dozens of people, hands raised',
+        faceClause: 'faces blurred by motion, features not discernible',
+      }),
+    ).toThrow(/camera position/);
+  });
+
+  it('still allows an effect for a single subject', () => {
+    expect(() =>
+      assertOnDirection({
+        ...IMAGES[0],
+        subject: 'a lone clipboard on a chair beside one figure at a window',
+        faceClause: 'faces fully out of focus and unrecognizable',
+      }),
+    ).not.toThrow();
+  });
+
+  it('no crowd scene in the shipped set leans on an effect', () => {
+    for (const spec of IMAGES) {
+      if (EFFECT_CLAUSES.has(spec.faceClause)) {
+        expect(spec.subject).not.toMatch(/\b(crowd|crowded|packed|dozens|people)\b/i);
+      }
+    }
   });
 });

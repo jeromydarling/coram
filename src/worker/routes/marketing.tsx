@@ -48,129 +48,179 @@ export const marketing = new Hono<{ Bindings: Env; Variables: Vars }>();
 const STYLE = `
   :root {
     color-scheme: light dark;
-    --fg: #17150f; --bg: #faf8f3; --muted: #6d665c;
-    --line: #e4ded2; --accent: #b8721a; --warn: #a8341f;
-    --ink: #100e0a;            /* dark bands */
-    --ink-fg: #f2ece1;
+    /* Ink and paper, warmed. */
+    --fg: #1b1410; --bg: #fffaf4; --muted: #6f6259; --line: #eadfd2;
+    --ink: #17110d; --ink-fg: #fff6ec;
+
+    /*
+     * A real palette rather than one amber accent. Organizing is loud and
+     * collective; a page about it that runs on beige argues the opposite.
+     * Vermillion leads, gold and teal answer it, ultramarine anchors.
+     */
+    --flame: #e2452a;
+    --gold:  #f0a52c;
+    --teal:  #12857a;
+    --deep:  #1e3a8f;
+    --accent: var(--flame);
+
     --measure: 34rem;
-    /* System serif. §10 forbids external fonts, and a display serif against a
-       sans body is what stops this reading as a default stylesheet. */
     --display: ui-serif, Iowan Old Style, Palatino Linotype, Georgia, serif;
     --body: ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif;
   }
   @media (prefers-color-scheme: dark) {
-    :root { --fg: #ece6da; --bg: #14120f; --muted: #9a9184; --line: #2e2a23;
-            --ink: #0b0a08; --ink-fg: #f2ece1; --accent: #d08a25; }
+    :root { --fg: #f6ece0; --bg: #120e0b; --muted: #a3968a; --line: #302620;
+            --ink: #0c0908; --ink-fg: #fff6ec;
+            --flame: #ff6144; --gold: #ffbe4d; --teal: #2bb3a3; --deep: #6d8cf0; }
   }
   * { box-sizing: border-box; }
   body { margin: 0; background: var(--bg); color: var(--fg);
-         font: 400 17px/1.65 var(--body); -webkit-font-smoothing: antialiased; }
+         font: 400 17px/1.65 var(--body); -webkit-font-smoothing: antialiased;
+         overflow-x: hidden; }
 
-  /* One column rule. Bands break out of it deliberately. */
   .col { max-width: 46rem; margin: 0 auto; padding: 0 1.5rem; }
+  .wide { max-width: 72rem; margin: 0 auto; padding: 0 1.5rem; }
 
-  header { padding: 1.6rem 0 .4rem; }
-  nav { display: flex; align-items: baseline; gap: 1.5rem; }
-  nav .wordmark { font-family: var(--display); font-size: 1.15rem; letter-spacing: .01em;
-                  color: var(--fg); text-decoration: none; margin-right: auto; }
+  header { padding: 1.5rem 0 .4rem; position: relative; z-index: 3; }
+  nav { display: flex; align-items: center; gap: 1.4rem; }
+  nav .wordmark { font-family: var(--display); font-size: 1.2rem; color: var(--fg);
+                  text-decoration: none; margin-right: auto; display: flex;
+                  align-items: center; gap: .55rem; }
+  nav .wordmark svg { display: block; }
   nav a { color: var(--muted); text-decoration: none; font-size: .93rem; }
-  nav a:hover { color: var(--fg); }
+  nav a:hover { color: var(--flame); }
 
-  h1, h2, h3 { font-family: var(--display); font-weight: 500; letter-spacing: -.015em; }
-  h1 { font-size: clamp(2.3rem, 6vw, 3.6rem); line-height: 1.05; margin: 0 0 1rem; }
-  h2 { font-size: clamp(1.5rem, 3.2vw, 2rem); line-height: 1.15; margin: 4.5rem 0 1rem; }
-  h3 { font-size: 1.02rem; margin: 0 0 .2rem; letter-spacing: -.005em; }
+  h1, h2, h3 { font-family: var(--display); font-weight: 500; letter-spacing: -.018em; }
+  h1 { font-size: clamp(2.6rem, 7vw, 4.4rem); line-height: 1.0; margin: 0 0 1.1rem; }
+  h2 { font-size: clamp(1.7rem, 4vw, 2.6rem); line-height: 1.1; margin: 0 0 1rem; }
+  h3 { font-size: 1.05rem; margin: 0 0 .2rem; letter-spacing: -.005em; }
+  .section { margin: 6rem 0; }
   p { margin: 0 0 1.15rem; max-width: var(--measure); }
-  .lead { font-size: 1.2rem; line-height: 1.5; color: var(--muted); max-width: 30em; }
+  .lead { font-size: 1.25rem; line-height: 1.5; color: var(--muted); max-width: 32ch; }
   .muted { color: var(--muted); }
   .small { font-size: .87rem; }
-  a { color: inherit; text-underline-offset: .18em; text-decoration-thickness: 1px; }
+  a { color: inherit; text-underline-offset: .18em; }
   ul { padding-left: 1.1rem; } li { margin-bottom: .4rem; }
 
-  /* ---- §8.1 hero ---- */
-  .hero { position: relative; width: 100%; height: min(88vh, 720px);
-          overflow: hidden; background: var(--ink); }
+  /* A hand-drawn underline under the phrase that carries the page. */
+  .mark-under { position: relative; white-space: nowrap; }
+  .mark-under svg { position: absolute; left: 0; right: 0; bottom: -.18em;
+                    width: 100%; height: .38em; overflow: visible; }
+  .mark-under path { fill: none; stroke: var(--flame); stroke-width: 7;
+                     stroke-linecap: round;
+                     stroke-dasharray: var(--len, 600); stroke-dashoffset: var(--len, 600); }
+
+  /* ---- hero ---- */
+  .hero { position: relative; width: 100%; min-height: min(94vh, 780px);
+          display: flex; align-items: flex-end; overflow: hidden; background: var(--ink); }
   .hero-frame { position: absolute; inset: 0; will-change: transform; }
   .hero-frame img, .hero-frame > div { width: 100%; height: 100%; object-fit: cover; display: block; }
   .hero-scrim { position: absolute; inset: 0;
-                background: linear-gradient(180deg, rgba(16,14,10,.18) 0%,
-                            rgba(16,14,10,.28) 40%, rgba(16,14,10,.60) 70%,
-                            rgba(16,14,10,.90) 100%); }
-  .hero-copy { position: absolute; left: 0; right: 0; bottom: 0; padding-bottom: 3rem; }
-  .hero-copy h1 { color: #fbf7f0; max-width: 15ch;
-                  text-shadow: 0 2px 40px rgba(8,6,4,.7); }
-  .hero-copy p { color: #ded5c7; max-width: 32ch; margin: 0;
-                 text-shadow: 0 1px 20px rgba(8,6,4,.85); }
+                background:
+                  radial-gradient(70% 60% at 18% 82%, rgba(226,69,42,.32), transparent 70%),
+                  linear-gradient(180deg, rgba(23,17,13,.10) 0%, rgba(23,17,13,.30) 45%,
+                                  rgba(23,17,13,.80) 100%); }
+  .hero-copy { position: relative; z-index: 2; width: 100%; padding-bottom: 3.5rem; }
+  .hero-copy h1 { color: #fffaf4; max-width: 16ch; text-shadow: 0 2px 50px rgba(10,6,4,.55); }
+  .hero-copy p { color: #f0e3d6; max-width: 34ch; margin: 0 0 1.6rem;
+                 font-size: 1.15rem; text-shadow: 0 1px 24px rgba(10,6,4,.8); }
+  .cta { display: inline-flex; align-items: center; gap: .5rem; background: var(--flame);
+         color: #fff; padding: .8rem 1.4rem; border-radius: 999px; font-weight: 600;
+         font-size: .98rem; text-decoration: none;
+         box-shadow: 0 10px 30px rgba(226,69,42,.35); }
+  .cta:hover { background: #c93a20; }
+  .cta-ghost { color: #fffaf4; text-decoration: none; font-size: .95rem;
+               margin-left: 1.1rem; border-bottom: 1px solid rgba(255,250,244,.45); }
 
   /* ---- full-bleed photographic bands ---- */
-  .band { position: relative; width: 100%; margin: 4.5rem 0; overflow: hidden;
-          background: var(--ink); }
-  .band img, .band > div { width: 100%; display: block;
-                           max-height: 62vh; object-fit: cover; }
-  .band figcaption { color: var(--muted); font-size: .84rem; padding: .7rem 1.5rem 0;
-                     max-width: 46rem; margin: 0 auto; }
+  .band { position: relative; width: 100%; margin: 5rem 0; overflow: hidden; background: var(--ink); }
+  .band img, .band > div { width: 100%; display: block; max-height: 64vh; object-fit: cover; }
+  .band figcaption { color: var(--muted); font-size: .85rem; padding: .75rem 1.5rem 0;
+                     max-width: 72rem; margin: 0 auto; }
 
-  /* ---- the dark commitments section: §8.1 calls this the emotional centre ---- */
-  .creed { background: var(--ink); color: var(--ink-fg); padding: 5rem 0 5.5rem;
-           margin: 5rem 0; position: relative; }
-  .creed h2 { margin: 0 0 2.5rem; color: var(--ink-fg); }
-  .creed p { font-family: var(--display); font-size: clamp(1.35rem, 3vw, 1.85rem);
-             line-height: 1.4; max-width: 32ch; margin: 0 0 2.2rem; color: var(--ink-fg); }
-  .creed p:last-child { margin-bottom: 0; }
-  .creed .rule { width: 2.5rem; height: 2px; background: var(--accent);
-                 margin-bottom: 2.5rem; }
+  /* ---- the commitments ---- */
+  .creed { background: var(--ink); color: var(--ink-fg); padding: 6rem 0; margin: 6rem 0;
+           position: relative; overflow: hidden; }
+  .creed::before { content: ''; position: absolute; inset: -20% -10% auto -10%; height: 60%;
+                   background: radial-gradient(50% 60% at 20% 30%, rgba(240,165,44,.18), transparent 70%),
+                               radial-gradient(45% 55% at 80% 10%, rgba(18,133,122,.20), transparent 70%);
+                   pointer-events: none; }
+  .creed .col { position: relative; }
+  .creed h2 { color: var(--ink-fg); margin-bottom: 2.5rem; }
+  .creed li { font-family: var(--display); font-size: clamp(1.4rem, 3.4vw, 2.1rem);
+              line-height: 1.35; max-width: 22ch; margin: 0 0 2.2rem; list-style: none;
+              padding-left: 1.6rem; position: relative; }
+  .creed ul { padding: 0; margin: 0; }
+  .creed li::before { content: ''; position: absolute; left: 0; top: .55em;
+                      width: .7rem; height: .7rem; border-radius: 999px; }
+  .creed li:nth-child(1)::before { background: var(--flame); }
+  .creed li:nth-child(2)::before { background: var(--gold); }
+  .creed li:nth-child(3)::before { background: var(--teal); }
+  .creed li:nth-child(4)::before { background: var(--deep); }
 
-  /* ---- §8.1 "The problem": six tools converge ---- */
-  .merge { position: relative; height: 380px; margin: 2.5rem 0 1rem;
-           overflow: hidden; border-radius: 10px;
-           background: radial-gradient(80% 70% at 50% 50%, rgba(184,114,26,.07), transparent 70%); }
-  .tool { position: absolute; transform-origin: center;
-          width: 8.5rem; margin-left: -4.25rem; margin-top: -1.05rem;
-          border: 1px solid var(--line); border-radius: 999px; background: var(--bg);
-          padding: .38rem .6rem; font-size: .78rem; text-align: center; color: var(--muted);
-          will-change: transform; }
-  .merge-mark { position: absolute; left: 50%; top: 50%; width: 116px; height: 116px;
-                margin: -58px 0 0 -58px; will-change: transform, opacity; }
+  /* ---- the six tools converging ---- */
+  .merge { position: relative; height: 400px; margin: 2.5rem 0 1rem; overflow: hidden;
+           border-radius: 14px;
+           background: radial-gradient(75% 70% at 50% 50%, rgba(240,165,44,.14), transparent 72%); }
+  .tool { position: absolute; transform-origin: center; width: 8.6rem; margin-left: -4.3rem;
+          margin-top: -1.05rem; border-radius: 999px; padding: .42rem .7rem; font-size: .78rem;
+          text-align: center; font-weight: 600; color: #fff; will-change: transform; }
+  .tool:nth-child(1) { background: var(--flame); }
+  .tool:nth-child(2) { background: var(--gold); color: #3a2a06; }
+  .tool:nth-child(3) { background: var(--teal); }
+  .tool:nth-child(4) { background: var(--deep); }
+  .tool:nth-child(5) { background: #8b3fb5; }
+  .tool:nth-child(6) { background: #d4356f; }
+  .merge-mark { position: absolute; left: 50%; top: 50%; width: 124px; height: 124px;
+                margin: -62px 0 0 -62px; will-change: transform, opacity; }
   @media (max-width: 34rem) {
-    .merge { height: 320px; }
+    .merge { height: 330px; }
     .tool { width: 6.6rem; margin-left: -3.3rem; font-size: .7rem; }
   }
 
-  /* ---- §8.1 module grid ---- */
-  /* Self-bordered cards rather than a hairline grid drawn by the container's
-     background. Eleven cards never fill a responsive grid evenly, and with a
-     divider colour behind them the leftover cell reads as a rendering fault.
-     Cards that own their own border let empty cells be invisible. */
-  .grid { display: grid; gap: .8rem; margin: 2rem 0 0;
+  /* ---- module grid ---- */
+  .grid { display: grid; gap: .9rem; margin: 2.5rem 0 0;
           grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr)); }
-  .module { background: var(--bg); padding: 1.05rem 1.1rem .95rem;
-            border: 1px solid var(--line); border-radius: 9px;
-            display: flex; flex-direction: column; will-change: transform, opacity; }
-  .module p { margin: 0; font-size: .87rem; color: var(--muted); max-width: none; }
-  .module svg { display: block; margin-top: auto; padding-top: 1.15rem;
-                width: 100%; height: 42px; overflow: visible; }
-  .module svg [data-demo-part] { transform-origin: center bottom; }
+  .module { background: var(--bg); padding: 1.1rem 1.15rem 1rem; border: 1px solid var(--line);
+            border-radius: 12px; display: flex; flex-direction: column; position: relative;
+            overflow: hidden; will-change: transform, opacity;
+            transition: transform .22s cubic-bezier(.2,.9,.3,1), box-shadow .22s, border-color .22s; }
+  .module::after { content: ''; position: absolute; left: 0; right: 0; top: 0; height: 3px;
+                   background: var(--tone, var(--flame)); transform: scaleX(0);
+                   transform-origin: left; transition: transform .28s cubic-bezier(.2,.9,.3,1); }
+  .module:hover { transform: translateY(-3px); border-color: transparent;
+                  box-shadow: 0 14px 34px rgba(27,20,16,.12); }
+  .module:hover::after { transform: scaleX(1); }
+  .module h3 { color: var(--tone, var(--fg)); }
+  .module p { margin: 0; font-size: .88rem; color: var(--muted); max-width: none; }
+  .module svg.demo { display: block; margin-top: auto; padding-top: 1.1rem;
+                     width: 100%; height: 42px; overflow: visible; }
+  .module svg.demo [data-demo-part] { transform-origin: center bottom; }
 
+  /* ---- numbers ---- */
+  .figures { display: grid; gap: 1.5rem; margin: 2.5rem 0 0;
+             grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr)); }
+  .figure .n { font-family: var(--display); font-size: clamp(2.4rem, 6vw, 3.4rem);
+               line-height: 1; color: var(--tone, var(--flame)); }
+  .figure p { font-size: .92rem; color: var(--muted); margin: .5rem 0 0; max-width: 24ch; }
 
-  /* ---- §8.3 comparison ---- */
+  /* ---- comparison ---- */
   .scroll { overflow-x: auto; margin: 1.5rem 0; }
   table { border-collapse: collapse; width: 100%; font-size: .89rem; min-width: 40rem; }
-  th, td { text-align: left; padding: .62rem .7rem; border-bottom: 1px solid var(--line); }
-  thead th { font-family: var(--body); font-weight: 600; font-size: .8rem;
-             text-transform: uppercase; letter-spacing: .06em; color: var(--muted);
-             border-bottom-width: 1px; }
+  th, td { text-align: left; padding: .66rem .75rem; border-bottom: 1px solid var(--line); }
+  thead th { font-family: var(--body); font-weight: 700; font-size: .74rem;
+             text-transform: uppercase; letter-spacing: .08em; color: var(--muted); }
   tbody th { font-weight: 500; }
-  /* The column the reader is here for — scoped to the comparison table.
-     Unscoped, nth-child(2) tinted the "Who" column on the pricing table,
-     which is a different table that happens to share a tag name. */
   .compare th:nth-child(2), .compare td:nth-child(2) {
-    background: rgba(184,114,26,.07); font-weight: 600; }
-  .scroll th:first-child, .scroll td:first-child {
-    position: sticky; left: 0; background: var(--bg); }
+    background: linear-gradient(180deg, rgba(226,69,42,.10), rgba(240,165,44,.08));
+    font-weight: 700; color: var(--fg); }
+  .compare thead th:nth-child(2) { color: var(--flame); }
+  .scroll th:first-child, .scroll td:first-child { position: sticky; left: 0; background: var(--bg); }
 
-  .card { border: 1px solid var(--line); border-radius: 10px; padding: 1.1rem 1.2rem; margin: .8rem 0; }
-  .flag { border-left: 2px solid var(--warn); padding: .6rem 0 .6rem 1rem; margin: 1.75rem 0; }
-  .highlight { border-left: 2px solid var(--accent); padding: .75rem 0 .75rem 1rem; margin: 1.5rem 0; }
+  .card { border: 1px solid var(--line); border-radius: 12px; padding: 1.1rem 1.2rem; margin: .8rem 0; }
+  .flag { border-left: 3px solid var(--flame); padding: .6rem 0 .6rem 1rem; margin: 1.75rem 0; }
+  .highlight { border-radius: 12px; padding: 1.1rem 1.25rem; margin: 1.5rem 0;
+               background: linear-gradient(120deg, rgba(226,69,42,.10), rgba(240,165,44,.12));
+               border: 1px solid rgba(226,69,42,.22); }
 
   footer { border-top: 1px solid var(--line); margin-top: 5rem; padding-top: 2rem;
            padding-bottom: 4rem; font-size: .9rem; color: var(--muted); }
@@ -179,14 +229,15 @@ const STYLE = `
   /* ---- /why editorial ---- */
   .editorial { max-width: 40rem; }
   .editorial p { max-width: none; line-height: 1.78; }
-  .editorial p:first-of-type { font-size: 1.15rem; }
+  .editorial p:first-of-type { font-size: 1.18rem; }
   .portrait { float: right; width: 16rem; margin: .4rem 0 1.25rem 2rem; }
-  .portrait img, .portrait > div { width: 100%; height: auto; border-radius: 8px; display: block; }
+  .portrait img, .portrait > div { width: 100%; height: auto; border-radius: 12px; display: block; }
   .portrait figcaption { font-size: .8rem; color: var(--muted); margin-top: .5rem; }
   @media (max-width: 42rem) { .portrait { float: none; width: 100%; margin: 1.5rem 0; } }
 
   @media (prefers-reduced-motion: reduce) {
     * { animation: none !important; transition: none !important; }
+    .mark-under path { stroke-dashoffset: 0; }
   }
 `;
 
@@ -253,7 +304,10 @@ function Page(props: {
       <body>
         <header class="col">
           <nav>
-            <a class="wordmark" href="/">Coram</a>
+            <a class="wordmark" href="/">
+              <Mark size={22} />
+              Coram
+            </a>
             <a href="/why">Why</a>
             <a href="/pricing">Pricing</a>
             <a href="/trust">Trust</a>
@@ -297,7 +351,7 @@ function Mark({ size = 104 }: { size?: number }) {
     <svg viewBox="0 0 100 100" width={size} height={size} role="img" aria-label="Coram">
       <circle cx="50" cy="50" r="17" fill="none" stroke="var(--accent)" stroke-width="2.5" />
       {people.map((p) => (
-        <circle cx={p.cx} cy={p.cy} r="5.5" fill="var(--fg)" />
+        <circle cx={p.cx} cy={p.cy} r="5.5" fill="var(--tone, var(--fg))" />
       ))}
     </svg>
   );
@@ -315,19 +369,19 @@ function Mark({ size = 104 }: { size?: number }) {
  */
 function Demo({ kind }: { kind: 'rows' | 'graph' | 'grid' | 'send' | 'bars' | 'shield' | 'text' }) {
   const bar = (x: number, h: number, o = 1) => (
-    <rect data-demo-part x={x} y={30 - h} width="7" height={h} rx="1.5" fill="var(--fg)" opacity={o} />
+    <rect data-demo-part x={x} y={30 - h} width="7" height={h} rx="1.5" fill="var(--tone, var(--fg))" opacity={o} />
   );
 
   switch (kind) {
     case 'bars':
       return (
-        <svg data-demo viewBox="0 0 120 32" aria-hidden="true">
+        <svg class="demo" data-demo viewBox="0 0 120 32" aria-hidden="true">
           {[6, 14, 10, 22, 17, 27].map((h, i) => bar(i * 12, h, 0.5 + i * 0.09))}
         </svg>
       );
     case 'rows':
       return (
-        <svg data-demo viewBox="0 0 120 32" aria-hidden="true">
+        <svg class="demo" data-demo viewBox="0 0 120 32" aria-hidden="true">
           {[0, 1, 2, 3].map((i) => (
             <rect
               data-demo-part
@@ -336,7 +390,7 @@ function Demo({ kind }: { kind: 'rows' | 'graph' | 'grid' | 'send' | 'bars' | 's
               width={104 - i * 18}
               height="4"
               rx="2"
-              fill="var(--fg)"
+              fill="var(--tone, var(--fg))"
               opacity={0.85 - i * 0.13}
             />
           ))}
@@ -344,8 +398,8 @@ function Demo({ kind }: { kind: 'rows' | 'graph' | 'grid' | 'send' | 'bars' | 's
       );
     case 'graph':
       return (
-        <svg data-demo viewBox="0 0 120 32" aria-hidden="true">
-          <path d="M12 16 L44 8 M12 16 L44 26 M44 8 L84 16 M44 26 L84 16" stroke="var(--muted)" stroke-width="1.5" fill="none" opacity="0.5" />
+        <svg class="demo" data-demo viewBox="0 0 120 32" aria-hidden="true">
+          <path d="M12 16 L44 8 M12 16 L44 26 M44 8 L84 16 M44 26 L84 16" stroke="var(--tone, var(--muted))" stroke-width="1.5" fill="none" opacity="0.35" />
           {[
             [12, 16],
             [44, 8],
@@ -353,13 +407,13 @@ function Demo({ kind }: { kind: 'rows' | 'graph' | 'grid' | 'send' | 'bars' | 's
             [84, 16],
             [108, 16],
           ].map(([cx, cy], i) => (
-            <circle data-demo-part cx={cx} cy={cy} r="5" fill="var(--fg)" opacity={0.55 + i * 0.11} />
+            <circle data-demo-part cx={cx} cy={cy} r="5" fill="var(--tone, var(--fg))" opacity={0.55 + i * 0.11} />
           ))}
         </svg>
       );
     case 'grid':
       return (
-        <svg data-demo viewBox="0 0 120 32" aria-hidden="true">
+        <svg class="demo" data-demo viewBox="0 0 120 32" aria-hidden="true">
           {Array.from({ length: 14 }, (_, i) => (
             <rect
               data-demo-part
@@ -368,7 +422,7 @@ function Demo({ kind }: { kind: 'rows' | 'graph' | 'grid' | 'send' | 'bars' | 's
               width="13"
               height="11"
               rx="2"
-              fill="var(--fg)"
+              fill="var(--tone, var(--fg))"
               opacity={0.38 + ((i * 7) % 10) / 13}
             />
           ))}
@@ -376,7 +430,7 @@ function Demo({ kind }: { kind: 'rows' | 'graph' | 'grid' | 'send' | 'bars' | 's
       );
     case 'send':
       return (
-        <svg data-demo viewBox="0 0 120 32" aria-hidden="true">
+        <svg class="demo" data-demo viewBox="0 0 120 32" aria-hidden="true">
           {[0, 1, 2].map((i) => (
             <rect
               data-demo-part
@@ -385,16 +439,16 @@ function Demo({ kind }: { kind: 'rows' | 'graph' | 'grid' | 'send' | 'bars' | 's
               width={70 - i * 8}
               height="8"
               rx="4"
-              fill="var(--fg)"
+              fill="var(--tone, var(--fg))"
               opacity={0.8 - i * 0.15}
             />
           ))}
-          <circle data-demo-part cx="106" cy="16" r="6.5" fill="var(--accent)" />
+          <circle data-demo-part cx="106" cy="16" r="6.5" fill="var(--gold)" />
         </svg>
       );
     case 'shield':
       return (
-        <svg data-demo viewBox="0 0 120 32" aria-hidden="true">
+        <svg class="demo" data-demo viewBox="0 0 120 32" aria-hidden="true">
           {[26, 19, 12].map((r, i) => (
             <circle
               data-demo-part
@@ -402,7 +456,7 @@ function Demo({ kind }: { kind: 'rows' | 'graph' | 'grid' | 'send' | 'bars' | 's
               cy="16"
               r={r}
               fill="none"
-              stroke="var(--fg)"
+              stroke="var(--tone, var(--fg))"
               stroke-width="1.5"
               opacity={0.35 + i * 0.22}
             />
@@ -411,12 +465,12 @@ function Demo({ kind }: { kind: 'rows' | 'graph' | 'grid' | 'send' | 'bars' | 's
       );
     default:
       return (
-        <svg data-demo viewBox="0 0 120 32" aria-hidden="true">
+        <svg class="demo" data-demo viewBox="0 0 120 32" aria-hidden="true">
           {[0, 1, 2].map((i) => (
-            <rect data-demo-part x="0" y={i * 11} width={112 - i * 24} height="5" rx="2.5" fill="var(--fg)" opacity="0.72" />
+            <rect data-demo-part x="0" y={i * 11} width={112 - i * 24} height="5" rx="2.5" fill="var(--tone, var(--fg))" opacity="0.72" />
           ))}
           {/* The redaction: §5.10 strips identifying values before inference. */}
-          <rect data-demo-part x="42" y="11" width="34" height="5" rx="2.5" fill="var(--accent)" />
+          <rect data-demo-part x="42" y="11" width="34" height="5" rx="2.5" fill="var(--gold)" />
         </svg>
       );
   }
@@ -443,38 +497,51 @@ marketing.get('/', (c) =>
       title="Coram — everything your movement runs on, one place"
       description="One place for your CRM, events, texting, donations, spreadsheet and group chat. Free under 250 contacts, every module."
     >
-      {/* 1. Hero (§8.1) — full-bleed, dark scrim, slow Ken Burns push-in. */}
+      {/* 1. Hero — full-bleed, colour-lit scrim, slow Ken Burns push-in. */}
       <section class="hero">
         <div class="hero-frame" data-motion="ken-burns">
           <Picture id="hero-hall" sizes="100vw" priority />
         </div>
         <div class="hero-scrim" />
         <div class="hero-copy">
-          <div class="col">
-            <h1>Everything your movement runs on. One place.</h1>
+          <div class="wide">
+            <h1>
+              Everything your movement runs on.{' '}
+              <span class="mark-under">
+                One place.
+                <Underline />
+              </span>
+            </h1>
             <p>
               Replaces your CRM, events tool, texting tool, donation page, spreadsheet, and
               group chat. One login, one shared record of who your people are.
             </p>
+            <a class="cta" href="/app">
+              Start free <span aria-hidden="true">→</span>
+            </a>
+            <a class="cta-ghost" href="/why">
+              Why we built this
+            </a>
           </div>
         </div>
       </section>
 
-      {/* 2. The problem (§8.1) — six tools drift, collide, merge into the mark. */}
-      <div class="col">
-        <h2>The problem</h2>
-        <p>
-          A typical group runs six disconnected tools with no shared data layer. The person who
-          came to Tuesday's meeting, gave twenty dollars, and replied to a text is three
-          different records in three systems that have never met.
+      {/* 2. The problem — six tools drift, collide, merge into the mark. */}
+      <div class="col section">
+        <h2>Six tools that have never met</h2>
+        <p class="lead">
+          The person who came to Tuesday's meeting, gave twenty dollars, and replied to a text
+          is three different records in three systems.
         </p>
         <p>
           The market is fragmented because organizers are poor, not because they prefer variety.
+          Every tool is built for whoever can pay and sold down-market at a price that assumes a
+          budget line.
         </p>
 
         {/*
          * Rendered merged: the finished state of the scroll sequence, and
-         * unchanged, the static fallback §8.1 asks for under reduced motion.
+         * unchanged, the static fallback under reduced motion.
          */}
         <div
           class="merge"
@@ -495,38 +562,65 @@ marketing.get('/', (c) =>
             );
           })}
           <div class="merge-mark" data-mark>
-            <Mark size={116} />
+            <Mark size={124} />
           </div>
         </div>
       </div>
 
-      <Band id="shared-table" caption="One table, one set of papers, and no question about who is on the list. The tool should not be the thing that splits them up." />
+      <Band
+        id="shared-table"
+        caption="One table, one set of papers, and no argument about who is on the list."
+      />
 
-      {/* 3. What we owe you (§8.1, §2) — the emotional centre. Four sentences,
-          no icons, no headers on each. No tradition named. */}
+      {/* 3. What we owe you — the emotional centre. */}
       <section class="creed">
         <div class="col">
-          <div class="rule" />
           <h2>What we owe you</h2>
-          <p>We do not surveil the people who use this.</p>
-          <p>
-            Data and decisions stay at the smallest competent level. A coalition does not
-            automatically see a chapter's records.
-          </p>
-          <p>The free tier is not a funnel. It is the point.</p>
-          <p>We take nothing from bail funds and mutual aid.</p>
+          <ul data-motion="stagger">
+            <li>We do not surveil the people who use this.</li>
+            <li>Decisions stay at the smallest competent level.</li>
+            <li>The free tier is not a funnel. It is the point.</li>
+            <li>We take nothing from bail funds and mutual aid.</li>
+          </ul>
         </div>
       </section>
 
-      {/* 4. Module grid (§8.1) — staggered fade-up, looping micro-demos. */}
-      <div class="col">
+      {/* 4. Numbers — the commitments, in figures. */}
+      <div class="wide section">
+        <h2>The deal, in numbers</h2>
+        <div class="figures" data-motion="stagger">
+          <div class="figure" style="--tone:var(--flame)">
+            <div class="n" data-count="11">11</div>
+            <p>Modules, all of them on the free tier.</p>
+          </div>
+          <div class="figure" style="--tone:var(--gold)">
+            <div class="n" data-count="250">250</div>
+            <p>Contacts free. Not a trial, no card.</p>
+          </div>
+          <div class="figure" style="--tone:var(--teal)">
+            <div class="n" data-count="1" data-suffix="%">
+              1%
+            </div>
+            <p>On fundraising and dues. That is the business.</p>
+          </div>
+          <div class="figure" style="--tone:var(--deep)">
+            <div class="n" data-count="0" data-suffix="%">
+              0%
+            </div>
+            <p>On bail funds and mutual aid. Permanently.</p>
+          </div>
+        </div>
+      </div>
+
+      {/* 5. Module grid — staggered reveal, looping micro-demos, colour per card. */}
+      <div class="wide section">
         <h2>Eleven modules, one record</h2>
         <p class="muted">
           Every one reads the same people. Nothing here is an integration you have to maintain.
         </p>
         <div class="grid" data-motion="stagger">
-          {MODULES.map((m) => (
-            <div class="module">
+          {MODULES.map((m, i) => (
+            <div class="module" style={`--tone:${TONES[i % TONES.length]}`}>
               <h3>{m.name}</h3>
               <p>{m.line}</p>
               <Demo kind={m.demo} />
@@ -535,10 +629,13 @@ marketing.get('/', (c) =>
         </div>
       </div>
 
-      <Band id="phone-bank" caption="A phone bank runs on paper because the software costs more than the campaign." />
+      <Band
+        id="union-hall"
+        caption="A hall filling up is the only metric that has ever mattered."
+      />
 
-      {/* 5. Comparison (§8.3) — sticky first column on mobile. */}
-      <div class="col">
+      {/* 6. Comparison — sticky first column on mobile. */}
+      <div class="wide section">
         <h2>How it compares</h2>
         <div class="scroll">
           <ComparisonTable />
@@ -547,8 +644,10 @@ marketing.get('/', (c) =>
           Compiled from publicly documented features. Competitors change what they offer; if
           something here is out of date, tell us and we will correct it.
         </p>
+      </div>
 
-        {/* 6. Trust (§8.1) — the four artifacts, live dates, on /trust. */}
+      {/* 7. Trust + pricing. */}
+      <div class="col section">
         <h2>What we publish</h2>
         <p>
           An annual security audit in full, including what we have not fixed. A semiannual
@@ -560,29 +659,49 @@ marketing.get('/', (c) =>
           <a href="/trust">See where they stand</a> — including the ones we have not published
           yet.
         </p>
-      </div>
 
-      <Band id="folding-chairs" caption="Before anyone arrives. This is the part the software never sees." />
-
-      {/* 7. Pricing (§8.1) — the bail-fund waiver gets its own row. */}
-      <div class="col">
-        <h2>What it costs</h2>
+        <h2 style="margin-top:4rem">What it costs</h2>
         <p>
           Free under 250 contacts, with all eleven modules. Not a trial, not feature-gated, no
           card required. <a href="/pricing">Full pricing</a>.
         </p>
         <div class="highlight">
-          <p style="margin:0">
-            <strong>1% on fundraising and dues. Zero on bail and mutual aid.</strong>
+          <p style="margin:0;font-weight:600">
+            1% on fundraising and dues. Zero on bail and mutual aid.
           </p>
           <p class="muted small" style="margin:.4rem 0 0">
             The waiver is written into a database function, not a settings page.
           </p>
         </div>
+        <p style="margin-top:2rem">
+          <a class="cta" href="/app">
+            Start free <span aria-hidden="true">→</span>
+          </a>
+        </p>
       </div>
     </Page>,
   ),
 );
+
+/** One accent per card, cycled. Colour is the only thing telling them apart. */
+const TONES = ['var(--flame)', 'var(--gold)', 'var(--teal)', 'var(--deep)', '#8b3fb5', '#d4356f'];
+
+/**
+ * The rough underline beneath "One place."
+ *
+ * Drawn as a path so `motion.ts` can stroke it on rather than fade it in — the
+ * one piece of movement on the page that reads as a hand rather than a
+ * transition. Rendered fully drawn when the bundle never arrives, because the
+ * dash offset is a CSS custom property the script overrides rather than sets.
+ */
+function Underline() {
+  return (
+    <svg viewBox="0 0 600 24" preserveAspectRatio="none" aria-hidden="true" data-underline>
+      <path d="M6 16 C 120 5, 240 22, 360 11 S 520 6, 594 14" />
+    </svg>
+  );
+}
+
 
 /**
  * A full-bleed photograph between sections.
