@@ -198,6 +198,89 @@ export const ENFORCEMENT: string[] = [
  */
 export const ABUSE_CONTACT = 'abuse@coram.app';
 
+// ---------------------------------------------------------------------------
+// Enforcement in the product, not only on the page
+// ---------------------------------------------------------------------------
+
+/**
+ * Patterns that let `checkScope` refuse to draft prohibited material before any
+ * model sees the request (src/worker/lib/scope.ts).
+ *
+ * This exists because of something the first live Scriba deploy showed. A
+ * request to find a landlord's home address and post it was refused — by Llama,
+ * not by us. That is somebody else's safety training. It is not tested here, it
+ * is not ours, and it changes with a model upgrade. LIMITS above is honest that
+ * we cannot scan content we hold as ciphertext; this is the narrow case where
+ * we are not a bystander, because the request is being made *to us*.
+ *
+ * Kept beside the rules rather than in the guard so a rule and its enforcement
+ * are read together, and keyed by id so a new prohibition cannot be added
+ * without a test noticing it has no patterns.
+ *
+ * Deliberately narrow. Every pattern must leave the whole of PROTECTED
+ * untouched — policy.test.ts asserts that against real organising requests,
+ * which is what stops this drifting into a filter on militancy. A missed
+ * violation is a request a model then handles on its own; an over-broad one is
+ * a rent strike this product refused to help with, and that is the worse
+ * failure.
+ */
+const PERSON = String.raw`(him|her|them|he|she|they|his|hers|theirs|the (landlord|cop|officer|boss|manager|senator|councilm[ae]n|judge|scab|owner)|[A-Z][a-z]+)`;
+
+const PATTERNS: Record<string, RegExp[]> = {
+  violence: [
+    // A violent verb with a person on the end of it. "Attack" alone is absent:
+    // "an attack on our right to organise" is ordinary English.
+    new RegExp(String.raw`\b(beat|jump|stab|shoot|assault|maim|hurt|injure|kill)\s+${PERSON}\b`, 'i'),
+    /\b(beat|jump|shoot|stab)\s+(up|him|her|them)\b/i,
+    /\b(hospitalis|hospitaliz)\w*\s+(him|her|them)\b/i,
+    /\bmake\s+(him|her|them)\s+(bleed|hurt)\b/i,
+  ],
+  targeting: [
+    /\b(home address|house address|where\s+(he|she|they)\s+lives?)\b/i,
+    /\b(post|publish|share|dox|leak)\s+(his|her|their)\s+(address|home|phone number|licen[sc]e plate)\b/i,
+    /\b(find out|look up|track down)\s+where\s+\w+\s+lives?\b/i,
+    /\b(show up|turn up|go)\s+at\s+(his|her|their)\s+(house|home)\b/i,
+    /\b(follow|tail|stake out)\s+(him|her|them)\s+(home|to (his|her|their) (house|home))\b/i,
+    /\b(his|her|their)\s+(kids|children)['’]?s?\s+school\b/i,
+  ],
+  threats: [
+    new RegExp(String.raw`\bthreaten\s+${PERSON}\b`, 'i'),
+    /\b(we|i)\s?('|’)?(ll|will)\s+(come for|get)\s+(him|her|them|you)\b/i,
+    /\b(watch (his|her|their|your) back|sleep with one eye open|know where you live)\b/i,
+    /\bscare\s+(him|her|them)\s+(off|out of)\b/i,
+  ],
+  weapons: [
+    /\b(molotov|pipe bomb|pressure cooker bomb|ied\b|napalm|thermite)/i,
+    /\b(build|make|assemble|construct)\s+(a|an|the)?\s*(bomb|explosive|detonator|silencer)\b/i,
+    /\b(ghost gun|3d.?print(ed|ing)?\s+(a\s+)?(gun|firearm|receiver))/i,
+    /\b(buy|get|source|bring)\s+(guns|firearms|ammunition|ammo)\s+(for|to)\s+(the|our|this)\b/i,
+  ],
+  exploitation: [/\b(child|minor|underage)\s+(porn|sexual|nude)/i, /\bcsam\b/i],
+  trafficking: [/\b(traffick\w*)\s+(people|women|children|workers)\b/i],
+  fraud: [
+    /\b(fake|bogus|sham)\s+(donation|fundrais\w+|charity|invoice)\b/i,
+    /\b(impersonate|pose as)\s+(a|an|the)\s+(police|officer|lawyer|official|organiz\w+)\b/i,
+    /\b(launder|skim)\s+(the\s+)?(money|donations|funds)\b/i,
+  ],
+};
+
+/**
+ * Which rule a request breaks, or null.
+ *
+ * Returns the rule rather than a boolean so a refusal can name the line that
+ * was crossed. "This violates our policies" is a wall; a refusal you can argue
+ * with is one that can be found wrong and corrected.
+ */
+export function violatedRule(text: string): Rule | null {
+  for (const rule of PROHIBITED) {
+    if (PATTERNS[rule.id]?.some((p) => p.test(text))) return rule;
+  }
+  return null;
+}
+
+/** For the test that asserts no prohibition is left unenforced. */
+export const ENFORCED_IDS = Object.keys(PATTERNS);
+
 /** Words that describe belief rather than conduct. None may appear in a rule. */
 export const IDEOLOGY_WORDS = [
   'extremist',

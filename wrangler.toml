@@ -28,6 +28,25 @@ html_handling = "none"
 enabled = true
 
 ####################################################################
+# Workers AI — backs Scriba (§5.10).
+#
+# §5.10 asks for a private or self-hosted model. Workers AI is not
+# self-hosted, but it adds no new processor: Cloudflare already holds
+# the database connection, the objects, the sessions and the Worker
+# itself. An external provider would widen the trust set by one; this
+# widens it by nobody.
+#
+# INFERENCE_ENDPOINT still takes precedence when set, so a workspace
+# that runs its own model keeps §5.10 exactly as written.
+#
+# Redaction is unaffected: assertRedacted runs over every message,
+# including the system prompt, before either path opens a socket.
+####################################################################
+
+[ai]
+binding = "AI"
+
+####################################################################
 # Database — Postgres behind Hyperdrive.
 #
 # The Worker connects as `coram_app`, a NOLOGIN-inheriting role that is
@@ -143,6 +162,18 @@ ENVIRONMENT = "development"
 INFERENCE_ENDPOINT = "REPLACE_ME_private_inference_host"
 CANARY_PUBKEY_FINGERPRINT = "REPLACE_ME_pgp_fingerprint"
 
+# ENVIRONMENT is "development" here so that `vite dev` and `wrangler dev` serve
+# a cookie without `Secure`, which is invisible over http on localhost.
+#
+# It is flipped at deploy time by `npm run deploy`, which passes
+# `--var ENVIRONMENT:production`. There used to be an `[env.production]` block
+# doing this and it did not work: the Vite Cloudflare plugin flattens this file
+# into dist/coram/wrangler.json and drops every `env.*` section, so
+# `wrangler deploy --env production` silently deployed the development vars.
+# Live traffic ran for several deploys with an unSecure session cookie and
+# internal error detail echoed to clients before /api/health gave it away.
+# Do not reintroduce `[env.production]` — nothing reads it.
+
 ####################################################################
 # Durable Objects
 #   DO_DIAL    / DialerQueueDO  -> Nuntius     (§5.4)
@@ -169,6 +200,3 @@ class_name = "DialerQueueDO"
 [[migrations]]
 tag = "v1"
 new_sqlite_classes = ["DialerQueueDO", "BallotDO", "ChannelDO"]
-
-[env.production]
-vars = { ENVIRONMENT = "production" }

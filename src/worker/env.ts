@@ -40,6 +40,21 @@ export interface Env {
   // Static assets for the SPA under /app.
   ASSETS: Fetcher;
 
+  /**
+   * Workers AI. Backs Scriba (§5.10) when no self-hosted model is configured.
+   *
+   * The reason this is acceptable under §3 and §5.10 is narrow and worth
+   * stating: it adds no new party. Cloudflare already holds the Hyperdrive
+   * connection, the R2 objects, the KV sessions, and runs this Worker. Sending
+   * a redacted prompt to a model on the same infrastructure widens the trust
+   * set by nobody, where OpenAI or Anthropic would widen it by one.
+   *
+   * It is not self-hosting, and the difference is real — Cloudflare can in
+   * principle see the (redacted) prompt, where a model on your own hardware
+   * could not. INFERENCE_ENDPOINT therefore still wins when it is set.
+   */
+  AI?: { run: (model: string, input: unknown) => Promise<unknown> };
+
   // Vars.
   ENVIRONMENT: 'development' | 'production';
   INFERENCE_ENDPOINT: string;

@@ -970,6 +970,17 @@ marketing.get('/terms', (c) =>
           ))}
         </ol>
 
+        {/* Stated here because the section above says enforcement cannot be
+            proactive. That remains true of content we hold; it is not true of
+            a request made to us directly, and the difference should be on the
+            page rather than discovered. */}
+        <p>
+          There is one thing that is not report-driven. Coram&rsquo;s writing assistant refuses to
+          draft the material above, before any model sees the request, from the same list of rules
+          this page is rendered from. It is a narrow control — it applies only to what you ask us
+          to write, not to what you store — and it is the one place we are not a bystander.
+        </p>
+
         <div class="highlight">
           <p style="margin:0">
             Report specific conduct to <strong>{ABUSE_CONTACT}</strong>.

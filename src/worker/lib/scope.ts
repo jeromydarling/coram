@@ -17,8 +17,11 @@
  * completion.
  */
 
+import { violatedRule, type Rule } from '../../shared/policy';
+
 export type ScopeRefusal =
   | 'crisis'
+  | 'prohibited'
   | 'emotional_support'
   | 'professional_advice'
   | 'off_topic'
@@ -126,6 +129,23 @@ What are you working on?`;
 
 const INJECTION_RESPONSE = `I only do the three things above. Asking differently will not change that.`;
 
+/**
+ * Names the rule. A refusal you can argue with is a refusal that can be wrong
+ * and corrected; "this violates our policies" is a wall.
+ *
+ * Says plainly what was and was not sent, because the alternative — silence —
+ * leaves an organizer guessing whether their draft is now in a log somewhere.
+ */
+function prohibitedResponse(rule: Rule): string {
+  return `I will not help with this one.
+
+${rule.rule}
+
+${rule.why}
+
+Nothing was sent to a model and nothing was stored. If you think this is wrong, /terms lists what is protected here — protest, strikes, blockades, occupations, lock-ons, bail funds, and non-violent civil disobedience are all on it, including where they are unlawful.`;
+}
+
 // ---------------------------------------------------------------------------
 
 /**
@@ -144,6 +164,24 @@ export function checkScope(message: string): ScopeResult {
 
   if (CRISIS.some((p) => p.test(text))) {
     return { allowed: false, reason: 'crisis', response: CRISIS_RESPONSE };
+  }
+
+  /*
+   * Acceptable use, checked second — after crisis, before everything else.
+   *
+   * Second because a message can be both, and someone in crisis gets the phone
+   * number rather than a policy citation. Before the rest because "find out
+   * where he lives" is not an off-topic request, and answering it as one would
+   * be the wrong refusal to the wrong degree.
+   *
+   * This became load-bearing the day Scriba stopped being dark. Until then
+   * nothing was dispatched at all; now there is a general-purpose model on the
+   * other end whose own refusals are not ours, are not tested here, and change
+   * with a model upgrade.
+   */
+  const broken = violatedRule(text);
+  if (broken) {
+    return { allowed: false, reason: 'prohibited', response: prohibitedResponse(broken) };
   }
   if (EMOTIONAL_SUPPORT.some((p) => p.test(text))) {
     return { allowed: false, reason: 'emotional_support', response: EMOTIONAL_RESPONSE };
