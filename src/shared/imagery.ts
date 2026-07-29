@@ -286,10 +286,18 @@ export const IMAGES: ImageSpec[] = [
   },
   {
     id: 'folding-chairs',
+    /*
+     * Rows, not a circle. A circle of chairs seats people facing inward from
+     * every side, so some of them necessarily face the lens — the concept and
+     * the face rule are geometrically incompatible, and the frame came back
+     * with a sharp profile at the left edge. Rows all facing the same bright
+     * doorway keep the "people arriving" feeling and point every head away.
+     */
     subject:
-      'a wide circle of mismatched folding chairs in a sunlit community room seen from just ' +
-      'behind one row, the backs of people settling into seats, bags and coats over chair ' +
-      'backs in bright colours, a doorway full of light with more arriving through it',
+      'rows of mismatched folding chairs in a sunlit community room, all facing the same way ' +
+      'toward a wide doorway flooded with light, photographed from the back of the last row, ' +
+      'the backs of people settling into seats, bags and bright coats slung over the chair ' +
+      'backs in orange and yellow and teal',
     faceClause: 'seen entirely from behind, no faces visible',
     accent: true,
     width: 1600,
