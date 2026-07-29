@@ -86,6 +86,30 @@ function countKind(code: string, count: number | null, formula: string | null): 
   return 'unverified';
 }
 
+/**
+ * Strip artefacts of how the research was batched.
+ *
+ * The states were researched in ten groups of five, and two records open with a
+ * sentence comparing their state to the others in their own batch —
+ * "CALIFORNIA IS THE STRONGEST CITIZEN-DRAFTING ROUTE OF THESE FIVE STATES",
+ * "West Virginia is the friendliest of these five states". Those are notes from
+ * one researcher to the next. To a user they are meaningless: there is no
+ * "these five states" in the product, and a shouted comparison to an invisible
+ * cohort reads as a bug.
+ *
+ * Caught because it reached a live response before any test looked at it — the
+ * copy test covered our own prose and not the quoted kind.
+ */
+function stripBatchArtefacts(note: string | null): string | null {
+  if (!note) return null;
+  const sentences = note.split(/(?<=[.!?])\s+/);
+  const kept = sentences.filter(
+    (s) => !/\b(these five states|of the five|this batch)\b/i.test(s),
+  );
+  const text = kept.join(' ').trim();
+  return text === '' ? null : text;
+}
+
 const files = readdirSync(SRC).filter((f) => f.endsWith('.json')).sort();
 const records = files.map((f) => JSON.parse(readFileSync(join(SRC, f), 'utf8')) as Raw);
 
@@ -119,13 +143,13 @@ const entries = records.map((r) => {
     subjectLimits: r.initiative.subjectLimits ?? [],
     preFilingReview: r.initiative.preFilingReview,
     localInitiative: r.localOrdinance.citizenInitiative,
-    localNotes: r.localOrdinance.notes,
+    localNotes: stripBatchArtefacts(r.localOrdinance.notes),
     manualUrl: r.drafting.manualUrl,
     manualName: r.drafting.manualName,
     enactingClause: r.drafting.enactingClause,
     requiredSections: r.drafting.requiredSections ?? [],
     canRequestDraft: r.citizenRoute.canRequestDraft,
-    citizenRouteNotes: r.citizenRoute.notes,
+    citizenRouteNotes: stripBatchArtefacts(r.citizenRoute.notes),
     sources: {
       initiative: r.initiative.source,
       signatures: s.source,

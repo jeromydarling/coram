@@ -201,6 +201,35 @@ describe('drafting', () => {
    * research and not something to render as our own voice. `detail` is ours;
    * `draftingHelp` is quoted.
    */
+  /*
+   * This one reached a live response before any test looked at it. The states
+   * were researched in ten batches of five, and two records opened with a
+   * sentence comparing their state to the others in their own batch —
+   * "CALIFORNIA IS THE STRONGEST CITIZEN-DRAFTING ROUTE OF THESE FIVE STATES".
+   * There is no "these five states" in the product, so to a user that reads as
+   * a bug. The copy test below covered our own prose and not the quoted kind.
+   */
+  it('strips comparisons to the batch a state was researched in', () => {
+    for (const p of PATHWAYS) {
+      for (const note of [p.citizenRouteNotes, p.localNotes]) {
+        if (!note) continue;
+        expect(note).not.toMatch(/these five states|of the five|this batch/i);
+      }
+    }
+  });
+
+  it('does not shout at anyone in quoted research prose either', () => {
+    for (const code of ALL) {
+      for (const route of routesFor(code)) {
+        if (!route.draftingHelp) continue;
+        // A run of six or more capitals is a heading someone typed for a reader
+        // of the research, not a fact about the jurisdiction.
+        const firstSentence = route.draftingHelp.split(/(?<=[.!?])\s+/)[0];
+        expect(firstSentence).not.toMatch(/[A-Z]{6,}\s+[A-Z]{2,}/);
+      }
+    }
+  });
+
   it('keeps raw research prose out of our own copy', () => {
     for (const code of ALL) {
       for (const route of routesFor(code)) {

@@ -30,6 +30,17 @@ const PRIVATE_PATHS = [
   '/api/brand',
   '/api/brand/flyer.svg?headline=a&when=b&where=c',
   '/api/brand/share-kit?headline=a&when=b&where=c',
+  /*
+   * Petitio. The pathway routes serve published research rather than tenant
+   * data, so it is tempting to leave them open — but they sit behind the same
+   * guard as the rest of the module. Which state a workspace is researching is
+   * itself a signal about what they are planning, and an unauthenticated
+   * endpoint that reveals it for free is a smaller version of exactly the
+   * disclosure this product exists to prevent.
+   */
+  '/api/petitio/pathways',
+  '/api/petitio/pathways/CA',
+  '/api/petitio/bills',
 ];
 
 const env = {
