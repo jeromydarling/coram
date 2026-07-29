@@ -22,10 +22,14 @@ import { withTenant } from '../../lib/rls';
 import { record } from '../../lib/audit';
 import { renderFlyer } from '../../lib/flyer';
 import {
+  CHANNELS,
   DEFAULT_BRAND,
   TEMPLATES,
+  fitToChannel,
   legibilityIssues,
   normaliseHex,
+  paletteFrom,
+  postLength,
   type BrandProfile,
   type TemplateId,
 } from '../../../shared/brand';
@@ -233,4 +237,101 @@ brand.get('/flyer.svg', async (c) => {
     logFailure('brand.flyer', rid, error);
     return c.json(err('Could not draw that flyer.', ERROR.INTERNAL, rid, detailFor(c.env, error)), 500);
   }
+});
+
+// ---------------------------------------------------------------------------
+// POST /api/brand/suggest — a whole palette from one colour
+// ---------------------------------------------------------------------------
+
+const suggestSchema = z.object({
+  seed: hex,
+  name: z.string().trim().min(1).max(80).optional(),
+});
+
+/**
+ * Propose, never apply.
+ *
+ * §7's rule for AI output — draft, label, let a human approve — is worth
+ * keeping for generated output that involves no model at all. This returns a
+ * palette and saves nothing; the group has to PUT it before anything changes.
+ *
+ * Deterministic rather than a model call: it needs no key, answers instantly
+ * while someone drags a colour picker, and is the only version that can
+ * guarantee the result passes the contrast gate rather than being rejected by
+ * it a moment later.
+ */
+brand.post('/suggest', async (c) => {
+  const rid = c.get('requestId');
+
+  const parsed = suggestSchema.safeParse(await c.req.json().catch(() => null));
+  if (!parsed.success) {
+    return c.json(err(parsed.error.issues[0].message, ERROR.VALIDATION, rid), 400);
+  }
+
+  const proposed = paletteFrom(parsed.data.seed, parsed.data.name);
+  return c.json(
+    ok({
+      brand: proposed,
+      issues: legibilityIssues(proposed),
+      applied: false,
+      note: 'A starting point. Nothing has been saved — send it back with PUT to apply it.',
+    }),
+  );
+});
+
+// ---------------------------------------------------------------------------
+// GET /api/brand/share-kit — the words, per channel
+// ---------------------------------------------------------------------------
+
+const shareQuery = flyerQuery.extend({
+  /** Where the post should send people. Optional. */
+  link: z.string().trim().url().max(300).optional(),
+});
+
+/**
+ * Per-channel drafts for one event.
+ *
+ * Export-first: Coram holds no posting credentials and does not post. An OAuth
+ * token that can post as a tenants union is a subpoena target and a compromise
+ * vector, and §7 forbids auto-sending regardless. So this hands back words and
+ * a character count, and a person posts them.
+ *
+ * A draft that does not fit is reported as `fits: false` with the overflow,
+ * rather than silently truncated — a post cut mid-sentence reads as careless,
+ * and the group should choose what to drop.
+ */
+brand.get('/share-kit', async (c) => {
+  const rid = c.get('requestId');
+
+  const parsed = shareQuery.safeParse(Object.fromEntries(new URL(c.req.url).searchParams));
+  if (!parsed.success) {
+    return c.json(err(parsed.error.issues[0].message, ERROR.VALIDATION, rid), 400);
+  }
+
+  const { headline, when, where, detail, link } = parsed.data;
+
+  // Plain declarative sentences, no exclamation points (§2). The long form is
+  // trimmed per channel rather than a different draft being written for each.
+  const full = [`${headline}.`, `${when}, ${where}.`, detail].filter(Boolean).join(' ');
+
+  const drafts = CHANNELS.map((channel) => {
+    const text = fitToChannel(full, link, channel);
+    return {
+      channel: channel.id,
+      name: channel.name,
+      limit: channel.limit,
+      text,
+      length: text ? postLength(text, link, channel) : null,
+      fits: text !== null,
+      trimmed: text !== null && text !== full,
+    };
+  });
+
+  return c.json(
+    ok({
+      drafts,
+      link: link ?? null,
+      note: 'Copy these and post them yourself. Coram does not hold your social accounts.',
+    }),
+  );
 });

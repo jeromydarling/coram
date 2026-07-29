@@ -150,6 +150,105 @@ export function assertLegible(brand: BrandProfile): void {
 }
 
 // ---------------------------------------------------------------------------
+// Palette generation
+// ---------------------------------------------------------------------------
+
+function toHsl(hex: string): { h: number; s: number; l: number } {
+  const { r, g, b } = parseHex(hex);
+  const [rn, gn, bn] = [r / 255, g / 255, b / 255];
+  const max = Math.max(rn, gn, bn);
+  const min = Math.min(rn, gn, bn);
+  const l = (max + min) / 2;
+  if (max === min) return { h: 0, s: 0, l };
+
+  const d = max - min;
+  const s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+  let h: number;
+  if (max === rn) h = ((gn - bn) / d + (gn < bn ? 6 : 0)) / 6;
+  else if (max === gn) h = ((bn - rn) / d + 2) / 6;
+  else h = ((rn - gn) / d + 4) / 6;
+  return { h, s, l };
+}
+
+function fromHsl(h: number, s: number, l: number): Hex {
+  h = ((h % 1) + 1) % 1;
+  s = Math.min(1, Math.max(0, s));
+  l = Math.min(1, Math.max(0, l));
+
+  if (s === 0) {
+    const v = Math.round(l * 255);
+    return normaliseHex(`${v.toString(16).padStart(2, '0')}`.repeat(3));
+  }
+
+  const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+  const p = 2 * l - q;
+  const channel = (t: number) => {
+    if (t < 0) t += 1;
+    if (t > 1) t -= 1;
+    if (t < 1 / 6) return p + (q - p) * 6 * t;
+    if (t < 1 / 2) return q;
+    if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6;
+    return p;
+  };
+
+  const rgb = [channel(h + 1 / 3), channel(h), channel(h - 1 / 3)].map((v) =>
+    Math.round(v * 255).toString(16).padStart(2, '0'),
+  );
+  return normaliseHex(rgb.join(''));
+}
+
+/**
+ * Darken a colour until it clears a contrast target against a background.
+ *
+ * The loop is the point. Proposing a palette and hoping it passes puts the
+ * failure in front of someone after they have committed to it; stepping
+ * lightness down until the ratio is met means `paletteFrom` cannot return
+ * something `assertLegible` would reject.
+ */
+function darkenUntil(hex: string, bg: string, target: number): Hex {
+  const { h, s } = toHsl(hex);
+  let { l } = toHsl(hex);
+  for (let i = 0; i < 40 && l > 0.02; i++) {
+    const candidate = fromHsl(h, s, l);
+    if (contrastRatio(candidate, bg) >= target) return candidate;
+    l -= 0.025;
+  }
+  return fromHsl(h, s, 0.05);
+}
+
+/**
+ * A complete, legible brand from one colour.
+ *
+ * The house style this was drawn from proposes an AI "brand in a box". This is
+ * deterministic instead, for three reasons that all favour the people using it:
+ * it needs no API key so it works on day one, it returns instantly while
+ * someone is dragging a colour picker, and it is the only version that can
+ * *guarantee* the result is readable. An AI proposal would have to be checked
+ * by the same contrast maths anyway, and then rejected in front of the user.
+ *
+ * Everything it returns is a starting point the group edits, never applied on
+ * their behalf.
+ */
+export function paletteFrom(seed: string, name = DEFAULT_BRAND.name): BrandProfile {
+  const { h, s } = toHsl(seed);
+
+  // A near-white tinted with the seed hue: the page still feels like theirs
+  // without costing contrast against the text.
+  const surface = fromHsl(h, Math.min(s, 0.18), 0.975);
+  const ink = darkenUntil(fromHsl(h, Math.min(s, 0.35), 0.12), surface, AA_NORMAL);
+
+  // The primary carries the headline, so it only has to support readable ink
+  // on top of it — which readableInk guarantees for any colour.
+  const primary = fromHsl(h, Math.max(s, 0.35), Math.min(toHsl(seed).l, 0.42));
+
+  // A hue a third of the wheel away reads as a deliberate second colour rather
+  // than a shade of the first, then darkened until it works on the surface.
+  const accent = darkenUntil(fromHsl(h + 0.34, Math.max(s, 0.55), 0.45), surface, AA_LARGE);
+
+  return { name, primary, accent, surface, ink, logoKey: null };
+}
+
+// ---------------------------------------------------------------------------
 // Flyer templates
 // ---------------------------------------------------------------------------
 
