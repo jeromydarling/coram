@@ -1,0 +1,73 @@
+{
+  "code": "CT",
+  "name": "Connecticut",
+  "asOf": "2026-07",
+
+  "initiative": {
+    "statute": "none",
+    "constitutional": "none",
+    "referendum": false,
+    "signatures": {
+      "statuteFormula": null,
+      "statuteCount": null,
+      "constitutionalFormula": null,
+      "constitutionalCount": null,
+      "distribution": null,
+      "source": "https://www.cga.ct.gov/2019/rpt/pdf/2019-R-0151.pdf"
+    },
+    "circulationDays": null,
+    "filingDeadline": null,
+    "subjectLimits": [],
+    "preFilingReview": null,
+    "notes": "Connecticut has NO statewide citizen initiative and NO statewide veto referendum, for statutes or for constitutional amendments. Nothing a citizen drafts can reach the statewide ballot by petition. The only statewide ballot questions are those referred by the General Assembly: a constitutional amendment approved by a 75% vote of each chamber in one session goes to the voters at the next general election, or an amendment approved by a majority of each chamber in two successive sessions with an intervening election goes to the voters. A constitutional convention question is also placed before voters at least every 20 years. Amending the state constitution would be required before initiative or referendum could exist. The realistic citizen route in Connecticut is therefore (a) persuading a legislator or committee to introduce a bill, or (b) a municipal charter-amendment or veto-referendum petition at the local level.",
+    "source": "https://www.cga.ct.gov/2019/rpt/pdf/2019-R-0151.pdf"
+  },
+
+  "localOrdinance": {
+    "citizenInitiative": true,
+    "notes": "Connecticut has real citizen petition power at the municipal level even though it has none statewide. Under Conn. Gen. Stat. sec. 7-188 (Chapter 99, Home Rule), voters may petition to initiate the adoption or amendment of a municipal charter or a home-rule ordinance; such a petition requires signatures equal to 10% of the electors of the municipality and must be completed within 90 days of filing. Under Conn. Gen. Stat. sec. 7-157 (Chapter 98), voters may force a veto referendum on an ordinance adopted by a local legislative body; that petition requires signatures equal to at least 15% of the electors of the municipality and must be filed within 30 days of the ordinance's publication. A successful charter/home-rule measure goes to the next general election in the municipality or to a special election within 15 months; at a special election it must win a majority that also equals at least 15% of the municipality's electors.",
+    "source": "https://ballotpedia.org/Laws_governing_local_ballot_measures_in_Connecticut"
+  },
+
+  "drafting": {
+    "manualUrl": "https://www.cga.ct.gov/lco/pdfs/Basic%20Considerations%20in%20Drafting%20Legislation.pdf",
+    "manualName": "Basic Considerations in Drafting Legislation (Legislative Commissioners' Office, revised September 2009)",
+    "manualAlternateUrl": "https://www.cga.ct.gov/LCO/Docs/Basic_Considerations_in_Drafting.doc",
+    "manualIndexUrl": "https://www.cga.ct.gov/lco/",
+    "requiredSections": null,
+    "enactingClause": null,
+    "source": "https://www.cga.ct.gov/lco/"
+  },
+
+  "legislature": {
+    "chambers": ["House of Representatives", "Senate"],
+    "sessionType": "Annual, but asymmetric. Odd-numbered ('long') years are full general sessions running roughly January to early June; even-numbered ('short') years are budget-adjustment sessions running roughly February to early May with narrowed subject matter. 151 House members, 36 Senators.",
+    "typicalConvene": "Odd years: the Wednesday following the first Monday in January. Even years: February. The 2026 session convened February 4, 2026.",
+    "typicalAdjourn": "Odd years: not later than the first Wednesday after the first Monday in June. Even years: not later than the Wednesday after the first Monday in May. The 2026 session adjourned May 6, 2026.",
+    "billIntroductionDeadline": null,
+    "carryover": null,
+    "source": "https://ballotpedia.org/Dates_of_2026_state_legislative_sessions"
+  },
+
+  "data": {
+    "officialApi": null,
+    "officialApiNotes": "The General Assembly publishes bills, votes and committee records at cga.ct.gov but no documented public API was found. Note: cga.ct.gov was unreachable from the research environment (TLS chain error / 503), so its data offerings could not be inspected directly.",
+    "bulkDownload": "https://open.pluralpolicy.com/data/",
+    "openStatesCoverage": "full",
+    "source": "https://open.pluralpolicy.com/data/"
+  },
+
+  "citizenRoute": {
+    "canRequestDraft": false,
+    "notes": "The Legislative Commissioners' Office (LCO) is legal counsel to the members and committees of the General Assembly and drafts legislation for them; it is not a public drafting service. In practice a Connecticut resident's route is to bring a proposal to their own legislator or to a joint committee, which can 'raise' a bill in committee. Connecticut is notable for holding a public hearing on essentially every raised bill, so committee testimony is the main public entry point. LCO: lco@cga.ct.gov, 860-240-8410.",
+    "source": "https://www.cga.ct.gov/lco/"
+  },
+
+  "gaps": [
+    "cga.ct.gov (the General Assembly's own site, which hosts the LCO drafting guide, the OLR report on initiative and referendum, and the session rules) could not be fetched from this environment: curl fails with an incomplete TLS certificate chain and the fetch tool returns 503. The cga.ct.gov URLs recorded here appear in current search-engine indexes and are almost certainly live, but their content was NOT independently re-verified. Confirm them before linking organizers to them.",
+    "Could not confirm whether a newer edition of the LCO drafting guide exists than the September 2009 'Basic Considerations in Drafting Legislation'. LCO's separate 'Manual for Drafting Regulations' was revised January 2024, which suggests the legislation guide may also have been updated.",
+    "Could not verify Connecticut's required bill parts or enacting-clause wording from a primary source; both are null.",
+    "Could not verify whether bills carry over from the odd-year to the even-year session (carryover is null). Also could not verify from a primary source the even-year subject-matter restriction on who may introduce what (commonly described as limiting individual member introductions to budgetary, revenue and financial matters, with committees able to raise other bills).",
+    "Local petition percentages (10% charter/home-rule initiative, 15% veto referendum) are sourced to Ballotpedia's summary of Conn. Gen. Stat. secs. 7-157, 7-188 and 7-191 rather than to the statute text, because the state's own site was unreachable. Verify against the General Statutes before relying on them."
+  ]
+}

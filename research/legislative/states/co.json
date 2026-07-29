@@ -1,0 +1,79 @@
+{
+  "code": "CO",
+  "name": "Colorado",
+  "asOf": "2026-07",
+
+  "initiative": {
+    "statute": "direct",
+    "constitutional": "direct",
+    "referendum": true,
+    "signatures": {
+      "statuteFormula": "At least 5% of the total number of votes cast for all candidates for the office of Secretary of State at the previous general election (Colo. Const. art. V, sec. 1(2)). Note: Colorado uses the Secretary of State race, NOT the governor's race.",
+      "statuteCount": 124238,
+      "constitutionalFormula": "Same statewide 5% threshold as a statutory initiative, PLUS signatures from at least 2% of the registered electors in each of Colorado's 35 state senate districts (Colo. Const. art. V, sec. 1(2.5), added by Amendment 71 in 2016).",
+      "constitutionalCount": 124238,
+      "distribution": "Constitutional amendments only: at least 2% of registered electors in EACH of the 35 state senate districts, in addition to the 124,238 statewide total. Statutory initiatives have no geographic distribution requirement.",
+      "source": "https://www.coloradosos.gov/pubs/elections/Initiatives/signatureRequirements.html",
+      "basisElection": "November 8, 2022 general election, in which 2,484,758 votes were cast for all Secretary of State candidates. 5% of that total = 124,238. The Secretary of State states this figure governs petitions for the 2023, 2024, 2025 and 2026 elections; it will be recomputed after the November 2026 Secretary of State election."
+    },
+    "circulationDays": 180,
+    "filingDeadline": "Petitions must be filed with the Secretary of State no later than three months before the election (Colo. Const. art. V, sec. 1(2); sec. 1-40-113(3), C.R.S.). For the November 3, 2026 general election the Secretary of State's 2025-2026 Initiative Calendar sets the deadline at August 3, 2026, 5:00 p.m. Because the Title Board's last title-setting meeting for the 2026 ballot was April 15, 2026, proponents in practice had less than the full six-month circulation window.",
+    "subjectLimits": [
+      "Single subject: the Title Board is prohibited from setting a title if a proposal contains more than one subject (Colo. Const. art. V, sec. 1(5.5); sec. 1-40-106.5, C.R.S.)",
+      "The text must be written as it would appear in state law, in plain, non-technical language using words with common and everyday meaning understandable to the average reader (Legislative Council Staff filing requirement)"
+    ],
+    "preFilingReview": "Two mandatory stages. (1) Review and comment: the draft is filed with Legislative Council Staff in typewritten form, naming two designated representatives; Legislative Council Staff schedules a public review-and-comment meeting exactly two weeks after filing at which Legislative Council Staff and the Office of Legislative Legal Services present written comments on wording and intent. Both designated representatives must attend or the measure is deemed withdrawn. (2) Title setting: the measure is then filed with the Secretary of State and heard by the Title Board at public hearings on the first and third Wednesdays of the month; the Board first decides whether the measure is a single subject and, if so, sets the title, ballot title and submission clause. A motion for rehearing may be filed by 5:00 p.m. on the seventh day after the Board acts (sec. 1-40-107, C.R.S.), and a rehearing decision may be appealed to the Colorado Supreme Court within seven days (sec. 1-40-107(2), C.R.S.).",
+    "source": "https://leg.colorado.gov/how-file-initiatives"
+  },
+
+  "localOrdinance": {
+    "citizenInitiative": true,
+    "notes": "Registered electors of a city or town may initiate an ordinance under Article 11 of Title 31, C.R.S. (Municipal Initiatives, Referenda, and Referred Measures); the statutory default threshold is a petition signed by at least 5% of the registered electors of the municipality (sec. 31-11-104, C.R.S.). Colo. Const. art. V, sec. 1(9) caps what any municipality may require at 15% of registered electors for an initiative and 10% for a referendum. Home rule municipalities set their own thresholds and procedures by charter, so the operative number is charter-specific. County-level citizen initiative is much narrower than municipal initiative and was not verified.",
+    "source": "https://content.leg.colorado.gov/sites/default/files/images/olls/crs2024-title-31.pdf"
+  },
+
+  "drafting": {
+    "manualUrl": "https://content.leg.colorado.gov/publications/colorado-legislative-drafting-manual",
+    "manualName": "Colorado Legislative Drafting Manual (Office of Legislative Legal Services, November 4, 2024 edition)",
+    "manualPdfUrl": "https://leg.colorado.gov/sites/default/files/colorado-legislative-drafting-manual-accessible.pdf",
+    "requiredSections": [
+      "bill/measure title expressing a single subject",
+      "enacting clause",
+      "numbered sections amending, adding to or repealing the Colorado Revised Statutes"
+    ],
+    "enactingClause": "Be it Enacted by the People of the State of Colorado: (required for measures adopted by initiative, Colo. Const. art. V, sec. 1(8)). Bills passed by the General Assembly instead use the General Assembly enacting clause.",
+    "source": "https://content.leg.colorado.gov/publications/colorado-legislative-drafting-manual"
+  },
+
+  "legislature": {
+    "chambers": ["House of Representatives", "Senate"],
+    "sessionType": "Annual regular session, limited to 120 calendar days (Colo. Const. art. V, sec. 7). Members serve in a two-year General Assembly (the 75th General Assembly covers 2025-2026), but each regular session is procedurally separate.",
+    "typicalConvene": "No later than the second Wednesday of January. The 2026 regular session convened January 14, 2026.",
+    "typicalAdjourn": "The 120th day, in early-to-mid May. The Second Regular Session of the 75th General Assembly adjourned sine die on May 13, 2026.",
+    "billIntroductionDeadline": null,
+    "carryover": false,
+    "source": "https://leg.colorado.gov/session-schedule"
+  },
+
+  "data": {
+    "officialApi": null,
+    "officialApiNotes": "Colorado publishes no documented public REST API for bills and votes. Bills, votes, committee records and bill text are browsable and downloadable one record at a time at https://leg.colorado.gov/bill-search . Structured copies of the same data are available from Open States (Plural) and LegiScan.",
+    "bulkDownload": "https://open.pluralpolicy.com/data/",
+    "openStatesCoverage": "full",
+    "source": "https://open.pluralpolicy.com/data/"
+  },
+
+  "citizenRoute": {
+    "canRequestDraft": false,
+    "notes": "The Office of Legislative Legal Services drafts bills only for members and committees of the General Assembly. However, Colorado gives citizen initiative proponents an unusually strong free service: any person intending to circulate an initiative may file a typewritten draft with Legislative Council Staff and receive written comments from both Legislative Council Staff and the Office of Legislative Legal Services at a public review-and-comment meeting two weeks later. This is mandatory, free, and is the practical drafting-assistance channel for a citizen measure. Contact: Legislative Council Staff, lcs.ga@coleg.gov, 303-866-3521.",
+    "source": "https://leg.colorado.gov/how-file-initiatives"
+  },
+
+  "gaps": [
+    "Could not verify from a primary source the supermajority threshold for passage of an initiated constitutional amendment (Amendment 71 of 2016 is widely reported to require 55% approval for measures that add new language to the constitution, with a simple majority for repeal-only measures). Treat that as unconfirmed and check Colo. Const. art. V, sec. 1(4) before relying on it.",
+    "Could not verify the composition of the Title Board from the Secretary of State's own guide (commonly the Secretary of State, the Attorney General and the Director of the Office of Legislative Legal Services, or their designees, per sec. 1-40-106(1), C.R.S.) — unconfirmed.",
+    "billIntroductionDeadline is null: Colorado sets bill introduction and committee deadlines each year in a session-specific Deadline Schedule adopted under the Joint Rules rather than by a fixed calendar date, and the 2027 schedule was not published at the time of research.",
+    "County-level (as opposed to municipal) citizen initiative authority in Colorado was not verified.",
+    "The 124,238 figure is fixed until the November 2026 Secretary of State election. Any campaign targeting 2027-2030 must re-check https://www.coloradosos.gov/pubs/elections/Initiatives/signatureRequirements.html after that election certifies."
+  ]
+}
