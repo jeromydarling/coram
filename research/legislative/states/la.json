@@ -1,0 +1,80 @@
+{
+  "code": "LA",
+  "name": "Louisiana",
+  "asOf": "2026-07",
+
+  "initiative": {
+    "statute": "none",
+    "constitutional": "none",
+    "referendum": false,
+    "signatures": {
+      "statuteFormula": null,
+      "statuteCount": null,
+      "constitutionalFormula": null,
+      "constitutionalCount": null,
+      "referendumFormula": null,
+      "referendumCount": null,
+      "distribution": null,
+      "source": "https://legis.la.gov/legis/Law.aspx?d=206363"
+    },
+    "circulationDays": null,
+    "filingDeadline": null,
+    "subjectLimits": [],
+    "preFilingReview": null,
+    "process": "Louisiana has NO statewide citizen initiative and NO statewide veto referendum. Article XIII, Section 1 of the Louisiana Constitution provides that an amendment 'may be proposed by joint resolution at any regular session of the legislature' and requires concurrence by two-thirds of the elected members of each house; the only other route is a constitutional convention under Article XIII, Section 2. There is no petition route for either statutes or amendments. Citizen-drafted legislation reaches the Legislature only through a member who agrees to author it.",
+    "source": "https://legis.la.gov/legis/Law.aspx?d=206363"
+  },
+
+  "localOrdinance": {
+    "citizenInitiative": true,
+    "notes": "Limited and charter-dependent. La. Const. art. VI, sec. 5(B): the governing authority of a local governmental subdivision 'shall call an election to elect such a commission when presented with a petition signed by not less than ten percent of the electors or ten thousand electors, whichever is fewer, who live within the boundaries of the affected subdivision, as certified by the registrar of voters.' That elected commission then drafts or amends a home rule charter, which takes effect only if approved by a majority of the electors voting at an election held for that purpose (sec. 5(C)). This is the constitutional citizen-petition route in Louisiana local government. There is no statewide-uniform ordinance initiative: whether residents can petition an ordinance onto a parish or municipal ballot depends on whether that jurisdiction's own home rule charter provides for initiative, which the constitution does not require.",
+    "source": "https://legis.la.gov/legis/Law.aspx?d=206520"
+  },
+
+  "drafting": {
+    "manualUrl": "https://documents.ncsl.org/wwwncsl/LegislativeStaff/RELACS/2016LAHouseDraftingManual.pdf",
+    "manualName": "Drafting Style and Usage Manual, prepared by House Legislative Services, Louisiana House of Representatives (2016 edition, hosted by NCSL)",
+    "requiredSections": [
+      "keyword and one-liner (subject identifiers assigned by House Legislative Services)",
+      "title / short title",
+      "enacting clause",
+      "numbered sections",
+      "digest prepared by House Legislative Services (constitutes no part of the instrument; R.S. 1:13(B) and 24:177(E))"
+    ],
+    "enactingClause": "Be it enacted by the Legislature of Louisiana.",
+    "source": "https://legis.la.gov/legis/Law.aspx?d=206410"
+  },
+
+  "legislature": {
+    "chambers": ["House of Representatives", "Senate"],
+    "sessionType": "Annual regular sessions of limited length, alternating in character. Even-numbered years: a general session, not more than 60 legislative days and not continuing beyond 6:00 p.m. of the 85th calendar day after convening. Odd-numbered years: not more than 45 legislative days and not beyond 6:00 p.m. of the 60th calendar day, and restricted to fiscal subject matter — appropriations, the capital budget, taxes, fees, dedications of revenue, tax exemptions/credits, and bond issuance — plus a maximum of five non-fiscal prefiled matters per member and advertised local or special laws.",
+    "typicalConvene": "Even-numbered years: noon on the second Monday in March. Odd-numbered years: noon on the second Monday in April.",
+    "typicalAdjourn": "Even years: no later than 6:00 p.m. on the 85th calendar day after convening. Odd years: no later than 6:00 p.m. on the 60th calendar day. A session may be extended only to finally pass an appropriation bill, by two-thirds record vote of each house, in two-day increments, and never more than six calendar days beyond the original sine die.",
+    "billIntroductionDeadline": "Prefiling: no later than 5:00 p.m. of the 10th calendar day before the first day of a regular session (45th calendar day for public-retirement bills). A member may introduce no more than five bills that were not prefiled. New matter intended to have the effect of law may not be introduced or received after 6:00 p.m. of the 23rd calendar day in an even-year session, or the 10th calendar day in an odd-year session.",
+    "carryover": false,
+    "source": "https://legis.la.gov/legis/Law.aspx?d=206416"
+  },
+
+  "data": {
+    "officialApi": null,
+    "officialApiNotes": "No public API and no bulk download. legis.la.gov is an ASP.NET site whose law and constitution browsing is driven by __doPostBack form posts; individual law sections are reachable as https://legis.la.gov/legis/Law.aspx?d=<id> and individual documents as https://legis.la.gov/Legis/ViewDocument.aspx?d=<id>. Bill search lives at https://legis.la.gov/legis/BillSearch.aspx. Scraping requires handling ASP.NET viewstate.",
+    "bulkDownload": null,
+    "openStatesCoverage": "full",
+    "source": "https://open.pluralpolicy.com/data/session-csv/"
+  },
+
+  "citizenRoute": {
+    "canRequestDraft": null,
+    "notes": "House Legislative Services (house.louisiana.gov/H_Staff/HLS) and the corresponding Senate staff prepare legislative instruments, digests, keywords and one-liners for the chambers. No published policy was found stating who may submit a drafting request, so this field is null rather than a guess. In practice, and consistent with every other state examined, a member of the public would need a legislator to author the instrument.",
+    "source": "https://house.louisiana.gov/H_Staff/HLS"
+  },
+
+  "gaps": [
+    "All statewide signature fields are null because Louisiana has no statewide initiative or veto referendum — a legal absence, verified against La. Const. art. XIII, sec. 1 on the Legislature's own site, not an unverified number.",
+    "The drafting manual URL is hosted by NCSL, not by the State of Louisiana. Neither legis.la.gov nor house.louisiana.gov publishes a drafting manual at a discoverable URL: the House Legislative Services page links only session wraps, a floor procedure guide, a committee procedure guide, and a 'How a Bill Becomes Law' guide. The linked manual is the 2016 edition and may have been superseded internally. If a state-hosted or newer edition is required before shipping a link to organizers, this needs a direct request to House Legislative Services.",
+    "A Louisiana Senate drafting manual was not located; senate.la.gov/Documents/Publications returns 404.",
+    "'carryover' is set false on the basis that each Louisiana regular session is a separate constitutionally bounded session with its own prefiling and introduction deadlines and its own sine die (La. Const. art. III, sec. 2); no provision preserving pending instruments between sessions was found. It was not confirmed by an affirmative statement in an official source.",
+    "citizenRoute.canRequestDraft is null — no published Louisiana policy on who may request a legislative draft was found.",
+    "Schema note: 'referendumFormula'/'referendumCount' and a 'process' string were added inside the initiative object so veto-referendum figures can never be confused with initiative figures. Both are null here."
+  ]
+}

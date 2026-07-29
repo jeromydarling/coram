@@ -1,0 +1,83 @@
+{
+  "code": "NC",
+  "name": "North Carolina",
+  "asOf": "2026-07",
+
+  "initiative": {
+    "statute": "none",
+    "constitutional": "none",
+    "referendum": false,
+    "signatures": {
+      "statuteFormula": null,
+      "statuteCount": null,
+      "constitutionalFormula": null,
+      "constitutionalCount": null,
+      "referendumFormula": null,
+      "referendumCount": null,
+      "distribution": null,
+      "source": "https://www.ncleg.gov/EnactedLegislation/Constitution/NCConstitution.html"
+    },
+    "circulationDays": null,
+    "filingDeadline": null,
+    "subjectLimits": [
+      "North Carolina has NO statewide citizen initiative, NO statewide veto referendum, and no citizen petition route of any kind to the statewide ballot. There is no signature threshold to report because no such petition exists.",
+      "The constitution forecloses the question explicitly: art. XIII, § 2 reserves the power to amend the constitution to the people but provides that 'This power may be exercised by either of the methods set out hereinafter in this Article, but in no other way' — those two methods being a Convention of the People called by two-thirds of each house (art. XIII, §§ 1, 3) and legislative initiation (art. XIII, § 4).",
+      "Legislative initiation of a constitutional amendment requires an act adopted by three-fifths of all the members of each house, followed by ratification by a majority of the votes cast at a statewide election.",
+      "Ordinary statutes are enacted only by the General Assembly; there is no mechanism by which voters may propose or repeal a state statute."
+    ],
+    "adoptionThreshold": "For legislatively referred constitutional amendments: a majority of the votes cast on the question.",
+    "preFilingReview": null,
+    "source": "https://www.ncleg.gov/EnactedLegislation/Constitution/NCConstitution.html"
+  },
+
+  "localOrdinance": {
+    "citizenInitiative": true,
+    "notes": "North Carolina's one real citizen-petition route is at the city level, and it reaches the CHARTER, not ordinances generally. G.S. 160A-104 (initiative petitions for charter amendments) lets voters petition the city council to submit charter amendments to a special election. The threshold is signatures of qualified voters equal to at least 10% of the whole number of voters registered to vote in city elections, OR 5,000 voters, whichever is SMALLER — so in any city with more than 50,000 registered voters the 5,000 cap controls. Three timing bars apply: no petition may be filed while the council has charter-amendment proceedings underway, nor within one year and six months after the effective date of an ordinance amending the charter, nor within one year and six months after any election on charter amendments that were defeated. On a sufficient petition the council must call a special election; if a majority approves, the council adopts an implementing ordinance, and that ordinance is not itself subject to referendum. G.S. 160A-103 separately gives voters a referendum petition against a charter amendment adopted by council ordinance. Counties have no comparable general initiative power, and there is no general power to initiate ordinary city or county ordinances by petition.",
+    "source": "https://www.ncleg.gov/EnactedLegislation/Statutes/HTML/BySection/Chapter_160A/GS_160A-104.html"
+  },
+
+  "drafting": {
+    "manualUrl": null,
+    "manualName": null,
+    "requiredSections": [
+      "bill title (short caption stating the subject)",
+      "enacting clause",
+      "numbered sections",
+      "amendatory language identifying the General Statutes section being amended",
+      "effective date section"
+    ],
+    "enactingClause": "The General Assembly of North Carolina enacts:",
+    "source": "https://www.ncleg.gov/EnactedLegislation/Constitution/NCConstitution.html"
+  },
+
+  "legislature": {
+    "chambers": ["House of Representatives", "Senate"],
+    "sessionType": "Biennial, two-year General Assembly. A long session convenes in the odd-numbered year and a short session, generally limited by adjournment resolution to budget and a defined set of carried-over matters, reconvenes in the even-numbered year. Bills remain alive across both sessions of the biennium.",
+    "typicalConvene": "The Senate and House meet at 12:00 noon on the second Wednesday in January after their election solely to organize, then stand adjourned until 12:00 noon on the third Wednesday after the second Monday in January (G.S. 120-11.1). The even-year short session convenes on a date fixed by the prior adjournment resolution, usually in late April or May.",
+    "typicalAdjourn": "No constitutional adjournment date; the General Assembly sets its own sine die date by adjournment resolution — commonly late summer or early fall in the long session and early summer in the short session.",
+    "billIntroductionDeadline": null,
+    "carryover": true,
+    "source": "https://www.ncleg.gov/EnactedLegislation/Statutes/HTML/BySection/Chapter_120/GS_120-11.1.html"
+  },
+
+  "data": {
+    "officialApi": "https://www.ncleg.gov/About/Webservices",
+    "officialApiNotes": "The North Carolina General Assembly publishes RSS-based web services rather than a JSON REST API: feeds for session information, active committees, bills by filing status, bills on calendars, legislative actions, bills passed by chamber, news, and House/Senate calendars. Endpoints live under webservices.ncleg.gov and ncleg.gov and take session year, chamber, and date path parameters. No API key is documented. There is no published JSON API or comprehensive bulk dataset; LegiScan and Open States are the practical bulk sources.",
+    "bulkDownload": null,
+    "openStatesCoverage": "full",
+    "source": "https://www.ncleg.gov/About/Webservices"
+  },
+
+  "citizenRoute": {
+    "canRequestDraft": false,
+    "notes": "The Legislative Drafting Division is a central, nonpartisan office of the General Assembly. Its own page states that 'A legislator with an idea for legislation should contact the Legislative Drafting Division' — drafts are requested by legislators, not by the public, and a drafting request stays confidential until the sponsoring legislator releases it. The Legislative Analysis Division also drafts bills for members. With no statewide initiative, a North Carolina resident's routes are (a) get a legislator to sponsor the bill and request the draft, or (b) at city level, a G.S. 160A-104 charter-amendment petition.",
+    "source": "https://sites.ncleg.gov/legislativedrafting/the-drafting-process/"
+  },
+
+  "gaps": [
+    "North Carolina's statewide initiative fields are null because no such process exists, not because verification failed. The negative is established directly by N.C. Const. art. XIII, § 2 ('but in no other way').",
+    "NO PUBLIC BILL DRAFTING MANUAL. The Legislative Drafting Division's public site (sites.ncleg.gov/legislativedrafting) walks through the drafting process, preparation for introduction, introduction, amendments, conference reports, and enrollment, but its Drafting Process page explicitly links no drafting manual, style guide, or bill-form document — only a PDF of drafter assignments by subject area and contact information. No North Carolina legislative drafting manual was found on any ncleg.gov domain. manualUrl and manualName are null. Any manual appears to be internal to the Division; organizers should be pointed at https://sites.ncleg.gov/legislativedrafting/the-drafting-process/ as the nearest public substitute.",
+    "The requiredSections list is a description of standard North Carolina bill form, not a quotation from an official drafting manual (none was found).",
+    "Bill introduction deadlines are set by each chamber's rules and adjournment resolutions each biennium and were not verified; left null."
+  ]
+}

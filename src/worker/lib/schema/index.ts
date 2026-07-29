@@ -19,5 +19,6 @@ export * from './consilium';
 export * from './colloquium';
 export * from './custos';
 export * from './federatio';
+export * from './petitio';
 // Workspace settings rather than a module — see migrations/0011_brand.sql.
 export * from './brand';

@@ -1,0 +1,83 @@
+{
+  "code": "NM",
+  "name": "New Mexico",
+  "asOf": "2026-07",
+
+  "initiative": {
+    "statute": "none",
+    "constitutional": "none",
+    "referendum": true,
+    "signatures": {
+      "statuteFormula": null,
+      "statuteCount": null,
+      "constitutionalFormula": null,
+      "constitutionalCount": null,
+      "referendumFormula": "Veto referendum only. Petitions must be signed by not less than 10% of the qualified electors of EACH of three-fourths of the counties (25 of 33) and, in the aggregate, by not less than 10% of the qualified electors of the state, 'as shown by the total number of votes cast at the last preceding general election.' Because 2026 is a midterm year and no statewide general election has been held since November 2024, the denominator is the November 5, 2024 general election. A petition signed by 25% under the same per-county and statewide distribution, filed within 90 days of the adjournment of the session that enacted the law, also SUSPENDS the law's operation until the vote (N.M. Const. art. IV, § 1).",
+      "referendumCount": null,
+      "distribution": "Both a per-county floor and a statewide floor must be met: 10% of the qualified electors in each of 25 of New Mexico's 33 counties, plus 10% statewide (25% for the suspension version).",
+      "source": "https://www.sos.nm.gov/wp-content/uploads/2025/01/NM_Constitution_-2025-for-SOS.pdf"
+    },
+    "circulationDays": null,
+    "filingDeadline": "A referendum petition must be filed with the Secretary of State not less than four months prior to the next general election. A petition seeking to suspend the law's operation pending the vote must be filed within 90 days after the adjournment of the legislative session at which the law was enacted (N.M. Const. art. IV, § 1).",
+    "subjectLimits": [
+      "New Mexico reserves NO initiative power to the people — neither statutory nor constitutional. Citizens may only disapprove laws the legislature has already passed. New Mexico and Maryland are the only states whose sole citizen route to the statewide ballot is the veto referendum.",
+      "Not subject to referendum: general appropriation laws; laws providing for the preservation of the public peace, health or safety; laws for the payment of the public debt or interest thereon or the creation or funding of the same; laws for the maintenance of the public schools or state institutions; and local or special laws.",
+      "Constitutional amendments reach the ballot only by a majority vote of each house of the legislature followed by voter ratification (N.M. Const. art. XIX), or by constitutional convention."
+    ],
+    "adoptionThreshold": "A referendum measure is defeated (the law is disapproved) only if a majority of those voting on it vote against the law AND that vote equals at least 40% of the total number of votes cast at the election.",
+    "preFilingReview": "A referendum petition must be approved and certified by the Secretary of State and signed by the Attorney General before it is circulated. The Secretary of State maintains a list of approved petitions; petitions lacking the Secretary's certification stamp and the Attorney General's signature are not valid. The Secretary of State must determine sufficiency or insufficiency within 30 days of submission.",
+    "source": "https://www.sos.nm.gov/legislation-and-lobbying/legal-resources/notice-on-referendum-petitions/"
+  },
+
+  "localOrdinance": {
+    "citizenInitiative": true,
+    "notes": "Local, not statewide, is where New Mexico organizers have direct-democracy leverage. Municipalities operating under the commission-manager form (N.M.S.A. 1978, ch. 3, art. 14) have both initiative and referendum: electors may propose an ordinance, resolution or regulation to the commission, which must act within 30 days; if it fails to act, acts adversely, or amends the proposal, it must call a special election within 30-60 days, and a majority vote compels adoption. The referendum threshold under § 3-14-17 is a petition of more than 20% of the average number of voters at the previous four regular municipal elections, or more than 20% of the voters at the previous regular municipal election, whichever is greater. Home rule charter municipalities (art. X, § 6 of the constitution; N.M.S.A. ch. 3, art. 15) set their own initiative and referendum rules in their charters — Albuquerque's charter, for example, uses a petition of more than 20% of the number of voters who voted at the last regular municipal mayoral election. Thresholds must be checked charter by charter.",
+    "source": "https://law.justia.com/codes/new-mexico/chapter-3/article-14/section-3-14-17/"
+  },
+
+  "drafting": {
+    "manualUrl": "https://www.nmlegis.gov/publications/Legislative_Procedure/drafting_manual.pdf",
+    "manualName": "Legislative Drafting Manual (New Mexico Legislative Council Service)",
+    "requiredSections": [
+      "title — the subject of the bill must be clearly expressed in its title (N.M. Const. art. IV, § 16)",
+      "enacting clause",
+      "numbered sections",
+      "effective date and/or emergency clause where applicable"
+    ],
+    "enactingClause": "Be it enacted by the Legislature of the State of New Mexico:",
+    "source": "https://www.nmlegis.gov/lcs"
+  },
+
+  "legislature": {
+    "chambers": ["House of Representatives", "Senate"],
+    "sessionType": "Annual, alternating length. Regular sessions convening in odd-numbered years run no more than 60 days. Regular sessions convening in even-numbered years run no more than 30 days and may consider only budget, appropriation and revenue bills; bills drawn pursuant to special messages of the governor; and bills vetoed by the governor in the prior year (N.M. Const. art. IV, § 5).",
+    "typicalConvene": "Noon on the third Tuesday of January.",
+    "typicalAdjourn": "Noon on the 60th day (mid-March) in odd-numbered years; noon on the 30th day (mid-February) in even-numbered years — the 2026 session adjourned February 19, 2026.",
+    "billIntroductionDeadline": "Set by legislative rule each session; for the 2026 30-day session the introduction deadline was February 4, 2026.",
+    "carryover": false,
+    "source": "https://www.nmlegis.gov/Publications/Session_Dates.pdf"
+  },
+
+  "data": {
+    "officialApi": null,
+    "officialApiNotes": "nmlegis.gov publishes bill text, status, committee reports and roll calls as HTML and PDF, and offers a Bill Finder search interface, but no documented public REST API or bulk data feed was located. Third-party archives (LegiScan, Open States) are the practical bulk sources.",
+    "bulkDownload": null,
+    "openStatesCoverage": "full",
+    "source": "https://www.nmlegis.gov/legislation/bill_finder"
+  },
+
+  "citizenRoute": {
+    "canRequestDraft": false,
+    "notes": "The Legislative Council Service is the legislature's nonpartisan drafting office and prepares bills for legislators and interim committees. New Mexico legislators are unsalaried and the sessions are short, so the practical route for a member of the public is to bring a finished draft to a legislator well before the pre-session drafting window. There is no statewide initiative to fall back on.",
+    "source": "https://www.nmlegis.gov/lcs"
+  },
+
+  "gaps": [
+    "No absolute referendum signature number is published by the New Mexico Secretary of State. The requirement is a compound per-county and statewide percentage of the total votes cast at the last preceding general election (November 5, 2024), and the state does not publish a precomputed statewide figure or per-county table. referendumCount is therefore null; organizers must obtain the certified 2024 canvass by county from the Secretary of State before budgeting a drive.",
+    "N.M. Const. art. IV, § 1 sets no circulation window for the ordinary (four-months-before-the-election) referendum, only a filing deadline; circulationDays is null rather than a verified figure.",
+    "The enacting clause is taken from N.M. Const. art. IV, § 15 via secondary description of that section; the verbatim constitutional text was not read directly from the Secretary of State's constitution PDF (PDF text extraction failed in this environment).",
+    "Whether bills formally carry over between New Mexico sessions is recorded as false based on the session structure in art. IV, § 5; an explicit official statement of a no-carryover rule was not located.",
+    "The Legislative Council Service's written policy on who may request a bill draft was not located; canRequestDraft=false is inferred from LCS's described role as staff to the legislature.",
+    "The municipal initiative/referendum description is sourced to N.M.S.A. 1978 ch. 3, art. 14 as reproduced on Justia; the official New Mexico Compilation Commission text (nmonesource.com) was not read directly, and the article-14 section number for INITIATIVE (as distinct from § 3-14-17 referendum and § 3-14-16 recall) was not pinned down. Home rule charter thresholds, including Albuquerque's, were taken from charter summaries rather than from a directly verified charter section. Any municipal drive must be checked against the specific charter and the current NMSA text."
+  ]
+}

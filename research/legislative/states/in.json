@@ -1,0 +1,79 @@
+{
+  "code": "IN",
+  "name": "Indiana",
+  "asOf": "2026-07",
+
+  "initiative": {
+    "statute": "none",
+    "constitutional": "none",
+    "referendum": false,
+    "signatures": {
+      "statuteFormula": null,
+      "statuteCount": null,
+      "constitutionalFormula": null,
+      "constitutionalCount": null,
+      "distribution": null,
+      "source": "https://www.in.gov/sos/elections/files/2026-Referendum-Brochure.FINAL-VERSION.pdf"
+    },
+    "circulationDays": null,
+    "filingDeadline": null,
+    "subjectLimits": [],
+    "preFilingReview": null,
+    "notes": "Indiana has NO citizen initiative and NO veto referendum of any kind. The Secretary of State's 2026 brochure 'Referendum, Recall, Impeachment, And Initiative in Indiana' answers the question directly: 'Does Indiana allow laws to be passed by initiative? No. The Indiana Constitution requires that all laws be passed by the state legislature. Article 4, Section 1 of the State Constitution reads in part: \"No law shall be enacted, except by bill.\" The State Constitution would have to be amended before the voters could pass any initiative.' Constitutional amendments must be approved by two separately elected General Assemblies before going to the voters — the legislature controls every step. There is no signature-gathering path to the Indiana statewide ballot.",
+    "source": "https://www.in.gov/sos/elections/files/2026-Referendum-Brochure.FINAL-VERSION.pdf"
+  },
+
+  "localOrdinance": {
+    "citizenInitiative": false,
+    "notes": "Indiana has no general citizen initiative for local ordinances either. It does have a long list of statutorily AUTHORIZED referenda, but each is triggered by a unit of government or by a specific statute, not by a general initiative right: school tax levies and school safety levies (IC 20-46-1, IC 20-46-9, IC 20-40-20/21), local-government 'controlled project' bond and lease referenda with a property-tax increase (IC 6-1.1-20-3.6), political-subdivision reorganization (IC 36-1.5), municipal mergers, dissolutions and name changes (IC 36-4-2, IC 36-5-1), town-to-city conversion (IC 36-4-1.5-2), airport authorities (IC 8-22-3-2), public transportation and county income tax in six named counties (IC 8-25), library tax (IC 36-12-7-7), township withdrawal from municipal zoning jurisdiction (IC 36-7-4-1212), park district extension (IC 36-10-3/4), pari-mutuel wagering and riverboat gambling licensing (IC 4-31-4-3, IC 4-33-6-19/20), and municipal utility matters (IC 5-1-6-4, IC 8-1.5). Several of these can be set in motion by a voter petition, but the subject matter is fixed by statute — voters cannot write their own ordinance and petition it onto a ballot.",
+    "source": "https://www.in.gov/sos/elections/files/2026-Referendum-Brochure.FINAL-VERSION.pdf"
+  },
+
+  "drafting": {
+    "manualUrl": "https://iga.in.gov/publications/bill_drafting_manual/2024%20Complete%20Drafting%20Manual.pdf",
+    "manualName": "Drafting Manual for the Indiana General Assembly (Office of Code Revision, Legislative Services Agency; approved by the Indiana Legislative Council May 14, 2024)",
+    "requiredSections": [
+      "title",
+      "enacting clause",
+      "body in numbered SECTIONs, each carrying a bracketed effective date, e.g. [EFFECTIVE JULY 1, 2026]",
+      "citation lead-in lines identifying the Indiana Code section added, amended or repealed",
+      "effective date provisions"
+    ],
+    "enactingClause": "Be it enacted by the General Assembly of the State of Indiana:",
+    "notes": "Verified: URL resolves to a 382-page PDF, cover reading 'DRAFTING MANUAL FOR THE INDIANA GENERAL ASSEMBLY, Prepared Under the Direction of the INDIANA CODE REVISION COMMISSION, By the OFFICE OF CODE REVISION, LEGISLATIVE SERVICES AGENCY, Approved by the INDIANA LEGISLATIVE COUNCIL, May 14, 2024'. 2024 is the current edition — 2025 and 2026 filenames do not exist. Important for tooling: iga.in.gov serves an application shell (691 bytes of HTML) to plain command-line clients; the PDF only downloads with a browser user agent.",
+    "source": "https://iga.in.gov/publications/bill_drafting_manual/2024%20Complete%20Drafting%20Manual.pdf"
+  },
+
+  "legislature": {
+    "chambers": ["House of Representatives", "Senate"],
+    "sessionType": "Annual regular sessions under IC 2-2.1-1. Each two-year term of the General Assembly has one 'long session' in the odd-numbered year (in which the two-year budget is written) and one 'short session' in the even-numbered year.",
+    "typicalConvene": "January",
+    "typicalAdjourn": "Long session (odd years): sine die not later than April 29. Short session (even years): sine die not later than March 14.",
+    "billIntroductionDeadline": null,
+    "carryover": null,
+    "notes": "The Governor may call a special session during the interim to finish unresolved matters. The drafting manual advises avoiding effective dates from January 1 to May 14 in a long session and January 1 to March 31 in a short session, because of the sine die dates above.",
+    "source": "https://iga.in.gov/publications/bill_drafting_manual/2024%20Complete%20Drafting%20Manual.pdf"
+  },
+
+  "data": {
+    "officialApi": "https://api.iga.in.gov",
+    "officialApiNotes": "Indiana is the strongest of these five states for machine-readable data: the General Assembly runs a documented public REST API (the 'MyIGA' API) with endpoints for sessions, bills, amendments, acts, bill actions, calendars, motions and drafts. An API key is required — requests without one return HTTP 403. Documentation: https://docs.api.iga.in.gov/",
+    "bulkDownload": null,
+    "openStatesCoverage": "full",
+    "source": "https://docs.api.iga.in.gov/"
+  },
+
+  "citizenRoute": {
+    "canRequestDraft": false,
+    "notes": "The Legislative Services Agency drafts for legislators and legislative committees under the direction of the Code Revision Commission and the Legislative Council. There is no public drafting-request channel, and — unlike Idaho or Illinois — there is no initiative fallback. In Indiana the ONLY route from a citizen-drafted bill to law runs through a legislative sponsor.",
+    "source": "https://iga.in.gov/publications/bill_drafting_manual/2024%20Complete%20Drafting%20Manual.pdf"
+  },
+
+  "gaps": [
+    "Could not verify Indiana's bill introduction deadlines (they are set by House and Senate rules each session); billIntroductionDeadline is null.",
+    "Could not verify from an authoritative source whether Indiana bills carry over between the long and short sessions of a two-year term; carryover is recorded as null rather than guessed.",
+    "Could not read the text of IC 2-2.1-1 directly — iga.in.gov's code browser serves an application shell to automated clients. The session structure and sine die dates recorded here come from the Legislative Services Agency's own drafting manual, which cites IC 2-2.1-1.",
+    "The exact statutory convening date and Organization Day date were not confirmed; typicalConvene records only 'January'.",
+    "Petition thresholds for the citizen-petition-triggered local referenda listed in localOrdinance.notes (e.g. controlled-project petitions under IC 6-1.1-20-3.6) were not verified."
+  ]
+}

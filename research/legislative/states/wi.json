@@ -1,0 +1,79 @@
+{
+  "code": "WI",
+  "name": "Wisconsin",
+  "asOf": "2026-07",
+
+  "initiative": {
+    "statute": "none",
+    "constitutional": "none",
+    "referendum": false,
+    "noStatewideInitiative": true,
+    "noStatewideInitiativeExplanation": "Wisconsin has NO statewide initiative of any kind, and no statewide veto referendum. Citizens cannot place a statute or a constitutional amendment on the state ballot by petition, and cannot petition to repeal an act of the legislature. The only statewide ballot questions are those the legislature itself refers: constitutional amendments (which must pass two successive legislatures and then a popular vote, Wis. Const. art. XII, sec. 1) and advisory or statutorily authorized referenda the legislature chooses to send to voters. There is no signature threshold to report because there is no statewide petition mechanism to trigger. Organizers wanting to change state law in Wisconsin have exactly two routes: (1) get a legislator to introduce a bill drafted by the Legislative Reference Bureau, or (2) use the local direct legislation route in s. 9.20 Wis. Stat. described under localOrdinance — which is real, statewide in availability across cities and villages, and substantially underused.",
+    "signatures": {
+      "statuteFormula": null,
+      "statuteCount": null,
+      "constitutionalFormula": null,
+      "constitutionalCount": null,
+      "distribution": null,
+      "source": "https://docs.legis.wisconsin.gov/statutes/statutes/9/20"
+    },
+    "circulationDays": null,
+    "filingDeadline": null,
+    "subjectLimits": [],
+    "preFilingReview": null,
+    "source": "https://docs.legis.wisconsin.gov/statutes/statutes/9"
+  },
+
+  "localOrdinance": {
+    "citizenInitiative": true,
+    "notes": "Wisconsin's DIRECT LEGISLATION statute, s. 9.20 Wis. Stat., is a genuine and underused citizen lawmaking mechanism, and it is the most important thing on this page for an organizer in Wisconsin. Scope: cities and villages only (not towns, not counties, not school districts). Threshold: a number of electors equal to at least 15 percent of the votes cast for governor at the last general election IN THAT CITY OR VILLAGE may sign and file a petition with the city or village clerk attaching a proposed ordinance or resolution. Because the base is the municipality's own gubernatorial vote, the absolute number is small in most Wisconsin municipalities — this is a low-cost mechanism relative to a statewide campaign. Signature window: no signature is valid unless dated less than 60 DAYS before the date offered for filing (s. 9.20(2m)) — so the entire petition must be gathered inside a rolling 60-day window, which is the tightest constraint. After filing, no name may be erased or removed. Petition form is governed by s. 8.40. Clerk review: within 15 days the clerk must determine whether the petition is sufficient and the proposed ordinance is in proper form, and must state findings in a signed, dated certificate; if insufficient, the petition may be amended or the ordinance put in proper form within 10 days of the original certificate. Council action: the common council or village board must, WITHOUT ALTERATION, either pass the ordinance within 30 days of the clerk's final certificate, or submit it to the electors at the next spring or general election (if that election is more than 70 days out; otherwise the next election after). A three-fourths vote of the members-elect can order a special election, but no more than one direct-legislation special election in any 6-month period. Passage: majority of those voting; the ordinance takes effect on publication, which must occur within 10 days after the election. Protection: an ordinance adopted under s. 9.20 is NOT subject to the mayor's veto and may NOT be repealed or amended within 2 years of adoption except by a vote of the electors (s. 9.20(8)). JUDICIAL LIMITS matter here and campaigns have died on them: the courts have held that (a) a proposal that is administrative rather than legislative in character is not a proper subject of initiative (State ex rel. Becker v. Common Council, 101 Wis. 2d 680 (Ct. App. 1981)); (b) the power does not extend to legislative decisions already made by the body (Schaefer v. Village Board, 177 Wis. 2d 287 (Ct. App. 1993)); (c) where statutes establish procedures for legislating in an area, an initiative may not modify those statutory directives — s. 62.23 does this for zoning, so ZONING MAY NOT BE LEGISLATED OR MODIFIED BY INITIATIVE, and an ordinance constituting a pervasive regulation of or prohibition on the use of land is zoning (Heitman v. City of Mauston Common Council, 226 Wis. 2d 542 (Ct. App. 1999)); and (d) an initiative may not compel repeal of an existing ordinance or passage of an ordinance in clear conflict with existing ordinances, nor exercise legislative powers not conferred on the municipality. But a council has NO authority to make an initial judgment on the constitutionality or validity of proposed direct legislation (State ex rel. Althouse v. City of Madison, 79 Wis. 2d 97 (1977)), and the clerk has a mandatory duty to forward a sufficient petition in proper form to the council (State ex rel. North v. Goetz, 116 Wis. 2d 239 (Ct. App. 1983)).",
+    "statuteCitation": "Wis. Stat. s. 9.20 (Direct legislation); petition form per s. 8.40; notice per s. 10.06(3)(f)",
+    "source": "https://docs.legis.wisconsin.gov/statutes/statutes/9/20"
+  },
+
+  "drafting": {
+    "manualUrl": null,
+    "manualName": "Wisconsin Bill Drafting Manual (Legislative Reference Bureau) — exists but is not published publicly",
+    "manualNotes": "The Wisconsin Legislative Reference Bureau maintains a biennially revised Wisconsin Bill Drafting Manual, but as of 2026-07-29 it is NOT posted on the LRB website or on docs.legis.wisconsin.gov. The LRB Publications page (https://legis.wisconsin.gov/lrb/publications/) lists LRB Reports, Reading the Constitution, the Wisconsin Elections/History/Policy Projects, Budget Bill Analysis, Fiscal Estimate Manual, Redistricting in Wisconsin 2020, Rulings of the Chair, Summary of Legislation and the Blue Book — no drafting manual. Probes of /lrb/bill-drafting-manual/, /misc/lrb/bill_drafting_manual, /misc/lrb/drafting_manual and several PDF path guesses all returned 404. The manual is described in library catalogs as 'intended for the use of the Legislative Reference Bureau's staff.' Practical substitute for an organizer: read the s. 9.20 case law on what a municipality may legislate, then read enacted 2025 Wisconsin Acts at https://docs.legis.wisconsin.gov/document/acts/2025/1 for form, and ask the LRB attorney assigned to the subject area (directory at https://legis.wisconsin.gov/lrb/legal-services/) through a legislator.",
+    "requiredSections": [
+      "relating clause / title ('An Act relating to: ...')",
+      "enacting clause",
+      "numbered SECTIONs (amendments to existing statutes are drafted as 'Section N. 00.00 (0) of the statutes is amended to read:' with the amended text shown)",
+      "effective date or initial applicability provisions where needed"
+    ],
+    "enactingClause": "\"The people of the state of Wisconsin, represented in senate and assembly, do enact as follows:\" — verified against the text of 2025 Wisconsin Act 1.",
+    "source": "https://docs.legis.wisconsin.gov/document/acts/2025/1"
+  },
+
+  "legislature": {
+    "chambers": ["Assembly", "Senate"],
+    "sessionType": "Biennial session. Wis. Stat. s. 13.02: the legislature convenes in the capitol on the first Monday of January in each odd-numbered year at 2 p.m. (or January 3 if that date falls on January 1 or 2) for the organizational session; the regular session commences at 2 p.m. on the first Tuesday after the 8th day of January in each year unless otherwise provided by the joint committee on legislative organization, which develops a session schedule (floorperiods) for each biennium by joint resolution.",
+    "typicalConvene": "Organizational session: first Monday of January of odd-numbered years. Regular session: first Tuesday after January 8 each year, then floorperiods scheduled by joint resolution through the biennium.",
+    "typicalAdjourn": "The biennial session ends with a final general-business floorperiod, typically in March of the even-numbered year, followed by a limited-business and veto-review floorperiod; the session schedule joint resolution sets the exact dates each biennium.",
+    "billIntroductionDeadline": null,
+    "billIntroductionNotes": "Wisconsin sets no statutory bill introduction deadline; introduction is governed by the session schedule joint resolution and by the Assembly and Senate rules for each floorperiod.",
+    "carryover": true,
+    "carryoverNotes": "Wis. Stat. s. 13.02: 'Any measures introduced in the regular annual session of the odd-numbered year which do not receive final action shall carry over to the regular annual session held in the even-numbered year.' Bills die at the end of the biennium.",
+    "source": "https://docs.legis.wisconsin.gov/statutes/statutes/13/i/02"
+  },
+
+  "data": {
+    "officialApi": null,
+    "officialApiNotes": "Wisconsin publishes no documented public REST API for legislative data. Everything is served as structured HTML and PDF from docs.legis.wisconsin.gov, which is stable and well-organized: statutes at /statutes/statutes/{chapter}/{section}, acts at /document/acts/{year}/{n}, introduced proposal text at /document/proposaltext/{year}/REG/top, amendment text at /document/amends/{year}/REG/top, votes at /document/votes/{year}/top, journals at /document/journals/{year}/top, committee records at /document/rocp/{year}/top, and LRB drafting files (the official administrative record of the drafting process for each bill, including drafter's notes and requester correspondence) at /drafting_files. RSS/Atom feeds are published under /feed. The drafting files are unusual and valuable: they are public and show why a bill is worded the way it is.",
+    "bulkDownload": "https://docs.legis.wisconsin.gov/drafting_files",
+    "openStatesCoverage": "full",
+    "source": "https://docs.legis.wisconsin.gov/"
+  },
+
+  "citizenRoute": {
+    "canRequestDraft": false,
+    "notes": "The Legislative Reference Bureau drafts all bills, resolutions and amendments for introduction in the legislature, and drafts for the governor, executive branch agencies and the courts — not for members of the public. The LRB's own description of its services is directed at legislators and their staff, and requests go through the LRB Portal or the subject-area attorney directory. A Wisconsin resident wanting a state bill must persuade a legislator to make the drafting request on their behalf; the LRB attorney assigned to the subject area (public directory at https://legis.wisconsin.gov/lrb/legal-services/) is the person who will actually write it, so identifying that attorney by subject before approaching a legislator is useful. For LOCAL direct legislation under s. 9.20, the drafting is entirely the petitioners' own responsibility — the city or village clerk reviews only whether the proposed ordinance is 'in proper form' (s. 9.20(3)) and can require it be put in proper form within 10 days, which is a form check, not a drafting service.",
+    "source": "https://legis.wisconsin.gov/lrb/legal-services/"
+  },
+
+  "gaps": [
+    "Could not locate a publicly accessible URL for the Wisconsin Bill Drafting Manual. The LRB maintains one and revises it biennially, but it is not posted on legis.wisconsin.gov or docs.legis.wisconsin.gov as of 2026-07-29; multiple URL patterns returned 404 and the LRB Publications index does not list it. manualUrl is null rather than a guess. Recommend contacting lrb.legal@legis.wisconsin.gov (608.504.5801) to request a copy.",
+    "s. 9.20 signature thresholds are per-municipality (15% of that city's or village's gubernatorial vote at the last general election), so no single statewide number exists. The applicable number derives from the November 2026 gubernatorial election for petitions filed after that election is canvassed, and from the November 2022 gubernatorial election for petitions filed before it. Organizers must get the figure from their own city or village clerk.",
+    "Wisconsin bill introduction deadlines are set by the biennial session schedule joint resolution, which changes each biennium; billIntroductionDeadline is null rather than a stale date."
+  ]
+}

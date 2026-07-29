@@ -1,0 +1,76 @@
+{
+  "code": "TN",
+  "name": "Tennessee",
+  "asOf": "2026-07",
+
+  "initiative": {
+    "statute": "none",
+    "constitutional": "none",
+    "referendum": false,
+    "signatures": {
+      "statuteFormula": null,
+      "statuteCount": null,
+      "constitutionalFormula": null,
+      "constitutionalCount": null,
+      "distribution": null,
+      "source": "https://ballotpedia.org/Types_of_ballot_measures_in_Tennessee"
+    },
+    "circulationDays": null,
+    "filingDeadline": null,
+    "subjectLimits": [],
+    "preFilingReview": null,
+    "source": "https://ballotpedia.org/Types_of_ballot_measures_in_Tennessee"
+  },
+
+  "localOrdinance": {
+    "citizenInitiative": false,
+    "notes": "Tennessee has no general citizen initiative for local ordinances. There is exactly one citizen-triggered route in the state constitution, and it is indirect. Under Tenn. Const. art. XI, sec. 9, a home rule municipality amends its charter by local referendum, and amendments may be put to that referendum in three ways: (a) by ordinance of the municipal governing body; (b) by a charter commission created by act of the General Assembly and elected by the city's voters; or (c) by a charter commission of seven at-large members chosen in a municipal election held on the petition of not less than 10 percent of the voters of the home rule municipality who voted in the latest general municipal election. Route (c) is the only one citizens control, it may be used no more than once every two years, and MTAS reports it has been used only rarely; route (a) is what cities almost always use. The referendum itself must be held at the first general state election falling at least 60 days after publication of the proposed amendment, which in practice limits home-rule charter referenda to the August primary or November general election in even-numbered years (T.C.A. sec. 6-53-105; notice to the election commission 75-90 days out under T.C.A. sec. 2-3-204). T.C.A. sec. 6-53-105(c) requires the municipal CFO's cost and revenue estimate to appear on the ballot. Only fourteen Tennessee cities have home rule charters: Chattanooga, Clinton, East Ridge, Etowah, Johnson City, Knoxville, Lenoir City, Memphis, Mt. Juliet, Oak Ridge, Red Bank, Sevierville, Sweetwater and Whitwell. Non-home-rule cities are governed by general law or private act charters and have no equivalent citizen petition right.",
+    "source": "https://www.mtas.tennessee.edu/reference/amending-home-rule-charters"
+  },
+
+  "drafting": {
+    "manualUrl": "https://www.capitol.tn.gov/Archives/joint/staff/legal/Drafting%20Guide%202025.pdf",
+    "manualName": "Legislative Drafting Guide, 114th General Assembly (Office of Legal Services, Tennessee General Assembly)",
+    "requiredSections": [
+      "caption (the bill's title; must comply with Tenn. Const. art. II, sec. 17)",
+      "preamble (optional)",
+      "enacting clause (required by Tenn. Const. art. II, sec. 20)",
+      "body: numbered sections, optional catch lines/section headers (not law)",
+      "effective-date section"
+    ],
+    "enactingClause": "BE IT ENACTED BY THE GENERAL ASSEMBLY OF THE STATE OF TENNESSEE:",
+    "source": "https://www.capitol.tn.gov/Archives/joint/staff/legal/Drafting%20Guide%202025.pdf"
+  },
+
+  "legislature": {
+    "chambers": ["House of Representatives", "Senate"],
+    "sessionType": "Two-year General Assembly with two annual regular sessions (2025-2026 = the 114th General Assembly). Bills do not die at the end of the first year: a bill that passed one chamber in 2025 needs only the other chamber in 2026.",
+    "typicalConvene": "Second Tuesday in January (2026: January 13)",
+    "typicalAdjourn": "April (114th General Assembly adjourned sine die April 23, 2026; the first session adjourned in May 2025)",
+    "billIntroductionDeadline": "Set by chamber rule each year rather than by statute; for the 2026 session the filing deadline was January 29, 2026. T.C.A. sec. 3-12-101(5) requires the Office of Legal Services to review all proposed legislation as to form and style before introduction, and OLS advises drafters to come well ahead of the filing deadline.",
+    "carryover": true,
+    "source": "https://www.bassberry.com/news/114th-tennessee-general-assembly-reconvenes-for-second-regular-session/"
+  },
+
+  "data": {
+    "officialApi": null,
+    "officialApiNotes": "Tennessee publishes bill status, texts, amendments, calendars and video through the Tennessee General Assembly web applications at https://wapp.capitol.tn.gov/apps/BillInfo/ and https://www.capitol.tn.gov/. No public, documented REST API or bulk download was found on either host. Practical machine-readable access is via Open States.",
+    "bulkDownload": "https://openstates.org/data/session-csv/",
+    "openStatesCoverage": "full",
+    "source": "https://www.capitol.tn.gov/"
+  },
+
+  "citizenRoute": {
+    "canRequestDraft": false,
+    "notes": "The Office of Legal Services drafts all bills, resolutions and floor amendments for the General Assembly and reviews everything for form and style before introduction (T.C.A. sec. 3-12-101(5)). Its stated mission is to serve members of the General Assembly, and a member of the public cannot commission a draft. The Drafting Guide does, however, contemplate 'outside drafters': OLS will on request supply an outside drafter with an electronic bill template and answer formatting questions (named staff contacts are published in the Guide). So the practical citizen route is to draft the bill yourself using the OLS Guide and template, then get a legislator to sponsor and file it, at which point OLS reviews it.",
+    "source": "https://www.capitol.tn.gov/Archives/joint/staff/legal/Drafting%20Guide%202025.pdf"
+  },
+
+  "gaps": [
+    "Tennessee is one of the states with no citizen initiative of any kind at the state level. Constitutional amendments reach the ballot only through the legislature: majority vote in both chambers in one General Assembly, then a two-thirds vote in both chambers of the next General Assembly, then a public vote. All initiative signature fields are therefore null because no such threshold exists, not because it could not be found.",
+    "Could not verify the citizen-initiative and referendum provisions of individual home rule city charters (Memphis, Chattanooga, Knoxville and others may grant ordinance initiative by charter). Only the constitutional charter-commission petition route (10 percent of voters in the last general municipal election) was verified, and localOrdinance.citizenInitiative is set false on that basis. Organizers in a specific Tennessee city must read that city's charter directly.",
+    "Could not verify the Tennessee Constitution text (art. XI, sec. 9; art. II, sec. 20) from a first-party state source: capitol.tn.gov's constitution PDF paths return the 404 page and sos.tn.gov's Blue Book PDF host returns 403. The constitutional provisions cited here are as quoted by MTAS (University of Tennessee Institute for Public Service, the state's municipal advisory agency) and by the General Assembly's own Office of Legal Services Drafting Guide.",
+    "The 2026 bill filing deadline (January 29, 2026) is from a legislative-practice report rather than a chamber rule document; chamber filing deadlines are re-set each session and should be re-checked against House and Senate rules for any future year.",
+    "openStatesCoverage was verified by confirming a current 114th Regular Session bulk CSV exists at openstates.org/data/session-csv/ (bills, votes, sponsorships). Committee-level coverage was not separately verified."
+  ]
+}

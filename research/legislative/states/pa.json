@@ -1,0 +1,76 @@
+{
+  "code": "PA",
+  "name": "Pennsylvania",
+  "asOf": "2026-07",
+
+  "initiative": {
+    "statute": "none",
+    "constitutional": "none",
+    "referendum": false,
+    "signatures": {
+      "statuteFormula": "Not applicable. Pennsylvania has no statewide citizen initiative for statutes; there is no signature threshold to report.",
+      "statuteCount": null,
+      "constitutionalFormula": "Not applicable. Pennsylvania has no statewide citizen initiative for constitutional amendments. Amendments originate only in the General Assembly: a proposal must pass both houses by a majority of the members elected to each house, be published, pass again by majority in each house in the next General Assembly chosen after an intervening election, be published again, and then be approved by a majority of the electors voting on it. Amendments are not submitted more often than once in five years on the same subject, two or more amendments are voted on separately, and the Governor's signature is not required. Under Art. XI, sec. 1(a)-(b) an emergency amendment threatening the Commonwealth may be proposed in a single session by a two-thirds vote of each house and submitted at least one month later.",
+      "constitutionalCount": null,
+      "distribution": null,
+      "source": "https://www.legis.state.pa.us/WU01/LI/LI/CT/HTM/00/00.011.001.000..HTM"
+    },
+    "circulationDays": null,
+    "filingDeadline": null,
+    "subjectLimits": [],
+    "preFilingReview": null,
+    "source": "https://www.legis.state.pa.us/WU01/LI/LI/CT/HTM/00/00.011.001.000..HTM"
+  },
+
+  "localOrdinance": {
+    "citizenInitiative": true,
+    "notes": "Local citizen petition power in Pennsylvania runs to the FORM of government and to home rule charter text, not to ordinary ordinances by general state law. Under the Home Rule Charter and Optional Plans Law, 53 Pa.C.S. ch. 29: (1) 53 Pa.C.S. sec. 2911(b) - electors may force an election on whether to elect a 7, 9 or 11 member government study commission to study the existing form of government and, if advisable, draft a home rule charter or recommend an optional plan; the petition must be signed by electors comprising 5% of the number of electors voting for Governor in the municipality at the last gubernatorial general election; (2) 53 Pa.C.S. secs. 2942-2943 - a referendum on amending an adopted home rule charter or optional plan may be initiated by petition of the electors signed by 10% of the number of electors voting for Governor in the municipality at the last gubernatorial general election. For both, the petition must be filed with the election officials not later than the 13th Tuesday before the next primary, municipal or general election, and may not be signed or circulated earlier than the 20th Tuesday nor later than the 13th Tuesday before that election. Because the base is votes cast for Governor in the last gubernatorial general election, these local thresholds currently derive from the November 8, 2022 election and will be recomputed from the November 3, 2026 election. Beyond this, ordinance-level initiative and referendum exists only where an individual home rule charter grants it, and 53 Pa.C.S. sec. 2962 limits what a charter may confer.",
+    "source": "https://www.legis.state.pa.us/WU01/LI/LI/CT/HTM/53/00.029..HTM"
+  },
+
+  "drafting": {
+    "manualUrl": null,
+    "manualName": "Legislative Drafting Manual (formerly codified at 101 Pa. Code ch. 13) - NO LONGER PUBLISHED",
+    "requiredSections": [
+      "title, in the form \"AN ACT\" followed by the subject and, for amendatory acts, a recital of the act being amended",
+      "enacting clause",
+      "numbered Sections",
+      "short title, where the act is to be citable by name",
+      "definitions, where used",
+      "severability, repeals, references and effective date provisions"
+    ],
+    "enactingClause": "The General Assembly of the Commonwealth of Pennsylvania hereby enacts as follows:",
+    "source": "https://www.legis.state.pa.us/WU01/LI/LI/US/HTM/2025/0/0001..HTM"
+  },
+
+  "legislature": {
+    "chambers": ["House of Representatives", "Senate"],
+    "sessionType": "Two-year session. The General Assembly is a continuing body during the term for which its Representatives are elected (Pa. Const. art. II, sec. 4), so a two-year session spans an odd and an even year.",
+    "typicalConvene": "12 o'clock noon on the first Tuesday of January each year (Pa. Const. art. II, sec. 4). Special sessions are called by the Governor on petition of a majority of the members elected to each house, or at the Governor's discretion.",
+    "typicalAdjourn": null,
+    "billIntroductionDeadline": null,
+    "carryover": true,
+    "source": "https://www.legis.state.pa.us/WU01/LI/LI/CT/HTM/00/00.002.004.000..HTM"
+  },
+
+  "data": {
+    "officialApi": null,
+    "officialApiNotes": "No documented public API or bulk download was found. Bill text, bill history, amendments, co-sponsorship memoranda, the Constitution, and the consolidated and unconsolidated statutes are served as static HTML and PDF from www.palegis.us / www.legis.state.pa.us. Stable text URLs follow the pattern https://www.legis.state.pa.us/WU01/LI/LI/US/HTM/<year>/0/<actnum>..HTM for acts and .../CT/HTM/<title>/<chapter>..HTM for statutes, which are scrapeable but not a supported interface. The site also serves an email/RSS 'Notifications' subscription rather than a data feed.",
+    "bulkDownload": null,
+    "openStatesCoverage": "full",
+    "source": "https://www.palegis.us/"
+  },
+
+  "citizenRoute": {
+    "canRequestDraft": false,
+    "notes": "The Legislative Reference Bureau is the General Assembly's central drafting agency; drafting is performed for members and committees, and a member of the public must find a legislator to sponsor and request a bill. With no statewide initiative available, the only citizen-driven routes in Pennsylvania are (a) persuading a legislator to introduce a bill, and (b) local petitions under 53 Pa.C.S. ch. 29 for a government study commission or a home rule charter amendment.",
+    "source": "https://www.palrb.gov/"
+  },
+
+  "gaps": [
+    "PENNSYLVANIA HAS NO STATEWIDE INITIATIVE OR VETO REFERENDUM. This is not an unverified field - initiative.statute, initiative.constitutional are 'none' and initiative.referendum is false as a matter of law. Statewide ballot questions reach voters only when the General Assembly (or, for local questions, a governing body or elector petition) puts them there.",
+    "THE BILL DRAFTING MANUAL IS GONE. The Legislative Reference Bureau's public 'Legislative Drafting Manual' link points to 101 Pa. Code ch. 13, and the entirety of 101 Pa. Code Part I, Subparts A-D (chapters 1 through 27) now reads '{Reserved}' with the source note 'The provisions of this Chapter 13 deleted May 1, 2026.' Verified against the Pennsylvania Code, current through 56 Pa.B. 3438 (June 2, 2026), at https://www.pacodeandbulletin.gov/Display/pacode?file=/secure/pacode/data/101/101toc.html and .../101/chapter13/chap13toc.html. No replacement drafting manual could be located on palrb.gov or palegis.us, so drafting.manualUrl is null. The Pennsylvania Code & Bulletin Style Manual, 6th ed. (https://www.pacodeandbulletin.gov/downloads/StyleManual_6thEdition.pdf) resolves and is current, but it governs agency regulations, not bills, and is not a substitute.",
+    "The enacting clause and required sections were taken from the text of enacted Pennsylvania acts (Act 1 of 2025 and the Right-to-Know Law, Act 3 of 2008) because the drafting manual is no longer published. No constitutional or statutory provision prescribing the enacting clause was located.",
+    "Could not verify a typical adjournment date or any bill introduction deadline; the Pennsylvania Constitution sets neither, and both chambers work from session-by-session calendars. Those fields are null."
+  ]
+}

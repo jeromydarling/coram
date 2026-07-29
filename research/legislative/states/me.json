@@ -1,0 +1,89 @@
+{
+  "code": "ME",
+  "name": "Maine",
+  "asOf": "2026-07",
+
+  "initiative": {
+    "statute": "indirect",
+    "constitutional": "none",
+    "referendum": true,
+    "signatures": {
+      "statuteFormula": "Not less than 10% of the total vote for Governor cast in the last gubernatorial election preceding the filing of the petition. Me. Const. art. IV, pt. 3, sec. 18(2): 'For any measure thus proposed by electors, the number of signatures shall not be less than 10% of the total vote for Governor cast in the last gubernatorial election preceding the filing of such petition.'",
+      "statuteCount": 67682,
+      "constitutionalFormula": null,
+      "constitutionalCount": null,
+      "referendumFormula": "People's veto: identical base — 'not less than 10% of the total vote for Governor cast in the last gubernatorial election preceding the filing of such petition' (Me. Const. art. IV, pt. 3, sec. 17(1)).",
+      "referendumCount": 67682,
+      "distribution": null,
+      "source": "https://www.maine.gov/sos/elections-voting/peoples-veto-or-citizens-initiative-resources/deadlines-for-current-citizen-initiatives"
+    },
+    "circulationDays": null,
+    "filingDeadline": "Direct initiative: filed with the Secretary of State by 5:00 p.m. on or before the 50th day after the Legislature convenes in first regular session, or on or before the 25th day after it convenes in second regular session — and in no case later than 18 months after the petition form was furnished or approved by the Secretary of State. If the deadline falls on a Saturday, Sunday or legal holiday it runs to 5:00 p.m. the next business day. The Secretary of State's current published deadline was February 2, 2026 (Second Regular Session of the 132nd Legislature). Signatures must first be submitted to municipal registrars (or authorized state election officials) for voter-qualification certification by 5:00 p.m. on the 10th day before the filing deadline; officials return them within 5 business days. People's veto: filed by 5:00 p.m. on or before the 90th day after the recess (adjournment without day) of the Legislature, with local certification submitted by the 5th day before filing and returned within 2 business days.",
+    "subjectLimits": [
+      "Electors may propose 'any bill, resolve or resolution, including bills to amend or repeal emergency legislation' — but NOT an amendment of the State Constitution. Maine has no citizen route to constitutional amendment.",
+      "The petition must set forth the full text of the measure.",
+      "A circulator must be a Maine resident whose name appears on the voting list of the circulator's municipality as qualified to vote for Governor, and must swear that every signature was made in the circulator's presence.",
+      "A signature is invalid if dated more than one year prior to the date the petition is filed with the Secretary of State; the date of each signature must be written next to it.",
+      "Petition forms may circulate for only 18 months from the date of issuance.",
+      "21-A M.R.S. sec. 901-A: circulators must offer each voter the opportunity to read the initiative summary and fiscal impact statement before signing, and the petition's first page must carry that notice in at least 16-point type, with a circulator name and unique identifying number in the top corner.",
+      "An approved measure that entails expenditure exceeding available and unappropriated state funds remains inoperative until 45 days after the Legislature next convenes in regular session, unless the measure raises adequate new revenue (Me. Const. art. IV, pt. 3, sec. 19)."
+    ],
+    "preFilingReview": "A Maine registered voter files a signed, notarized written application with the Secretary of State containing the FULL TEXT of the proposed law plus a summary, in electronic and printed form, and the names, addresses and signatures of 5 registered voters in addition to the applicant to receive notices. For a direct initiative, the Secretary of State has 15 business days after receipt either to reject the application or to return a revised draft of the initiative legislation to the applicant; each subsequent draft gets a 10-business-day review with either a revised draft or a written response suggesting how the proposal may be modified. An application may be rejected if the proposed law does not conform to the essential aspects of the drafting conventions for the Maine Revised Statutes — correct statutory allocation, appropriate section headnotes, conformity to the numbering system, and no testimonial statements imposing no legal requirement. The applicant must give written consent to the final language before petition forms are designed and issued.",
+    "process": "INDIRECT — this is the defining feature of Maine and it changes the whole campaign plan. A validated petition does not go straight to the ballot; it is 'addressed to the Legislature or to either branch thereof' and presented to the Legislature for its consideration. If the Legislature enacts the measure WITHOUT CHANGE at the session at which it is presented, it becomes law with no popular vote at all (subject only to a people's veto demand under sec. 17), and the Governor's veto does not defeat it outright — a vetoed people-initiated measure that the Legislature passed without change goes to the voters at the next general election if the veto is sustained. If the Legislature does not enact it without change, the Governor must by proclamation refer it to the electors at an election in November of the year the petition was filed; if the Governor fails to do so within 10 days after the recess of the Legislature, the Secretary of State issues the proclamation. The Legislature may put a COMPETING MEASURE — its own amended form, substitute, or recommendation — on the same ballot, 'in such manner that the people can choose between the competing measures or reject both.' If neither competing measure wins a majority of the votes given for and against both, the one receiving the most votes is submitted by itself at the next statewide election held not less than 60 days later, provided it received more than 1/3 of the votes given for and against both. The Legislature may also order a special election on any measure subject to a vote of the people. Practical consequence: an organizing group must plan for a legislative-session lobbying phase between certification and any ballot vote, and must be prepared for a legislature-drafted competing measure on the same ballot.",
+    "source": "https://legislature.maine.gov/doc/10674"
+  },
+
+  "localOrdinance": {
+    "citizenInitiative": true,
+    "notes": "30-A M.R.S. sec. 2522: a petition signed by 'a number of voters equal to at least 10% of the number of votes cast in the town at the last gubernatorial election, but in no case less than 10' requires the municipal officers either to insert the proposed article in the next warrant they issue or to call a special town meeting within 60 days to act on it.",
+    "source": "https://legislature.maine.gov/statutes/30-A/title30-Asec2522.html"
+  },
+
+  "drafting": {
+    "manualUrl": "https://legislature.maine.gov/doc/9564",
+    "manualName": "Maine Legislative Drafting Manual (Office of the Revisor of Statutes, published under the auspices of the Legislative Council; 1st edition October 1990, revised through November 2022)",
+    "requiredSections": [
+      "title (e.g. 'An Act to ...')",
+      "emergency preamble (emergency measures only; precedes the enacting clause)",
+      "enacting clause",
+      "body: short title section, purpose clause, definitions, substantive sections with amending clauses and allocation",
+      "effective date / applicability provisions where needed",
+      "summary"
+    ],
+    "enactingClause": "Be it enacted by the People of the State of Maine as follows:",
+    "source": "https://legislature.maine.gov/doc/9564"
+  },
+
+  "legislature": {
+    "chambers": ["House of Representatives", "Senate"],
+    "sessionType": "Two-year Legislature with two regular sessions. The second regular session is limited in scope (budget matters, legislation in the Governor's call, carryover legislation and legislation admitted by the Legislative Council).",
+    "typicalConvene": "First regular session: the first Wednesday of December following the general election. Second regular session: the first Wednesday after the first Tuesday of January of the even-numbered year.",
+    "typicalAdjourn": "First regular session: no later than the 3rd Wednesday in June. Second regular session: no later than the 3rd Wednesday in April. 3 M.R.S. sec. 2 permits extension by a 2/3 vote of members present and voting, up to 10 additional legislative days plus one day to consider gubernatorial objections.",
+    "billIntroductionDeadline": "Cloture. During the first regular session all legislator requests for bills and resolves must be submitted to the Office of the Revisor of Statutes on or before a date fixed following the December convening; the Legislative Council sets a separate cloture date and procedure for the second regular session. Requests filed after cloture must be reviewed and approved by the Legislative Council, and the Revisor's Office will not begin drafting until that approval.",
+    "carryover": true,
+    "source": "https://legislature.maine.gov/statutes/3/title3sec2.html"
+  },
+
+  "data": {
+    "officialApi": null,
+    "officialApiNotes": "No public API and no advertised bulk download. Bill, status and docket data are published through LawMakerWeb at https://legislature.maine.gov/LawMakerWeb/search.asp (verified 200 on 2026-07-29). Statutes and the Constitution are served as HTML and PDF from legislature.maine.gov.",
+    "bulkDownload": null,
+    "openStatesCoverage": "full",
+    "source": "https://open.pluralpolicy.com/data/session-csv/"
+  },
+
+  "citizenRoute": {
+    "canRequestDraft": false,
+    "notes": "For ordinary bills, no. The Maine Legislative Drafting Manual is explicit: 'Except through the direct initiative process set forth in Article IV, Part Third, Section 18 of the Constitution of Maine, citizens, interest groups and lobbyists cannot introduce legislation; they must have a Legislator who agrees to sponsor their bills.' BUT Maine is unusual in the other direction: through the initiative application under 21-A M.R.S. sec. 901, a private citizen who files an application containing the full text of a proposed law receives a REVISED DRAFT of the legislation back from the Secretary of State's office within 15 business days, and further revised drafts or written modification suggestions on a 10-business-day cycle, until the applicant consents to final language. That is a genuine state-provided drafting-review channel open to any Maine registered voter, and it is the practical entry point for citizen-drafted legislation in Maine.",
+    "source": "https://www.mainelegislature.org/legis/statutes/21-a/title21-Asec901.html"
+  },
+
+  "gaps": [
+    "The 67,682 threshold is 10% of the total votes cast for Governor at the November 8, 2022 General Election, as published by the Maine Secretary of State. Maine's next gubernatorial election is in November 2026; the threshold will be recomputed from that election for petitions filed thereafter, so any figure used after November 2026 must be re-checked against the Secretary of State's page. Do not carry 67,682 forward past the 2026 election.",
+    "circulationDays is null because Maine's limit is not a simple day count: the petition form may circulate for 18 months from the date of issuance, but independently no signature is valid if dated more than one year before the petition is filed. Both constraints are stated verbatim in initiative.filingDeadline and initiative.subjectLimits. This is a representation limitation, not an unverified fact.",
+    "The February 2, 2026 filing deadline is the Secretary of State's published deadline for the Second Regular Session of the 132nd Legislature and is now past. The next cycle's deadline derives from the 50th/25th-day constitutional rule applied to the next Legislature's convening date and was not separately published as of 2026-07-29.",
+    "The Maine Legislative Drafting Manual PDF at legislature.maine.gov/doc/9564 was verified (200, application/pdf) and its title page reads 'Revised through November 2022'. Note that the Revisor's publications page text still describes it as revised through October 2016; the PDF itself is the newer document.",
+    "Second-regular-session scope limits are described from the Legislature's practice and the drafting manual's carryover discussion; the precise constitutional/joint-rule text limiting second-session subject matter was not quoted from an official source in this pass.",
+    "Schema note: 'referendumFormula'/'referendumCount' and a 'process' string were added inside the initiative object, the latter to carry the indirect-initiative mechanics that the base schema has no field for."
+  ]
+}

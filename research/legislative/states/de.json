@@ -1,0 +1,73 @@
+{
+  "code": "DE",
+  "name": "Delaware",
+  "asOf": "2026-07",
+
+  "initiative": {
+    "statute": "none",
+    "constitutional": "none",
+    "referendum": false,
+    "signatures": {
+      "statuteFormula": null,
+      "statuteCount": null,
+      "constitutionalFormula": null,
+      "constitutionalCount": null,
+      "distribution": null,
+      "source": "https://delcode.delaware.gov/constitution/constitution-17.shtml"
+    },
+    "circulationDays": null,
+    "filingDeadline": null,
+    "subjectLimits": [],
+    "preFilingReview": null,
+    "notes": "Delaware has NO citizen initiative and NO veto referendum at the state level, and it is the only state whose constitution can be amended with no popular vote at all. Del. Const. art. XVI, sec. 1: an amendment agreed to by two-thirds of all members elected to each house, entered on the journals with yeas and nays, disseminated to the public 90-120 days before the next general election, and then agreed to again by two-thirds of all members elected to each house of the NEXT General Assembly, 'shall thereupon become part of the Constitution.' Voters never vote on it. The only constitutional question voters ever see is the convention question under art. XVI, sec. 2: the General Assembly may, by two-thirds of each house, put 'Shall there be a Convention to revise the Constitution and amend the same?' to the electors; if a majority approve, 41 delegates are elected. There is accordingly no petition route by which a citizen-drafted statute or amendment reaches the Delaware ballot.",
+    "source": "https://delcode.delaware.gov/constitution/constitution-17.shtml"
+  },
+
+  "localOrdinance": {
+    "citizenInitiative": true,
+    "notes": "Narrow and indirect. Delaware has no general municipal initiative power to enact ordinances by petition. What exists under Title 22, Chapter 8 (Home Rule) is a charter-commission route: voters of a municipal corporation may petition — signed by 10% of the qualified voters — to call an election for a charter commission; seven commissioners are then elected, the commission drafts a charter amendment, and the amendment goes on the ballot for voter approval. Related petition rights: annexation may be initiated by petition of 25% of qualified voters in the territory; a special election to set a school district tax rate may be petitioned by 25% of qualified voters in the district. Title 22, ch. 8, subch. VI lists subjects a home-rule charter amendment may not address (including firearms regulation, municipal election dates and voter qualifications, and anything breaching state law). Delaware municipalities are chartered by act of the General Assembly, so charters vary; check the specific municipal charter at https://delcode.delaware.gov/ (Municipal Charters).",
+    "source": "https://ballotpedia.org/Laws_governing_local_ballot_measures_in_Delaware"
+  },
+
+  "drafting": {
+    "manualUrl": "https://legis.delaware.gov/draftingmanual",
+    "manualName": "Delaware Legislative Drafting Manual, 2024 edition (Division of Legislative Services)",
+    "manualPdfUrl": "https://legis.delaware.gov/docs/default-source/publications/legislative-drafting-manual.pdf?sfvrsn=74bcb138_7",
+    "manualWordUrl": "https://legis.delaware.gov/docs/default-source/publications/2024draftingmanual.docx?sfvrsn=ae8c8838_1",
+    "quickGuideUrl": "https://legis.delaware.gov/docs/default-source/publications/2024legislativedraftingquickguide.pdf?sfvrsn=98d8838_1",
+    "requiredSections": null,
+    "enactingClause": null,
+    "source": "https://legis.delaware.gov/draftingmanual"
+  },
+
+  "legislature": {
+    "chambers": ["House of Representatives", "Senate"],
+    "sessionType": "Two-year General Assembly meeting in annual sessions. Del. Const. art. II, sec. 4: the General Assembly convenes on the second Tuesday of January of each calendar year and may continue in session as long as the public interest requires, but no session may extend beyond 5:00 p.m. on the last day of June unless recalled by the Governor or by mutual call of the presiding officers.",
+    "typicalConvene": "Second Tuesday of January. The 2026 session convened January 13, 2026.",
+    "typicalAdjourn": "June 30 at 5:00 p.m. The 2026 session adjourned June 30, 2026.",
+    "billIntroductionDeadline": null,
+    "carryover": null,
+    "source": "https://delcode.delaware.gov/constitution/constitution-03.shtml"
+  },
+
+  "data": {
+    "officialApi": null,
+    "officialApiNotes": "legis.delaware.gov exposes internal JSON endpoints used by its own site (e.g. /json/BillDetail/...) but publishes no documented, supported public API or bulk download. Structured copies of Delaware bills and votes are available from Open States (Plural) and LegiScan.",
+    "bulkDownload": "https://open.pluralpolicy.com/data/",
+    "openStatesCoverage": "full",
+    "source": "https://open.pluralpolicy.com/data/"
+  },
+
+  "citizenRoute": {
+    "canRequestDraft": false,
+    "notes": "The Division of Legislative Services is described as 'a nonpartisan and confidential reference bureau for the General Assembly,' providing legislative and legal research, bill drafting and committee staffing. Its bill-drafting service is for the General Assembly; the page does not offer drafting to the public. The public-facing product is the Delaware Legislative Drafting Manual itself, which the Division describes as 'the primary resource for those who prepare or review legislation.' The practical citizen route in Delaware is to bring a draft to a legislator, who then requests the actual bill from the Division. Legislative Hall: (302) 744-4114.",
+    "source": "https://legis.delaware.gov/Offices/DivisionOfResearch"
+  },
+
+  "gaps": [
+    "Could not verify from a primary source whether the Division of Legislative Services will accept a drafting request from a member of the public; canRequestDraft is recorded as false based on the Division's self-description as a bureau 'for the General Assembly', not on an explicit policy statement.",
+    "Could not verify whether bills carry over from the first to the second session of a Delaware General Assembly (carryover is null), nor any bill-introduction deadline.",
+    "Delaware's required bill parts and enacting-clause wording were not extracted from the drafting manual (a 25 MB PDF) and are null; they are in the manual at the URL recorded above.",
+    "Local petition percentages are sourced to Ballotpedia's summary of Title 22, ch. 8 rather than to the code text. Individual municipal charters — which are the operative law in Delaware — were not surveyed."
+  ]
+}

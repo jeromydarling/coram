@@ -1,0 +1,84 @@
+{
+  "code": "MA",
+  "name": "Massachusetts",
+  "asOf": "2026-07",
+
+  "initiative": {
+    "statute": "indirect",
+    "constitutional": "indirect",
+    "referendum": true,
+    "signatures": {
+      "statuteFormula": "INDIRECT, TWO ROUNDS. Round 1: 3% of the total votes cast for Governor (excluding blanks) at the preceding gubernatorial election. Round 2 (only if the Legislature fails to enact the measure by the first Wednesday in May): an additional 0.5% of that same base. Both 2026-cycle numbers derive from the NOVEMBER 2022 gubernatorial election (Healey/Diehl). Round 1 = 74,574; Round 2 = 12,429.",
+      "statuteCount": 74574,
+      "constitutionalFormula": "3% of the total votes cast for Governor (excluding blanks) at the preceding gubernatorial election — one round only. 2026-cycle number derives from the November 2022 gubernatorial election. A constitutional initiative additionally needs at least 25% of the votes cast at a joint session of TWO consecutively elected legislatures before it reaches the ballot.",
+      "constitutionalCount": 74574,
+      "distribution": "No more than 25% of the required total may come from any one county. For 2026: no more than 18,643 of the 74,574 Round 1 signatures, and no more than 3,107 of the 12,429 Round 2 signatures, from any single county.",
+      "source": "https://www.sec.state.ma.us/divisions/elections/download/getting-on-the-ballot/Guide-to-Statewide-Ballot-Questions-2025-26.pdf"
+    },
+    "circulationDays": null,
+    "filingDeadline": "No fixed statutory number of circulation days; the calendar is fixed by date. 2025-26 cycle for a proposed LAW: original petition signed by 10 registered voters filed with the Attorney General by the first Wednesday in August (Aug 6, 2025); AG certifies on the first Wednesday in September (Sep 3, 2025), which is also the first day to request blank petition forms from the Secretary (provided within 14 days); Round 1 signatures to local registrars by Nov 19, 2025 and filed certified with the Secretary by the first Wednesday in December (Dec 3, 2025); petition transmitted to the House Clerk on the first legislative day (Jan 7, 2026); LAST DAY FOR THE LEGISLATURE TO ACT = first Wednesday in May (May 5, 2026); Round 2 forms may be requested May 6, 2026; optional amended petition (with an AG certificate that it does not materially change the substance) by Jun 2, 2026; Round 2 signatures to registrars by Jun 17, 2026 and filed with the Secretary by the first Wednesday in July (Jul 1, 2026); election Nov 3, 2026. CONSTITUTIONAL AMENDMENT: same schedule through Dec 3, 2025, then joint-session votes — last day for the 194th General Court to act is May 13, 2026; if it clears 25% there it must clear 25% again in the 195th General Court (2027-28), earliest ballot Nov 7, 2028. REFERENDUM (repeal of an enacted law): original petition filed with the Secretary within 30 days of the act becoming law; certified signatures filed within 90 days of the act becoming law; 1.5% of votes for Governor (37,289 for 2026) to reach the ballot, 2% (49,716) to suspend a non-emergency law.",
+    "subjectLimits": [
+      "Article 48 excludes measures relating to religion, religious practices or religious institutions",
+      "Excludes measures relating to judges, the appointment/qualification/tenure/removal of judges, and the powers/creation/abolition of courts",
+      "Excludes measures relating to the operation of particular towns, cities or other political divisions (specific localities)",
+      "Excludes specific appropriations from the state treasury",
+      "Excludes measures inconsistent with certain provisions of the Declaration of Rights (e.g. freedom of speech, press, elections, right to jury trial, protection from unreasonable search)",
+      "A question may not appear on the ballot if a substantially similar question was rejected by the voters at either of the two most recent biennial state elections",
+      "Article 48 requires that the petition contain only subjects that are related or mutually dependent (Massachusetts' relatedness / single-subject rule)"
+    ],
+    "preFilingReview": "The Attorney General reviews the original petition (signed by 10 registered voters, each with a certificate of voter registration signed by at least three registrars) for whether it is a proper subject for initiative, certifies it, and writes the fair and concise summary printed on the petition forms. The AG's office will informally review draft text before the August filing deadline. The Secretary of the Commonwealth's Elections Division then prepares blank petition forms within 14 days of a request.",
+    "source": "https://www.sec.state.ma.us/divisions/elections/download/getting-on-the-ballot/Guide-to-Statewide-Ballot-Questions-2025-26.pdf"
+  },
+
+  "localOrdinance": {
+    "citizenInitiative": true,
+    "notes": "Towns: M.G.L. c. 39, s. 10 requires the selectboard to insert in the warrant for the ANNUAL town meeting any subject requested in writing by ten or more registered voters, and in the warrant for a SPECIAL town meeting any subject requested by 100 registered voters or 10% of the town's registered voters, whichever is fewer. Town meeting then votes on the article. Cities: there is no general statewide municipal initiative statute; the availability and thresholds of an ordinance initiative depend on the individual city charter (many Plan D/Plan E and home-rule charters contain initiative and referendum articles).",
+    "source": "https://malegislature.gov/Laws/GeneralLaws/PartI/TitleVII/Chapter39/Section10"
+  },
+
+  "drafting": {
+    "manualUrl": "https://malegislature.gov/Download/Joint/Legislative%20Drafting%20Manual",
+    "manualName": "Massachusetts General Court Legislative Research and Drafting Manual, Fifth Edition (2010), prepared by the Counsel to the Senate and the Counsel to the House of Representatives",
+    "requiredSections": [
+      "title — short and descriptive, in the form 'An Act regulating firearms.' (participle, not infinitive)",
+      "emergency preamble — only when the act must take effect immediately",
+      "enacting clause",
+      "numbered sections (changes to the General Laws, changes to special acts, 'notwithstanding' provisions, transition provisions)",
+      "effective date section, where the default effective date is not wanted"
+    ],
+    "enactingClause": "Be it enacted by the Senate and House of Representatives in General Court assembled, and by the authority of the same, as follows:",
+    "source": "https://malegislature.gov/Download/Joint/Legislative%20Drafting%20Manual"
+  },
+
+  "legislature": {
+    "chambers": ["House of Representatives", "Senate"],
+    "sessionType": "Biennial two-year General Court (the 194th General Court runs 2025-2026), divided into two annual sessions",
+    "typicalConvene": "Early January each year; the first legislative day of the 2026 annual session was January 7, 2026",
+    "typicalAdjourn": "Formal sessions in the second year of a General Court end July 31; after July 31 the Legislature may meet in formal session only on conference committee reports filed by July 31, on appropriation bills filed after July 31, and on gubernatorial vetoes or amendments (194th General Court joint rules). Informal sessions continue until the General Court expires in early January.",
+    "billIntroductionDeadline": "Third Friday in January of the first annual session, before 5:00 p.m. — January 17, 2025 for the 194th General Court",
+    "carryover": true,
+    "source": "https://malegislature.gov/ClerksOffice/House/Deadlines"
+  },
+
+  "data": {
+    "officialApi": null,
+    "officialApiNotes": "malegislature.gov serves bill, hearing and roll-call data through an undocumented JSON endpoint under /api/, but the General Court publishes no documented public API or official bulk download. Treat scraping as the practical route.",
+    "bulkDownload": "https://open.pluralpolicy.com/data/session-csv/",
+    "openStatesCoverage": "full",
+    "source": "https://open.pluralpolicy.com/data/session-csv/"
+  },
+
+  "citizenRoute": {
+    "canRequestDraft": false,
+    "notes": "House Counsel and Senate Counsel draft bills for members and committees, not for the public. However, Massachusetts has an unusually strong citizen route: Article XIX of the Declaration of Rights guarantees the right of free petition, and any resident may have legislation filed on their behalf by a legislator ('by request' / non-member legislation), which the Clerks track as a separate category with its own Joint Rule 10 reporting deadlines. The filing deadline is the same third Friday in January of the first annual session.",
+    "source": "https://malegislature.gov/Laws/Constitution"
+  },
+
+  "gaps": [
+    "circulationDays is null on purpose: Massachusetts fixes the petition calendar by calendar date (AG filing first Wednesday in August, forms first Wednesday in September, signatures due first Wednesday in December), not by a statutory number of circulation days. The dates in filingDeadline are the 2025-26 cycle dates published by the Secretary of the Commonwealth.",
+    "City-level ordinance initiative could not be stated as a single statewide rule — it depends on each city's charter. Only the town-meeting warrant-article thresholds (M.G.L. c. 39, s. 10) are verified here.",
+    "No documented official API or bulk download for malegislature.gov was found; the /api/ endpoint exists but is undocumented and unsupported, so officialApi is null.",
+    "The Legislative Research and Drafting Manual is the current published edition but dates from 2010 (Fifth Edition); no newer edition was found on malegislature.gov.",
+    "The Secretary's Guide does not prescribe a special enacting clause for an initiative petition for a law; the enacting clause recorded here is the standard General Court clause from the drafting manual."
+  ]
+}

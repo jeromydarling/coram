@@ -1,0 +1,80 @@
+{
+  "code": "MN",
+  "name": "Minnesota",
+  "asOf": "2026-07",
+
+  "initiative": {
+    "statute": "none",
+    "constitutional": "none",
+    "referendum": false,
+    "signatures": {
+      "statuteFormula": null,
+      "statuteCount": null,
+      "constitutionalFormula": null,
+      "constitutionalCount": null,
+      "distribution": null,
+      "source": "https://www.revisor.mn.gov/constitution/"
+    },
+    "circulationDays": null,
+    "filingDeadline": null,
+    "subjectLimits": [],
+    "preFilingReview": null,
+    "source": "https://ballotpedia.org/States_with_initiative_or_referendum"
+  },
+
+  "localOrdinance": {
+    "citizenInitiative": true,
+    "notes": "Only in home rule charter cities, and only if that city's charter provides for it. Minn. Stat. s 410.20 authorizes a charter commission to include in the charter provisions for initiative (ordinances proposed by voter petition), referendum (protest petition against a council-passed ordinance, with the question then decided at an election), recall, and a delayed effective date for ordinances during which electors may petition for a referendum. Statutory (non-charter) cities have no general ordinance initiative. Signature thresholds and deadlines are set by each charter, not by state law.",
+    "source": "https://www.revisor.mn.gov/statutes/cite/410.20"
+  },
+
+  "drafting": {
+    "manualUrl": "https://www.revisor.mn.gov/static/office/2013-Revisor-Manual.pdf",
+    "manualName": "Minnesota Revisor's Manual with Styles and Forms, 2013 Edition (Office of the Revisor of Statutes)",
+    "requiredSections": [
+      "title — constitutionally mandatory; must clearly state its subject and briefly state its purpose",
+      "enacting clause — constitutionally mandatory, immediately after the title",
+      "appropriation description and summary by fund (omnibus appropriation bills only)",
+      "coded sections (amended and proposed) in statutory order",
+      "amendments to session law sections, in order of year/chapter/section/subdivision",
+      "uncoded sections",
+      "revisor's instructions",
+      "repealers",
+      "general effective dates not appended to specific sections"
+    ],
+    "enactingClause": "BE IT ENACTED BY THE LEGISLATURE OF THE STATE OF MINNESOTA:",
+    "source": "https://www.revisor.mn.gov/office/publications"
+  },
+
+  "legislature": {
+    "chambers": ["House of Representatives", "Senate"],
+    "sessionType": "Biennial. The Legislature meets in regular session in each year of the biennium, but is limited to a total of 120 legislative days per biennium (Minn. Const. art. IV, s 12)",
+    "typicalConvene": "January — the 2027 session is scheduled to begin January 12, 2027",
+    "typicalAdjourn": "No later than the first Monday following the third Saturday in May of any year — May 17, 2027 for the 2027 session",
+    "billIntroductionDeadline": null,
+    "carryover": null,
+    "source": "https://www.house.mn.gov/hinfo/hinfo.asp"
+  },
+
+  "data": {
+    "officialApi": null,
+    "officialApiNotes": "The Legislature publishes bills and statutes at leg.mn.gov, house.mn.gov, senate.mn and revisor.mn.gov, and the Revisor's Office is the official publisher of Minnesota Statutes, Laws and Rules. No documented public REST API or official bulk bill download was confirmed.",
+    "bulkDownload": "https://open.pluralpolicy.com/data/session-csv/",
+    "openStatesCoverage": "full",
+    "source": "https://open.pluralpolicy.com/data/session-csv/"
+  },
+
+  "citizenRoute": {
+    "canRequestDraft": false,
+    "notes": "The Office of the Revisor of Statutes provides nonpartisan, confidential bill drafting, but only for the Governor, members of the Legislature, state departments and agencies, and special committees or commissions created by the Legislature or appointed by the Governor (Minn. Stat. ch. 3C). Minn. Stat. s 3C.04, subd. 1 similarly limits advice on the legal effect of bills to requests from members. A member of the public must find a legislator to carry and request the draft.",
+    "source": "https://www.revisor.mn.gov/statutes/cite/3C.04"
+  },
+
+  "gaps": [
+    "Minnesota has NO statewide initiative, no statewide citizen referendum, and no veto referendum. The only statewide ballot measures are constitutional amendments referred by the Legislature, and those must receive a majority of ALL ballots cast in the election (not merely a majority of votes on the question). Three attempts to add initiative and referendum to the constitution (1914, 1916, 1980) each drew more yes than no votes but failed that all-ballots majority. Every signature field is therefore null because no process exists, not because a number could not be found.",
+    "Could not verify from an official Minnesota source whether bills carry over from the first year to the second year of a biennium; the House 'How a bill becomes law' page does not address it. carryover is null rather than assumed.",
+    "No fixed statewide bill introduction deadline was verified. Minnesota instead uses committee deadlines set by joint agreement each session (see https://www.leg.mn.gov/leg/deadlines). billIntroductionDeadline left null.",
+    "The Revisor's Manual with Styles and Forms is the current published drafting manual but is the 2013 edition; no newer edition is posted on the Revisor's publications page.",
+    "Local initiative in home rule charter cities is authorized but not mandated by Minn. Stat. s 410.20; whether any particular city has it, and at what signature threshold, must be read out of that city's charter. Not verified city by city."
+  ]
+}

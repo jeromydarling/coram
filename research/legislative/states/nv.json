@@ -1,0 +1,81 @@
+{
+  "code": "NV",
+  "name": "Nevada",
+  "asOf": "2026-07",
+
+  "initiative": {
+    "statute": "indirect",
+    "constitutional": "direct",
+    "referendum": true,
+    "signatures": {
+      "statuteFormula": "10% of the number of voters who voted at the last preceding general election, statewide (Nev. Const. art. 19, sec. 2(2)), apportioned EQUALLY among the four petition districts, with an equal number required from each (NRS 295.012). For any petition submitted in 2026 the base is the 2024 general election.",
+      "statuteCount": 148788,
+      "constitutionalFormula": "Identical: 10% of the number of voters who voted at the last preceding general election, equally apportioned among the four petition districts. Same 2024 general election base for the 2026 cycle.",
+      "constitutionalCount": 148788,
+      "distribution": "37,197 valid signatures from each of Petition Districts 1, 2, 3 and 4 for the 2026 cycle. Petition districts have the same geographic boundaries as Nevada's congressional districts; each petition sheet must denote the district in which it was circulated and only voters residing in that district may sign that sheet. IMPORTANT: Nev. Const. art. 19, sec. 2(2) still contains superseded text requiring signatures from 'not less than 75 percent of the counties in the State.' That county-distribution rule (the '13 counties rule') was held unconstitutional by the Ninth Circuit in ACLU of Nevada v. Lomax (2006). The Legislature replaced it with a congressional-district rule in SB 212 (2009) and made it permanent in SB 133 (2011). The petition-district rule in NRS 295.012 is what is enforced today; the constitutional county language is a dead letter.",
+      "source": "https://www.nvsos.gov/elections/initiatives-referenda/filing-a-statutory-initiative"
+    },
+    "circulationDays": null,
+    "filingDeadline": "STATUTORY (indirect): a copy of the petition must be filed with the Secretary of State before circulation begins and not earlier than January 1 of the year preceding the year in which a regular legislative session is held. After circulation it must be filed with the Secretary of State not less than 30 days prior to the regular session; circulation ceases on the filing date. Signatures go to county clerks for verification first - the Secretary of State lists November 18, 2026 as the last day to submit signatures to the counties for the 2026 statutory-initiative cycle, with counties certifying sufficiency within 9 working days. CONSTITUTIONAL: a copy must be filed with the Secretary of State before circulation and not earlier than September 1 of the year before the election year; the completed petition must be filed with the Secretary of State not less than 90 days before the general election. REFERENDUM: copy filed not earlier than August 1 of the year before the election year; petition filed with the Secretary of State not less than 120 days before the general election (Nev. Const. art. 19, secs. 1 and 2).",
+    "subjectLimits": [
+      "each petition must embrace but one subject and matters necessarily connected therewith (NRS 295.009)",
+      "each signature page must carry a description of the initiative's effect in no more than 200 words (NRS 295.009)",
+      "may not propose a statute or statutory amendment that makes an appropriation or otherwise requires the expenditure of money unless it also imposes a sufficient tax or otherwise provides for raising the necessary revenue (Nev. Const. art. 19, sec. 6)",
+      "a statutory initiative approved by the voters may not be amended, annulled, repealed, set aside or suspended by the Legislature for 3 years after it takes effect"
+    ],
+    "preFilingReview": "Before circulating, the proposer files the petition text with the Secretary of State, identifying the proposer and up to three persons authorized to withdraw the petition. The Secretary of State posts the filed petition within 10 business days, together with any fiscal note and any suggestions from the Legislative Counsel (NRS 295.015). There is no Attorney General title-and-summary step as in California; instead the 200-word description of effect written by the proponent is what appears on every signature page, and it is the most commonly litigated element of a Nevada petition.",
+    "source": "https://www.leg.state.nv.us/Const/NvConst.html"
+  },
+
+  "localOrdinance": {
+    "citizenInitiative": true,
+    "notes": "Nev. Const. art. 19, sec. 4 reserves the initiative and referendum powers to the registered voters of each county and each municipality as to all local, special and municipal legislation. County and municipal initiative petitions may be instituted by a number of registered voters equal to 15% or more of the voters who voted at the last preceding general county or municipal election; referendum petitions by 10% or more of such voters.",
+    "source": "https://www.leg.state.nv.us/Const/NvConst.html"
+  },
+
+  "drafting": {
+    "manualUrl": "https://www.leg.state.nv.us/Division/Research/Content/items/nevada-legislative-manual-current/",
+    "manualName": "Nevada Legislative Manual (2025), Legislative Counsel Bureau Research Division - Chapter IV covers the bill drafting and legislative process. Nevada's Legislative Counsel Bureau does not publish a public bill drafting style manual.",
+    "requiredSections": [
+      "title - 'AN ACT relating to ...; and providing other matters properly relating thereto.'",
+      "legislative counsel's digest (prepared by LCB, not by the drafter)",
+      "enacting clause",
+      "numbered sections",
+      "effective date section where applicable"
+    ],
+    "enactingClause": "The People of the State of Nevada do enact as follows:",
+    "source": "https://www.leg.state.nv.us/Const/NvConst.html"
+  },
+
+  "legislature": {
+    "chambers": ["Assembly", "Senate"],
+    "sessionType": "Biennial. Regular sessions are held only in odd-numbered years and must adjourn sine die no later than midnight Pacific time at the end of the 120th consecutive calendar day, inclusive of the day the session commences; any legislative action taken after that moment is void (Nev. Const. art. 4, sec. 2). The next regular session is 2027.",
+    "typicalConvene": "first Monday of February following the election of members of the Assembly",
+    "typicalAdjourn": "the 120th consecutive calendar day of the session, in early June",
+    "billIntroductionDeadline": null,
+    "carryover": false,
+    "source": "https://www.leg.state.nv.us/Const/NvConst.html"
+  },
+
+  "data": {
+    "officialApi": null,
+    "officialApiNotes": "The Nevada Electronic Legislative Information System (NELIS) at https://www.leg.state.nv.us/App/NELIS/REL/<session> is the official bill, committee, exhibit and testimony system. No public documented REST API or bulk download was located.",
+    "bulkDownload": null,
+    "openStatesCoverage": "full",
+    "source": "https://www.leg.state.nv.us/App/NELIS/REL/83rd2025"
+  },
+
+  "citizenRoute": {
+    "canRequestDraft": false,
+    "notes": "The LCB Legal Division drafts bills only on bill draft request (BDR) from legislators, committees, constitutional officers and agencies; the public cannot submit a BDR. The citizen route is the indirect statutory initiative, which is Nevada's defining feature: a qualified statutory initiative is transmitted by the Secretary of State to the Legislature as soon as it convenes, takes precedence over all measures except appropriation bills, and must be enacted or rejected WITHOUT CHANGE OR AMENDMENT within 40 days. If the Legislature passes it and the Governor signs it, it becomes law (subject to veto referendum). If the Legislature rejects it or takes no action within 40 days, the Secretary of State places it on the ballot at the next general election. The Legislature may also send a competing measure on the same subject to the ballot alongside it; if both pass, the one with more affirmative votes prevails. A CONSTITUTIONAL initiative does not go to the Legislature at all, but must be approved by a majority of voters at TWO SUCCESSIVE general elections before it becomes part of the Constitution - a four-year minimum campaign.",
+    "source": "https://www.leg.state.nv.us/Const/NvConst.html"
+  },
+
+  "gaps": [
+    "The 2026 signature figures (148,788 statewide / 37,197 per petition district, based on the 2024 general election) come from the Nevada Secretary of State's own 'Filing a Statutory Initiative' and 'Filing a Constitutional Initiative' pages, but nvsos.gov is behind a bot-protection layer that returned an empty body to direct fetching; the numbers were read from the search index of those SoS pages rather than from a live fetch. Re-confirm on https://www.nvsos.gov/elections/initiatives-referenda before committing to a signature plan. Note that an older figure of 102,362 (the 2024 cycle, based on the 2022 general election) still circulates widely and is WRONG for 2026.",
+    "Exact 2026 statutory-initiative deadline dates were taken from the SoS page via the same indirect route. The Nevada Constitution's own rule (file with the Secretary of State not less than 30 days before the regular session; constitutional petitions not less than 90 days before the general election) was verified directly and should govern if the two ever appear to conflict.",
+    "Nevada's Legislative Counsel Bureau publishes no public bill drafting style manual. The Nevada Legislative Manual (2025) is the closest official substitute and is what is linked here; it is a process manual, not a drafting style guide.",
+    "The enacting clause recorded here is the one the Constitution prescribes for statutes proposed by INITIATIVE PETITION (art. 19, sec. 3(1)). Bills originating in the Legislature use a different clause ('The People of the State of Nevada, represented in Senate and Assembly, do enact as follows:'), which was not independently verified.",
+    "Bill introduction deadlines for the 2027 session were not verified against an official 2027 session calendar."
+  ]
+}

@@ -1,0 +1,82 @@
+{
+  "code": "SD",
+  "name": "South Dakota",
+  "asOf": "2026-07",
+
+  "initiative": {
+    "statute": "direct",
+    "constitutional": "direct",
+    "referendum": true,
+    "signatures": {
+      "statuteFormula": "5% of the total votes cast for Governor at the last gubernatorial election (S.D. Const. art. III, sec. 1; SDCL 2-1-1, 2-1-5). For the 2026 cycle the base is the November 8, 2022 gubernatorial election.",
+      "statuteCount": 17508,
+      "constitutionalFormula": "10% of the total votes cast for Governor at the last gubernatorial election (S.D. Const. art. XXIII, sec. 1; SDCL 2-1-5). For the 2026 cycle the base is the November 8, 2022 gubernatorial election.",
+      "constitutionalCount": 35017,
+      "distribution": null,
+      "source": "https://sdsos.gov/elections-voting/assets/2026%20Documents/HowToCirculate2026BQPetition.pdf"
+    },
+    "circulationDays": null,
+    "filingDeadline": "Two deadlines. (1) Pre-circulation: the petition form, AG title/explanation and fiscal note must be filed with and approved by the Secretary of State before any signature is gathered; for the Nov 3, 2026 general election the Secretary of State set that pre-circulation filing date at November 3, 2025. (2) Signed petitions: 5:00 p.m. CT on May 5, 2026 (the first Tuesday in May of the general-election year). The May date was changed by 2025 HB 1184 and the Secretary of State's own guidance says the deadline is subject to pending litigation and may change. Separately, no signature may be dated more than 24 months before the election named on the petition.",
+    "subjectLimits": [
+      "An initiated amendment to the Constitution may embrace only one subject (S.D. Const. art. XXIII, sec. 1). The LRC director issues a written single-subject opinion and the Secretary of State makes an independent single-subject determination (SDCL 12-13-25, 12-13-26.1).",
+      "Text must be written in a clear and coherent manner and must not be misleading or likely to cause confusion among voters (SDCL 12-13-24).",
+      "A measure passed by the voters takes effect the July 1 following the statewide canvass unless the measure says otherwise (SDCL 2-1-12)."
+    ],
+    "preFilingReview": "Mandatory three-step pre-clearance. STEP 1: every version of the text must be submitted to the Director of the Legislative Research Council for review and comment not more than six months before circulation; LRC responds within 15 workdays with substantive comments, a single-subject opinion for constitutional amendments, and a fiscal-note determination (SDCL 12-13-25, 12-13-25.2; fiscal note under SDCL 2-9-30). STEP 2: the final text goes to the Attorney General, who drafts a title and a plain-language explanation (200-word limit), posts the draft for a 10-day public comment period, and files the final statement with the Secretary of State within 20 days of the draft (SDCL 12-13-25.1). Any change to the text after AG submission restarts the process at step 1. STEP 3: the Secretary of State must approve the printed petition form, circulator handout and campaign-finance statement of organization before circulation begins; signatures gathered before approval are not counted. The Secretary of State may not accept an unreviewed initiative (SDCL 12-13-26).",
+    "source": "https://sdsos.gov/elections-voting/upcoming-elections/general-information/2026%20Election%20Information/2026%20Ballot%20Question%20Information/signature-requirements-ballot-question-petitions.aspx"
+  },
+
+  "localOrdinance": {
+    "citizenInitiative": true,
+    "notes": "South Dakota was the first state in the Union to adopt initiative and referendum (1898 constitutional amendment), and that amendment also created the municipal initiative. Municipal initiative (SDCL ch. 9-20): a petition to propose an ordinance or resolution, filed with the municipal finance officer, signed by registered voters equal to 5% of the registered voters in the municipality; signatures older than six months at filing are invalid; the initiative may not be used to nullify the purpose for which bonds have been sold; an initiated ordinance may not be amended or repealed by the governing body for one year after its effective date. Municipal referendum: same 5%, filed within 20 days after publication of passage. County initiative (SDCL ch. 7-18A, enacted 1975): petition filed with the county auditor signed by registered voters equal to 5% of the registered voters in the county at the last general election; no limit on circulation time; subject-matter limits in SDCL 7-18A-10; a question may not be voted on again for one year. Petition forms for both are prescribed by the State Board of Elections.",
+    "source": "https://sdsos.gov/docs/MuniCountyInitRef.pdf"
+  },
+
+  "drafting": {
+    "manualUrl": "https://mylrc.sdlegislature.gov/api/Documents/127102.pdf",
+    "manualName": "Guide to Legislative Drafting (South Dakota Legislative Research Council, revised October 2024)",
+    "requiredSections": [
+      "bill number (assigned sequentially on introduction)",
+      "sponsors",
+      "title (an act to ... , active verb form)",
+      "enacting clause",
+      "body: numbered bill sections, each stating whether a section is AMENDED, a NEW SECTION, or REPEALED",
+      "lead lines / catchlines for code sections",
+      "effective-date section where applicable"
+    ],
+    "enactingClause": "BE IT ENACTED BY THE LEGISLATURE OF THE STATE OF SOUTH DAKOTA:",
+    "source": "https://mylrc.sdlegislature.gov/api/Documents/127102.pdf"
+  },
+
+  "legislature": {
+    "chambers": ["House of Representatives", "Senate"],
+    "sessionType": "Annual session, numbered sequentially by year (2026 = the 101st Session). The 101st Session was adopted with 40 legislative days. All legislation must be reviewed for style and form by the Legislative Research Council before introduction (Joint Rule 6A-5).",
+    "typicalConvene": "Second Tuesday in January at 12:00 noon CST (2026: January 13)",
+    "typicalAdjourn": "Main run ends in mid-March (2026: last day for a bill to pass both houses was March 12-13; LD 38 fell on March 26), with a separate day at the end of March reserved for consideration of gubernatorial vetoes (2026: March 30, LD 40)",
+    "billIntroductionDeadline": "2026 (101st Session): bill and resolution draft requests due to LRC January 26 for unlimited introduction; last day for unlimited bill and resolution introduction January 29 (Joint Rule 6B-3); all draft requests due to LRC February 2; last day for introduction of individual bills and resolutions February 4; last day for introduction of committee bills and resolutions February 5. Crossover day February 25.",
+    "carryover": false,
+    "source": "https://mylrc.sdlegislature.gov/api/Documents/Attachment/284253.pdf?Year=2025"
+  },
+
+  "data": {
+    "officialApi": "https://sdlegislature.gov/api",
+    "officialApiNotes": "The South Dakota Legislature runs a public, key-free JSON API behind sdlegislature.gov (verified live: GET https://sdlegislature.gov/api/Sessions returns session metadata including the 101st Session, SessionId 71, start 2026-01-13). It is not formally documented or covered by a published terms-of-use page, so endpoint stability is not guaranteed. Documents (bills, calendars, LRC publications, testimony) are served as PDFs from https://mylrc.sdlegislature.gov/api/Documents/{id}.pdf.",
+    "bulkDownload": "https://openstates.org/data/session-csv/",
+    "openStatesCoverage": "full",
+    "source": "https://sdlegislature.gov/api/Sessions"
+  },
+
+  "citizenRoute": {
+    "canRequestDraft": true,
+    "notes": "Two distinct routes, and they are different things. (1) Bill drafting for the Legislature: draft requests go to the Legislative Research Council from legislators and committees on a published session deadline (2026: January 26 for unlimited introduction, February 2 for all requests); a private citizen cannot introduce a bill and must find a legislator or committee sponsor. (2) Initiative drafting: any registered South Dakota voter who is a ballot-question sponsor must submit the text of every version of a proposed initiated measure or constitutional amendment to the Director of the LRC, and the LRC is required by SDCL 12-13-25 to provide written comments within 15 workdays, including substantive help to minimize conflict with existing law and to ensure the measure's effective administration. That is a statutory right of a member of the public to get drafting assistance from legislative staff, and it is mandatory rather than optional.",
+    "source": "https://sdsos.gov/elections-voting/assets/2026%20Documents/HowToCirculate2026BQPetition.pdf"
+  },
+
+  "gaps": [
+    "circulationDays is null on purpose: South Dakota does not set a fixed number of circulation days. The window is bounded on one end by Secretary of State approval of the petition form (no earlier signature counts) and on the other by the May filing deadline, with an absolute rule that no signature may be dated more than 24 months before the election. A single number would misstate the rule.",
+    "The May 5, 2026 signature deadline comes from 2025 HB 1184 and the Secretary of State's own guidance states it is subject to pending litigation and may change. Anyone planning a 2028 cycle should re-check the deadline rather than reuse this date.",
+    "Could not verify the enacting clause used for an initiated measure (as opposed to a legislature-passed bill). The LRC drafting guide documents only the legislative form, 'BE IT ENACTED BY THE LEGISLATURE OF THE STATE OF SOUTH DAKOTA:'.",
+    "Whether the single-subject rule reaches initiated statutes as well as initiated constitutional amendments is not stated cleanly in the Secretary of State's guidance; the constitutional single-subject text (art. XXIII, sec. 1) is written for amendments, while SDCL 12-13-26.1 is phrased more broadly. Treated here as applying to amendments only.",
+    "openStatesCoverage was verified by confirming a current 2026 Regular Session bulk CSV exists at openstates.org/data/session-csv/ (bills, votes, sponsorships). Committee-level coverage was not separately verified."
+  ]
+}

@@ -1,0 +1,83 @@
+{
+  "code": "UT",
+  "name": "Utah",
+  "asOf": "2026-07",
+
+  "initiative": {
+    "statute": "direct",
+    "constitutional": "none",
+    "referendum": true,
+    "signatures": {
+      "statuteFormula": "DIRECT (to the ballot): 8% of the total number of active registered voters statewide, AND at least 8% of the active voters in at least 26 of the 29 state senate districts. INDIRECT (submitted to the Legislature): 4% statewide AND 4% in at least 26 of the 29 senate districts. Utah Code 20A-7-201. IMPORTANT: unlike most initiative states, the Utah base is active registered voters as of January 1, not votes cast for governor. The 2026 numbers are computed from the January 1, 2025 active-voter count of 1,759,353; the thresholds reset on January 1, 2027 and every two years thereafter.",
+      "statuteCount": 140749,
+      "constitutionalFormula": null,
+      "constitutionalCount": null,
+      "distribution": "Signatures must meet the applicable percentage in at least 26 of Utah's 29 state senate districts (both for direct and for indirect initiatives). By contrast a statewide referendum needs the threshold in only 15 of 29 districts. The 26-of-29 rule is the binding constraint in practice: a campaign concentrated on the Wasatch Front will fail it even with a large statewide total. Per-district signature counts for all 29 districts are published in the Lieutenant Governor's signature-requirements PDF.",
+      "source": "https://vote.utah.gov/wp-content/uploads/2025/01/2026-Petition-Sig-Requirements.pdf"
+    },
+    "circulationDays": 316,
+    "filingDeadline": "For a DIRECT initiative, signed packets must reach the county clerks before 5:00 p.m. on the earliest of: 30 calendar days after the packet's first signature; 316 calendar days after the application was filed with the Lieutenant Governor; or February 15 immediately before the next regular general election (Utah Code 20A-7-105(5)(a)(ii)). For an INDIRECT initiative (submitted to the Legislature) the packet deadline is the November 15 before the general session (Utah Code 20A-7-206.1). County clerks then have 21 days per packet to verify. Signers may remove their names during a posted removal window (90 calendar days for packets received before December 1, 45 days for packets received on or after December 1). The Lieutenant Governor declares the petition sufficient or insufficient by April 30 of the election year.",
+    "subjectLimits": [
+      "Statutory only. An initiative may not amend the Utah Constitution (Utah Code 20A-7-202; only the Legislature may propose a constitutional amendment).",
+      "Single subject, clearly expressed in the title (Utah Const. art. VI, sec. 22). The Lieutenant Governor may reject an application on this ground.",
+      "The Lieutenant Governor may also reject an application that is patently unconstitutional, nonsensical, could not become law if passed, has a title that does not clearly express the subject, or is substantially similar to an initiative filed within the previous two years (Utah Code 20A-7-202(5)).",
+      "If the proposal raises taxes, the application must say so explicitly.",
+      "If the final fiscal estimate exceeds the initial estimate by 25% or more, the Legislature may repeal or amend the initiative or authorize a citizens' repeal petition (Utah Code 20A-7-214)."
+    ],
+    "preFilingReview": "Front-loaded and heavy. File an application with the Lieutenant Governor naming at least five sponsors with notarized signatures, each a Utah resident who has voted in a Utah regular general election within the last three years, plus the full proposed law with a title (Utah Code 20A-7-202). The Lieutenant Governor screens it on the grounds listed above. The Office of the Legislative Fiscal Analyst then has 25 calendar days to issue an initial fiscal impact estimate, which sponsors may challenge within 20 calendar days (20A-7-202.5). Before any signature may be gathered, sponsors must personally hold at least seven public hearings, one in each of seven regions (Bear River, Southwest, Mountain, Central, Southeast, Uintah Basin, Wasatch Front), each at least one hour long with at least one hour for public comment, each noticed at least 10 calendar days in advance, each recorded, and each with the fiscal statement posted and at least 50 copies available (20A-7-204.1). Sponsors may revise the text by addendum within 14 days after the seventh hearing, which triggers a new fiscal estimate. Petition packets must then be assembled in a prescribed order and bound across the top in at least three places before circulation (20A-7-204). Circulators must be 18 or older, must show each signer a printed or digital copy of the proposed law and wait while they read it, may not sign their own packet, and paid circulators must be paid hourly rather than per verified signature and must wear a compliant badge. After qualification, the Office of Legislative Research and General Counsel writes a 125-word ballot statement, and the voter information pamphlet takes a 500-word argument for and a 250-word rebuttal.",
+    "source": "https://vote.utah.gov/initiatives-and-referenda/instructions-for-a-statewide-initiative/"
+  },
+
+  "localOrdinance": {
+    "citizenInitiative": true,
+    "notes": "Utah has a parallel local initiative and referendum process for counties, municipalities and metro townships under Utah Code Title 20A, Chapter 7, Part 5 (20A-7-501 signature requirements, 502 application, 507 verification, 508 ballot title, 510 canvass, 513 final fiscal review). Local thresholds are percentages of active voters in the jurisdiction as of January 1, varying by the jurisdiction's population class, and since January 1, 2020 some jurisdictions also require a share of signatures within geographic 'voter participation areas' - a local echo of the statewide 26-of-29 senate district rule. Sponsors have 5 days from application to begin collecting; the petition is due the sooner of 316 days after filing or April 15 before the general election; clerks verify within 21 days; the ballot title is drafted within 20 calendar days. The actual per-jurisdiction signature totals are published by the Lieutenant Governor as a separate signature-totals PDF and are not reproduced here.",
+    "source": "https://vote.utah.gov/initiatives-and-referenda/instructions-for-a-local-initiative/"
+  },
+
+  "drafting": {
+    "manualUrl": "https://le.utah.gov/documents/ldm/draftingmanual.html",
+    "manualName": "Legislative Drafting Style Manual (Utah Office of Legislative Research and General Counsel)",
+    "requiredSections": [
+      "long title, containing: General Description; Highlighted Provisions; Money Appropriated in this Bill; Other Special Clauses; Utah Code Sections Affected (listing sections AMENDED, ENACTED, REPEALED with their last-amended citations)",
+      "enacting clause",
+      "numbered sections of the body, each headed 'Section N. Section X-Y-Z is amended to read' or 'is enacted to read'",
+      "codified section catchlines",
+      "special clauses (effective date, appropriation, repeal date) where applicable"
+    ],
+    "enactingClause": "Be it enacted by the Legislature of the state of Utah:",
+    "source": "https://le.utah.gov/Session/2026/bills/introduced/HB0160.pdf"
+  },
+
+  "legislature": {
+    "chambers": ["House of Representatives", "Senate"],
+    "sessionType": "Annual general session of 45 calendar days, plus interim committee work between sessions. 2026 is the 67th Legislature.",
+    "typicalConvene": "Third Tuesday in January (2026 General Session convened January 20, 2026)",
+    "typicalAdjourn": "45 days later, in early March (2026: March 6)",
+    "billIntroductionDeadline": null,
+    "carryover": false,
+    "source": "https://le.utah.gov/~2026/2026.htm"
+  },
+
+  "data": {
+    "officialApi": "https://glen.le.utah.gov/",
+    "officialApiNotes": "The Utah Legislature publishes a genuine developer JSON/XML service, documented at https://le.utah.gov/data/developer.htm. Endpoints take a developer token in the path: /legislators/{token}, /legislator/{id}/{token}, /committees/{token}, /committee/{id}/{token}, /legcal/{token} (meeting calendars), /agencal/{token} (agenda items), /calendars/{token} (reading calendars), /bills/{year}{session}/billlist/{token}, /bills/{year}{session}/{billnumber}/{token}, /bills/{year}{session}/passedlist/{token} (bills from the 2016 General Session forward), /code/list/{token} and /code/{title}-{chapter}-{section}/{token} (Utah Code XML), /const/... (Constitution XML) and /rule/... (legislative rules XML). The Legislature states the service is experimental, that it may alter or remove data without warning, and asks developers to cache locally; abusive applications may be blocked.",
+    "bulkDownload": "https://openstates.org/data/session-csv/",
+    "openStatesCoverage": "full",
+    "source": "https://le.utah.gov/data/developer.htm"
+  },
+
+  "citizenRoute": {
+    "canRequestDraft": false,
+    "notes": "The Office of Legislative Research and General Counsel drafts legislation for legislators and legislative committees; its Legislative Drafting Style Manual is published openly at le.utah.gov but the drafting service itself is not open to the public. Where OLRGC does touch a citizen measure is after the fact: once an initiative qualifies, OLRGC writes the 125-word ballot statement (Utah Code 20A-7-209). The public-facing drafting support for an initiative comes instead from the Lieutenant Governor's screening of the application and the Legislative Fiscal Analyst's initial fiscal estimate, both of which occur before circulation.",
+    "source": "https://le.utah.gov/lrgc/lrgc.htm"
+  },
+
+  "gaps": [
+    "WHAT 'WINNING' MEANS IN UTAH. Utah is the clearest case in this group of a legislature that reworks measures the voters passed. In 2018 voters approved Proposition 2 (medical cannabis), Proposition 3 (Medicaid expansion) and Proposition 4 (an independent redistricting commission with a partisan-gerrymandering ban); the Legislature replaced or substantially rewrote all three, most sharply through SB 200 (2020), which demoted the Proposition 4 commission to an advisory body and let the Legislature draw its own maps. On July 11, 2024, in League of Women Voters of Utah v. Utah State Legislature, the Utah Supreme Court held that the people's right to alter or reform their government through an initiative is constitutionally protected from legislative amendment, repeal or replacement in a manner that impairs the reform the people enacted, and that such legislative changes must be narrowly tailored to a compelling government interest. The Legislature responded in August 2024 with SJR 401 (Amendment D), a proposed constitutional amendment restoring its power to amend initiatives; that amendment was voided before the election. As of this writing the 2024 holding stands but the scope of the 'government reform' initiatives it protects is unsettled, litigation continues, and a 2026 initiative to eliminate the independent redistricting commission has been circulating. Organizers should treat Utah passage as the start of a second fight, not the end of the first. This is flagged as a gap because the legal position is genuinely in motion and the file's initiative section states the pre-2024 formal rules.",
+    "constitutionalFormula and constitutionalCount are null because Utah has no constitutional initiative at all: an initiative may propose statutes only, and only the Legislature may propose a constitutional amendment.",
+    "circulationDays is recorded as 316 because that is the outer bound in statute (316 calendar days from application), but the effective window is usually shorter: the earlier of 316 days, the February 15 cutoff before the general election, and a rolling 30-day-per-packet rule that requires each packet to be turned in within 30 days of its first signature. Treating 316 as the usable circulation period will overstate the time available.",
+    "Could not verify a bill-introduction deadline for the Utah general session from a first-party source, so legislature.billIntroductionDeadline is null. Utah's 45-day session works from bill-request and numbering deadlines set by Legislative Management and by House and Senate rules rather than a single published statutory date.",
+    "The statewide signature figures 140,749 (8%) and 70,373 (4%) are taken as printed in the Lieutenant Governor's own 2026 requirements PDF. Note that 8% of the stated 1,759,353 active-voter base is 140,748.24 and 4% is 70,374.12, so the published totals are the sums of the per-district rounded figures rather than a simple statewide percentage. Use the published per-district table, not a recomputation.",
+    "openStatesCoverage was verified by confirming a current 2026 General Session bulk CSV exists at openstates.org/data/session-csv/ (bills, votes, sponsorships). Committee-level coverage was not separately verified."
+  ]
+}

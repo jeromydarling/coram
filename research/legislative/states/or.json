@@ -1,0 +1,81 @@
+{
+  "code": "OR",
+  "name": "Oregon",
+  "asOf": "2026-07",
+
+  "initiative": {
+    "statute": "direct",
+    "constitutional": "direct",
+    "referendum": true,
+    "signatures": {
+      "statuteFormula": "6% of the total votes cast for Governor at the election at which a Governor was elected for a four-year term next preceding the filing (Or. Const. art. IV, sec. 1). The current figure derives from the November 8, 2022 gubernatorial election; the Secretary of State's State Initiative and Referendum Manual lists the same number for both the 2024 and 2026 cycles because both draw on the 2022 election. It will be recomputed after the November 3, 2026 gubernatorial election for the 2028 cycle.",
+      "statuteCount": 117173,
+      "constitutionalFormula": "8% of the total votes cast for Governor at the last election at which a Governor was elected for a four-year term (Or. Const. art. IV, sec. 1); same 2022 base. Veto referendum is 4% of the same base, which is 78,116 signatures.",
+      "constitutionalCount": 156231,
+      "distribution": null,
+      "source": "https://sos.oregon.gov/elections/documents/stateir.pdf"
+    },
+    "circulationDays": null,
+    "filingDeadline": "Signatures must reach the Elections Division not later than four months before the general election. For the November 3, 2026 ballot the signature submission deadline was July 2, 2026 (early submission deadline May 22, 2026; verification deadline August 2, 2026). Referendum petitions are due 90 days after the Legislature adjourns sine die.",
+    "subjectLimits": [
+      "single subject or closely related subjects",
+      "must include the full text of the measure",
+      "must be legislative rather than administrative in nature",
+      "for constitutional initiatives only: multiple subjects that are not closely related must be voted on separately, and the measure must amend rather than revise the Constitution"
+    ],
+    "preFilingReview": "TWO-STAGE STRUCTURE. Stage 1 (sponsorship): chief petitioners file form SEL 310, Prospective Petition for State Measure, then gather 1,000 sponsorship signatures on Elections Division-issued sponsorship templates. The Division verifies them; if the petition falls short, chief petitioners get exactly one more submission to reach 1,000, after which the petition is void. Reaching 1,000 valid sponsorship signatures triggers the ballot title process: the Attorney General files a draft ballot title, any registered voter may file written comments, the Secretary of State separately conducts a Procedural Constitutional Review (single subject / full text / legislative-not-administrative, plus the separate-vote and amend-not-revise tests for constitutional measures), and the Attorney General then issues a certified ballot title. A voter who filed comments and is dissatisfied may petition the Oregon Supreme Court for review within 10 business days of certification. Stage 2 (full circulation): only after the ballot title is final, the Division approves the cover and signature sheets, and chief petitioners have reviewed circulation requirements with their circulators, may general signature gathering begin. Signatures gathered on approved sheets are filed monthly. Approval to circulate for a cycle is not granted until after the prior cycle's signature deadline (the 2026 cycle opened July 8, 2024), and only one petition cycle is approved for circulation in any two-year period.",
+    "source": "https://sos.oregon.gov/elections/pages/state-law.aspx"
+  },
+
+  "localOrdinance": {
+    "citizenInitiative": true,
+    "notes": "County, city and district initiative and referendum are governed by ORS 250.155-250.235 (county) and ORS 250.255-250.346 (city and district); the Secretary of State publishes a separate County, City, and District Initiative and Referendum Manual. County initiative: 6% of votes cast for Governor in the county at the most recent election at which a Governor was elected to a full term (8% for a county charter amendment or adoption); county referendum 4%. City initiative: 15% of the voters registered in the city on the day the prospective petition was filed; city referendum 10%. District initiative: 15% (10% referendum), except that for the Port of Portland, a metropolitan service district under ORS ch. 268, a school district with more than 40,000 pupils, or a mass transit district in a metropolitan statistical area over 400,000 the figures are 6% and 4%. Signatures are due 2 years after final approval to circulate for initiatives; referendum deadlines are 90 days (county) or 30 days (city, district) after the nonemergency ordinance is adopted. These requirements may be superseded by local charter or ordinance, subject to constitutional limits.",
+    "source": "https://sos.oregon.gov/elections/Documents/countycitydistrictir.pdf"
+  },
+
+  "drafting": {
+    "manualUrl": "https://www.oregonlegislature.gov/lc/PDFs/draftingmanual.pdf",
+    "manualName": "Bill Drafting Manual, Oregon Legislative Counsel Committee, Nineteenth Edition (2024)",
+    "requiredSections": [
+      "heading (\"AN ACT\" for bills and statutory initiatives; \"Proposed Constitutional Amendment\" for constitutional initiatives)",
+      "title, beginning with a \"Relating to\" clause",
+      "preamble (optional; sits before the enacting clause and has no force of law)",
+      "enacting clause",
+      "body: numbered SECTIONs setting out new law, amended sections in amended form, or repeals",
+      "definitions, where used",
+      "note: emergency clauses, effective-date clauses, referral clauses and supermajority-vote clauses do not apply to initiative measures and are omitted from initiative titles"
+    ],
+    "enactingClause": "Be It Enacted by the People of the State of Oregon:",
+    "source": "https://www.oregonlegislature.gov/lc/PDFs/draftingmanual.pdf"
+  },
+
+  "legislature": {
+    "chambers": ["House of Representatives", "Senate"],
+    "sessionType": "Annual sessions since the 2010 constitutional amendment: sessions may not exceed 160 days in odd-numbered years and 35 days in even-numbered years (Or. Const. art. IV, sec. 10). Either may be extended by five days by a two-thirds vote of each house, more than once.",
+    "typicalConvene": "In odd-numbered years the Legislative Assembly convenes on the second Monday in January for swearing-in and organizational procedures. Statute additionally fixes the start of business for odd-year sessions on the Tuesday after the Martin Luther King, Jr. holiday and for even-year sessions on February 1, or the first Monday in February when February 1 falls on a Thursday through Sunday; the statutory even-year date was not verified against ORS text.",
+    "typicalAdjourn": null,
+    "billIntroductionDeadline": null,
+    "carryover": null,
+    "source": "https://www.oregonlegislature.gov/citizen_engagement/Pages/Legislative-Process.aspx"
+  },
+
+  "data": {
+    "officialApi": "https://api.oregonlegislature.gov/odata/odataservice.svc/",
+    "officialApiNotes": "The Legislature publishes the measure, committee and member data behind the Oregon Legislative Information System (OLIS) as a public OData (RESTful) service. Metadata at https://api.oregonlegislature.gov/odata/odataservice.svc/$metadata. Entity sets include LegislativeSessions, Measures, Committees, CommitteeMeetings, CommitteeAgendaItems, CommitteeStaffMembers, CommitteeMeetingDocuments and FloorSessionAgendaItems. A data model PDF and an Acceptable Use Agreement are linked from the data page. No separate bulk-file download is offered.",
+    "bulkDownload": null,
+    "openStatesCoverage": "full",
+    "source": "https://www.oregonlegislature.gov/citizen_engagement/Pages/data.aspx"
+  },
+
+  "citizenRoute": {
+    "canRequestDraft": false,
+    "notes": "The Office of the Legislative Counsel prepares bills and other measures for legislators, legislative committees and state agencies; its drafting process begins with discussing the idea with the requesting member of the Legislative Assembly or persons the legislator designates. Members of the public are not listed as requesters. The independent route for a citizen is to draft the measure and file a prospective initiative petition (form SEL 310) with the Elections Division. The Legislative Counsel's Bill Drafting Manual is public and contains an appendix on the form of initiative measures, so a citizen drafter can follow the same conventions unaided.",
+    "source": "https://www.oregonlegislature.gov/lc/Pages/BillDrafting.aspx"
+  },
+
+  "gaps": [
+    "circulationDays is null: Oregon does not impose a fixed number of circulation days on a statewide initiative. The binding constraints are the opening of the petition cycle (July 8, 2024 for the 2026 cycle), the date the Elections Division approves cover and signature sheets, and the constitutional four-months-before-the-election submission deadline. No single day-count could be verified.",
+    "The Secretary of State's State Initiative and Referendum Manual on file is Rev. 01/2024 and is written for the 2024 General Election, but it prints an explicit 2026 column with the same signature figures (156,231 / 117,173 / 78,116) and the 2026 deadline dates. The 2026 figures were cross-checked against the Secretary of State's 2026 Initiative Petitions Monthly Submission Log (https://sos.oregon.gov/elections/Documents/irr/2026-Monthly-Submission-log.pdf), which lists 156,231 and 117,173.",
+    "Could not verify from an official source the typical sine die date, any bill introduction deadline, or whether measures carry over between the odd-year and even-year sessions of a biennium; those fields are null."
+  ]
+}

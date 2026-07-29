@@ -1,0 +1,85 @@
+{
+  "code": "TX",
+  "name": "Texas",
+  "asOf": "2026-07",
+
+  "initiative": {
+    "statute": "none",
+    "constitutional": "none",
+    "referendum": false,
+    "signatures": {
+      "statuteFormula": null,
+      "statuteCount": null,
+      "constitutionalFormula": null,
+      "constitutionalCount": null,
+      "distribution": null,
+      "source": "https://ballotpedia.org/Laws_governing_ballot_measures_in_Texas"
+    },
+    "circulationDays": null,
+    "filingDeadline": null,
+    "subjectLimits": [],
+    "preFilingReview": null,
+    "source": "https://ballotpedia.org/Laws_governing_ballot_measures_in_Texas"
+  },
+
+  "localOrdinance": {
+    "citizenInitiative": true,
+    "notes": "This is where Texas direct democracy actually lives, and it is the single most important section of this file. There is no statewide initiative, but Texas home-rule municipalities (cities over 5,000 that have adopted a charter) reserve initiative and referendum powers in their own charters, and those powers are unique to home-rule cities: general-law cities, counties and the state have nothing equivalent. Two different instruments, with two different rule sources. (1) CHARTER AMENDMENT, governed by state law and therefore uniform: Tex. Local Gov't Code sec. 9.004 requires the governing body to call an election on a proposed charter amendment when a petition is signed by qualified voters of the municipality equal to at least 5 percent of the number of qualified voters, or 20,000, whichever is smaller. The 20,000 cap is what makes charter amendment the practical tool in the big cities. The election must fall on the next authorized uniform election date, at least 30 days after the ordering ordinance. (2) ORDINANCE INITIATIVE AND REFERENDUM, governed by each city's own charter, so thresholds differ city to city and must be read from the charter itself. Two worked examples: AUSTIN - initiative (propose an ordinance), referendum (repeal one) and charter amendment all require 5 percent of qualified voters of the city or 20,000, whichever is smaller; recall requires 10 percent; a referendum petition must be filed before the ordinance takes effect, typically about 10 business days after adoption; the clerk needs at least 30 days to verify a 20,000-signature petition. HOUSTON - thresholds are keyed to the vote for Mayor rather than to registered voters, and are much higher: initiative 15 percent of the total votes cast for Mayor in 2023 = 37,915 signatures; referendum 10 percent = 25,277; recall 25 percent = 63,192; signatures on an initiative, referendum or recall petition may be no older than 30 days when filed. Houston charter amendment falls back to the state 20,000 figure under sec. 9.004, with a 180-day signature-age limit. The lesson for organizers: in Texas the same campaign can face a 20,000-signature charter route and a 37,915-signature ordinance route in the same city, and picking the wrong instrument is the expensive mistake.",
+    "source": "https://statutes.capitol.texas.gov/Docs/LG/htm/LG.9.htm"
+  },
+
+  "drafting": {
+    "manualUrl": "https://tlc.texas.gov/docs/legref/draftingmanual-89.pdf",
+    "manualName": "Texas Legislative Council Drafting Manual, 89th Legislature (January 2025)",
+    "requiredSections": [
+      "heading",
+      "title or caption (must express the bill's subject; Tex. Const. art. III, sec. 35, plus House and Senate caption rules requiring notice of criminal offenses/penalties, taxes, appropriations, bonds and eminent domain)",
+      "enacting clause (indispensable; a document without one is not a bill and may not be amended to add one or referred to committee)",
+      "short title (rarely appropriate)",
+      "statement of policy or purpose",
+      "definitions",
+      "principal operative provisions",
+      "enforcement provisions",
+      "amendment of existing law",
+      "repealers",
+      "saving and transition provisions",
+      "severability or nonseverability clauses",
+      "effective date"
+    ],
+    "enactingClause": "BE IT ENACTED BY THE LEGISLATURE OF THE STATE OF TEXAS:",
+    "source": "https://tlc.texas.gov/docs/legref/draftingmanual-89.pdf"
+  },
+
+  "legislature": {
+    "chambers": ["House of Representatives", "Senate"],
+    "sessionType": "Biennial. The Legislature meets in regular session only in odd-numbered years, convening at noon on the second Tuesday in January (Tex. Const. art. III, sec. 5(a); Tex. Gov't Code sec. 301.001), for a maximum of 140 days (Tex. Const. art. III, sec. 24(b)). The Governor alone may call special sessions, each limited to 30 days (Tex. Const. art. III, sec. 40) and confined to subjects the Governor submits. The practical consequence for organizers: missing a session costs two full years. The 89th Legislature met January 14 to June 2, 2025; the 90th Regular Session convenes January 12, 2027 and runs to its 140th day, May 31, 2027. Bills that pass without a specified effective date take effect on the 91st day after final adjournment (Tex. Const. art. III, sec. 39).",
+    "typicalConvene": "Noon on the second Tuesday in January of odd-numbered years (90th Legislature: January 12, 2027)",
+    "typicalAdjourn": "The 140th day of the session, at the end of May or start of June (89th: June 2, 2025; 90th: May 31, 2027)",
+    "billIntroductionDeadline": "Pre-filing for the 90th Legislature opened Monday, November 9, 2026, the first day legislators and legislators-elect may file bills (House Rule 8, sec. 7; Senate Rule 7.04(a)). The general filing deadline is the 60th day of the regular session, which for the 90th Legislature is March 12, 2027; after that, introduction requires a suspension of the rules. Under Tex. Const. art. III, sec. 5(b) the first 60 days of a regular session are also restricted for floor consideration, so a bill filed late is doubly disadvantaged.",
+    "carryover": false,
+    "source": "https://tlc.texas.gov/docs/legref/Dates-of-Interest.pdf"
+  },
+
+  "data": {
+    "officialApi": null,
+    "officialApiNotes": "Texas Legislature Online (https://capitol.texas.gov/) is the authoritative bill system: bill status, text, actions, amendments, committee minutes and calendars, plus per-user RSS feeds under /MyTLO/RSS/rssFeeds.aspx. No documented public REST API or bulk bill download was found on capitol.texas.gov; historically the Legislature has distributed bulk bill data by FTP (ftp.legis.state.tx.us), which was not reachable over HTTPS at the time of checking. The Texas Legislative Council also runs a CKAN 2.8 open-data portal at https://data.capitol.texas.gov/ with a working API (https://data.capitol.texas.gov/api/3/action/package_list), but its holdings are election returns, precinct and redistricting geography rather than bills. Historical bill research runs through the Legislative Reference Library at https://lrl.texas.gov/legis/billsearch/lrlhome.cfm.",
+    "bulkDownload": "https://openstates.org/data/session-csv/",
+    "openStatesCoverage": "full",
+    "source": "https://capitol.texas.gov/"
+  },
+
+  "citizenRoute": {
+    "canRequestDraft": false,
+    "notes": "The Texas Legislative Council provides bill drafting, research and publishing services to the Legislature and to the other legislative agencies; the drafting manual is written for council staff and speaks throughout of the 'requestor', meaning a member or committee. A member of the public cannot request a draft, and TLC's document distribution request form is explicitly for legislative offices only. What is genuinely open to the public is the manual itself, which TLC publishes free at tlc.texas.gov/publications along with 'The Legislative Process in Texas', the bill-to-law flowcharts and the annotated Texas Constitution. The workable citizen route is to draft against the TLC manual, then take it to a member to file during the pre-filing window that opens in November of even-numbered years.",
+    "source": "https://tlc.texas.gov/publications"
+  },
+
+  "gaps": [
+    "Texas has no statewide initiative, no statewide veto referendum and no citizen route to a constitutional amendment. Only the Legislature may propose an amendment (two-thirds of each chamber in a single session), which voters then approve by simple majority. Voters rejected a proposed initiative-and-referendum amendment in 1914 and it has not been revived. All statewide initiative fields are null because the mechanism does not exist, not because a number could not be found.",
+    "Home-rule ordinance initiative thresholds are set by each city's charter and are NOT uniform. The Austin and Houston figures here were taken from those cities' own clerk pages and are correct only for those cities. Do not generalize them. The only Texas-wide number is the sec. 9.004 charter-amendment threshold (5 percent of qualified voters or 20,000, whichever is smaller).",
+    "Houston's published thresholds are derived from the total vote for Mayor in 2023 and will be recomputed after the next mayoral election; the city publishes them as fractional numbers (e.g. 37,914.75), which in practice means the next whole signature above.",
+    "Could not verify Tex. Const. art. III, secs. 5, 24 and 40 from statutes.capitol.texas.gov directly - that site serves a JavaScript shell to a plain fetch and the Texas Legislative Council's TxConst.pdf did not yield extractable text. The session-structure facts here are sourced to the Texas Legislative Council's own 'Dates of Interest' calendar, which cites those constitutional sections, and to the TLC Drafting Manual for the enacting clause (art. III, sec. 29).",
+    "The May 31, 2027 sine die date for the 90th Legislature is computed as the 140th day from the constitutionally fixed January 12, 2027 convening date; TLC's current Dates of Interest sheet publishes the convening date but not yet the adjournment date.",
+    "openStatesCoverage was verified by confirming 89th Legislature bulk CSVs exist at openstates.org/data/session-csv/ (bills, votes, sponsorships). Committee-level coverage was not separately verified."
+  ]
+}

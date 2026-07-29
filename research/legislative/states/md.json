@@ -1,0 +1,87 @@
+{
+  "code": "MD",
+  "name": "Maryland",
+  "asOf": "2026-07",
+
+  "initiative": {
+    "statute": "none",
+    "constitutional": "none",
+    "referendum": true,
+    "signatures": {
+      "statuteFormula": null,
+      "statuteCount": null,
+      "constitutionalFormula": null,
+      "constitutionalCount": null,
+      "referendumFormula": "Three percent of the qualified voters of the State of Maryland, 'calculated upon the whole number of votes cast for Governor at the last preceding Gubernatorial election' (Md. Const. art. XVI, sec. 3). The controlling election is November 8, 2022; the resulting figure governs statewide referendum petitions filed in 2023 through 2026 and will be recomputed after the November 2026 gubernatorial election.",
+      "referendumCount": 60157,
+      "distribution": "Not more than half of the signatures may be residents of Baltimore City, or of any one County (Md. Const. art. XVI, sec. 3). For a Public Local Law affecting only one county or Baltimore City, the petition threshold is instead ten percent of the qualified voters of that county or of Baltimore City, and the referendum is held only in that jurisdiction.",
+      "source": "https://elections.maryland.gov/petitions/index.html"
+    },
+    "circulationDays": null,
+    "filingDeadline": "Two-stage filing with the Secretary of State. Constitutionally, a petition must be filed before the first day of June following the session at which the Act passed; if at least one-third of the required signatures is filed by June 1, the deadline for the balance extends to June 30. The State Board of Elections' published 2026 schedule is: May 6, 2026 — deadline to request an advance determination of the sufficiency of the referendum petition format; May 31, 2026 at 11:59 p.m. — file one-third of the required signatures (20,053); June 23, 2026 at 11:59 p.m. — file the balance (40,104); June 22 and July 20, 2026 — deadlines to verify and count; June 24 and July 21, 2026 — deadlines to certify.",
+    "subjectLimits": [
+      "Maryland has NO citizen initiative — neither initiated statutes nor initiated constitutional amendments. The only citizen-driven statewide ballot mechanism is the veto referendum under Article XVI.",
+      "Laws making appropriations for maintaining the State government or public institutions, not exceeding the next previous appropriation for the same purpose, are not subject to referendum.",
+      "No law licensing, regulating, prohibiting or submitting to local option the manufacture or sale of malt or spirituous liquors may be referred.",
+      "Emergency measures take effect immediately but remain subject to referendum; measures changing salaries, granting franchises, or creating vested rights may not be enacted as emergency laws.",
+      "Constitutional amendments reach the ballot only when proposed by the General Assembly (three-fifths of all members of each house) — voters cannot petition an amendment onto the ballot."
+    ],
+    "preFilingReview": "Sponsors may request an advance determination of the sufficiency of the referendum petition format from the State Board of Elections (2026 deadline: May 6, 2026). Petition forms, signature-gathering rules, petition fund reports and committee registration requirements are governed by COMAR and published by the State Board of Elections.",
+    "process": "Veto referendum only. Citizens cannot originate law in Maryland; they can only suspend and put to the voters an Act (or part of an Act) already passed by the General Assembly and approved by the Governor or passed over his veto. A citizen-drafted bill therefore reaches the Maryland General Assembly only through a legislator willing to sponsor it; the referendum power is a defensive tool against enacted legislation, not an enactment route.",
+    "source": "https://msa.maryland.gov/msa/mdmanual/43const/html/16art16.html"
+  },
+
+  "localOrdinance": {
+    "citizenInitiative": true,
+    "notes": "Charter route, not an ordinance initiative. Md. Const. art. XI-A, sec. 5: a charter amendment may be proposed in Baltimore City or a charter county by resolution of the legislative body 'or by a petition signed by not less than 20% of the registered voters of the City or County, provided, however, that in any case 10,000 signatures shall be sufficient to complete a petition.' The petition is filed with the Mayor of Baltimore or the President of the County Council, and the amendment is then submitted to the voters at the next election. Art. XI-A, sec. 1 separately allows a petition bearing the signatures of not less than 20% of the registered voters of the City or a County to force the election of a charter board (eleven registered voters in Baltimore City, five in a county) to draft a charter. Maryland has no general statewide-uniform local initiative on ordinances; where local initiative or referendum exists it is because a particular county or municipal charter created it.",
+    "source": "https://mgaleg.maryland.gov/Pubs/LegisLegal/2025-constitution-maryland-us.pdf"
+  },
+
+  "drafting": {
+    "manualUrl": "https://dls.maryland.gov/pubs/prod/LegisBillDrafting/Legislative_Drafting_Manual.pdf",
+    "manualName": "Legislative Drafting Manual 2026 (Maryland Department of Legislative Services, Office of Policy Analysis, September 2025)",
+    "requiredSections": [
+      "bill title, including the 'FOR the purpose of' purpose paragraph — Maryland has one of the strictest title requirements of the 50 states; the title must be at least as broad in scope as the body of the bill, and it is fatal to the bill if it is not",
+      "enacting clause(s) — each numbered section of the body is an enacting clause",
+      "bill text",
+      "special sections (optional; e.g. a section declaring that drafter-supplied catchlines are not part of the law)",
+      "at least one effective date provision (usual effective date is October 1 following the session)"
+    ],
+    "enactingClause": "BE IT ENACTED BY THE GENERAL ASSEMBLY OF MARYLAND (required by Md. Const. art. III, sec. 29). Every enacting clause after the first reads: AND BE IT FURTHER ENACTED.",
+    "source": "https://dls.maryland.gov/about-us/offices/legislative-drafting"
+  },
+
+  "legislature": {
+    "chambers": ["Senate", "House of Delegates"],
+    "sessionType": "Annual regular session of up to 90 consecutive days, extendable by up to 30 additional days by a three-fifths vote of both chambers. Special sessions called by the Governor are limited to 30 days.",
+    "typicalConvene": "second Wednesday of January",
+    "typicalAdjourn": "Sine die on the 90th day, in mid-April (April 13, 2026 for the 2026 session).",
+    "billIntroductionDeadline": "2026 session dates published in the Drafting Manual: pre-file request deadline November 1, 2025; pre-file drafting deadline November 7, 2025; pre-file approval November 20, 2025; bill request guarantee deadline January 23, 2026; session drafting deadline January 30, 2026; Senate introduction deadline February 9, 2026; House introduction deadline February 13, 2026; final date for introduction without suspension of the rules March 9, 2026; opposite-chamber crossover March 23, 2026.",
+    "carryover": false,
+    "source": "https://msa.maryland.gov/msa/mdmanual/43const/html/03art3.html"
+  },
+
+  "data": {
+    "officialApi": null,
+    "officialApiNotes": "No REST API. The Maryland General Assembly publishes per-session bulk legislative data files in CSV and JSON containing bill number, sponsor, title, legislative status, synopsis, committee assignments, legislative history and hearing dates. Sessions 2017 through 2026 are available, plus the 2021 special session; the current-session file is refreshed hourly. Roll-call vote data is not described as included in these files.",
+    "bulkDownload": "https://mgaleg.maryland.gov/mgawebsite/Search/BillDataDownload",
+    "openStatesCoverage": "full",
+    "source": "https://open.pluralpolicy.com/data/session-csv/"
+  },
+
+  "citizenRoute": {
+    "canRequestDraft": false,
+    "notes": "The Department of Legislative Services drafts on a sponsor-request model: bill requests are logged against a requester and a sponsor, the drafter consults 'the sponsor or the sponsor's designee', and the session calendar sets bill request guarantee and drafting deadlines for members. A member of the public must go through a legislator, who requests the draft from DLS.",
+    "source": "https://dls.maryland.gov/pubs/prod/LegisBillDrafting/Legislative_Drafting_Manual.pdf"
+  },
+
+  "gaps": [
+    "Maryland has veto referendum but NO initiative — statuteCount and constitutionalCount are null because those mechanisms do not exist, not because a number could not be found. The 60,157 figure is deliberately placed in referendumCount, never in statuteCount, so it cannot be mistaken for an initiative threshold.",
+    "60,157 = 3% of the whole number of votes cast for Governor at the November 8, 2022 gubernatorial election, and governs petitions filed 2023 through 2026. It will be recomputed after the November 2026 gubernatorial election; re-check the State Board of Elections petitions page before relying on it for any 2027-or-later campaign.",
+    "Deadline discrepancy, unresolved: Md. Const. art. XVI, sec. 3 sets the second-stage deadline at June 30, but the State Board of Elections' published 2026 schedule lists June 23, 2026 at 11:59 p.m. for filing the balance of signatures. The reason for the earlier administrative date (likely a statutory or COMAR provision, or an election-calendar adjustment) was not confirmed. Organizers should treat June 23, 2026 as operative because it is the State Board's own published date, but should verify directly with the Board.",
+    "The State Board of Elections petitions page carries a stale introductory sentence referring to the '2024 General Election ballot' alongside the current 2026 filing schedule; the 60,157 figure and the 20,053 / 40,104 split are internally consistent with the 2026 schedule on the same page.",
+    "'carryover' is set false based on the Drafting Manual's treatment of prior-session bills as 'reintroductions' requiring a fresh draft, and on Maryland's constitutionally separate 90-day annual sessions. No official source was found stating the rule affirmatively.",
+    "Roll-call vote data availability in the MGA bulk downloads was not confirmed; the download page describes bill metadata and history but does not mention votes.",
+    "Schema note: 'referendumFormula'/'referendumCount' and a 'process' string were added inside the initiative object precisely so Maryland's veto-referendum threshold is never read as an initiative threshold."
+  ]
+}

@@ -1,0 +1,80 @@
+{
+  "code": "HI",
+  "name": "Hawaii",
+  "asOf": "2026-07",
+
+  "initiative": {
+    "statute": "none",
+    "constitutional": "none",
+    "referendum": false,
+    "signatures": {
+      "statuteFormula": null,
+      "statuteCount": null,
+      "constitutionalFormula": null,
+      "constitutionalCount": null,
+      "distribution": null,
+      "source": "https://elections.hawaii.gov/wp-content/uploads/2024-Candidates-Manual.pdf"
+    },
+    "circulationDays": null,
+    "filingDeadline": null,
+    "subjectLimits": [],
+    "preFilingReview": null,
+    "notes": "Hawaii has NO statewide initiative and NO statewide veto referendum. The Hawaii Office of Elections Candidate's Manual states: 'Constitutional amendments are proposed and submitted by the Hawaii State Legislature. There is no initiative process under state law that would allow registered voters or citizen groups to propose and submit questions to amend the Hawaii State Constitution.' Statewide ballot questions reach voters only by (a) legislative referral of a constitutional amendment under Haw. Const. art. XVII, sec. 3, or (b) a constitutional convention, the calling of which is put to voters at least every ten years under Haw. Const. art. XVII, sec. 2. The realistic citizen route to a statewide statute is therefore: draft the bill, find a legislator to introduce it, and work the committee/testimony process (see citizenRoute).",
+    "source": "https://elections.hawaii.gov/wp-content/uploads/2024-Candidates-Manual.pdf"
+  },
+
+  "localOrdinance": {
+    "citizenInitiative": true,
+    "notes": "County-level only, and governed entirely by each county's own charter, not by state law. The Office of Elections confirms that 'Charter amendment and initiative questions are submitted by the respective county clerk, consistent with their county laws.' All four counties (Honolulu, Hawaii, Maui, Kauai) provide some form of charter-based initiative. Reported thresholds (NOT verified against the charters themselves): Honolulu 10% of voters registered at the last regular mayoral election; Hawaii County 15% of those who voted for mayor at the last mayoral election; Maui County 20% of ballots cast at the last mayoral general election; Kauai County 20% of eligible voters at the last preceding general election. Verify against the governing county charter before organizing.",
+    "source": "https://ballotpedia.org/Laws_governing_local_ballot_measures_in_Hawaii"
+  },
+
+  "drafting": {
+    "manualUrl": "https://lrb.hawaii.gov/wp-content/uploads/2022_HawaiiLegislativeDraftingManual.pdf",
+    "manualName": "Hawaii Legislative Drafting Manual, Eleventh Edition (Legislative Reference Bureau, December 2022)",
+    "requiredSections": [
+      "masthead (chamber, bill number, legislature/year, State of Hawaii)",
+      "title — 'A BILL FOR AN ACT' plus a 'RELATING TO ...' clause",
+      "enacting clause",
+      "body in numbered SECTIONs",
+      "Ramseyer format showing additions (underscore) and deletions (bracket/strikeout) to existing law",
+      "effective date section",
+      "bill description/report title"
+    ],
+    "enactingClause": "BE IT ENACTED BY THE LEGISLATURE OF THE STATE OF HAWAII:",
+    "notes": "Verified: URL resolves to a 432-page PDF, Eleventh Edition, December 2022, Charlotte A. Carter-Yamauchi, Director, Legislative Reference Bureau. The LRB's index of drafting manuals is at https://lrb.hawaii.gov/drafting-manuals-guides/ .",
+    "source": "https://lrb.hawaii.gov/drafting-manuals-guides/"
+  },
+
+  "legislature": {
+    "chambers": ["House of Representatives", "Senate"],
+    "sessionType": "Two-year biennial legislature with annual regular sessions; each regular session is limited to 60 legislative days (Haw. Const. art. III, sec. 10)",
+    "typicalConvene": "10:00 a.m. on the third Wednesday in January (Haw. Const. art. III, sec. 10)",
+    "typicalAdjourn": "Early May, on the 60th legislative day (sine die)",
+    "billIntroductionDeadline": "Bills may be introduced only by a Senator or Representative, and only during the bill introduction period set by each year's session calendar (typically the first week or two of session)",
+    "carryover": true,
+    "notes": "Carryover confirmed by the Legislative Reference Bureau Public Access Room: bills pending at the end of the first (odd-numbered-year) session carry over to the second year of the biennium, where they resume where they left off; anything not passed by the end of the second year dies.",
+    "source": "https://lrb.hawaii.gov/par/overview-of-the-legislative-process/a-bills-journey/"
+  },
+
+  "data": {
+    "officialApi": null,
+    "officialApiNotes": "No documented public REST API. The legislature runs a web-based Legislative Information System (capitol.hawaii.gov and search.capitol.hawaii.gov) with per-measure status pages, hearing notices, and testimony; there is no published bulk export or API contract. Both hosts block automated fetches (HTTP 403) without a browser user agent.",
+    "bulkDownload": null,
+    "openStatesCoverage": "full",
+    "source": "https://www.capitol.hawaii.gov/"
+  },
+
+  "citizenRoute": {
+    "canRequestDraft": false,
+    "notes": "The Legislative Reference Bureau drafts for the Legislature, not for the public; bills can be introduced only by a Senator or Representative. The practical citizen route is: (1) write the bill (or a plain-language concept plus model language), (2) get a legislator to introduce it during the introduction period, (3) submit written testimony. Hawaii is unusually open on step 3 — anyone may submit testimony online on any measure, and the LRB's Public Access Room (https://lrb.hawaii.gov/par/) exists specifically to help members of the public navigate this.",
+    "source": "https://lrb.hawaii.gov/par/overview-of-the-legislative-process/a-bills-journey/"
+  },
+
+  "gaps": [
+    "County initiative signature thresholds (Honolulu, Hawaii, Maui, Kauai) could not be verified against the county charters themselves; the figures recorded in localOrdinance.notes come from Ballotpedia and should be confirmed with the relevant county clerk before a campaign relies on them.",
+    "Could not verify the exact statutory/charter deadlines, circulation windows, or ballot-title procedures for county-level initiatives in any of the four counties.",
+    "capitol.hawaii.gov and search.capitol.hawaii.gov return HTTP 403 to non-browser clients, so the absence of an official bulk-data or API endpoint is inferred from search coverage rather than confirmed from the site's own documentation.",
+    "No pre-election-year (2026) confirmation was found that the Eleventh Edition (2022) drafting manual remains current; the LRB drafting-manuals index lists no newer edition as of 2026-07."
+  ]
+}

@@ -1,0 +1,90 @@
+{
+  "code": "AZ",
+  "name": "Arizona",
+  "asOf": "2026-07",
+
+  "initiative": {
+    "statute": "direct",
+    "constitutional": "direct",
+    "referendum": true,
+    "signatures": {
+      "statuteFormula": "10 percent of the qualified electors (Ariz. Const. art. 4, pt. 1, § 1(2)). 'Qualified electors' means the whole number of votes cast for all candidates for governor at the general election last preceding the filing of the petition (Ariz. Const. art. 4, pt. 1, § 1(7)).",
+      "statuteCount": 255949,
+      "constitutionalFormula": "15 percent of the qualified electors, computed on the same base (Ariz. Const. art. 4, pt. 1, § 1(2), (7)).",
+      "constitutionalCount": 383923,
+      "referendumFormula": "5 percent of the qualified electors, same base (Ariz. Const. art. 4, pt. 1, § 1(3), (7)).",
+      "referendumCount": 127975,
+      "countBasis": "2026 election cycle. Derived from the total votes cast for all candidates for governor at the November 2022 general election — Arizona elects its governor in midterm years, so the 2022 canvass remains the base for every petition filed before the November 2026 general election. These figures will be recomputed from the 2026 gubernatorial canvass for the 2028 cycle.",
+      "distribution": null,
+      "distributionNote": "Arizona has no geographic distribution requirement for statewide initiative or referendum petitions.",
+      "source": "https://azsos.gov/elections/ballot-measures/initiative-referendum-recall/initiatives"
+    },
+    "circulationDays": null,
+    "circulationDaysNote": "No fixed circulation window. A.R.S. § 19-121 bars the Secretary of State from accepting an initiative petition that was issued for circulation more than 24 months before the general election, which functions as an outer limit. Circulation may not begin until the Secretary of State issues an official serial number (A.R.S. § 19-111).",
+    "filingDeadline": "Initiative petitions must be filed with the Secretary of State not less than four months preceding the election (Ariz. Const. art. 4, pt. 1, § 1(4)) — July 2, 2026 for the November 3, 2026 general election. Referendum petitions must be filed not more than 90 days after final adjournment of the session that passed the measure.",
+    "subjectLimits": [
+      "single subject: 'Every initiative measure shall embrace but one subject and matters properly connected therewith, which subject shall be expressed in the title' (Ariz. Const. art. 4, pt. 1, § 1(9)); a subject not expressed in the title makes the measure void only as to that part",
+      "referendum may not be applied to laws immediately necessary for preservation of the public peace, health or safety, or for support and maintenance of state departments and institutions (Ariz. Const. art. 4, pt. 1, § 1(3))",
+      "an initiative or referendum to approve a tax requires 60 percent of votes cast to pass; all others require a majority (Ariz. Const. art. 4, pt. 1, § 1(5))"
+    ],
+    "preFilingReview": "Before printing or circulating, the sponsor files an application with the Secretary of State containing the full text, a description of not more than 200 words of the principal provisions, and a statement of organization, and applies for an official serial number (A.R.S. § 19-111). No official title-and-summary is written for the sponsor. STRICT COMPLIANCE APPLIES: 'Constitutional and statutory requirements for statewide initiative measures must be strictly construed and persons using the initiative process must strictly comply with those constitutional and statutory requirements' (A.R.S. § 19-102.01(A)). A committee that uses the Secretary of State's sample initiative petition is presumed to have strictly complied with A.R.S. § 19-121.",
+    "postEnactmentProtection": "Voter Protection Act (Ariz. Const. art. 4, pt. 1, § 1(6)(B)-(D), (14)): the legislature cannot repeal a voter-approved measure and can amend it only if the amendment furthers the measure's purposes and passes by three-fourths of each house.",
+    "source": "https://www.azleg.gov/const/4/1.p1.htm"
+  },
+
+  "localOrdinance": {
+    "citizenInitiative": true,
+    "notes": "Ariz. Const. art. 4, pt. 1, § 1(8) reserves initiative and referendum to the qualified electors of every incorporated city, town and county for local matters: 15 percent may propose measures by initiative; 10 percent may order a referendum on local legislation. Base for computing the percentage: the whole number of votes cast at the city or town election at which a mayor or councilmember was last chosen before the application (A.R.S. § 19-143(A) for initiative, § 19-142(A) for referendum), unless the city or town provides an alternative basis by charter or ordinance. For county measures the base is the votes cast for all candidates for governor (Ariz. Const. art. 4, pt. 1, § 1(7)). A.R.S. § 19-141 makes the state initiative/referendum procedure apply to cities, towns and counties as nearly as practicable, with the clerk or county elections officer standing in for the Secretary of State. Municipal referendum petitions must be filed within 30 days after passage of the ordinance (A.R.S. § 19-142(A)).",
+    "source": "https://www.azleg.gov/ars/19/00143.htm"
+  },
+
+  "drafting": {
+    "manualUrl": "https://www.azleg.gov/alisPDFs/council/2025-2026_bill_drafting_manual.pdf",
+    "manualName": "The Arizona Legislative Bill Drafting Manual, 2025-2026 (Arizona Legislative Council)",
+    "manualVerified": "2026-07-29, HTTP 200, application/pdf, 24.6 MB. Chapter 3.4 of the manual specifically covers Initiatives and Referendums.",
+    "requiredSections": [
+      "bill title",
+      "enacting clause (immediately following the title page — a bill without an enacting clause is invalid)",
+      "numbered bill sections",
+      "conditional enactments / repeals where applicable",
+      "effective date or emergency clause where applicable"
+    ],
+    "requiredSectionsNote": "From Chapter 2 of the 2025-2026 manual (§ 2.8 Enacting Clause, § 2.9 Bill Section Numbering). Not an exhaustive schema — consult the manual for full form and style.",
+    "enactingClause": "Be it enacted by the People of the State of Arizona.",
+    "enactingClauseNote": "Ariz. Const. art. IV, pt. 2, § 24, as quoted in § 2.8 of the Arizona Legislative Bill Drafting Manual: 'The enacting clause of every bill enacted by the legislature shall be as follows: \"Be it enacted by the Legislature of the State of Arizona,\" or when the initiative is used: \"Be it enacted by the People of the State of Arizona.\"'",
+    "source": "https://www.azleg.gov/alisPDFs/council/2025-2026_bill_drafting_manual.pdf"
+  },
+
+  "legislature": {
+    "chambers": ["House of Representatives", "Senate"],
+    "sessionType": "Annual regular session; two-year legislature (the 57th Legislature covers 2025-2026, with a First Regular Session in 2025 and a Second Regular Session in 2026).",
+    "typicalConvene": "Second Monday of January each year (Ariz. Const. art. 4, pt. 2, § 3).",
+    "typicalAdjourn": null,
+    "billIntroductionDeadline": null,
+    "carryover": null,
+    "source": "https://www.azleg.gov/const/4/3.p2.htm"
+  },
+
+  "data": {
+    "officialApi": "https://apps.azleg.gov/api/Bill/?sessionId=129&billNumber=HB2001",
+    "officialApiNotes": "The ALIS REST API at apps.azleg.gov returns bill JSON (verified 2026-07-29; sample response includes BillId, Session, Number, ShortTitle, DateIntroduced, GovernorAction, ChapterNumber, reading dates). Query by sessionId plus billNumber. Arizona publishes no formal API documentation; the endpoint is the one the azleg.gov site itself uses.",
+    "bulkDownload": null,
+    "openStatesCoverage": "full",
+    "openStatesNotes": "Open States (Plural) lists bulk CSV archives for 11 Arizona legislative sessions, 2017-2026.",
+    "source": "https://open.pluralpolicy.com/data/session-csv/"
+  },
+
+  "citizenRoute": {
+    "canRequestDraft": false,
+    "notes": "The Arizona Legislative Council drafts bills for legislators and committees. Per § 3.4 of its own Bill Drafting Manual, a person who wants to distribute an initiative petition obtains form-and-style information for the petition and attachments from the Secretary of State's office — the state does not draft the measure for the sponsor. Sponsors must file the completed text with their serial-number application under A.R.S. § 19-111. Given the strict-compliance standard in A.R.S. § 19-102.01, professional drafting review before filing is effectively mandatory.",
+    "source": "https://www.azleg.gov/alisPDFs/council/2025-2026_bill_drafting_manual.pdf"
+  },
+
+  "gaps": [
+    "azsos.gov is behind a bot-protection layer and returned HTTP 403 to every direct fetch on 2026-07-29. The 2026-cycle counts (255,949 statutory / 383,923 constitutional / 127,975 referendum) were read out of the search index of two separate official Secretary of State pages (the Initiatives page and the Referendum page) and are mutually consistent, but the SOS page itself was not read first-hand. The underlying percentages (10/15/5) and the vote base (all candidates for governor at the last preceding general election) WERE verified first-hand against the Arizona Constitution at azleg.gov. Re-confirm the three counts against azsos.gov before an organizer relies on them.",
+    "Could not verify the total votes cast for all candidates for governor at the 2022 general election (the base number) from the official Arizona canvass, because azsos.gov was unreachable.",
+    "Could not verify Arizona's sine die practice or the 100-day session guideline from a primary source; typicalAdjourn is null.",
+    "Could not verify Arizona bill introduction deadlines (set by House and Senate rules, not retrieved).",
+    "Could not verify whether Arizona bills carry over between the first and second regular sessions of a legislature; recorded as null."
+  ]
+}

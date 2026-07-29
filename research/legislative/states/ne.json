@@ -1,0 +1,82 @@
+{
+  "code": "NE",
+  "name": "Nebraska",
+  "asOf": "2026-07",
+
+  "initiative": {
+    "statute": "direct",
+    "constitutional": "direct",
+    "referendum": true,
+    "signatures": {
+      "statuteFormula": "7% of the registered voters of the state (Neb. Const. art. III, sec. 2). The base is REGISTERED VOTERS measured at the petition filing deadline, not votes cast for Governor, so the exact required number cannot be known in advance and changes continuously as registration changes. (Art. III, sec. 4 still recites a votes-for-Governor base; the Nebraska Supreme Court resolved the conflict in favor of registered voters in 1994, and the constitutional text of art. III, sec. 2 was amended to say 'registered voters.')",
+      "statuteCount": null,
+      "constitutionalFormula": "10% of the registered voters of the state (Neb. Const. art. III, sec. 2), same registered-voter base measured at the filing deadline.",
+      "constitutionalCount": null,
+      "distribution": "Signers must be 'so distributed as to include five percent of the registered voters of each of two-fifths of the counties of the state' - i.e. 5% of registered voters in each of at least 38 of Nebraska's 93 counties. Applies to initiative AND referendum petitions. THIS REQUIREMENT IS CURRENTLY IN FORCE. It was challenged as an equal-protection violation in Eggers v. Evnen; the U.S. District Court for the District of Nebraska preliminarily enjoined it in June 2022, but the Eighth Circuit reversed on August 31, 2022 (No. 22-2268), holding the requirement neither draws a suspect classification nor restricts a fundamental right and survives rational-basis review. Nebraska has enforced it since.",
+      "source": "https://nebraskalegislature.gov/laws/articles.php?article=III-2"
+    },
+    "circulationDays": null,
+    "filingDeadline": "Initiative: signatures must be filed with the Secretary of State no later than four months before the general election (for 2026, July 3, 2026). Separately, signatures become invalid at the first general election occurring at least four months after the petition is first filed in the Secretary of State's office (Neb. Rev. Stat. 32-1407), which in practice gives a circulation window of roughly two years beginning as early as mid-July of the preceding even-numbered year. Referendum: signatures must be submitted within 90 days after the Legislature adjourns.",
+    "subjectLimits": [
+      "initiative measures shall contain only one subject (Neb. Const. art. III, sec. 2)",
+      "may not interfere with the Legislature's prerogative to raise necessary revenue for the state and its political subdivisions",
+      "the same measure may not be placed on the ballot more often than once in three years",
+      "referendum does not extend to acts making appropriations for the expense of state government or a state institution (art. III, sec. 3)"
+    ],
+    "preFilingReview": "Sponsors deliver the proposed text plus an 'object statement' and a sworn list of sponsors to the Secretary of State. The SoS sends the text to the Revisor of Statutes, who has 10 days to review it and suggest changes so the language fits cleanly into the statutes or constitution; suggestions are confidential for five days after return and the sponsors may accept or reject them. The sponsor then files final language; the SoS places it on a petition form and provides five camera-ready copies within five days. Once the final form is issued the language may not be changed - a change requires restarting the process.",
+    "source": "https://sos.nebraska.gov/sites/default/files/doc/01-init_ref.pdf"
+  },
+
+  "localOrdinance": {
+    "citizenInitiative": true,
+    "notes": "Neb. Const. art. III, sec. 5 and the Municipal Initiative and Referendum Act, Neb. Rev. Stat. 18-2501 to 18-2538, reserve initiative and referendum powers to the voters of each municipality. The Act covers prospective petitions filed with the city clerk (18-2512), ballot title (18-2513), petition contents (18-2515), signers and circulators (18-2517), filing and verification (18-2518), a two-year bar on resubmitting the same measure (18-2519), election notice (18-2521), and the referendum power (18-2527). The signature PERCENTAGE was not located in the sections retrieved - see gaps.",
+    "source": "https://nebraskalegislature.gov/laws/browse-chapters.php?chapter=18"
+  },
+
+  "drafting": {
+    "manualUrl": "https://nebraskalegislature.gov/pdf/revisor/draftingmanual.pdf",
+    "manualName": "Working With the Bill Drafting/Revisor of Statutes Office, Office of Revisor of Statutes, December 2025",
+    "requiredSections": [
+      "bill identification header (legislature, session, LB number, introducer, read-first-time date, committee)",
+      "title - 'A BILL FOR AN ACT relating to <subject>; to amend section ...; to <purpose>; and to repeal the original section.' (constitutionally must clearly express one subject)",
+      "enacting clause",
+      "numbered sections",
+      "repealer of the original section when amending (Nebraska amends by restating the whole section and repealing the original)",
+      "operative/effective date or emergency clause where applicable"
+    ],
+    "enactingClause": "Be it enacted by the people of the State of Nebraska,",
+    "source": "https://nebraskalegislature.gov/pdf/revisor/draftingmanual.pdf"
+  },
+
+  "legislature": {
+    "chambers": ["Legislature"],
+    "sessionType": "Unicameral and officially nonpartisan - one chamber of 49 senators, with no second house, no conference committees between chambers, and no party designation on the ballot. There is no upper/lower chamber path: a bill gets a public hearing before one standing committee and then three rounds of floor debate (General File, Select File, Final Reading) in the same body. Two-year Legislature: sessions convene annually, limited to 90 legislative days in odd-numbered years and 60 legislative days in even-numbered years unless extended by a four-fifths vote (Neb. Const. art. III, sec. 10).",
+    "typicalConvene": "10 a.m. on the first Wednesday after the first Monday in January",
+    "typicalAdjourn": "on or before the 90th legislative day (odd years, typically early June) or the 60th legislative day (even years, typically mid-April)",
+    "billIntroductionDeadline": null,
+    "carryover": true,
+    "source": "https://nebraskalegislature.gov/laws/articles.php?article=III-10"
+  },
+
+  "data": {
+    "officialApi": null,
+    "officialApiNotes": "The Nebraska Legislature publishes bills, statutes, hearing schedules and votes at nebraskalegislature.gov, and floor documents as PDFs under /FloorDocs/<legislature>/PDF/. No public documented REST API or bulk download was located.",
+    "bulkDownload": null,
+    "openStatesCoverage": "full",
+    "source": "https://nebraskalegislature.gov/"
+  },
+
+  "citizenRoute": {
+    "canRequestDraft": false,
+    "notes": "Bill drafts are prepared by the Office of the Revisor of Statutes for senators; the public cannot request one. Two citizen-facing routes exist instead. (1) Every bill introduced in the Nebraska Legislature receives a public committee hearing at which any member of the public may testify - a direct consequence of the unicameral design and the most accessible citizen entry point in the country. (2) Ballot-measure sponsors get a mandatory Revisor of Statutes review of their proposed initiative or referendum text (10 days) before the petition form is issued, which is effectively free legislative drafting assistance for citizens.",
+    "source": "https://sos.nebraska.gov/sites/default/files/doc/01-init_ref.pdf"
+  },
+
+  "gaps": [
+    "No absolute signature count can be stated for Nebraska. The requirement is a percentage of REGISTERED VOTERS as of the filing deadline, so it is unknowable until the deadline passes. Organizers must track registration totals published by the Secretary of State and build a large cushion; do not plan against a fixed number.",
+    "The 2026-cycle estimate published by the Nebraska Secretary of State was not retrieved (the session's web-search budget was exhausted before this could be confirmed against sos.nebraska.gov's current page). Check https://sos.nebraska.gov/elections/initiative-referendum for the current working estimate.",
+    "The Secretary of State's 'How to Use the Initiative and Referendum Process in Nebraska' pamphlet cited here is revised August 2015 and issued under a prior Secretary of State. Its framework matches the current constitutional text, but deadlines and form requirements should be re-confirmed against Neb. Rev. Stat. 32-1401 to 32-1417.",
+    "Signature percentage for a MUNICIPAL initiative or referendum petition under the Municipal Initiative and Referendum Act (Neb. Rev. Stat. 18-2501 et seq.) not verified - sections 18-2512, 18-2515, 18-2519, 18-2521, 18-2527 and 18-2528 were each retrieved and none states a percentage.",
+    "Bill introduction deadline (Nebraska limits introduction to the first ten legislative days of a session by rule) was not verified against the current Rules of the Nebraska Unicameral Legislature."
+  ]
+}

@@ -1,0 +1,105 @@
+{
+  "code": "WA",
+  "name": "Washington",
+  "asOf": "2026-07",
+
+  "initiative": {
+    "statute": "direct",
+    "constitutional": "none",
+    "referendum": true,
+    "signatures": {
+      "statuteFormula": "8% of the total votes cast for the office of Governor at the last regular gubernatorial election. The SAME 8% applies to both the Initiative to the People (direct, goes straight to the November ballot) and the Initiative to the Legislature (indirect, goes to the legislature first). Wash. Const. art. II, sec. 1(a).",
+      "statuteCount": 308911,
+      "constitutionalFormula": null,
+      "constitutionalCount": null,
+      "distribution": null,
+      "source": "https://www.sos.wa.gov/elections/initiatives-referenda/submitted-signature-statistics"
+    },
+    "signatureBasis": "Derived from the 2024 gubernatorial election (Ferguson v. Reichert). The Secretary of State's Submitted Signature Statistics page, updated 2026-07-22, states: 'The number of signatures required for an initiative is 308,911 and the number for a referendum is 154,455.' These numbers will be recomputed after the November 2028 gubernatorial election.",
+    "referendumSignatures": {
+      "formula": "4% of the total votes cast for Governor at the last gubernatorial election (half the initiative requirement). Wash. Const. art. II, sec. 1(b).",
+      "count": 154455,
+      "source": "https://www.sos.wa.gov/elections/initiatives-referenda/submitted-signature-statistics"
+    },
+    "circulationDays": null,
+    "circulationNotes": "Washington does not set a fixed number of circulation days. It sets an opening and closing date for each filing cycle, and the practical circulation window is shorter than the filing window because petition sheets cannot be printed until the Attorney General issues the ballot title and the 5-day appeal period runs. For 2026 the SoS publishes: Initiatives to the People, January 5, 2026 - July 2, 2026 (filing opens 10 months before the general election; signatures due 4 months before it); Initiatives to the Legislature, March 11, 2026 - December 31, 2026 (filing opens 10 months before the next legislative session; signatures due 10 days before session convenes); Referenda, on or before 90 days after final adjournment of the session that passed the act (2026 window March 12 - June 10, 2026).",
+    "filingDeadline": "Constitutionally: initiative petitions must be filed with the Secretary of State not less than four months before the election at which they are to be voted on (Initiative to the People), OR not less than ten days before a regular session of the legislature (Initiative to the Legislature). Referendum petitions: not later than 90 days after final adjournment of the session that passed the measure. Wash. Const. art. II, sec. 1(a),(d).",
+    "subjectLimits": [
+      "An initiative cannot amend the state Constitution (Wash. Const. art. XXIII governs amendments; only the legislature may refer them)",
+      "Single subject / subject expressed in the title (Wash. Const. art. II, sec. 19, applied to initiatives by the courts)",
+      "An initiative-enacted measure may not be amended or repealed by the legislature within two years except by a two-thirds vote of each house (Wash. Const. art. II, sec. 1(c))",
+      "A section of an act containing an emergency clause is not subject to referendum"
+    ],
+    "preFilingReview": "Two mandatory pre-circulation steps. (1) Code Reviser review: after initial filing (with a $156 fee and a sponsor affidavit, filed online), the Secretary of State transmits the text to the Office of the Code Reviser, which has 7 working days to review for technical errors and style, advise the sponsor of conflicts with existing law, and issue a Certificate of Review. The Code Reviser's suggestions are advisory; the sponsor may accept or reject them. The sponsor then has 15 working days from the initial filing to submit the final text plus the Certificate of Review; after that no further changes are allowed. (2) Ballot title and summary: the Attorney General has 5 working days to issue a 10-word subject statement, a 30-word concise description, and a summary of not more than 75 words; any person may challenge the title or summary in Thurston County Superior Court within 5 working days. Petition sheets may only be printed after the appeal period closes.",
+    "indirectPath": {
+      "name": "Initiative to the Legislature (ITL)",
+      "howItWorks": "An Initiative to the Legislature is filed with the Secretary of State and, if it gathers 8% signatures (the same threshold as a direct initiative) and is certified, is transmitted to the legislature as soon as the regular session convenes. Under Wash. Const. art. II, sec. 1(a) the measure 'shall take precedence over all other measures in the legislature except appropriation bills and shall be either enacted or rejected without change or amendment by the legislature before the end of such regular session.' The legislature has exactly three options: (1) adopt the initiative as proposed, in which case it becomes law WITHOUT a vote of the people (and, per art. II sec. 1(b), the legislature may not order a referendum on an initiative it has enacted, though a citizen referendum petition may still be filed against it); (2) reject it or refuse to act, in which case it goes on the ballot at the next state general election; or (3) propose a different measure dealing with the same subject, in which case both the initiative and the legislature's alternative go on the ballot together and voters vote first on 'either/neither' and second on which of the two they prefer.",
+      "whyItMatters": "This is a genuinely different strategic path from a direct initiative: a campaign that can reach 8% signatures by the pre-session deadline can win outright in the legislature without ever running a ballot campaign. It happened at scale in 2024. Six Initiatives to the Legislature were certified for the 2024 session (a record). The legislature ENACTED THREE OF THEM OUTRIGHT in March 2024, so they became law without going to the voters: I-2081 (parental rights to review K-12 instructional materials and records, and notification of medical care), I-2111 (prohibiting the state, counties, cities and other local jurisdictions from imposing or collecting income taxes), and I-2113 (removing legislative restrictions on when police may engage in vehicular pursuits). The legislature declined to act on the other three (I-2117 carbon market repeal, I-2109 capital gains tax repeal, I-2124 long-term care program opt-out), which therefore went to the November 2024 ballot and were defeated. Organizers should read this as: an ITL aimed at a proposal the majority caucus is willing to swallow can be enacted at a fraction of the cost of a ballot campaign; an ITL aimed at something the majority opposes buys you a general-election ballot slot instead.",
+      "source": "https://leg.wa.gov/media/o3fg0ey1/washington-state-constitution.pdf"
+    },
+    "filingFee": "$156.00 (WAC 434-379-005), payable at initial filing, same for Initiative to the People, Initiative to the Legislature, and Referendum.",
+    "otherRequirements": [
+      "Sponsor must be a registered Washington voter (RCW 29A.72.010) and file a signed (non-electronic) affidavit",
+      "Sponsors must register with the Public Disclosure Commission and file a Statement of Organization (RCW 42.17A.205)",
+      "Paying signature gatherers per signature is a gross misdemeanor (RCW 29A.84.250, 29A.84.280); hourly pay is allowed",
+      "Petition sheets must be at least 11 x 14 inches, carry the ballot title/summary, serial number, statutory heading, at most 20 signature lines, and the full text of the measure on the back; stapling extra sheets is prohibited (RCW 29A.72.100, .170; WAC 434-379-008)",
+      "Sponsors must notify the SoS at least three months before the submission deadline that signatures are being collected, and submit a Word petition template in advance (WAC 434-379-009)",
+      "Petitions must be delivered in person by the sponsor, by appointment, by 5:00 pm on the deadline"
+    ],
+    "source": "https://www.sos.wa.gov/sites/default/files/2026-07/2026%20Initiative%20and%20Referenda%20Handbook.pdf"
+  },
+
+  "localOrdinance": {
+    "citizenInitiative": true,
+    "notes": "Local initiative power in Washington is NOT universal; it depends on the city's classification and whether the city has adopted the power. (a) Non-charter code cities (the most common form): the voters or the council may adopt initiative and referendum powers 'in the manner provided for changing the classification of a city or town' (RCW 35A.11.080). Once adopted, RCW 35A.11.100 sets the petition threshold at 'fifteen percent of the total number of names of persons listed as registered voters within the city on the day of the last preceding city general election.' RCW 35A.11.090 makes ordinances in such cities effective only 30 days after passage and subject to referendum during that window, with seven exceptions (including initiated ordinances, emergency measures, LIDs, appropriations, collective bargaining, employee compensation, and tax levies). (b) Commission-form cities have initiative and referendum by statute (ch. 35.17 RCW). (c) First-class charter cities (e.g. Seattle, Spokane, Tacoma) have whatever initiative power their charter grants, and thresholds vary by charter. (d) Counties: only home-rule charter counties (e.g. King, Snohomish, Pierce, Whatcom, Clallam, San Juan) have initiative power, and only as their charter provides. Organizers must check the specific city's classification first.",
+    "source": "https://app.leg.wa.gov/RCW/default.aspx?cite=35A.11&full=true"
+  },
+
+  "drafting": {
+    "manualUrl": "https://leg.wa.gov/media/b2gdjkne/2025-bill-drafting-guide.pdf",
+    "manualName": "Bill Drafting Guide 2025 (State of Washington, Statute Law Committee, Office of the Code Reviser)",
+    "manualLandingPage": "https://leg.wa.gov/bills-meetings-and-session/bills/bill-drafting-guide/",
+    "manualNotes": "87 pages, verified to resolve 2026-07-29. Unusually good and unusually relevant to citizen drafters, because Washington initiatives must be drafted in bill form and are reviewed by the same Code Reviser's office that wrote this guide. Four parts: I Working Procedures (how to submit drafting requests), II Formal and Technical Requisites (bill titles, enacting clause, amendatory sections, new sections, codification directions, repealers, effective/emergency/expiration date clauses, and a specific subsection on ALTERNATIVE INITIATIVE CLAUSES for a legislature-proposed alternative under art. II sec. 1(a)), III Avoiding Unintended Liability, IV Instructions on Style (voice, punctuation, numbers, capitalization, spelling, subsection numbering, citations).",
+    "requiredSections": [
+      "bill title (subject expressed in the title, Wash. Const. art. II, sec. 19)",
+      "enacting clause",
+      "sections: amendatory sections (with strike-out/underline showing changes to existing RCW), new sections, and repealers",
+      "codification / recodification directions",
+      "optional but commonly required clauses: definitions, effective date, emergency clause, expiration date, severability, short title, intent/findings"
+    ],
+    "enactingClause": "For a citizen initiative (both Initiative to the People and Initiative to the Legislature): \"BE IT ENACTED BY THE PEOPLE OF THE STATE OF WASHINGTON:\" — this is required by Wash. Const. art. II, sec. 1(d) ('The style of all bills proposed by initiative petition shall be: \"Be it enacted by the people of the State of Washington.\"') and confirmed at Bill Drafting Guide Part II(9). For an ordinary legislator-sponsored bill the clause is \"BE IT ENACTED BY THE LEGISLATURE OF THE STATE OF WASHINGTON:\" (Wash. Const. art. II, sec. 18).",
+    "source": "https://leg.wa.gov/media/b2gdjkne/2025-bill-drafting-guide.pdf"
+  },
+
+  "legislature": {
+    "chambers": ["House of Representatives", "Senate"],
+    "sessionType": "Annual regular sessions within a two-year biennium. Wash. Const. art. II, sec. 12: 'During each odd-numbered year, the regular session shall not be more than one hundred five consecutive days. During each even-numbered year, the regular session shall not be more than sixty consecutive days.' Special sessions are capped at 30 consecutive days.",
+    "typicalConvene": "Second Monday of January each year (RCW 44.04.010). The 2026 regular session convened January 12, 2026.",
+    "typicalAdjourn": "Mid-to-late April in odd-numbered years (day 105); mid-March in even-numbered years (day 60).",
+    "billIntroductionDeadline": "Set each session by a cutoff resolution rather than by statute. The session cutoff calendar publishes house-of-origin policy committee cutoff, fiscal committee cutoff, house-of-origin floor cutoff, opposite-house cutoffs, and the final cutoff. For 2026 the policy committee cutoff was February 4, 2026.",
+    "carryover": true,
+    "carryoverNotes": "Bills introduced in the first (odd-year) session that do not pass are retained in their present status into the second (even-year) session of the same biennium; this is effected by concurrent resolution at the start of the even-year session rather than by a standing rule. Initiatives to the Legislature are NOT subject to this: art. II sec. 1(a) requires the legislature to enact or reject an ITL before the end of the regular session in which it is transmitted.",
+    "source": "https://leg.wa.gov/media/o3fg0ey1/washington-state-constitution.pdf"
+  },
+
+  "data": {
+    "officialApi": "https://wslwebservices.leg.wa.gov/legislationservice.asmx",
+    "officialApiNotes": "The Washington State Legislature runs a public set of SOAP/ASMX web services at wslwebservices.leg.wa.gov (LegislationService, CommitteeService, CommitteeMeetingService, SponsorService, AmendmentService, RollCallService, LegislativeDocumentService). Verified 200 on 2026-07-29. No key required. The service root (http://wslwebservices.leg.wa.gov/) returned 503 at the time of checking, but the individual .asmx endpoints resolve. Bill documents and session law files are also served as static files under lawfilesext.leg.wa.gov.",
+    "bulkDownload": "https://leg.wa.gov/bills-meetings-and-session/bills/data-and-statistics/",
+    "openStatesCoverage": "full",
+    "source": "https://leg.wa.gov/bills-meetings-and-session/bills/"
+  },
+
+  "citizenRoute": {
+    "canRequestDraft": true,
+    "notes": "Qualified yes, and this is Washington's distinguishing feature. For ORDINARY BILLS: the Code Reviser's Office drafts only for legislators, standing committees, the governor, executive agencies, and the courts; a member of the public must find a legislator to sponsor and request the draft. But for a CITIZEN INITIATIVE the Code Reviser's review is built into the statutory process and is available to any registered Washington voter who files an initiative and pays the $156 fee: RCW 29A.72.020 gives the Code Reviser 7 working days to review the sponsor's draft for technical errors and style, to advise the sponsor of conflicts with existing law, and to return the proposal with recommended changes plus a Certificate of Review. The sponsor may accept or reject the recommendations. That means an organizer in Washington can get free, nonpartisan, professional legislative-drafting feedback on their own text without a legislator's involvement — a route that does not exist in most states. A citizen may also bring a bill idea to any legislator; the WA legislative hotline is 1-800-562-6000.",
+    "source": "https://www.sos.wa.gov/sites/default/files/2026-07/2026%20Initiative%20and%20Referenda%20Handbook.pdf"
+  },
+
+  "gaps": [
+    "The Secretary of State's 2026 handbook states the 8%/4% formulas but does not print the absolute numbers; the absolute numbers (308,911 initiative / 154,455 referendum) come from the SoS 'Submitted Signature Statistics' page, updated 2026-07-22. The handbook's recommended cushion figures (386,000 and 193,000) are consistent with those numbers at +25%.",
+    "circulationDays is null on purpose: Washington fixes calendar filing windows rather than a number of circulation days, and the usable window is shortened by the Code Reviser review, the AG ballot-title period, and the 5-day title-appeal period before petitions may be printed.",
+    "Bill carryover between the two years of a biennium is real but is effected by a concurrent resolution adopted at the start of each even-year session; I could not locate a standing House or Senate rule text online that states it, so treat the carryover note as descriptive of practice rather than a rule citation.",
+    "Local initiative thresholds for first-class charter cities (Seattle, Spokane, Tacoma, etc.) and for home-rule charter counties are set by each charter and were not individually verified."
+  ]
+}

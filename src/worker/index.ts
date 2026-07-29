@@ -33,6 +33,7 @@ import { contacts } from './routes/api/contacts';
 import { custos } from './routes/api/custos';
 import { exports } from './routes/api/exports';
 import { federatio } from './routes/api/federatio';
+import { petitio } from './routes/api/petitio';
 import { funds } from './routes/api/funds';
 import { scriba } from './routes/api/scriba';
 import { vinculum } from './routes/api/vinculum';
@@ -102,6 +103,9 @@ app.route('/api/consilium', consilium);
 app.route('/api/custos', custos);
 app.route('/api/scriba', scriba);
 app.route('/api/federatio', federatio);
+
+// Advocacy and the bill a group writes (§5.5) — see migrations/0012_petitio.sql.
+app.route('/api/petitio', petitio);
 
 // Signature-verified, no session (§1.1). Mounted before the SPA and marketing
 // so nothing else can shadow it.

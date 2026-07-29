@@ -1,0 +1,76 @@
+{
+  "code": "NH",
+  "name": "New Hampshire",
+  "asOf": "2026-07",
+
+  "initiative": {
+    "statute": "none",
+    "constitutional": "none",
+    "referendum": false,
+    "signatures": {
+      "statuteFormula": null,
+      "statuteCount": null,
+      "constitutionalFormula": null,
+      "constitutionalCount": null,
+      "distribution": null,
+      "source": null
+    },
+    "circulationDays": null,
+    "filingDeadline": null,
+    "subjectLimits": [],
+    "preFilingReview": null,
+    "source": "https://www.gencourt.state.nh.us/"
+  },
+
+  "localOrdinance": {
+    "citizenInitiative": true,
+    "notes": "New Hampshire has no statewide initiative, but its LOCAL petition right is unusually low-threshold and is the practical citizen legislating route. Under RSA 39:3, on written application of 25 or more registered voters, or 2 percent of the registered voters in the town, whichever is LESS (but never fewer than 10), the selectmen must insert the petitioned article in the warrant for the annual town meeting, 'with only such minor textual changes as may be required.' The application must be presented not later than the fifth Tuesday before the day prescribed for the annual meeting, and may name a primary petitioner (otherwise the first voter listed is the primary petitioner). A special meeting may be requested by 50 voters or one quarter of registered voters, whichever is fewer, in towns under 10,000 residents, or by 5 percent of registered voters in larger towns, if filed not less than 60 days before the next annual meeting. Municipal charter adoption and revision run through RSA 49-B, which also allows a voter petition to initiate charter proceedings.",
+    "source": "https://gc.nh.gov/rsa/html/III/39/39-3.htm"
+  },
+
+  "drafting": {
+    "manualUrl": "https://gc.nh.gov/memberportal/help/How%20to%20Read%20a%20NH%20Bill%20Draft%20-%20Part%20I.pdf",
+    "manualName": "How Do I Read a NH Bill Draft? Part I: Key Components - Office of Legislative Services, Legal Division. (Part II, on amending language: https://gc.nh.gov/memberportal/help/How%20to%20Read%20a%20NH%20Bill%20Draft%20-%20Part%20II.pdf). New Hampshire's Office of Legislative Services does not publish a public bill drafting style manual; these two OLS presentations are the only public drafting guidance the General Court posts.",
+    "requiredSections": [
+      "bill cover page (informational only, not part of the bill): originating chamber, bill number, session, LSR number, drafter/reviewer, sponsors, analysis, committee of referral",
+      "title",
+      "enacting clause",
+      "numbered bill sections, each citing the RSA section and section heading being amended",
+      "amending language stating what is added and where (new chapters, subdivisions, sections, or paragraphs are set in regular text; deletions are bracketed and struck through; additions are bold italic)",
+      "effective date as its own bill section"
+    ],
+    "enactingClause": null,
+    "source": "https://gc.nh.gov/orientation/default.aspx"
+  },
+
+  "legislature": {
+    "chambers": ["House of Representatives", "Senate"],
+    "sessionType": "Annual sessions of a two-year General Court. The House has 400 members and the Senate 24 - the House is the largest state legislative chamber in the United States and one of the largest deliberative bodies in the world, which makes finding a willing sponsor comparatively easy. Legislation begins as a Legislative Service Request (LSR) filed by a member with the Office of Legislative Services; LSRs are filed in the autumn preceding the session and are publicly searchable at https://gc.nh.gov/lsr_search/ before they become numbered bills.",
+    "typicalConvene": "January",
+    "typicalAdjourn": null,
+    "billIntroductionDeadline": null,
+    "carryover": true,
+    "source": "https://www.gencourt.state.nh.us/"
+  },
+
+  "data": {
+    "officialApi": null,
+    "officialApiNotes": "The General Court publishes downloadable bill status data tables (refreshed on file access) plus member data in txt/xls/xlsx, and a 'Public SQL and Data Table Information' PDF describing the schema, at https://gc.nh.gov/downloads/. This is a genuine public bulk data feed rather than a REST API, and is one of the better citizen-accessible legislative data sources among the fifty states.",
+    "bulkDownload": "https://gc.nh.gov/downloads/",
+    "openStatesCoverage": "full",
+    "source": "https://gc.nh.gov/downloads/"
+  },
+
+  "citizenRoute": {
+    "canRequestDraft": false,
+    "notes": "Only members may file an LSR with the Office of Legislative Services, so a citizen must recruit a representative or senator to file. Two things make that unusually tractable in New Hampshire: the 400-member House means roughly one representative per 3,400 residents, and both chambers accept public testimony, with the House operating an online sign-in and written testimony system (https://gc.nh.gov/house/committees/remotetestimony/default.aspx) that lets any resident register a position and submit testimony on any bill without traveling to Concord.",
+    "source": "https://www.gencourt.state.nh.us/"
+  },
+
+  "gaps": [
+    "New Hampshire has NO statewide initiative, referendum, or recall of any kind. This is a settled and well-known fact, but the authoritative text (N.H. Const. pt. 2, art. 100, on amendment by three-fifths vote of each house or by constitutional convention, with a convention question put to voters at least every ten years and ratification requiring two-thirds of voters voting) could not be retrieved: the official New Hampshire Constitution is hosted at https://www.nh.gov/glance/state-constitution, which returned HTTP 403 to every fetch attempt from this environment, and the General Court's own /constitution/ pages 404. The three-fifths proposal threshold and two-thirds ratification threshold are therefore recorded here as UNVERIFIED and must be confirmed before being published.",
+    "The enacting clause for New Hampshire bills was not verified. Bill text pages on gc.nh.gov returned no retrievable body text, and the OLS 'How to Read a NH Bill Draft' materials do not quote it. Left null rather than guessed.",
+    "Session convene and adjourn dates, and the LSR filing deadline for the 2027 session, were not verified against an official General Court calendar.",
+    "Carryover is recorded as true on the basis that New Hampshire committees may 'retain' a bill in the first year of the biennium for action in the second year. The governing House and Senate rules were not read directly; confirm against https://www.gencourt.state.nh.us/house/aboutthehouse/houseRules.pdf and https://gc.nh.gov/orientation/documents/senate/senate_rules.pdf."
+  ]
+}

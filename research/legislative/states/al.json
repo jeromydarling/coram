@@ -1,0 +1,88 @@
+{
+  "code": "AL",
+  "name": "Alabama",
+  "asOf": "2026-07",
+
+  "initiative": {
+    "statute": "none",
+    "constitutional": "none",
+    "referendum": false,
+    "signatures": {
+      "statuteFormula": null,
+      "statuteCount": null,
+      "constitutionalFormula": null,
+      "constitutionalCount": null,
+      "distribution": null,
+      "source": null
+    },
+    "circulationDays": null,
+    "filingDeadline": null,
+    "subjectLimits": [],
+    "preFilingReview": null,
+    "notes": "Alabama reserves no initiative power to the people. Every statewide ballot measure is a legislatively referred constitutional amendment: the Legislature must pass the proposed amendment, after which it goes to the voters. There is no citizen-initiated statute, no citizen-initiated constitutional amendment, and no veto referendum on enacted laws. The only citizen route to state law is persuading a legislator to introduce a bill.",
+    "source": "https://statedemocracy.law.wisc.edu/directdemocracy50-state/2023/alabama/"
+  },
+
+  "localOrdinance": {
+    "citizenInitiative": null,
+    "notes": "Alabama is a strict Dillon's Rule state and has no general municipal or county initiative power comparable to Arizona, Arkansas, California or Alaska. Certain narrow local questions (for example local-option alcohol elections) are reachable by voter petition under specific enabling statutes, but there is no general power for residents to place an ordinance on a city or county ballot. Could not verify this from an Alabama Secretary of State or Legislative Services Agency page, so recorded as null rather than false.",
+    "source": null
+  },
+
+  "drafting": {
+    "manualUrl": "https://alison.legislature.state.al.us/files/pdf/eopa/guides/DraftingStyleManual.pdf",
+    "manualName": "Drafting Style Manual (Alabama Legislative Services Agency, Legal Division / Legislative Reference Service)",
+    "manualVerified": "2026-07-29, HTTP 200, application/pdf, 166 KB; self-describes as 'the standard used by LRS staff in their daily activities'",
+    "requiredSections": [
+      "Synopsis",
+      "Title",
+      "Enacting Clause",
+      "Short title (if any)",
+      "Statement of findings and intent (if necessary)",
+      "Definitions",
+      "Main legal principle or proposition",
+      "Procedural and administrative provisions",
+      "Penalties",
+      "Severability clause (if necessary)",
+      "Repeal clause (if necessary)",
+      "Effective date"
+    ],
+    "requiredSectionsNote": "Rule 23(c) of the Drafting Style Manual, 'Order of Arrangement of Provisions in Bill' — stated as the suggested order, subject to the general requirement that a bill be organized in the format most useful to the reader.",
+    "enactingClause": null,
+    "source": "https://alison.legislature.state.al.us/files/pdf/eopa/guides/DraftingStyleManual.pdf"
+  },
+
+  "legislature": {
+    "chambers": ["House of Representatives", "Senate"],
+    "sessionType": "Annual regular session; four-year quadrennium",
+    "typicalConvene": "First Tuesday in February, except in the last year of a four-year term, when the session begins on the second Tuesday in January. The 2026 regular session convened January 13, 2026.",
+    "typicalAdjourn": "Limited to 30 meeting days within a period of 105 calendar days. The 2026 regular session ended April 9, 2026.",
+    "billIntroductionDeadline": null,
+    "carryover": null,
+    "source": "https://alison.legislature.state.al.us/session-information-sublanding"
+  },
+
+  "data": {
+    "officialApi": "https://gql.api.alison.legislature.state.al.us/graphql",
+    "officialApiNotes": "Live GraphQL endpoint backing the ALISON web application (responds to GET with {\"errors\":[{\"message\":\"Must provide query string.\"}]}, verified 2026-07-29). It is undocumented — Alabama publishes no API documentation, terms of use, or schema reference, so treat it as unsupported. Primary public access is the ALISON web interface at https://alison.legislature.state.al.us/.",
+    "bulkDownload": null,
+    "openStatesCoverage": "full",
+    "openStatesNotes": "Open States (Plural) lists Alabama bulk CSV archives for 10 regular sessions plus 3 special sessions, 2017-2026.",
+    "source": "https://open.pluralpolicy.com/data/session-csv/"
+  },
+
+  "citizenRoute": {
+    "canRequestDraft": null,
+    "notes": "The Legal Division of the Legislative Services Agency is the principal bill drafting office serving the Legislature. Whether it accepts drafting requests from members of the public (as opposed to legislators and committees) could not be confirmed from an official source; the practical route is to ask a legislator to request the draft. Because Alabama has no initiative, a citizen-drafted bill reaches the legislature only through a sponsoring member.",
+    "source": null
+  },
+
+  "gaps": [
+    "Alabama has no statewide initiative or veto referendum, so every signature-threshold field is null by fact, not by uncertainty.",
+    "Could not verify the Alabama enacting clause ('style of the laws') from a primary source. The Drafting Style Manual PDF references Appendix B (Sample Form for Bills) in its table of contents but the published PDF ends at Rule 24 and does not contain Appendix B; alison.legislature.state.al.us's constitution pages and lsa.alabama.gov were not retrievable (connection reset / 404 / 503) on 2026-07-29.",
+    "Could not verify from an Alabama official source whether residents have any general power to initiate a municipal or county ordinance. Recorded as null. Do not tell an organizer Alabama local initiative is available or unavailable without checking the specific municipality's enabling law.",
+    "Could not verify Alabama bill carryover between annual sessions of a quadrennium from an official source.",
+    "Could not verify Alabama bill introduction deadlines (these are set by House and Senate rules, which were not retrieved).",
+    "sos.alabama.gov returned HTTP 503/connection reset on 2026-07-29; the initiative 'none' finding rests on the University of Wisconsin Law School State Democracy Research Initiative 50-state survey rather than on the Secretary of State's own page."
+  ]
+}

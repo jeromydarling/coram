@@ -1,0 +1,84 @@
+{
+  "code": "MT",
+  "name": "Montana",
+  "asOf": "2026-07",
+
+  "initiative": {
+    "statute": "direct",
+    "constitutional": "direct",
+    "referendum": true,
+    "signatures": {
+      "statuteFormula": "5% of the qualified electors of the state at large, including at least 5% of the qualified electors in each of at least one-third (34) of the 100 legislative representative (house) districts. The 'qualified elector' base is the number of votes cast for Governor in the most recent gubernatorial election (Mont. Const. art. III, sec. 4; art. V, sec. 11(5)). The 2026-cycle numbers are calculated from the 2024 general election.",
+      "statuteCount": 30121,
+      "constitutionalFormula": "10% of the qualified electors of the state, including at least 10% of the qualified electors in each of at least two-fifths (40) of the 100 legislative representative districts (Mont. Const. art. XIV, sec. 9). Same base: votes cast for Governor in the 2024 general election.",
+      "constitutionalCount": 60241,
+      "distribution": "Legislative house districts, not counties. Statutory initiative and repeal referendum: 5% in each of at least 34 of 100 house districts. Constitutional initiative and constitutional convention call: 10% in each of at least 40 of 100 house districts. Referendum that suspends an act pending the vote: 15% (90,361 for 2026) in a majority (51) of house districts. Montana's earlier COUNTY-based distribution requirement was struck down as unconstitutional by the U.S. District Court for the District of Montana in Montana Public Interest Research Group v. Johnson, 361 F. Supp. 2d 1222 (D. Mont. 2005); the legislative-district rule is what is currently enforced and is what the Secretary of State's 2025-26 publication states.",
+      "source": "https://sosmt.gov/docs/24/ballot-issues/69573/2025-26_ballot_issues__signature_gathering"
+    },
+    "circulationDays": 365,
+    "filingDeadline": "For the November 2026 ballot: signatures may not be gathered before June 19, 2025 (one year before the county filing deadline, 13-27-243 MCA). Signed petition sheets are due to county election administrators by 5 p.m. June 19, 2026 (13-27-301(1) MCA), with earlier rolling submission deadlines added by SB 226 (2025): Oct 17 2025, Jan 16 2026, Mar 27 2026, Apr 24 2026. County election administrators must file certified sheets with the Secretary of State by 5 p.m. July 17, 2026 (third Friday of the fourth month before the election, 13-27-104 MCA). Statutory initiatives and referenda may not be submitted to the SoS until 10 days after sine die adjournment of the preceding regular legislative session (13-27-216, 13-27-217 MCA).",
+    "subjectLimits": [
+      "may not appropriate money",
+      "may not enact local or special laws",
+      "referendum may not be used on an appropriation of money",
+      "text should follow the most recent Bill Drafting Manual published by the Legislative Services Division (13-27-225 MCA)",
+      "ballot Statement of Purpose and Implication limited to 135 words (13-27-212 MCA)"
+    ],
+    "preFilingReview": "Proponent submits draft text plus ballot statements to the Secretary of State (soselections@mt.gov). SoS forwards to the Legislative Services Division, which reviews for clarity, consistency and conformity with the Bill Drafting Manual and may recommend revisions within 14 days; the proponent responds in writing accepting, rejecting, or modifying. The proponent then files final text with the SoS, which checks for unrecommended substantive changes and refers it to the Attorney General. The AG has 30 days to review legal sufficiency, review or rewrite the ballot statements, determine whether the measure would cause significant material harm to business interests, and prepare a fiscal statement (<=50 words) if the budget director prepares a fiscal note. Only after AG approval does the SoS assign a ballot number and issue the official petition form for signature gathering (13-27-214, -225, -226, -227, -233, -237 MCA).",
+    "source": "https://sosmt.gov/elections/ballot_issues/"
+  },
+
+  "localOrdinance": {
+    "citizenInitiative": true,
+    "notes": "MCA 7-5-131 reserves the powers of initiative and referendum to the electors of each local government for resolutions and ordinances within the governing body's legislative jurisdiction, excluding annual budgets, bond proceedings, and charges pledged to bond payment. Procedure is in MCA Title 13, chapter 28 (rewritten by Ch. 225, Laws of 2025): 13-28-201 (procedure), 13-28-202 (form), 13-28-204 (signatures; petition may not be circulated more than 1 year before the final filing date; only qualified electors of the local government may sign; per-signature pay prohibited), 13-28-206 (submission, certification, election). The specific signature PERCENTAGE for a local petition is not stated in 7-5-131 or 13-28-204 and could not be verified - see gaps.",
+    "source": "https://mca.legmt.gov/bills/mca/title_0130/chapter_0280/part_0020/sections_index.html"
+  },
+
+  "drafting": {
+    "manualUrl": "https://archive.legmt.gov/content/Publications/2024-bill-drafting-manual.pdf",
+    "manualName": "Montana Bill Drafting Manual, 69th Legislature (2024 edition), Legislative Services Division",
+    "requiredSections": [
+      "bill identification block (LC number, legislature, bill number, introducer)",
+      "title - 'A BILL FOR AN ACT ENTITLED: \"AN ACT ...\"' (limited to 100 words; section numbers of amended/repealed statutes excluded)",
+      "enacting clause",
+      "numbered sections (NEW SECTION. Section 1. ... for new law; 'Section X. Section YY-YY-YYY, MCA, is amended to read:' for amendments)",
+      "repealer section where applicable",
+      "codification instruction",
+      "effective date / applicability / termination sections",
+      "-END- marker"
+    ],
+    "enactingClause": "BE IT ENACTED BY THE LEGISLATURE OF THE STATE OF MONTANA:",
+    "source": "https://www.legmt.gov/education/drafting/"
+  },
+
+  "legislature": {
+    "chambers": ["House of Representatives", "Senate"],
+    "sessionType": "Biennial. A regular session is held only in odd-numbered years and is limited to 90 legislative days (Mont. Const. art. V, sec. 6). No regular session is held in even-numbered years; the next regular session convenes in 2027.",
+    "typicalConvene": "January of odd-numbered years",
+    "typicalAdjourn": "on or before the 90th legislative day, typically late April or early May",
+    "billIntroductionDeadline": null,
+    "carryover": false,
+    "source": "https://mca.legmt.gov/bills/mca/title_0000/article_0050/part_0010/section_0060/0000-0050-0010-0060.html"
+  },
+
+  "data": {
+    "officialApi": null,
+    "officialApiNotes": "Montana's public bill system is the LAWS/bills browser at https://bills.legmt.gov. A host at https://api.legmt.gov backs it, but its documentation endpoint returns HTTP 401 and the root returns a WAF challenge page, so there is no verifiable public, documented API.",
+    "bulkDownload": null,
+    "openStatesCoverage": "full",
+    "source": "https://bills.legmt.gov"
+  },
+
+  "citizenRoute": {
+    "canRequestDraft": false,
+    "notes": "The Legislative Services Division drafts bills for legislators, committees and agencies, not for members of the public. The public-facing drafting route is the ballot issue process: a citizen proponent submits proposed initiative text to the Secretary of State, which routes it to the Legislative Services Division for a required clarity/conformity review against the Bill Drafting Manual and returns recommended revisions to the proponent (13-27-214, 13-27-225 MCA). Otherwise a citizen must find a legislator to request a bill draft.",
+    "source": "https://sosmt.gov/docs/24/ballot-issues/69573/2025-26_ballot_issues__signature_gathering"
+  },
+
+  "gaps": [
+    "Signature percentage for a LOCAL (city/county) initiative petition not verified. MCA 7-5-131 points to Title 13, ch. 28, but neither 7-5-131 nor 13-28-204 states a percentage, and Title 13 ch. 28 was rewritten by Ch. 225, Laws of 2025. Confirm with the local government's clerk or MCA 13-28-201/13-28-206 full text before relying on any number.",
+    "Bill introduction deadlines for the 2027 Montana session (general bill transmittal / revenue bill deadlines) were not verified against an official 2027 session calendar; the 2025-26 calendar published by the Legislature should be checked once the 2027 calendar is issued.",
+    "The Legislative Services Division's most recent published Bill Drafting Manual is the 2024 edition (for the 69th/2025 Legislature). A 2026 edition for the 70th (2027) Legislature was not found; https://archive.legmt.gov/content/Publications/2026-bill-drafting-manual.pdf returns 404. The 2024 PDF was verified to resolve (HTTP 200, ~1.3 MB).",
+    "The enacting clause recorded here is the one prescribed for LEGISLATIVE bills (verified in the Bill Drafting Manual, sec. 4-6). Whether a citizen-initiated statutory measure uses a different enacting clause was not verified."
+  ]
+}
