@@ -41,6 +41,7 @@ const PRIVATE_PATHS = [
   '/api/petitio/pathways',
   '/api/petitio/pathways/CA',
   '/api/petitio/bills',
+  '/api/petitio/sponsors/US',
 ];
 
 const env = {

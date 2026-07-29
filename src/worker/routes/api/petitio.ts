@@ -55,6 +55,7 @@ import {
   type Section,
   type SectionKind,
 } from '../../lib/bill';
+import { sponsorOptions } from '../../lib/sponsors';
 import { PATHWAYS, pathwayFor, routesFor, signatureTarget } from '../../../shared/legislative';
 
 export const petitio = new Hono<{ Bindings: Env; Variables: Vars }>();
@@ -579,5 +580,76 @@ petitio.post('/bills/:id/outreach', async (c) => {
   } catch (error) {
     logFailure('petitio.outreach.create', rid, error);
     return c.json(err('Could not log that.', ERROR.INTERNAL, rid, detailFor(c.env, error)), 500);
+  }
+});
+
+// ---------------------------------------------------------------------------
+// Sponsors — who could carry this
+// ---------------------------------------------------------------------------
+
+/**
+ * Committees and rosters for the bill's jurisdiction, chair first.
+ *
+ * Not gated on the draft being finished. The group most likely to want this is
+ * the one that already knows which office to approach, and making them complete
+ * a severability clause first would be the gating this module exists without.
+ *
+ * `limitations` is part of the payload rather than a UI concern. The whole risk
+ * of a feature called sponsor matching is that a list gets read as a
+ * recommendation, and the response says in words that it is not one.
+ */
+petitio.get('/bills/:id/sponsors', async (c) => {
+  const rid = c.get('requestId');
+  const session = c.get('session')!;
+  const id = c.req.param('id');
+
+  try {
+    const result = await withTenant(db(c), session, async (tx) => {
+      const [bill] = await tx`
+        SELECT jurisdiction, route FROM public.bills WHERE id = ${id}::uuid
+      `;
+      if (!bill) return null;
+
+      /*
+       * A bill's sponsors are in its own jurisdiction's legislature. There is
+       * deliberately no federal branch here: `bill_route` has no 'federal'
+       * value, because the field guide has no US record and a draft cannot yet
+       * be created against Congress. An earlier version of this line mapped a
+       * non-existent route to 'US', which looked like federal support and was
+       * nothing of the kind.
+       *
+       * Federal rosters *are* reachable — GET /sponsors/US serves them, and the
+       * congress.* sources are ingested and current. What is missing is federal
+       * drafting: an enacting clause, a chamber, and bill-numbering conventions
+       * for Congress in the pathway data. Until that exists, this route answers
+       * for the fifty states and DC only.
+       */
+      return sponsorOptions(tx, bill.jurisdiction as string);
+    });
+
+    if (!result) return c.json(err('No such bill.', ERROR.NOT_FOUND, rid), 404);
+    return c.json(ok(result));
+  } catch (error) {
+    logFailure('petitio.sponsors', rid, error);
+    return c.json(err('Could not load possible sponsors.', ERROR.INTERNAL, rid, detailFor(c.env, error)), 500);
+  }
+});
+
+/** The same, for a jurisdiction rather than a bill — used before a draft exists. */
+petitio.get('/sponsors/:code', async (c) => {
+  const rid = c.get('requestId');
+  const session = c.get('session')!;
+  const code = c.req.param('code').toUpperCase();
+
+  if (code !== 'US' && !JURISDICTIONS.has(code)) {
+    return c.json(err('Pick one of the fifty states, DC, or US for Congress.', ERROR.VALIDATION, rid), 400);
+  }
+
+  try {
+    const result = await withTenant(db(c), session, (tx) => sponsorOptions(tx, code));
+    return c.json(ok(result));
+  } catch (error) {
+    logFailure('petitio.sponsors.jurisdiction', rid, error);
+    return c.json(err('Could not load possible sponsors.', ERROR.INTERNAL, rid, detailFor(c.env, error)), 500);
   }
 });

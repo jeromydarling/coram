@@ -37,7 +37,25 @@
  * held about them, or would the workspace have lost a piece of its own
  * configuration? The first is personal data; the second is not.
  */
-export type PiiClass = 'none' | 'pseudonym' | 'contact' | 'protected';
+export type PiiClass = 'none' | 'public_record' | 'pseudonym' | 'contact' | 'protected';
+
+/**
+ * Whose data a table holds, which until now had one possible answer.
+ *
+ *   tenant     — a workspace's own rows, scoped by tenant_id. Every table in
+ *                the product was this until reference data arrived.
+ *   reference  — public data identical for every workspace: who currently holds
+ *                which public office, and which committees they sit on. No
+ *                tenant column, no RLS, and nothing for the nightly sweep to
+ *                age out because the ingest replaces it wholesale.
+ *
+ * The distinction is worth a type rather than a convention. A reference table
+ * with a tenant column would invite per-workspace edits to published facts; a
+ * tenant table without one would be a cross-workspace leak. Getting those
+ * backwards are the two worst mistakes available here, so the schema says which
+ * it is and the checks below hold it to that.
+ */
+export type DataScope = 'tenant' | 'reference';
 
 /**
  * What the nightly sweep does when a row ages out.
@@ -61,8 +79,14 @@ export interface RetentionRule {
   pii: PiiClass;
   /** Column the sweep measures age against. */
   timestampColumn: string;
-  /** Tenant scoping column. Every table has one (§4.2). */
-  tenantColumn: string;
+  /**
+   * Tenant scoping column (§4.2). Required for `scope: 'tenant'`, which is
+   * every table that holds a workspace's own data, and absent for reference
+   * data — which is shared, public, and has no owner to scope it to.
+   */
+  tenantColumn?: string;
+  /** Defaults to 'tenant'. See DataScope. */
+  scope?: DataScope;
   purge: PurgeStrategy;
   /** Columns nulled when `purge` is 'anonymize'. Must be empty otherwise. */
   anonymizeColumns?: string[];
@@ -100,11 +124,44 @@ export function registerTable(rule: RetentionRule): RetentionRule {
   }
 
   const identifying = rule.pii === 'contact' || rule.pii === 'protected';
+  const scope = rule.scope ?? 'tenant';
 
-  if (rule.retentionDays === null && rule.pii !== 'none') {
+  /*
+   * The two mistakes worth failing the deploy over.
+   *
+   * A tenant table with no tenant column cannot be swept, cannot be burned, and
+   * cannot be isolated — it is a cross-workspace leak waiting for its first
+   * query. A reference table *with* one implies a workspace may hold its own
+   * version of a published fact, which is exactly what putting this data
+   * outside Postgres-per-tenant was meant to prevent.
+   */
+  if (scope === 'tenant' && !rule.tenantColumn) {
+    throw new RetentionError(
+      `Table "${rule.table}" is tenant-scoped but names no tenantColumn. Every workspace table ` +
+        `has one (§4.2); if this is shared public data, declare scope: 'reference'.`,
+    );
+  }
+  if (scope === 'reference') {
+    if (rule.tenantColumn) {
+      throw new RetentionError(
+        `Table "${rule.table}" is reference data but names a tenantColumn. Reference rows are ` +
+          `identical for every workspace and must not be scoped to one.`,
+      );
+    }
+    if (identifying) {
+      throw new RetentionError(
+        `Table "${rule.table}" is reference data but declares pii: '${rule.pii}'. Reference data ` +
+          `may hold public-office records, never anyone's contact details — do not ingest the ` +
+          `email and phone columns just because the source publishes them.`,
+      );
+    }
+  }
+
+  const mayLiveForever = rule.pii === 'none' || rule.pii === 'public_record';
+  if (rule.retentionDays === null && !mayLiveForever) {
     throw new RetentionError(
       `Table "${rule.table}" holds ${rule.pii} data and must declare retentionDays. ` +
-        `Indefinite retention is only available to pii: 'none' tables.`,
+        `Indefinite retention is only available to pii: 'none' and 'public_record' tables.`,
     );
   }
   if (rule.retentionDays !== null && rule.retentionDays <= 0) {
