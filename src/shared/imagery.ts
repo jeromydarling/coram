@@ -253,9 +253,17 @@ export const IMAGES: ImageSpec[] = [
   },
   {
     id: 'coffee-urn',
+    /*
+     * A low camera locked to the table. "Framed below the shoulders" describes
+     * what should be absent, and the model simply widened the shot until two
+     * faces were in it. Describing where the camera sits — table height, frame
+     * filled by the tabletop — constrains the crop instead of asking for a
+     * subtraction.
+     */
     subject:
-      'a food and drink table mid-rush, hands reaching in from several directions, a steel urn, ' +
-      'bright stacked cups, trays of fruit and bread, steam in a shaft of sunlight',
+      'a low camera at table height during a food and drink rush, the frame filled edge to edge ' +
+      'by the tabletop, hands and forearms reaching in from every side, a steel urn, bright ' +
+      'stacked cups in pink and green, trays of fruit and bread, steam in a shaft of sunlight',
     faceClause: 'framed below the shoulders, no faces in frame',
     accent: true,
     width: 1600,
