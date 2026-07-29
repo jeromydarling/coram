@@ -96,7 +96,13 @@ function main(): void {
           `${table.file}. The nightly sweep would fail on this table every night.`,
       );
     }
-    if (!table.columns.has(rule.tenantColumn)) {
+    /*
+     * Reference tables have no tenant column by design — they hold published
+     * facts identical for every workspace. registerTable() already refuses a
+     * reference table that names one, and refuses a tenant table that does not,
+     * so the two scopes cannot be confused at this point.
+     */
+    if (rule.tenantColumn && !table.columns.has(rule.tenantColumn)) {
       problems.push(
         `${name} declares tenantColumn "${rule.tenantColumn}", which does not exist in ${table.file}.`,
       );
