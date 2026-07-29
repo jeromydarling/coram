@@ -1,6 +1,13 @@
 import { describe, expect, it } from 'vitest';
 
-import { assertRedacted, redact, RedactionError, reinsert, residualRisk } from './redact';
+import {
+  assertRedacted,
+  redact,
+  RedactionError,
+  reinsert,
+  residualRisk,
+  scrubInvented,
+} from './redact';
 
 describe('redact — known values', () => {
   it('replaces a name from the workspace roster', () => {
@@ -165,5 +172,60 @@ describe('placeholder numbering', () => {
 
     expect(text).toBe('Mail [EMAIL_1] now.');
     expect(map['[EMAIL_1]']).toBe('ada@example.org');
+  });
+});
+
+describe('scrubInvented', () => {
+  /*
+   * The case that put this here. A live Scriba draft with nothing redacted came
+   * back containing "[PERSON_1] will lead the discussion." — a token the model
+   * made up, that reinsertion has nothing to replace, that the organizer would
+   * have read as a bug.
+   */
+  it('turns a placeholder the model invented into an obvious blank', () => {
+    const { text, invented } = scrubInvented('[PERSON_1] will lead the discussion.', {});
+
+    expect(text).toBe('[name] will lead the discussion.');
+    expect(invented).toBe(1);
+  });
+
+  it('leaves a real placeholder alone so reinsert can do its job', () => {
+    const map = { '[PERSON_1]': 'Ada' };
+    const { text, invented } = scrubInvented('[PERSON_1] is bringing the lease.', map);
+
+    expect(invented).toBe(0);
+    expect(reinsert(text, map)).toBe('Ada is bringing the lease.');
+  });
+
+  it('handles a mix, keeping the mapped one and blanking the rest', () => {
+    const { text, invented } = scrubInvented(
+      'Ask [PERSON_1] to email [EMAIL_2] or call [PHONE_9].',
+      { '[PERSON_1]': 'Ada' },
+    );
+
+    expect(text).toBe('Ask [PERSON_1] to email [email address] or call [phone number].');
+    expect(invented).toBe(2);
+  });
+
+  it('counts every occurrence rather than every distinct token', () => {
+    const { invented } = scrubInvented('[PERSON_1] and [PERSON_1] again.', {});
+    expect(invented).toBe(2);
+  });
+
+  it('leaves ordinary square brackets untouched', () => {
+    const prose = 'The notice [sic] was posted on [the] door.';
+    expect(scrubInvented(prose, {})).toEqual({ text: prose, invented: 0 });
+  });
+
+  /*
+   * The output guard must never be able to reintroduce something personal —
+   * it only ever replaces a token with a fixed generic string.
+   */
+  it('never emits anything that would fail the redaction check', () => {
+    const { text } = scrubInvented(
+      '[PERSON_1] [EMAIL_1] [PHONE_1] [POSTCODE_1] [GOV_ID_1] [CARD_1]',
+      {},
+    );
+    expect(() => assertRedacted(text)).not.toThrow();
   });
 });

@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
+import { ABUSE_CONTACT, PROHIBITED } from '../../shared/policy';
 import type { Env } from '../env';
 import { marketing } from './marketing';
 
@@ -21,7 +22,7 @@ function fakeEnv(seed: Record<string, string> = {}): Env {
 const get = (path: string, env: Env) => marketing.request(path, {}, env);
 
 describe('marketing pages', () => {
-  it.each(['/', '/pricing', '/why', '/trust'])('renders %s', async (path) => {
+  it.each(['/', '/pricing', '/why', '/trust', '/acceptable-use'])('renders %s', async (path) => {
     const res = await get(path, fakeEnv());
     expect(res.status).toBe(200);
     const html = await res.text();
@@ -39,7 +40,7 @@ describe('marketing pages', () => {
    * that costs exactly the trust §7 exists to build.
    */
   it('never claims to be open source anywhere on the site', async () => {
-    for (const path of ['/', '/pricing', '/why', '/trust']) {
+    for (const path of ['/', '/pricing', '/why', '/trust', '/acceptable-use']) {
       const html = await (await get(path, fakeEnv())).text();
 
       // The phrase may appear, but only inside a denial — /trust says "we do
@@ -61,7 +62,7 @@ describe('marketing pages', () => {
    * object-fit on the hero and the width cap on the /why portrait, with no
    * error in the console and nothing visibly wrong until an image was real.
    */
-  it.each(['/', '/pricing', '/why', '/trust'])('emits unescaped CSS on %s', async (path) => {
+  it.each(['/', '/pricing', '/why', '/trust', '/acceptable-use'])('emits unescaped CSS on %s', async (path) => {
     const html = await (await get(path, fakeEnv())).text();
     const styles = [...html.matchAll(/<style[^>]*>([\s\S]*?)<\/style>/g)].map((m) => m[1]);
 
@@ -167,5 +168,56 @@ describe('machine-readable endpoints', () => {
     const expires = body.match(/^Expires: (.+)$/m)?.[1];
     expect(expires).toBeTruthy();
     expect(Date.parse(expires!)).toBeGreaterThan(Date.now());
+  });
+});
+
+describe('/acceptable-use', () => {
+  /*
+   * The assertion that carries the policy's intent. If a future edit tightens
+   * the rules into a ban on militancy, this is what should stop it — the page
+   * has to keep saying, in as many words, that unlawful civil disobedience is
+   * protected here.
+   */
+  it('names unlawful civil disobedience as protected', async () => {
+    const html = await (await get('/acceptable-use', fakeEnv())).text();
+    expect(html).toMatch(/civil disobedience/i);
+    expect(html).toMatch(/unlawful/i);
+    expect(html).toMatch(/bail fund/i);
+  });
+
+  it('puts what is protected before what is prohibited', async () => {
+    const html = await (await get('/acceptable-use', fakeEnv())).text();
+    expect(html.indexOf('What is welcome here')).toBeLessThan(html.indexOf('What is not'));
+  });
+
+  it('renders every rule from the policy module rather than a copy of it', async () => {
+    const html = await (await get('/acceptable-use', fakeEnv())).text();
+    for (const rule of PROHIBITED) {
+      // The page escapes an em dash and apostrophes; compare on the opening
+      // clause, which is plain ASCII in every rule.
+      expect(html).toContain(rule.text.split(/[—’']/)[0].trim());
+    }
+  });
+
+  it('states no rule about a cause or a politics', async () => {
+    const html = await (await get('/acceptable-use', fakeEnv())).text();
+    // "extremist", "radical", "militant" and friends are how this kind of page
+    // usually goes wrong.
+    for (const rule of PROHIBITED) {
+      expect(rule.text).not.toMatch(/\b(extremis|radical|militant)/i);
+    }
+    expect(html).toContain('about conduct');
+  });
+
+  it('is reachable from every page, not just by URL', async () => {
+    for (const path of ['/', '/pricing', '/why', '/trust']) {
+      const html = await (await get(path, fakeEnv())).text();
+      expect(html).toContain('href="/acceptable-use"');
+    }
+  });
+
+  it('gives a contact that is a person, not a form', async () => {
+    const html = await (await get('/acceptable-use', fakeEnv())).text();
+    expect(html).toContain(`mailto:${ABUSE_CONTACT}`);
   });
 });

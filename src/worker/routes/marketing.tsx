@@ -30,6 +30,7 @@
 
 import { Hono } from 'hono';
 
+import { ABUSE_CONTACT, ENFORCEMENT, PROHIBITED, PROTECTED } from '../../shared/policy';
 import type { Env, Vars } from '../env';
 import { Picture } from '../lib/picture';
 import { anyOverdue, describe, loadArtifacts, staleness } from '../lib/trust';
@@ -318,7 +319,7 @@ function Page(props: {
           <p>
             <a href="/canary.txt">Warrant canary</a> ·{' '}
             <a href="/.well-known/security.txt">security.txt</a> ·{' '}
-            <a href="/trust">Trust</a>
+            <a href="/trust">Trust</a> · <a href="/acceptable-use">Acceptable use</a>
           </p>
           <p class="small">Coram is closed source. We publish audits instead of code.</p>
         </footer>
@@ -983,6 +984,93 @@ marketing.get('/trust', async (c) => {
     </Page>,
   );
 });
+
+// ---------------------------------------------------------------------------
+// /acceptable-use
+// ---------------------------------------------------------------------------
+
+/**
+ * The acceptable use policy, rendered from src/shared/policy.ts.
+ *
+ * Rendered from the module rather than written out here so that this page and
+ * the guard that refuses to draft the material cannot drift apart. A published
+ * rule the product does not enforce is a lie with a URL; an enforced rule that
+ * is not published is worse.
+ *
+ * The order on the page is deliberate. What is protected comes *first*. Anyone
+ * arriving here has usually been told that organizing like theirs is not
+ * welcome on platforms like this, and the answer to that should be the first
+ * thing they read.
+ */
+marketing.get('/acceptable-use', (c) =>
+  c.html(
+    <Page
+      title="Acceptable use — Coram"
+      description="What Coram supports, and the conduct it does not."
+    >
+      <main class="col">
+        <h1>Acceptable use</h1>
+        <p class="lead">
+          Coram is built for organizing that makes someone powerful uncomfortable. This page
+          exists so you can tell, before you trust us with your list, exactly where the line is.
+        </p>
+
+        <h2>What is welcome here</h2>
+        <p>
+          All of it, including the parts that get people arrested. Civil disobedience is unlawful
+          by design. That is not a violation of this policy and never will be.
+        </p>
+        <ul>
+          {PROTECTED.map((item) => (
+            <li>{item}</li>
+          ))}
+        </ul>
+
+        <h2>What is not</h2>
+        <p>
+          These are about conduct — hurting people, arming people, targeting people. None of them
+          is about a cause, a tactic, or a politics, and we will not read them that way.
+        </p>
+        <ul>
+          {PROHIBITED.map((rule) => (
+            <li>{rule.text}</li>
+          ))}
+        </ul>
+
+        <h2>Why it is written like this</h2>
+        <p>
+          Because &ldquo;no violent activism&rdquo; is not a policy. In practice that phrase gets
+          used against tenant unions, bail funds, and strike funds by people who would like them
+          shut down. A rule written in those words keeps nobody safe — it just hands a lever to
+          whoever files the most complaints. So the rules above name conduct, and the list above
+          them names what is protected, and both are public so that a bad-faith report has an
+          answer waiting for it.
+        </p>
+
+        <h2>How this is enforced</h2>
+        <ul>
+          {ENFORCEMENT.map((item) => (
+            <li>{item}</li>
+          ))}
+        </ul>
+        <p>
+          Coram&rsquo;s writing assistant also refuses to draft the material above, before any
+          model sees the request. That is a small thing, and it is the part we can point at.
+        </p>
+
+        <h2>Reporting</h2>
+        <p>
+          <a href={`mailto:${ABUSE_CONTACT}`}>{ABUSE_CONTACT}</a>. Tell us what you saw and where.
+          A person reads it.
+        </p>
+        <p class="muted">
+          If we act against your workspace and you think we got it wrong, reply to us. We would
+          rather be argued with than be quietly wrong.
+        </p>
+      </main>
+    </Page>,
+  ),
+);
 
 // ---------------------------------------------------------------------------
 // Machine-readable

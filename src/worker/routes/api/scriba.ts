@@ -28,7 +28,7 @@ import { record } from '../../lib/audit';
 import { requireWorkspace } from '../../lib/auth';
 import { ERROR, err, ok } from '../../lib/http';
 import { dispatch, explain, type Message } from '../../lib/inference';
-import { redact, residualRisk, type KnownValues } from '../../lib/redact';
+import { redact, residualRisk, scrubInvented, type KnownValues } from '../../lib/redact';
 import {withTenant, type Tx} from '../../lib/rls';
 import { db } from '../../lib/db';
 
@@ -89,32 +89,54 @@ scriba.post('/draft', async (c) => {
   // organizes with does.
   const known = await withTenant(sql, session, (tx) => rosterFor(tx));
 
+  // Step 3, for the user's text first — what came back decides what the system
+  // prompt is allowed to say.
+  const user = redact(input.intent, known);
+
+  const STYLE =
+    'You write short, plain messages for a grassroots organizing group. ' +
+    'Active voice, short sentences, no exclamation points, no emoji. ' +
+    'Do not use the words empower, amplify, disrupt, or revolutionize. ';
+
+  /*
+   * The placeholder instruction is only shown when there are placeholders.
+   *
+   * Describing the syntax to a model that has not been given any reads as
+   * permission to use it: the first live draft had nothing redacted and Llama
+   * still wrote "[PERSON_1] will lead the discussion." Say nothing about the
+   * convention when it is not in play, and name no one when no one was removed.
+   */
   const prompt: Message[] = [
     {
       role: 'system',
       content:
-        'You write short, plain messages for a grassroots organizing group. ' +
-        'Active voice, short sentences, no exclamation points, no emoji. ' +
-        'Do not use the words empower, amplify, disrupt, or revolutionize. ' +
-        'Placeholders like [PERSON_1] are real names that were removed; keep them exactly as ' +
-        'written and do not invent others.',
+        STYLE +
+        (Object.keys(user.map).length
+          ? 'Square-bracketed placeholders such as [PERSON_1] are real details that were ' +
+            'removed. Keep each one exactly as written. Never write a placeholder that is ' +
+            'not already in the text you were given.'
+          : 'Do not invent names, and do not write square-bracketed placeholders.'),
     },
-    { role: 'user', content: input.intent },
+    { role: 'user', content: user.text },
   ];
 
-  // Step 3. Every message, including the system prompt.
-  const redacted = prompt.map((m) => ({ role: m.role, ...redact(m.content, known) }));
-  const map = Object.assign({}, ...redacted.map((r) => r.map));
+  // The system prompt is redacted too. It is static today, but it is the one
+  // people forget when it stops being static.
+  const system = redact(prompt[0].content, known);
+  const map = { ...user.map, ...system.map };
 
   // Steps 4 and 5.
-  const result = await dispatch(
-    c.env,
-    redacted.map((r) => ({ role: r.role, content: r.text })),
-  );
+  const result = await dispatch(c.env, [
+    { role: 'system', content: system.text },
+    { role: 'user', content: user.text },
+  ]);
 
   if (!result.ok) {
     return c.json(err(explain(result.kind), ERROR.INTERNAL, rid), 502);
   }
+
+  // Step 5a. Whatever the prompt asked for, the output is checked.
+  const draft = scrubInvented(result.content, map);
 
   await withTenant(sql, session, (tx) =>
     record(tx, { action: 'record.read', recordType: 'scriba_draft' }),
@@ -124,12 +146,14 @@ scriba.post('/draft', async (c) => {
   return c.json(
     ok(
       {
-        draft: result.content,
+        draft: draft.text,
         redactions: map,
-        removed: redacted.reduce(
-          (total, r) => total + Object.values(r.removed).reduce((a, b) => a + b, 0),
+        removed: [user.removed, system.removed].reduce(
+          (total, r) => total + Object.values(r).reduce((a, b) => a + b, 0),
           0,
         ),
+        // Blanks the model made up, which the organizer has to fill in.
+        invented: draft.invented,
         // What redaction could not verify. Shown to the user before they send.
         unverified: residualRisk(input.intent),
       },
@@ -207,7 +231,14 @@ scriba.post('/summarise', async (c) => {
 
   if (!result.ok) return c.json(err(explain(result.kind), ERROR.INTERNAL, rid), 502);
 
-  return c.json(ok({ summary: result.content, redactions: map }, { notice: NOTICE }));
+  const summary = scrubInvented(result.content, map);
+
+  return c.json(
+    ok(
+      { summary: summary.text, redactions: map, invented: summary.invented },
+      { notice: NOTICE },
+    ),
+  );
 });
 
 // ---------------------------------------------------------------------------
@@ -283,9 +314,11 @@ scriba.post('/minutes', async (c) => {
 
   if (!result.ok) return c.json(err(explain(result.kind), ERROR.INTERNAL, rid), 502);
 
+  const minutes = scrubInvented(result.content, map);
+
   return c.json(
     ok(
-      { minutes: result.content, redactions: map },
+      { minutes: minutes.text, redactions: map, invented: minutes.invented },
       {
         notice: NOTICE,
         message: 'A draft. Nothing is minuted until someone adopts it.',

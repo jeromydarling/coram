@@ -204,6 +204,45 @@ export function reinsert(text: string, map: RedactionMap): string {
   return out;
 }
 
+/**
+ * Placeholders in a model's *output* that were never in its input.
+ *
+ * A model told "keep [PERSON_1] exactly as written" sometimes reads that as an
+ * invitation and writes one of its own. The first live Scriba draft did exactly
+ * that: nothing had been redacted, the map was empty, and Llama still produced
+ * "[PERSON_1] will lead the discussion." Reinsertion has nothing to substitute,
+ * so the organizer would have read a system token in their draft and wondered
+ * what broke.
+ *
+ * The instruction is also tightened in the prompt, but a prompt is a request
+ * and this is the guarantee. Unmapped placeholders become `[name]`, `[email]`
+ * and so on — lower case, obviously a blank a human fills in, and impossible to
+ * mistake for a redaction that failed to come back.
+ */
+const PLACEHOLDER = /\[(PERSON|EMAIL|PHONE|POSTCODE|GOV_ID|CARD)_\d+\]/g;
+
+const BLANK: Record<PiiKind, string> = {
+  PERSON: '[name]',
+  EMAIL: '[email address]',
+  PHONE: '[phone number]',
+  POSTCODE: '[postcode]',
+  GOV_ID: '[identifier]',
+  CARD: '[card number]',
+};
+
+export function scrubInvented(
+  text: string,
+  map: RedactionMap,
+): { text: string; invented: number } {
+  let invented = 0;
+  const out = text.replace(PLACEHOLDER, (token, kind: PiiKind) => {
+    if (token in map) return token;
+    invented += 1;
+    return BLANK[kind];
+  });
+  return { text: out, invented };
+}
+
 export class RedactionError extends Error {}
 
 /**
