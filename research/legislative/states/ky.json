@@ -1,0 +1,84 @@
+{
+  "code": "KY",
+  "name": "Kentucky",
+  "asOf": "2026-07",
+
+  "initiative": {
+    "statute": "none",
+    "constitutional": "none",
+    "referendum": true,
+    "signatures": {
+      "statuteFormula": null,
+      "statuteCount": null,
+      "constitutionalFormula": null,
+      "constitutionalCount": null,
+      "referendumFormula": "Five percent of the legal voters. Ky. Const. sec. 171: 'The whole number of votes cast for the candidates for Governor at the regular election, last preceding the filing of any petition, shall be the basis upon which the legal voters necessary to sign such petition shall be counted.' The last preceding gubernatorial election is November 7, 2023.",
+      "referendumCount": null,
+      "distribution": null,
+      "source": "https://apps.legislature.ky.gov/Law/Constitution/Constitution/ViewConstitution?rsn=198"
+    },
+    "circulationDays": null,
+    "filingDeadline": "A sec. 171 referendum petition 'shall be filed with the Secretary of State not more than four months after the final adjournment of the Legislative Assembly which passed the bill on which the referendum is demanded.'",
+    "subjectLimits": [
+      "Kentucky has NO citizen initiative power of any kind — neither initiated statutes nor initiated constitutional amendments.",
+      "The only citizen referendum power in the Kentucky Constitution is Section 171, and it is extremely narrow: it reaches only a law 'classifying property and providing a lower rate of taxation on personal property, tangible or intangible, than upon real estate.' Section 171 itself says the referendum power 'is hereby declared to exist to apply only to this section.'",
+      "The referendum may be demanded against one or more items, sections or parts of such an act; filing against part of an act does not delay the rest from becoming operative.",
+      "The Governor's veto power does not extend to measures referred to the people under Section 171."
+    ],
+    "preFilingReview": null,
+    "process": "No initiative. Statewide measures normally reach the ballot only as legislatively referred constitutional amendments (three-fifths of all members elected to each house, no more than four amendments per session). The Section 171 referendum is a veto referendum of essentially theoretical scope: it applies only to property-classification tax acts, and Section 171 provides that 'The General Assembly enacting the bill shall provide a way by which the act shall be submitted to the people' — i.e. the implementing procedure is supplied ad hoc by the act itself, not by a standing petition statute. Citizen-drafted legislation therefore reaches the Kentucky General Assembly only through a legislator willing to sponsor it.",
+    "source": "https://apps.legislature.ky.gov/Law/Constitution/Constitution/ViewConstitution?rsn=198"
+  },
+
+  "localOrdinance": {
+    "citizenInitiative": false,
+    "notes": "Kentucky has no general local ordinance initiative. Petition-triggered local votes exist only where a specific statute creates one — for example local option (wet/dry) alcohol elections and petitions to change a city's form of government. This entry was not confirmed against a Kentucky statute or constitutional section; see gaps.",
+    "source": "https://ballotpedia.org/Laws_governing_local_ballot_measures_in_Kentucky"
+  },
+
+  "drafting": {
+    "manualUrl": "https://legislature.ky.gov/LRC/Publications/Informational%20Bulletins/IB117.pdf",
+    "manualName": "Bill Drafting Manual, Kentucky General Assembly — Legislative Research Commission Informational Bulletin No. 117 (17th edition, revised November 2023)",
+    "requiredSections": [
+      "title, in the form 'AN ACT relating to ______.'",
+      "preamble (optional; WHEREAS clauses setting out the reasons for the legislation)",
+      "enacting clause",
+      "numbered SECTIONs, using the LRC outline hierarchy: (1) subsection, (a) paragraph, 1. subparagraph, a. subdivision, i. subpart",
+      "effective date / emergency clause where applicable"
+    ],
+    "enactingClause": "Be it enacted by the General Assembly of the Commonwealth of Kentucky.",
+    "source": "https://legislature.ky.gov/LRC/Publications/Informational%20Bulletins/IB117.pdf"
+  },
+
+  "legislature": {
+    "chambers": ["House of Representatives", "Senate"],
+    "sessionType": "Annual regular sessions. The constitution limits sessions to 30 legislative days in odd-numbered years and 60 legislative days in even-numbered years; a legislative day is a calendar day other than a Sunday, a legal holiday, or a day on which neither chamber meets.",
+    "typicalConvene": "first Tuesday after the first Monday in January",
+    "typicalAdjourn": "Even-numbered years: the General Assembly adjourns for the 10-day veto recess in late March/early April, reconvenes to consider vetoes, and adjourns sine die no later than April 15. Odd-numbered years: reconvenes for about 2 legislative days after the veto recess and adjourns before March 30.",
+    "billIntroductionDeadline": "Even-year sessions: last day to file a bill is usually in early March, with bill requests due 3 legislative days earlier. Odd-year sessions: last day to file is in mid-February, with requests due 3 legislative days earlier.",
+    "carryover": null,
+    "source": "https://legislature.ky.gov/LRC/Publications/Documents/Legislative%20Handbook.pdf"
+  },
+
+  "data": {
+    "officialApi": null,
+    "officialApiNotes": "No public API and no advertised bulk download. Per-session bill records are published as HTML under https://apps.legislature.ky.gov/record/<session>/record.html (e.g. .../record/26rs/record.html for the 2026 Regular Session, verified 200 on 2026-07-29). Directory listings such as /record/26rs/ return 403.",
+    "bulkDownload": null,
+    "openStatesCoverage": "full",
+    "source": "https://open.pluralpolicy.com/data/session-csv/"
+  },
+
+  "citizenRoute": {
+    "canRequestDraft": false,
+    "notes": "The Bill Drafting Manual states that LRC staff are 'available on an impartial, nonpartisan, confidential basis to draft bills upon the request of legislators or legislative committees.' Drafting requests are routed through the LRC Director and assigned to committee staff, and 'By law, all drafting requests from legislators are treated with the strictest confidence and are not discussed outside the immediate staff.' A member of the public must find a legislator to sponsor and request the draft.",
+    "source": "https://legislature.ky.gov/LRC/Publications/Informational%20Bulletins/IB117.pdf"
+  },
+
+  "gaps": [
+    "referendumCount is null. Kentucky publishes no official signature threshold for a Section 171 referendum. Section 171 sets the base as the whole number of votes cast for candidates for Governor at the last preceding regular election (November 7, 2023), but neither the Secretary of State nor the State Board of Elections publishes a derived 5% figure, and no implementing petition statute or petition form exists — Section 171 leaves the submission mechanism to the enacting act itself. Any number computed from raw 2023 turnout would be an unofficial estimate and is deliberately omitted.",
+    "Whether bills carry over between the odd-year and even-year regular sessions could not be confirmed from the LRC Legislative Handbook or the Bill Drafting Manual; neither addresses carryover. 'carryover' is therefore null rather than a guess.",
+    "The local-ordinance entry rests on Ballotpedia, not on a Kentucky statute or constitutional section. Kentucky-specific statutory citations for local option elections and city form-of-government petitions were not verified in this pass, so treat the local finding as provisional.",
+    "The Section 171 four-month filing window and the 5% figure are quoted verbatim from the constitutional text on the LRC site; no administrative guidance, petition form, or Secretary of State procedure implementing them was found.",
+    "Schema note: 'referendumFormula'/'referendumCount' and a 'process' string were added inside the initiative object so that veto-referendum figures are never mistaken for initiative figures."
+  ]
+}

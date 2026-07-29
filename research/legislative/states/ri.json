@@ -1,0 +1,70 @@
+{
+  "code": "RI",
+  "name": "Rhode Island",
+  "asOf": "2026-07",
+
+  "initiative": {
+    "statute": "none",
+    "constitutional": "none",
+    "referendum": false,
+    "signatures": {
+      "statuteFormula": "Not applicable. Rhode Island has no statewide citizen initiative for statutes; there is no signature threshold to report.",
+      "statuteCount": null,
+      "constitutionalFormula": "Not applicable. Rhode Island has no statewide citizen initiative for constitutional amendments. Under R.I. Const. art. XIV, sec. 1 the General Assembly may propose amendments by a roll call vote of a majority of the members elected to each house; the amendment is published as the General Assembly directs and submitted to the electors at the next general election, becoming part of the Constitution if approved by a majority voting on it. Art. XIV, sec. 2 provides the only other path: the General Assembly may, by majority vote of each house, put the question 'Shall there be a convention to amend or revise the Constitution?' to the voters, and the Secretary of State must submit that question at least once every ten years if the General Assembly has not.",
+      "constitutionalCount": null,
+      "distribution": null,
+      "source": "https://rilegislature.gov/riconstitution/Constitution/C14.aspx"
+    },
+    "circulationDays": null,
+    "filingDeadline": null,
+    "subjectLimits": [],
+    "preFilingReview": null,
+    "source": "https://rilegislature.gov/riconstitution/Constitution/C14.aspx"
+  },
+
+  "localOrdinance": {
+    "citizenInitiative": null,
+    "notes": "There is no general state-law right for residents to place an ordinance on a city or town ballot. What the Rhode Island Constitution does give organizers is a charter route: under art. XIII, sec. 6, a petition for the adoption of a charter signed by 15% of the qualified electors of a city - or, in a town, 15% but not fewer than 100 of those qualified to vote on a proposition to impose a tax or spend money - is filed with the municipal legislative body, referred within 10 days to the canvassing authority for a sufficiency determination, and then within 60 days the legislative body must put the question 'Shall a commission be appointed to frame a charter?' to the electors together with the election of a nine-member charter commission. The commission has one year to submit a charter, which then goes to the electors at the next general election at least 30 days later. Note the asymmetry: art. XIII, sec. 8 allows charter AMENDMENTS to be proposed only by the municipal legislative body, not by elector petition. Ordinance-level initiative therefore exists in Rhode Island only where an individual home rule charter grants it, which varies municipality by municipality. citizenInitiative is null rather than true or false because no single answer holds statewide.",
+    "source": "https://rilegislature.gov/riconstitution/Constitution/C13.aspx"
+  },
+
+  "drafting": {
+    "manualUrl": null,
+    "manualName": null,
+    "requiredSections": null,
+    "enactingClause": "It is enacted by the general assembly as follows:",
+    "source": "https://rilegislature.gov/riconstitution/Constitution/C06.aspx"
+  },
+
+  "legislature": {
+    "chambers": ["House of Representatives", "Senate"],
+    "sessionType": "Annual session of the General Assembly at Providence.",
+    "typicalConvene": "The first Tuesday of January in each year (R.I. Const. art. VI, sec. 3).",
+    "typicalAdjourn": null,
+    "billIntroductionDeadline": null,
+    "carryover": null,
+    "source": "https://rilegislature.gov/riconstitution/Constitution/C06.aspx"
+  },
+
+  "data": {
+    "officialApi": null,
+    "officialApiNotes": "No documented public API or bulk download. Legislative Data Systems, under the Joint Committee on Legislative Services, runs the public systems: bill status and history at https://status.rilegislature.gov/, per-session bill text archives at https://webserver.rilegislature.gov/BillText26/ (and BillText01 through BillText26), floor votes at https://webserver.rilegislature.gov/votes/, committee votes at https://status.rilegislature.gov/Committees.aspx, the General Laws at https://webserver.rilegislature.gov/Statutes/, and the Constitution at https://rilegislature.gov/riconstitution/pages/default.aspx. A free account-based Bill Tracker (https://billtracker.rilegislature.gov/) provides email alerts, not data access.",
+    "bulkDownload": null,
+    "openStatesCoverage": "full",
+    "source": "https://www.rilegislature.gov/Pages/GettingStd.aspx"
+  },
+
+  "citizenRoute": {
+    "canRequestDraft": false,
+    "notes": "The Legislative Council is the principal research and legal arm of the General Assembly, and its principal activity is 'the drafting of legislation for individual members.' A member of the public cannot request a draft and must find a legislator to introduce a bill. With no statewide initiative, the only other citizen-driven route is the art. XIII, sec. 6 charter petition at the municipal level.",
+    "source": "http://rilegislature.gov/pressrelease/PDF_Docs/HowABillEnglish.pdf"
+  },
+
+  "gaps": [
+    "RHODE ISLAND HAS NO STATEWIDE INITIATIVE OR VETO REFERENDUM. This is settled law, not an unverified field: initiative.statute and initiative.constitutional are 'none' and initiative.referendum is false. Statewide questions reach the ballot only when the General Assembly refers a constitutional amendment, statute or bond issue.",
+    "Could not locate any published Rhode Island legislative drafting manual or style guide from the Legislative Council, the Law Revision Office, or the Joint Committee on Legislative Services. drafting.manualUrl and manualName are null. The closest public document is the Legislative Press and Public Information Bureau's 'How a Bill Becomes a Law' guide and glossary at http://rilegislature.gov/pressrelease/PDF_Docs/HowABillEnglish.pdf (verified to resolve), which describes the process and defines terms but gives no drafting form or style rules.",
+    "drafting.requiredSections is null: no authoritative Rhode Island source specifying the required formal parts of a bill was located.",
+    "Could not verify from an official source the typical adjournment date, any bill introduction deadline, or whether bills carry over between annual sessions; those fields are null. The enacting clause is fixed by R.I. Const. art. VI, sec. 2 ('The style of their laws shall be, It is enacted by the general assembly as follows:') and is recorded verbatim from that section.",
+    "localOrdinance.citizenInitiative is null by design: municipal ordinance initiative depends entirely on the individual home rule charter, and no statewide rule could be verified either way."
+  ]
+}
