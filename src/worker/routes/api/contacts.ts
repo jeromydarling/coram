@@ -18,7 +18,9 @@ import type { Env, Vars } from '../../env';
 import { record } from '../../lib/audit';
 import { requireWorkspace } from '../../lib/auth';
 import { ERROR, err, ok } from '../../lib/http';
-import { close, connect, withTenant } from '../../lib/rls';
+import {withTenant} from '../../lib/rls';
+import { db } from '../../lib/db';
+
 import { contactHashes } from '../../lib/suppression';
 import {
   createContactSchema,
@@ -46,8 +48,7 @@ contacts.get('/', async (c) => {
   }
   const { q, turfId, tagId, limit, cursor } = parsed.data;
 
-  const sql = connect(c.env);
-  c.executionCtx.waitUntil(close(sql));
+  const sql = db(c);
 
   const rows = await withTenant(sql, session, async (tx) => {
     const found = await tx`
@@ -97,8 +98,7 @@ contacts.post('/', async (c) => {
   }
   const input = parsed.data;
 
-  const sql = connect(c.env);
-  c.executionCtx.waitUntil(close(sql));
+  const sql = db(c);
 
   // The opt-out triggers in 0004 derive a recipient's ledger key from these
   // columns, so a contact written without them is a contact the ledger cannot
@@ -147,8 +147,7 @@ contacts.patch('/:id', async (c) => {
   const input = parsed.data;
   const id = c.req.param('id');
 
-  const sql = connect(c.env);
-  c.executionCtx.waitUntil(close(sql));
+  const sql = db(c);
 
   // Only recomputed for the fields actually being changed. Passing null leaves
   // the stored hash alone, so editing a phone number cannot silently blank the
@@ -191,8 +190,7 @@ contacts.delete('/:id', async (c) => {
   const session = c.get('session')!;
   const id = c.req.param('id');
 
-  const sql = connect(c.env);
-  c.executionCtx.waitUntil(close(sql));
+  const sql = db(c);
 
   const removed = await withTenant(sql, session, async (tx) => {
     const rows = await tx`DELETE FROM public.contacts WHERE id = ${id}::uuid RETURNING id`;
@@ -214,8 +212,7 @@ contacts.get('/:id/consent', async (c) => {
   const session = c.get('session')!;
   const id = c.req.param('id');
 
-  const sql = connect(c.env);
-  c.executionCtx.waitUntil(close(sql));
+  const sql = db(c);
 
   const rows = await withTenant(
     sql,
@@ -242,8 +239,7 @@ contacts.post('/:id/consent', async (c) => {
   }
   const input = parsed.data;
 
-  const sql = connect(c.env);
-  c.executionCtx.waitUntil(close(sql));
+  const sql = db(c);
 
   // Append-only. Withdrawing consent adds a row with granted = false; there is
   // no UPDATE policy on this table, so history cannot be rewritten.
@@ -276,8 +272,7 @@ contacts.get('/:id/notes', async (c) => {
   const session = c.get('session')!;
   const id = c.req.param('id');
 
-  const sql = connect(c.env);
-  c.executionCtx.waitUntil(close(sql));
+  const sql = db(c);
 
   const rows = await withTenant(
     sql,
@@ -309,8 +304,7 @@ contacts.post('/:id/notes', async (c) => {
   }
   const note = parsed.data;
 
-  const sql = connect(c.env);
-  c.executionCtx.waitUntil(close(sql));
+  const sql = db(c);
 
   const inserted = await withTenant(sql, session, async (tx) => {
     const [row] = await tx`
@@ -332,8 +326,7 @@ contacts.delete('/:contactId/notes/:noteId', async (c) => {
   const rid = c.get('requestId');
   const session = c.get('session')!;
 
-  const sql = connect(c.env);
-  c.executionCtx.waitUntil(close(sql));
+  const sql = db(c);
 
   const removed = await withTenant(
     sql,

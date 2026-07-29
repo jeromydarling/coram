@@ -21,8 +21,10 @@ import type { Env, Vars } from '../../env';
 import { record } from '../../lib/audit';
 import { requireWorkspace } from '../../lib/auth';
 import { mintOneTimeToken } from '../../lib/crypto';
-import { ERROR, err, ok } from '../../lib/http';
-import { close, connect, withTenant, type Tx } from '../../lib/rls';
+import { ERROR, err, ok, logFailure } from '../../lib/http';
+import {withTenant, type Tx} from '../../lib/rls';
+import { db } from '../../lib/db';
+
 import { unknownMergeFields } from '../../lib/sender';
 
 export const campaigns = new Hono<{ Bindings: Env; Variables: Vars }>();
@@ -61,8 +63,7 @@ const createCampaignSchema = z.object({
 campaigns.get('/', async (c) => {
   const session = c.get('session')!;
 
-  const sql = connect(c.env);
-  c.executionCtx.waitUntil(close(sql));
+  const sql = db(c);
 
   const rows = await withTenant(
     sql,
@@ -103,8 +104,7 @@ campaigns.post('/', async (c) => {
   // placeholder is a composer people work around by not using placeholders.
   const unknown = unknownMergeFields(input.body);
 
-  const sql = connect(c.env);
-  c.executionCtx.waitUntil(close(sql));
+  const sql = db(c);
 
   const created = await withTenant(sql, session, async (tx) => {
     const [row] = await tx`
@@ -132,8 +132,7 @@ campaigns.get('/:id/audience', async (c) => {
   const session = c.get('session')!;
   const id = c.req.param('id');
 
-  const sql = connect(c.env);
-  c.executionCtx.waitUntil(close(sql));
+  const sql = db(c);
 
   const result = await withTenant(sql, session, async (tx) => {
     const [campaign] = await tx`
@@ -181,8 +180,7 @@ campaigns.post('/:id/send', async (c) => {
   const session = c.get('session')!;
   const id = c.req.param('id');
 
-  const sql = connect(c.env);
-  c.executionCtx.waitUntil(close(sql));
+  const sql = db(c);
 
   try {
     const result = await withTenant(sql, session, async (tx) => {
@@ -244,7 +242,8 @@ campaigns.post('/:id/send', async (c) => {
     );
 
     return c.json(ok({ queued: result.count }));
-  } catch {
+  } catch (error) {
+    logFailure('campaigns', rid, error);
     return c.json(err('Could not send that campaign.', ERROR.INTERNAL, rid), 500);
   }
 });
@@ -257,8 +256,7 @@ campaigns.get('/:id/deliverability', async (c) => {
   const session = c.get('session')!;
   const id = c.req.param('id');
 
-  const sql = connect(c.env);
-  c.executionCtx.waitUntil(close(sql));
+  const sql = db(c);
 
   const rows = await withTenant(
     sql,

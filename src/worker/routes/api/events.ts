@@ -12,8 +12,10 @@ import type { Env, Vars } from '../../env';
 import { record } from '../../lib/audit';
 import { requireWorkspace } from '../../lib/auth';
 import { mintOneTimeToken, sha256Hex } from '../../lib/crypto';
-import { ERROR, err, ok } from '../../lib/http';
-import { close, connect, withTenant } from '../../lib/rls';
+import { ERROR, err, ok, logFailure } from '../../lib/http';
+import {withTenant} from '../../lib/rls';
+import { db } from '../../lib/db';
+
 import {
   adminRsvpSchema,
   createEventSchema,
@@ -33,8 +35,7 @@ events.get('/', async (c) => {
   const session = c.get('session')!;
   const past = c.req.query('past') === 'true';
 
-  const sql = connect(c.env);
-  c.executionCtx.waitUntil(close(sql));
+  const sql = db(c);
 
   const rows = await withTenant(
     sql,
@@ -71,8 +72,7 @@ events.post('/', async (c) => {
   }
   const input = parsed.data;
 
-  const sql = connect(c.env);
-  c.executionCtx.waitUntil(close(sql));
+  const sql = db(c);
 
   try {
     const created = await withTenant(sql, session, async (tx) => {
@@ -101,7 +101,8 @@ events.post('/', async (c) => {
     });
 
     return c.json(ok(created), 201);
-  } catch {
+  } catch (error) {
+    logFailure('events', rid, error);
     return c.json(err('Could not create that event.', ERROR.INTERNAL, rid), 500);
   }
 });
@@ -115,8 +116,7 @@ events.get('/:id', async (c) => {
   const session = c.get('session')!;
   const id = c.req.param('id');
 
-  const sql = connect(c.env);
-  c.executionCtx.waitUntil(close(sql));
+  const sql = db(c);
 
   const data = await withTenant(sql, session, async (tx) => {
     const [event] = await tx`SELECT * FROM public.events WHERE id = ${id}::uuid`;
@@ -168,8 +168,7 @@ events.patch('/:id', async (c) => {
   }
   const input = parsed.data;
 
-  const sql = connect(c.env);
-  c.executionCtx.waitUntil(close(sql));
+  const sql = db(c);
 
   const updated = await withTenant(sql, session, async (tx) => {
     const [row] = await tx`
@@ -214,8 +213,7 @@ events.post('/:id/cancel', async (c) => {
   const rid = c.get('requestId');
   const session = c.get('session')!;
 
-  const sql = connect(c.env);
-  c.executionCtx.waitUntil(close(sql));
+  const sql = db(c);
 
   const cancelled = await withTenant(
     sql,
@@ -249,8 +247,7 @@ events.post('/:id/shifts', async (c) => {
   }
   const input = parsed.data;
 
-  const sql = connect(c.env);
-  c.executionCtx.waitUntil(close(sql));
+  const sql = db(c);
 
   const created = await withTenant(sql, session, async (tx) => {
     const [row] = await tx`
@@ -280,8 +277,7 @@ events.post('/shifts/:shiftId/signup', async (c) => {
     return c.json(err('Which contact is taking the shift?', ERROR.VALIDATION, rid), 400);
   }
 
-  const sql = connect(c.env);
-  c.executionCtx.waitUntil(close(sql));
+  const sql = db(c);
 
   try {
     const result = await withTenant(sql, session, async (tx) => {
@@ -306,7 +302,8 @@ events.post('/shifts/:shiftId/signup', async (c) => {
     if (result === 'not_found') return c.json(err('No such shift.', ERROR.NOT_FOUND, rid), 404);
     if (result === 'full') return c.json(err('That shift is full.', ERROR.CONFLICT, rid), 409);
     return c.json(ok());
-  } catch {
+  } catch (error) {
+    logFailure('events', rid, error);
     return c.json(err('Could not sign that contact up.', ERROR.INTERNAL, rid), 500);
   }
 });
@@ -331,8 +328,7 @@ events.post('/:id/rsvps', async (c) => {
   // password reset tokens in 0001.
   const { token, hash } = await mintOneTimeToken();
 
-  const sql = connect(c.env);
-  c.executionCtx.waitUntil(close(sql));
+  const sql = db(c);
 
   const created = await withTenant(sql, session, async (tx) => {
     const [row] = await tx`
@@ -366,8 +362,7 @@ events.delete('/:id/rsvps/:rsvpId', async (c) => {
   const session = c.get('session')!;
   const eventId = c.req.param('id');
 
-  const sql = connect(c.env);
-  c.executionCtx.waitUntil(close(sql));
+  const sql = db(c);
 
   const removed = await withTenant(sql, session, async (tx) => {
     const rows = await tx`DELETE FROM public.rsvps WHERE id = ${c.req.param('rsvpId')}::uuid RETURNING id`;
@@ -391,8 +386,7 @@ events.post('/check-in', async (c) => {
   const body = (await c.req.json().catch(() => null)) as { token?: string } | null;
   if (!body?.token) return c.json(err('No code was scanned.', ERROR.VALIDATION, rid), 400);
 
-  const sql = connect(c.env);
-  c.executionCtx.waitUntil(close(sql));
+  const sql = db(c);
 
   try {
     const [result] = await withTenant(
@@ -426,8 +420,7 @@ events.post('/check-in', async (c) => {
 events.get('/:id/no-shows', async (c) => {
   const session = c.get('session')!;
 
-  const sql = connect(c.env);
-  c.executionCtx.waitUntil(close(sql));
+  const sql = db(c);
 
   const rows = await withTenant(
     sql,
@@ -460,8 +453,7 @@ events.get('/:id/carpool', async (c) => {
   const session = c.get('session')!;
   const eventId = c.req.param('id');
 
-  const sql = connect(c.env);
-  c.executionCtx.waitUntil(close(sql));
+  const sql = db(c);
 
   const { drivers, riders } = await withTenant(sql, session, async (tx) => {
     const rows = await tx`

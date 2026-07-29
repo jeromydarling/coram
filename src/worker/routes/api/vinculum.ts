@@ -13,7 +13,9 @@ import type { Env, Vars } from '../../env';
 import { record } from '../../lib/audit';
 import { requireWorkspace } from '../../lib/auth';
 import { ERROR, err, ok } from '../../lib/http';
-import { close, connect, withTenant } from '../../lib/rls';
+import {withTenant} from '../../lib/rls';
+import { db } from '../../lib/db';
+
 
 export const vinculum = new Hono<{ Bindings: Env; Variables: Vars }>();
 
@@ -53,8 +55,7 @@ vinculum.get('/queue', async (c) => {
   const session = c.get('session')!;
   const mine = c.req.query('mine') !== 'false';
 
-  const sql = connect(c.env);
-  c.executionCtx.waitUntil(close(sql));
+  const sql = db(c);
 
   const rows = await withTenant(
     sql,
@@ -106,8 +107,7 @@ vinculum.post('/one-to-ones', async (c) => {
   }
   const input = parsed.data;
 
-  const sql = connect(c.env);
-  c.executionCtx.waitUntil(close(sql));
+  const sql = db(c);
 
   try {
     // One call, one transaction: log the conversation, move the ladder, close
@@ -145,8 +145,7 @@ vinculum.post('/one-to-ones', async (c) => {
 vinculum.get('/contacts/:id/one-to-ones', async (c) => {
   const session = c.get('session')!;
 
-  const sql = connect(c.env);
-  c.executionCtx.waitUntil(close(sql));
+  const sql = db(c);
 
   const rows = await withTenant(sql, session, async (tx) => {
     const found = await tx`
@@ -183,8 +182,7 @@ vinculum.post('/follow-ups', async (c) => {
   }
   const input = parsed.data;
 
-  const sql = connect(c.env);
-  c.executionCtx.waitUntil(close(sql));
+  const sql = db(c);
 
   const created = await withTenant(sql, session, async (tx) => {
     const [row] = await tx`
@@ -217,8 +215,7 @@ vinculum.post('/follow-ups/:id/snooze', async (c) => {
   const until = body?.until;
   if (!until) return c.json(err('Snooze until when?', ERROR.VALIDATION, rid), 400);
 
-  const sql = connect(c.env);
-  c.executionCtx.waitUntil(close(sql));
+  const sql = db(c);
 
   // snooze_count increments and is never reset. That is deliberate: it is the
   // only signal that distinguishes "not yet" from "never", and resetting it on
@@ -255,8 +252,7 @@ vinculum.post('/follow-ups/:id/escalate', async (c) => {
   const rid = c.get('requestId');
   const session = c.get('session')!;
 
-  const sql = connect(c.env);
-  c.executionCtx.waitUntil(close(sql));
+  const sql = db(c);
 
   const [row] = await withTenant(
     sql,
@@ -292,8 +288,7 @@ vinculum.post('/follow-ups/:id/close', async (c) => {
 
   const body = (await c.req.json().catch(() => ({}))) as { dropped?: boolean };
 
-  const sql = connect(c.env);
-  c.executionCtx.waitUntil(close(sql));
+  const sql = db(c);
 
   const closed = await withTenant(
     sql,
@@ -321,8 +316,7 @@ vinculum.get('/contacts/:id/graph', async (c) => {
   const session = c.get('session')!;
   const id = c.req.param('id');
 
-  const sql = connect(c.env);
-  c.executionCtx.waitUntil(close(sql));
+  const sql = db(c);
 
   /*
    * One hop only.
@@ -360,8 +354,7 @@ vinculum.post('/edges', async (c) => {
   }
   const input = parsed.data;
 
-  const sql = connect(c.env);
-  c.executionCtx.waitUntil(close(sql));
+  const sql = db(c);
 
   // Idempotent on the unique constraint carried over from CROS, so repeated
   // ingestion of the same observation does not duplicate the graph.
@@ -395,8 +388,7 @@ vinculum.post('/edges', async (c) => {
 vinculum.get('/config', async (c) => {
   const session = c.get('session')!;
 
-  const sql = connect(c.env);
-  c.executionCtx.waitUntil(close(sql));
+  const sql = db(c);
 
   const config = await withTenant(sql, session, async (tx) => {
     const codes = await tx`

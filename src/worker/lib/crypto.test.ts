@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 
 import {
   hashPassword,
@@ -128,5 +128,38 @@ describe('timingSafeEqual', () => {
 
   it('is false for different lengths', () => {
     expect(timingSafeEqual(new Uint8Array([1]), new Uint8Array([1, 2]))).toBe(false);
+  });
+});
+
+/*
+ * Workers rejects any single PBKDF2 call above 100,000 iterations, so the
+ * derivation runs in chained rounds. These pin the properties that matter:
+ * every round must actually be performed, and the platform ceiling must never
+ * be exceeded by a single call — which is what took down signup in production.
+ */
+describe('pbkdf2 chaining under the Workers 100k cap', () => {
+  it('never asks the runtime for more than 100000 iterations in one call', async () => {
+    const seen: number[] = [];
+    const real = crypto.subtle.deriveBits.bind(crypto.subtle);
+    const spy = vi
+      .spyOn(crypto.subtle, 'deriveBits')
+      .mockImplementation(((algo: Pbkdf2Params, key: CryptoKey, bits: number) => {
+        seen.push(algo.iterations);
+        return real(algo, key, bits);
+      }) as typeof crypto.subtle.deriveBits);
+
+    await hashPassword('a-password-for-the-chaining-test');
+    spy.mockRestore();
+
+    expect(seen.length).toBeGreaterThan(1);
+    expect(Math.max(...seen)).toBeLessThanOrEqual(100_000);
+    // The rounds must sum to the full cost, or the work factor silently drops.
+    expect(seen.reduce((a, b) => a + b, 0)).toBe(600_000);
+  });
+
+  it('still round-trips and still rejects the wrong password', async () => {
+    const stored = await hashPassword('chained-round-trip');
+    expect(await verifyPassword('chained-round-trip', stored)).toBe(true);
+    expect(await verifyPassword('chained-round-trip ', stored)).toBe(false);
   });
 });

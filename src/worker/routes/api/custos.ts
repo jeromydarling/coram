@@ -18,6 +18,7 @@ import { record } from '../../lib/audit';
 import { clearedCookie, requireWorkspace, revokeAllSessions } from '../../lib/auth';
 import { ERROR, err, ok } from '../../lib/http';
 import { close, connect, withTenant } from '../../lib/rls';
+import { db } from '../../lib/db';
 
 export const custos = new Hono<{ Bindings: Env; Variables: Vars }>();
 
@@ -52,8 +53,7 @@ const NOT_LEGAL =
 custos.get('/jail-support', async (c) => {
   const session = c.get('session')!;
 
-  const sql = connect(c.env);
-  c.executionCtx.waitUntil(close(sql));
+  const sql = db(c);
 
   const rows = await withTenant(sql, session, async (tx) => {
     const found = await tx`
@@ -91,8 +91,7 @@ custos.post('/jail-support', async (c) => {
   }
   const input = parsed.data;
 
-  const sql = connect(c.env);
-  c.executionCtx.waitUntil(close(sql));
+  const sql = db(c);
 
   const created = await withTenant(sql, session, async (tx) => {
     const [row] = await tx`
@@ -127,8 +126,7 @@ custos.post('/jail-support/:id/close', async (c) => {
     return c.json(err('Close as released, transferred, or unknown.', ERROR.VALIDATION, rid), 400);
   }
 
-  const sql = connect(c.env);
-  c.executionCtx.waitUntil(close(sql));
+  const sql = db(c);
 
   try {
     const [row] = await withTenant(
@@ -175,8 +173,7 @@ custos.post('/observer-reports', async (c) => {
   }
   const input = parsed.data;
 
-  const sql = connect(c.env);
-  c.executionCtx.waitUntil(close(sql));
+  const sql = db(c);
 
   const created = await withTenant(sql, session, async (tx) => {
     const [row] = await tx`
@@ -211,8 +208,7 @@ custos.get('/trees/:id', async (c) => {
   const rid = c.get('requestId');
   const session = c.get('session')!;
 
-  const sql = connect(c.env);
-  c.executionCtx.waitUntil(close(sql));
+  const sql = db(c);
 
   const nodes = await withTenant(
     sql,
@@ -238,8 +234,7 @@ custos.get('/rights-guides', async (c) => {
   const session = c.get('session')!;
   const state = c.req.query('state');
 
-  const sql = connect(c.env);
-  c.executionCtx.waitUntil(close(sql));
+  const sql = db(c);
 
   const rows = await withTenant(
     sql,
@@ -257,8 +252,7 @@ custos.get('/rights-guides', async (c) => {
 custos.get('/briefings', async (c) => {
   const session = c.get('session')!;
 
-  const sql = connect(c.env);
-  c.executionCtx.waitUntil(close(sql));
+  const sql = db(c);
 
   const rows = await withTenant(
     sql,

@@ -20,7 +20,9 @@ import type { Env, Vars } from '../../env';
 import { record } from '../../lib/audit';
 import { requireWorkspace } from '../../lib/auth';
 import { ok } from '../../lib/http';
-import { close, connect, withTenant } from '../../lib/rls';
+import {withTenant} from '../../lib/rls';
+import { db } from '../../lib/db';
+
 
 export const exports = new Hono<{ Bindings: Env; Variables: Vars }>();
 
@@ -36,8 +38,7 @@ export const EXPORT_FORMAT_VERSION = 1;
 exports.get('/contacts.json', async (c) => {
   const session = c.get('session')!;
 
-  const sql = connect(c.env);
-  c.executionCtx.waitUntil(close(sql));
+  const sql = db(c);
 
   const data = await withTenant(sql, session, async (tx) => {
     const [workspace] = await tx`SELECT name, slug, tier FROM public.tenants`;
@@ -155,8 +156,7 @@ exports.get('/contacts.json', async (c) => {
 exports.get('/contacts.csv', async (c) => {
   const session = c.get('session')!;
 
-  const sql = connect(c.env);
-  c.executionCtx.waitUntil(close(sql));
+  const sql = db(c);
 
   const rows = await withTenant(sql, session, async (tx) => {
     const found = await tx`
@@ -201,8 +201,7 @@ exports.get('/contacts.csv', async (c) => {
 exports.get('/aggregates', async (c) => {
   const session = c.get('session')!;
 
-  const sql = connect(c.env);
-  c.executionCtx.waitUntil(close(sql));
+  const sql = db(c);
 
   // An observer has no SELECT policy on contacts at all, so this SECURITY
   // DEFINER function is the only way they see anything. It returns counts.
@@ -232,6 +231,15 @@ function today(): string {
  */
 function csvCell(value: unknown): string {
   if (value == null) return '';
+
+  /*
+   * Dates as ISO 8601, not the runtime's locale string. `String(new Date())`
+   * produces "Wed Jul 29 2026 02:14:32 GMT+0000 (Coordinated Universal Time)",
+   * which no spreadsheet parses as a date and which sorts alphabetically —
+   * useless in the one artifact §6 promises is a complete, portable copy of
+   * someone's data.
+   */
+  if (value instanceof Date) return value.toISOString();
 
   let text = String(value);
   if (/^[=+\-@\t\r]/.test(text)) text = `'${text}`;

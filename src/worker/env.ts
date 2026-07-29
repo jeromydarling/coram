@@ -84,4 +84,11 @@ export type PurgeMessage =
 export interface Vars {
   requestId: string;
   session?: import('./lib/auth').Session;
+  /**
+   * The request's Postgres client, created on first use by `db()` and closed
+   * once by middleware after the handler returns. Handlers must not close it:
+   * doing so eagerly is what broke every database route in the first live
+   * deploy. See src/worker/lib/db.ts.
+   */
+  sql?: import('./lib/rls').Sql;
 }

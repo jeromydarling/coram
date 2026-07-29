@@ -20,7 +20,9 @@ import { Hono } from 'hono';
 import type { Env, Vars } from '../env';
 import { mintOneTimeToken } from '../lib/crypto';
 import { clientIp, consume } from '../lib/ratelimit';
-import { close, connect, withoutTenant } from '../lib/rls';
+import {withoutTenant} from '../lib/rls';
+import { db } from '../lib/db';
+
 import { contactHashes } from '../lib/suppression';
 import { publicRsvpSchema } from '../../shared/schemas/events';
 
@@ -130,8 +132,7 @@ function formatWhen(startsAt: string, endsAt: string | null): string {
 // ---------------------------------------------------------------------------
 
 publicEvents.get('/e/:slug', async (c) => {
-  const sql = connect(c.env);
-  c.executionCtx.waitUntil(close(sql));
+  const sql = db(c);
 
   const [event] = (await withoutTenant(
     sql,
@@ -325,8 +326,7 @@ publicEvents.post('/e/:slug/rsvp', async (c) => {
   // has opted out, and what gives any new contact row a working hash.
   const { emailHash, phoneHash } = await contactHashes(c.env, input);
 
-  const sql = connect(c.env);
-  c.executionCtx.waitUntil(close(sql));
+  const sql = db(c);
 
   try {
     const [result] = await withoutTenant(

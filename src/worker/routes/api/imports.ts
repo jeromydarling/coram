@@ -14,8 +14,10 @@ import { Hono } from 'hono';
 import type { Env, Vars } from '../../env';
 import { record } from '../../lib/audit';
 import { requireWorkspace } from '../../lib/auth';
-import { ERROR, err, ok } from '../../lib/http';
-import { close, connect, withTenant, type Tx } from '../../lib/rls';
+import { ERROR, err, ok, logFailure } from '../../lib/http';
+import {withTenant, type Tx} from '../../lib/rls';
+import { db } from '../../lib/db';
+
 import { contactHashes } from '../../lib/suppression';
 import { isReachable, mapRow } from '../../../shared/importers/contactRows';
 import {
@@ -43,8 +45,7 @@ imports.post('/preview', async (c) => {
     return c.json(err(parsed.error.issues[0].message, ERROR.VALIDATION, rid), 400);
   }
 
-  const sql = connect(c.env);
-  c.executionCtx.waitUntil(close(sql));
+  const sql = db(c);
 
   const preview = await withTenant(sql, session, (tx) =>
     buildPreview(tx, parsed.data.rows, parsed.data.mapping),
@@ -67,8 +68,7 @@ imports.post('/commit', async (c) => {
   }
   const { label, mapping, rows, onDuplicate, turfId } = parsed.data;
 
-  const sql = connect(c.env);
-  c.executionCtx.waitUntil(close(sql));
+  const sql = db(c);
 
   try {
     const result = await withTenant(sql, session, async (tx) => {
@@ -186,7 +186,8 @@ imports.post('/commit', async (c) => {
       }),
       201,
     );
-  } catch {
+  } catch (error) {
+    logFailure('imports', rid, error);
     // The whole import is one transaction, so a failure here leaves no partial
     // batch behind — nothing to clean up and nothing half-imported.
     return c.json(err('The import failed and nothing was changed.', ERROR.INTERNAL, rid), 500);
@@ -200,8 +201,7 @@ imports.post('/commit', async (c) => {
 imports.get('/', async (c) => {
   const session = c.get('session')!;
 
-  const sql = connect(c.env);
-  c.executionCtx.waitUntil(close(sql));
+  const sql = db(c);
 
   const batches = await withTenant(
     sql,
@@ -226,8 +226,7 @@ imports.post('/:id/rollback', async (c) => {
   const rid = c.get('requestId');
   const session = c.get('session')!;
 
-  const sql = connect(c.env);
-  c.executionCtx.waitUntil(close(sql));
+  const sql = db(c);
 
   try {
     const removed = await withTenant(sql, session, async (tx) => {

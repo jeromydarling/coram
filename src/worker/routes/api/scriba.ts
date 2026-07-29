@@ -29,7 +29,9 @@ import { requireWorkspace } from '../../lib/auth';
 import { ERROR, err, ok } from '../../lib/http';
 import { dispatch, explain, type Message } from '../../lib/inference';
 import { redact, residualRisk, type KnownValues } from '../../lib/redact';
-import { close, connect, withTenant, type Tx } from '../../lib/rls';
+import {withTenant, type Tx} from '../../lib/rls';
+import { db } from '../../lib/db';
+
 import { checkScope } from '../../lib/scope';
 
 export const scriba = new Hono<{ Bindings: Env; Variables: Vars }>();
@@ -80,8 +82,7 @@ scriba.post('/draft', async (c) => {
     return c.json(ok({ refused: true, reason: scope.reason, response: scope.response }));
   }
 
-  const sql = connect(c.env);
-  c.executionCtx.waitUntil(close(sql));
+  const sql = db(c);
 
   // Step 2. The roster is what makes name redaction work at all — no pattern
   // finds "Ada Okonkwo" in prose, but the list of people this workspace
@@ -148,8 +149,7 @@ scriba.post('/summarise', async (c) => {
   const parsed = summariseSchema.safeParse(await c.req.json().catch(() => null));
   if (!parsed.success) return c.json(err('Which event?', ERROR.VALIDATION, rid), 400);
 
-  const sql = connect(c.env);
-  c.executionCtx.waitUntil(close(sql));
+  const sql = db(c);
 
   const gathered = await withTenant(sql, session, async (tx) => {
     const [event] = await tx`
@@ -221,8 +221,7 @@ scriba.post('/minutes', async (c) => {
   const parsed = minutesSchema.safeParse(await c.req.json().catch(() => null));
   if (!parsed.success) return c.json(err('Which proposal?', ERROR.VALIDATION, rid), 400);
 
-  const sql = connect(c.env);
-  c.executionCtx.waitUntil(close(sql));
+  const sql = db(c);
 
   const gathered = await withTenant(sql, session, async (tx) => {
     const [proposal] = await tx`

@@ -19,9 +19,11 @@ import {
   sessionCookie,
 } from '../../lib/auth';
 import { hashPassword, mintOneTimeToken, needsRehash, sha256Hex, verifyPassword } from '../../lib/crypto';
-import { ERROR, err, ok } from '../../lib/http';
+import { ERROR, detailFor, err, ok, logFailure } from '../../lib/http';
 import { clientIp, consume, LOGIN_LIMIT, RESET_LIMIT, SIGNUP_LIMIT } from '../../lib/ratelimit';
-import { close, connect, withoutTenant, withTenant } from '../../lib/rls';
+import {withoutTenant, withTenant} from '../../lib/rls';
+import { db } from '../../lib/db';
+
 import {
   confirmResetSchema,
   loginSchema,
@@ -59,11 +61,16 @@ auth.post('/signup', async (c) => {
   }
   const { email, password, workspaceName } = parsed.data;
 
-  const sql = connect(c.env);
-  c.executionCtx.waitUntil(close(sql));
-
   try {
+    /*
+     * Hash first, connect second. The KDF is deliberately expensive — 600k
+     * PBKDF2 rounds — and holding an open Hyperdrive connection across it got
+     * the socket torn down before the first query ran, surfacing as
+     * `write CONNECTION_ENDED`. Nothing needs the database until the hash
+     * exists, so nothing should be holding a connection while it is computed.
+     */
     const hash = await hashPassword(password);
+    const sql = db(c);
 
     const result = await withoutTenant(sql, async (tx) => {
       const existing = await tx`SELECT id FROM coram.find_login(${email})`;
@@ -95,8 +102,12 @@ auth.post('/signup', async (c) => {
     });
 
     return c.json(ok({ tenantId: result.tenantId }), 201);
-  } catch {
-    return c.json(err('Could not create that workspace.', ERROR.INTERNAL, rid), 500);
+  } catch (error) {
+    logFailure('auth.signup', rid, error);
+    return c.json(
+      err('Could not create that workspace.', ERROR.INTERNAL, rid, detailFor(c.env, error)),
+      500,
+    );
   }
 });
 
@@ -119,8 +130,7 @@ auth.post('/login', async (c) => {
   }
   const { email, password } = parsed.data;
 
-  const sql = connect(c.env);
-  c.executionCtx.waitUntil(close(sql));
+  const sql = db(c);
 
   const rows = await withoutTenant(sql, (tx) => tx`SELECT * FROM coram.find_login(${email})`);
   const user = rows[0] as { id: string; password_hash: string; email_verified_at: string | null } | undefined;
@@ -172,8 +182,7 @@ auth.post('/workspace', requireSession, async (c) => {
     return c.json(err('Name a workspace.', ERROR.VALIDATION, rid), 400);
   }
 
-  const sql = connect(c.env);
-  c.executionCtx.waitUntil(close(sql));
+  const sql = db(c);
 
   // Don't check the membership here and trust it later — mint the session and
   // let set_request_context be the thing that decides. One gate, not two.
@@ -182,7 +191,8 @@ auth.post('/workspace', requireSession, async (c) => {
     await withTenant(sql, candidate, async (tx) => {
       await tx`SELECT 1`;
     });
-  } catch {
+  } catch (error) {
+    logFailure('auth', rid, error);
     return c.json(err('You are not a member of that workspace.', ERROR.FORBIDDEN, rid), 403);
   }
 
@@ -228,8 +238,7 @@ auth.post('/reset', async (c) => {
     return c.json(err('Enter your email address.', ERROR.VALIDATION, rid), 400);
   }
 
-  const sql = connect(c.env);
-  c.executionCtx.waitUntil(close(sql));
+  const sql = db(c);
 
   const rows = await withoutTenant(sql, (tx) => tx`SELECT * FROM coram.find_login(${parsed.data.email})`);
   const user = rows[0] as { id: string } | undefined;
@@ -259,8 +268,7 @@ auth.post('/reset/confirm', async (c) => {
     return c.json(err(parsed.error.issues[0].message, ERROR.VALIDATION, rid), 400);
   }
 
-  const sql = connect(c.env);
-  c.executionCtx.waitUntil(close(sql));
+  const sql = db(c);
 
   const tokenHash = await sha256Hex(parsed.data.token);
   const hash = await hashPassword(parsed.data.password);

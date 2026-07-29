@@ -8,8 +8,10 @@ import { z } from 'zod';
 import type { Env, Vars } from '../../env';
 import { requireWorkspace, revokeAllSessions } from '../../lib/auth';
 import { record, recordBefore } from '../../lib/audit';
-import { ERROR, err, ok } from '../../lib/http';
-import { close, connect, withTenant, withoutTenant } from '../../lib/rls';
+import { ERROR, err, ok, logFailure } from '../../lib/http';
+import {withTenant, withoutTenant} from '../../lib/rls';
+import { db } from '../../lib/db';
+
 import { ROLES } from '../../lib/schema';
 
 export const workspace = new Hono<{ Bindings: Env; Variables: Vars }>();
@@ -22,8 +24,7 @@ workspace.use('*', requireWorkspace);
 
 workspace.get('/', async (c) => {
   const session = c.get('session')!;
-  const sql = connect(c.env);
-  c.executionCtx.waitUntil(close(sql));
+  const sql = db(c);
 
   const data = await withTenant(sql, session, async (tx) => {
     const [tenant] = await tx`
@@ -49,8 +50,7 @@ workspace.get('/', async (c) => {
 
 workspace.get('/members', async (c) => {
   const session = c.get('session')!;
-  const sql = connect(c.env);
-  c.executionCtx.waitUntil(close(sql));
+  const sql = db(c);
 
   const members = await withTenant(
     sql,
@@ -86,8 +86,7 @@ workspace.patch('/members/:id', async (c) => {
   }
 
   const memberId = c.req.param('id');
-  const sql = connect(c.env);
-  c.executionCtx.waitUntil(close(sql));
+  const sql = db(c);
 
   try {
     const changed = await withTenant(sql, session, async (tx) => {
@@ -122,7 +121,8 @@ workspace.patch('/members/:id', async (c) => {
       return c.json(err('No such member, or not yours to change.', ERROR.NOT_FOUND, rid), 404);
     }
     return c.json(ok());
-  } catch {
+  } catch (error) {
+    logFailure('workspace', rid, error);
     return c.json(err('Could not change that role.', ERROR.INTERNAL, rid), 500);
   }
 });
@@ -159,8 +159,7 @@ workspace.post('/burn', async (c) => {
     return c.json(err('Type the workspace name to confirm.', ERROR.VALIDATION, rid), 400);
   }
 
-  const sql = connect(c.env);
-  c.executionCtx.waitUntil(close(sql));
+  const sql = db(c);
 
   const context = await withTenant(sql, session, async (tx) => {
     const [tenant] = await tx`SELECT name FROM public.tenants`;
@@ -189,7 +188,8 @@ workspace.post('/burn', async (c) => {
       sql,
       (tx) => tx`SELECT coram.burn_workspace(${session.userId}::uuid, ${tenantId}::uuid)`,
     );
-  } catch {
+  } catch (error) {
+    logFailure('workspace', rid, error);
     return c.json(err('Could not destroy the workspace. Nothing was deleted.', ERROR.INTERNAL, rid), 500);
   }
 

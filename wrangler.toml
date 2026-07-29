@@ -16,6 +16,13 @@ compatibility_flags = ["nodejs_compat"]
 [assets]
 directory = "./dist/client"
 binding = "ASSETS"
+# Static assets are matched BEFORE the Worker runs. An index.html at the assets
+# root therefore claimed `/` and made the marketing home page unreachable in
+# production, while every local render still worked because those go through
+# the Worker. The build now relocates the shell to /app/index.html
+# (scripts/relocate-spa-shell.mjs) so nothing shadows a Worker route, and this
+# disables the implicit directory -> index.html mapping as a second guard.
+html_handling = "none"
 
 [observability]
 enabled = true
@@ -32,7 +39,7 @@ enabled = true
 
 [[hyperdrive]]
 binding = "HYPERDRIVE"
-id = "REPLACE_ME_hyperdrive_config_id"
+id = "be0e244d4f1e4a60b5204ef98118bf03"
 
 # Cron connects as coram_cron, which carries BYPASSRLS because the nightly
 # sweep spans every tenant. It is a second Hyperdrive config pointing at the
@@ -40,7 +47,7 @@ id = "REPLACE_ME_hyperdrive_config_id"
 # credential for it — §4.2 keeps service-role out of the request path.
 [[hyperdrive]]
 binding = "HYPERDRIVE_CRON"
-id = "REPLACE_ME_hyperdrive_cron_config_id"
+id = "199707292fbf4a74ba1e89acb924a06c"
 
 ####################################################################
 # Edge state
@@ -48,15 +55,15 @@ id = "REPLACE_ME_hyperdrive_cron_config_id"
 
 [[kv_namespaces]]
 binding = "KV_SESSIONS"
-id = "REPLACE_ME_kv_sessions"
+id = "939afc76e5744522ace488444f24cf43"
 
 [[kv_namespaces]]
 binding = "KV_FLAGS"
-id = "REPLACE_ME_kv_flags"
+id = "b76e775d058c4e57937145d8c8febd43"
 
 [[kv_namespaces]]
 binding = "KV_RATE"
-id = "REPLACE_ME_kv_rate"
+id = "8eb70770b4824d82a9a9f1c268bae438"
 
 ####################################################################
 # Object storage — zero egress

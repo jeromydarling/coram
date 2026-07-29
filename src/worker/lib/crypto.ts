@@ -17,6 +17,15 @@ const enc = new TextEncoder();
 
 /** OWASP 2023 guidance for PBKDF2-HMAC-SHA256. */
 const PBKDF2_ITERATIONS = 600_000;
+
+/**
+ * Workers rejects a single deriveBits call above this outright:
+ *   "Pbkdf2 failed: iteration counts above 100000 are not supported".
+ *
+ * It is a hard platform ceiling, not a performance hint, and it is the reason
+ * `pbkdf2()` below runs in chained rounds instead of one call.
+ */
+const PBKDF2_MAX_PER_CALL = 100_000;
 const SALT_BYTES = 16;
 const KEY_BITS = 256;
 
@@ -59,24 +68,62 @@ export function needsRehash(stored: string): boolean {
   return !Number.isInteger(iterations) || iterations < PBKDF2_ITERATIONS;
 }
 
+/**
+ * PBKDF2-HMAC-SHA256 at an arbitrary iteration count, in chained rounds.
+ *
+ * Workers caps a single deriveBits call at 100,000 iterations, so asking for
+ * the OWASP-recommended 600,000 throws rather than running slowly — the whole
+ * signup path failed on it, and returned a generic 500 because nothing logged
+ * the reason.
+ *
+ * The work is therefore split into rounds of at most 100,000, each round
+ * taking the previous round's output as its input keying material. An attacker
+ * must still compute the same total number of HMAC operations to test one
+ * candidate password, so the cost factor the iteration count is chosen for is
+ * preserved.
+ *
+ * What is honestly *not* claimed: this is not bit-for-bit identical to a single
+ * 600,000-iteration PBKDF2, and it inherits PBKDF2's lack of memory hardness,
+ * so it remains weaker than argon2id against GPU attack. Between a construction
+ * that keeps the intended cost and one that silently drops to a sixth of it,
+ * this is the better of the two options the runtime allows. Revisit if Workers
+ * gains a native memory-hard KDF.
+ *
+ * Rounds carry the same salt; the chaining, not the salt, is what accumulates
+ * the work.
+ */
 async function pbkdf2(
   password: string,
   salt: Uint8Array,
   iterations: number,
   bits = KEY_BITS,
 ): Promise<Uint8Array> {
-  const key = await crypto.subtle.importKey('raw', enc.encode(password), 'PBKDF2', false, [
-    'deriveBits',
-  ]);
-  const derived = await crypto.subtle.deriveBits(
-    // The cast is TypeScript bookkeeping, not a runtime concern: since TS 5.7
-    // Uint8Array is generic over its buffer, and WebCrypto's BufferSource
-    // insists on a plain ArrayBuffer. These are never SharedArrayBuffer-backed.
-    { name: 'PBKDF2', hash: 'SHA-256', salt: salt as BufferSource, iterations },
-    key,
-    bits,
-  );
-  return new Uint8Array(derived);
+  let material: BufferSource = enc.encode(password) as BufferSource;
+  let remaining = iterations;
+  let out = new Uint8Array();
+
+  while (remaining > 0) {
+    const round = Math.min(remaining, PBKDF2_MAX_PER_CALL);
+    remaining -= round;
+
+    const key = await crypto.subtle.importKey('raw', material, 'PBKDF2', false, ['deriveBits']);
+    const derived = await crypto.subtle.deriveBits(
+      // The cast is TypeScript bookkeeping, not a runtime concern: since TS 5.7
+      // Uint8Array is generic over its buffer, and WebCrypto's BufferSource
+      // insists on a plain ArrayBuffer. These are never SharedArrayBuffer-backed.
+      { name: 'PBKDF2', hash: 'SHA-256', salt: salt as BufferSource, iterations: round },
+      key,
+      // Intermediate rounds carry a full 256 bits forward regardless of the
+      // caller's requested output width, so a short requested output does not
+      // narrow the chain.
+      remaining > 0 ? KEY_BITS : bits,
+    );
+
+    out = new Uint8Array(derived);
+    material = out as BufferSource;
+  }
+
+  return out;
 }
 
 // ---------------------------------------------------------------------------

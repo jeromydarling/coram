@@ -17,7 +17,9 @@ import { Hono } from 'hono';
 import type { Env, Vars } from '../env';
 import { sha256Hex } from '../lib/crypto';
 import { clientIp, consume } from '../lib/ratelimit';
-import { close, connect, withoutTenant } from '../lib/rls';
+import {withoutTenant} from '../lib/rls';
+import { db } from '../lib/db';
+
 
 export const publicUnsubscribe = new Hono<{ Bindings: Env; Variables: Vars }>();
 
@@ -87,8 +89,7 @@ publicUnsubscribe.post('/u/:token', async (c) => {
     );
   }
 
-  const sql = connect(c.env);
-  c.executionCtx.waitUntil(close(sql));
+  const sql = db(c);
 
   const tokenHash = await sha256Hex(c.req.param('token'));
 

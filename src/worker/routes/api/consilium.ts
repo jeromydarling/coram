@@ -22,7 +22,9 @@ import { record } from '../../lib/audit';
 import { requireWorkspace } from '../../lib/auth';
 import { mintOneTimeToken, sha256Hex } from '../../lib/crypto';
 import { ERROR, err, ok } from '../../lib/http';
-import { close, connect, withTenant } from '../../lib/rls';
+import {withTenant} from '../../lib/rls';
+import { db } from '../../lib/db';
+
 import { canDeliver } from '../../lib/sender';
 import { decide, instantRunoff, toTally, type BallotRules, type VoteChoice } from '../../lib/tally';
 
@@ -73,8 +75,7 @@ const castSchema = z
 consilium.get('/proposals', async (c) => {
   const session = c.get('session')!;
 
-  const sql = connect(c.env);
-  c.executionCtx.waitUntil(close(sql));
+  const sql = db(c);
 
   const rows = await withTenant(
     sql,
@@ -108,8 +109,7 @@ consilium.post('/proposals', async (c) => {
     return c.json(err(parsed.error.issues[0].message, ERROR.VALIDATION, rid), 400);
   }
 
-  const sql = connect(c.env);
-  c.executionCtx.waitUntil(close(sql));
+  const sql = db(c);
 
   const created = await withTenant(sql, session, async (tx) => {
     const [row] = await tx`
@@ -133,8 +133,7 @@ consilium.get('/proposals/:id', async (c) => {
   const session = c.get('session')!;
   const id = c.req.param('id');
 
-  const sql = connect(c.env);
-  c.executionCtx.waitUntil(close(sql));
+  const sql = db(c);
 
   const data = await withTenant(sql, session, async (tx) => {
     const [proposal] = await tx`SELECT * FROM public.proposals WHERE id = ${id}::uuid`;
@@ -174,8 +173,7 @@ consilium.post('/proposals/:id/comments', async (c) => {
 
   if (!parsed.success) return c.json(err('Write something.', ERROR.VALIDATION, rid), 400);
 
-  const sql = connect(c.env);
-  c.executionCtx.waitUntil(close(sql));
+  const sql = db(c);
 
   const created = await withTenant(sql, session, async (tx) => {
     const [row] = await tx`
@@ -237,8 +235,7 @@ consilium.post('/ballots', async (c) => {
     );
   }
 
-  const sql = connect(c.env);
-  c.executionCtx.waitUntil(close(sql));
+  const sql = db(c);
 
   try {
     const result = await withTenant(sql, session, async (tx) => {
@@ -346,8 +343,7 @@ consilium.post('/ballots/:id/cast', async (c) => {
   }
   const input = parsed.data;
 
-  const sql = connect(c.env);
-  c.executionCtx.waitUntil(close(sql));
+  const sql = db(c);
 
   try {
     const outcome = await withTenant(sql, session, async (tx) => {
@@ -435,8 +431,7 @@ consilium.get('/ballots/:id/tally', async (c) => {
   const session = c.get('session')!;
   const ballotId = c.req.param('id');
 
-  const sql = connect(c.env);
-  c.executionCtx.waitUntil(close(sql));
+  const sql = db(c);
 
   const data = await withTenant(sql, session, async (tx) => {
     const [ballot] = await tx`SELECT * FROM public.ballots WHERE id = ${ballotId}::uuid`;
@@ -532,8 +527,7 @@ consilium.post('/proxies', async (c) => {
 
   if (!parsed.success) return c.json(err('Who are you delegating to?', ERROR.VALIDATION, rid), 400);
 
-  const sql = connect(c.env);
-  c.executionCtx.waitUntil(close(sql));
+  const sql = db(c);
 
   try {
     const created = await withTenant(sql, session, async (tx) => {
@@ -574,8 +568,7 @@ consilium.delete('/proxies/:id', async (c) => {
   const rid = c.get('requestId');
   const session = c.get('session')!;
 
-  const sql = connect(c.env);
-  c.executionCtx.waitUntil(close(sql));
+  const sql = db(c);
 
   const revoked = await withTenant(
     sql,
@@ -601,8 +594,7 @@ consilium.delete('/proxies/:id', async (c) => {
 consilium.get('/bylaws', async (c) => {
   const session = c.get('session')!;
 
-  const sql = connect(c.env);
-  c.executionCtx.waitUntil(close(sql));
+  const sql = db(c);
 
   const rows = await withTenant(
     sql,
@@ -632,8 +624,7 @@ consilium.post('/bylaws/:id/versions', async (c) => {
 
   if (!parsed.success) return c.json(err('Write the new text.', ERROR.VALIDATION, rid), 400);
 
-  const sql = connect(c.env);
-  c.executionCtx.waitUntil(close(sql));
+  const sql = db(c);
 
   // Append-only: a new version, never an edit. The history is the reason
   // bylaws live here rather than in a shared document.

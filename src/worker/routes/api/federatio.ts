@@ -13,8 +13,10 @@ import { z } from 'zod';
 
 import type { Env, Vars } from '../../env';
 import { requireWorkspace } from '../../lib/auth';
-import { ERROR, err, ok } from '../../lib/http';
-import { close, connect, withTenant } from '../../lib/rls';
+import { ERROR, err, ok, logFailure } from '../../lib/http';
+import {withTenant} from '../../lib/rls';
+import { db } from '../../lib/db';
+
 
 export const federatio = new Hono<{ Bindings: Env; Variables: Vars }>();
 
@@ -39,8 +41,7 @@ federatio.get('/chapters', async (c) => {
   const rid = c.get('requestId');
   const session = c.get('session')!;
 
-  const sql = connect(c.env);
-  c.executionCtx.waitUntil(close(sql));
+  const sql = db(c);
 
   try {
     const rows = await withTenant(sql, session, (tx) => tx`SELECT * FROM coram.chapter_rollup()`);
@@ -54,7 +55,8 @@ federatio.get('/chapters', async (c) => {
           'grant it, and they can revoke it at any time.',
       }),
     );
-  } catch {
+  } catch (error) {
+    logFailure('federatio', rid, error);
     return c.json(err('This workspace is not a coalition parent.', ERROR.FORBIDDEN, rid), 403);
   }
 });
@@ -66,8 +68,7 @@ federatio.get('/chapters', async (c) => {
 federatio.get('/grants', async (c) => {
   const session = c.get('session')!;
 
-  const sql = connect(c.env);
-  c.executionCtx.waitUntil(close(sql));
+  const sql = db(c);
 
   const rows = await withTenant(
     sql,
@@ -96,8 +97,7 @@ federatio.post('/grants', async (c) => {
   }
   const input = parsed.data;
 
-  const sql = connect(c.env);
-  c.executionCtx.waitUntil(close(sql));
+  const sql = db(c);
 
   // The policy admits only the chapter's own steward, so a parent attempting
   // this writes zero rows. The 403 below is the explanation, not the decision.
@@ -142,8 +142,7 @@ federatio.delete('/grants/:id', async (c) => {
   const rid = c.get('requestId');
   const session = c.get('session')!;
 
-  const sql = connect(c.env);
-  c.executionCtx.waitUntil(close(sql));
+  const sql = db(c);
 
   // Revoked, not deleted. The row is the evidence that a chapter once shared
   // something and then stopped, and destroying it would erase the record of an
@@ -178,8 +177,7 @@ federatio.post('/invitations/:id/accept', async (c) => {
   const rid = c.get('requestId');
   const session = c.get('session')!;
 
-  const sql = connect(c.env);
-  c.executionCtx.waitUntil(close(sql));
+  const sql = db(c);
 
   const accepted = await withTenant(
     sql,
@@ -209,8 +207,7 @@ federatio.post('/chapters/leave', async (c) => {
   const rid = c.get('requestId');
   const session = c.get('session')!;
 
-  const sql = connect(c.env);
-  c.executionCtx.waitUntil(close(sql));
+  const sql = db(c);
 
   const left = await withTenant(sql, session, async (tx) => {
     const rows = await tx`

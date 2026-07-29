@@ -14,8 +14,10 @@ import { z } from 'zod';
 import type { Env, Vars } from '../../env';
 import { record } from '../../lib/audit';
 import { requireWorkspace } from '../../lib/auth';
-import { ERROR, err, ok } from '../../lib/http';
-import { close, connect, withTenant } from '../../lib/rls';
+import { ERROR, err, ok, logFailure } from '../../lib/http';
+import {withTenant} from '../../lib/rls';
+import { db } from '../../lib/db';
+
 import { describeTake, netCents, takeCents, type FundKind } from '../../lib/takerate';
 
 export const funds = new Hono<{ Bindings: Env; Variables: Vars }>();
@@ -53,8 +55,7 @@ const disbursementSchema = z.object({
 funds.get('/', async (c) => {
   const session = c.get('session')!;
 
-  const sql = connect(c.env);
-  c.executionCtx.waitUntil(close(sql));
+  const sql = db(c);
 
   const rows = await withTenant(
     sql,
@@ -97,8 +98,7 @@ funds.post('/', async (c) => {
   }
   const input = parsed.data;
 
-  const sql = connect(c.env);
-  c.executionCtx.waitUntil(close(sql));
+  const sql = db(c);
 
   try {
     const created = await withTenant(sql, session, async (tx) => {
@@ -121,7 +121,8 @@ funds.post('/', async (c) => {
     }
 
     return c.json(ok({ ...created, takeDescription: describeTake(input.kind) }), 201);
-  } catch {
+  } catch (error) {
+    logFailure('funds', rid, error);
     return c.json(err('Could not open that fund.', ERROR.INTERNAL, rid), 500);
   }
 });
@@ -142,8 +143,7 @@ funds.get('/:id/quote', async (c) => {
     return c.json(err('Give an amount in cents.', ERROR.VALIDATION, rid), 400);
   }
 
-  const sql = connect(c.env);
-  c.executionCtx.waitUntil(close(sql));
+  const sql = db(c);
 
   const [fund] = await withTenant(
     sql,
@@ -173,8 +173,7 @@ funds.get('/:id/contributions', async (c) => {
   const session = c.get('session')!;
   const id = c.req.param('id');
 
-  const sql = connect(c.env);
-  c.executionCtx.waitUntil(close(sql));
+  const sql = db(c);
 
   const rows = await withTenant(sql, session, async (tx) => {
     const found = await tx`
@@ -212,8 +211,7 @@ funds.get('/:id/contributions', async (c) => {
 funds.get('/disbursements', async (c) => {
   const session = c.get('session')!;
 
-  const sql = connect(c.env);
-  c.executionCtx.waitUntil(close(sql));
+  const sql = db(c);
 
   const rows = await withTenant(
     sql,
@@ -253,8 +251,7 @@ funds.post('/disbursements', async (c) => {
   }
   const input = parsed.data;
 
-  const sql = connect(c.env);
-  c.executionCtx.waitUntil(close(sql));
+  const sql = db(c);
 
   try {
     const result = await withTenant(sql, session, async (tx) => {
@@ -301,7 +298,8 @@ funds.post('/disbursements', async (c) => {
       }),
       201,
     );
-  } catch {
+  } catch (error) {
+    logFailure('funds', rid, error);
     return c.json(err('Could not propose that payment.', ERROR.INTERNAL, rid), 500);
   }
 });
@@ -310,8 +308,7 @@ funds.post('/disbursements/:id/approve', async (c) => {
   const rid = c.get('requestId');
   const session = c.get('session')!;
 
-  const sql = connect(c.env);
-  c.executionCtx.waitUntil(close(sql));
+  const sql = db(c);
 
   try {
     const [result] = await withTenant(
@@ -336,8 +333,7 @@ funds.post('/disbursements/:id/pay', async (c) => {
   const rid = c.get('requestId');
   const session = c.get('session')!;
 
-  const sql = connect(c.env);
-  c.executionCtx.waitUntil(close(sql));
+  const sql = db(c);
 
   try {
     await withTenant(sql, session, async (tx) => {

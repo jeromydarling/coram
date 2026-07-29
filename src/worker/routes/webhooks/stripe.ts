@@ -28,7 +28,9 @@ import { Hono } from 'hono';
 
 import type { Env, Vars } from '../../env';
 import { timingSafeEqual } from '../../lib/crypto';
-import { close, connect, withoutTenant, type Sql } from '../../lib/rls';
+import {withoutTenant, type Sql} from '../../lib/rls';
+import { db } from '../../lib/db';
+
 
 export const stripeWebhook = new Hono<{ Bindings: Env; Variables: Vars }>();
 
@@ -69,6 +71,9 @@ stripeWebhook.post('/stripe', async (c) => {
   try {
     envelope = JSON.parse(raw);
   } catch {
+    // A malformed body is expected input, not a fault worth logging: the
+    // signature already passed, so this is a hub bug, and the 400 is the
+    // signal. Nothing here becomes a 500.
     return c.json({ ok: false, error: 'bad_payload' }, 400);
   }
 
@@ -80,8 +85,7 @@ stripeWebhook.post('/stripe', async (c) => {
     return c.json({ ok: true, ignored: 'wrong_satellite' });
   }
 
-  const sql = connect(c.env);
-  c.executionCtx.waitUntil(close(sql));
+  const sql = db(c);
 
   try {
     await handle(sql, envelope.stripe_event);

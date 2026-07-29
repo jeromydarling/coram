@@ -298,6 +298,46 @@ ALTER TABLE public.import_batches    ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.import_batches    FORCE  ROW LEVEL SECURITY;
 
 -- ---------------------------------------------------------------------
+-- The contact gate (§6)
+--
+-- Free under 250 contacts, and the free tier is contact-gated, never
+-- feature-gated. Downgrading freezes new contact creation; it never deletes
+-- (§6). So this blocks INSERT and touches nothing that already exists.
+--
+-- It runs inside the contacts_insert policy rather than as a trigger so that
+-- hitting the ceiling is a row the policy declines, not an exception halfway
+-- through a batch import.
+-- ---------------------------------------------------------------------
+
+CREATE FUNCTION coram.contact_limit_for(_tier coram.tier) RETURNS bigint
+LANGUAGE sql IMMUTABLE PARALLEL SAFE SET search_path = ''
+AS $$
+  SELECT CASE _tier
+           WHEN 'parish'     THEN 250
+           WHEN 'local'      THEN 2500
+           -- Coalition and federation are priced on chapters, not contacts.
+           ELSE 9223372036854775807
+         END
+$$;
+
+CREATE FUNCTION coram.within_contact_limit(_tenant_id uuid) RETURNS boolean
+LANGUAGE sql STABLE SECURITY DEFINER SET search_path = ''
+AS $$
+  SELECT t.contact_count < coram.contact_limit_for(t.tier)
+  FROM public.tenants t
+  WHERE t.id = _tenant_id
+$$;
+
+REVOKE ALL ON FUNCTION coram.within_contact_limit(uuid) FROM PUBLIC;
+GRANT EXECUTE ON FUNCTION coram.within_contact_limit(uuid) TO coram_app;
+
+-- Defined ahead of the policies because contacts_insert calls
+-- within_contact_limit() in its WITH CHECK, and Postgres resolves a
+-- policy expression at CREATE POLICY time. Forward-referencing it here
+-- fails the migration outright.
+
+
+-- ---------------------------------------------------------------------
 -- The contact visibility predicate.
 --
 -- One function, used by every policy that touches contact data, so the rule
@@ -517,40 +557,6 @@ GRANT SELECT, UPDATE, DELETE ON public.contacts        TO coram_cron;
 GRANT SELECT, UPDATE, DELETE ON public.consent_records TO coram_cron;
 GRANT SELECT, UPDATE, DELETE ON public.contact_notes   TO coram_cron;
 GRANT SELECT, UPDATE, DELETE ON public.import_batches  TO coram_cron;
-
--- ---------------------------------------------------------------------
--- The contact gate (§6)
---
--- Free under 250 contacts, and the free tier is contact-gated, never
--- feature-gated. Downgrading freezes new contact creation; it never deletes
--- (§6). So this blocks INSERT and touches nothing that already exists.
---
--- It runs inside the contacts_insert policy rather than as a trigger so that
--- hitting the ceiling is a row the policy declines, not an exception halfway
--- through a batch import.
--- ---------------------------------------------------------------------
-
-CREATE FUNCTION coram.contact_limit_for(_tier coram.tier) RETURNS bigint
-LANGUAGE sql IMMUTABLE PARALLEL SAFE SET search_path = ''
-AS $$
-  SELECT CASE _tier
-           WHEN 'parish'     THEN 250
-           WHEN 'local'      THEN 2500
-           -- Coalition and federation are priced on chapters, not contacts.
-           ELSE 9223372036854775807
-         END
-$$;
-
-CREATE FUNCTION coram.within_contact_limit(_tenant_id uuid) RETURNS boolean
-LANGUAGE sql STABLE SECURITY DEFINER SET search_path = ''
-AS $$
-  SELECT t.contact_count < coram.contact_limit_for(t.tier)
-  FROM public.tenants t
-  WHERE t.id = _tenant_id
-$$;
-
-REVOKE ALL ON FUNCTION coram.within_contact_limit(uuid) FROM PUBLIC;
-GRANT EXECUTE ON FUNCTION coram.within_contact_limit(uuid) TO coram_app;
 
 -- tenants.contact_count is the number the gate reads, so it has to be exact.
 -- A trigger keeps it so, rather than a periodic recount that would let a
