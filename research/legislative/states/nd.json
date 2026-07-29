@@ -1,0 +1,84 @@
+{
+  "code": "ND",
+  "name": "North Dakota",
+  "asOf": "2026-07",
+
+  "initiative": {
+    "statute": "direct",
+    "constitutional": "direct",
+    "referendum": true,
+    "signatures": {
+      "statuteFormula": "2% of the resident population of the state as reported by the most recent federal decennial census (N.D. Const. art. III, § 9). NOTE: unlike most states, North Dakota's thresholds are NOT derived from a gubernatorial election — they are fixed by the census and therefore change only once per decade. The current figures derive from the 2020 federal decennial census (ND resident population 779,094) and are unchanged since 2021.",
+      "statuteCount": 15582,
+      "constitutionalFormula": "4% of the resident population of the state as reported by the most recent federal decennial census (2020 census).",
+      "constitutionalCount": 31164,
+      "referendumFormula": "2% of the resident population of the state as reported by the most recent federal decennial census (2020 census) — the same threshold as an initiated statute.",
+      "referendumCount": 15582,
+      "distribution": null,
+      "source": "https://www.sos.nd.gov/elections/voter/ballot-measures"
+    },
+    "circulationDays": 365,
+    "filingDeadline": "Initiated measures: signatures must be filed at least 120 days before the election at which the measure is to appear, and no later than one year after the Secretary of State approved the petition for circulation. Referendum: petition must be filed within 90 days of the challenged legislation being filed with the Secretary of State.",
+    "subjectLimits": [
+      "Single subject — applies to INITIATED CONSTITUTIONAL AMENDMENTS only, effective with voter approval of Constitutional Measure 1 on June 9, 2026 (approx. 66%-34%). The Secretary of State determines whether a proposed constitutional amendment embraces more than one subject and may not approve a multi-subject constitutional initiative for circulation. The requirement also reaches legislatively referred amendments.",
+      "No single-subject restriction applies to initiated statutes or referendums.",
+      "The petition must set out the full text of the measure.",
+      "A measure approved by the electors may not be repealed or amended by the Legislative Assembly for seven years from its effective date except by a two-thirds vote of the members elected to each house (N.D. Const. art. III, § 8)."
+    ],
+    "adoptionThreshold": "Simple majority of votes cast on the measure. PENDING: Measure 2 on the November 3, 2026 general election ballot, a legislatively referred amendment, would require a 60% 'yes' vote to adopt any constitutional amendment (citizen-initiated or legislatively referred). It has not been voted on as of 2026-07-29. A similar 2024 proposal (Measure 2, which combined a single-subject rule with a requirement that constitutional initiatives pass twice) was defeated.",
+    "preFilingReview": "A sponsoring committee of at least 25 qualified electors, one designated as chairperson, presents the petition to the Secretary of State for approval as to form (N.D. Const. art. III, § 2). The Secretary of State drafts the petition title and approves the petition for style and form, generally within five to seven business days. After signatures are filed the Secretary of State has 35 days to review, using random sampling to test signature validity.",
+    "source": "https://www.sos.nd.gov/elections/voter/ballot-measures/types-ballot-measures"
+  },
+
+  "localOrdinance": {
+    "citizenInitiative": true,
+    "notes": "N.D.C.C. ch. 40-12 gives the electors of cities the powers of initiative and referendum over city ordinances: petitions are filed with the city auditor, who determines sufficiency and submits the proposed ordinance to the governing body or to a vote. Home rule cities and counties (N.D.C.C. ch. 40-05.1 and ch. 11-09.1) exercise these powers as provided in their charters. The exact signature percentage varies by chapter and by home rule charter and was not verified for this entry.",
+    "source": "https://ndlegis.gov/cencode/t40c12.pdf"
+  },
+
+  "drafting": {
+    "manualUrl": "https://ndlegis.gov/sites/default/files/pdf/legislative-bill-drafting-manual/legislativedraftingmanual.pdf",
+    "manualName": "North Dakota Legislative Drafting Manual (Legislative Council)",
+    "requiredSections": [
+      "bill title / short descriptive statement of purpose",
+      "enacting clause",
+      "numbered sections",
+      "amendatory language showing new matter underscored and deleted matter overstruck",
+      "effective date or emergency clause where applicable"
+    ],
+    "enactingClause": "For initiated measures, petitions circulated in North Dakota use: \"BE IT ENACTED BY THE PEOPLE OF THE STATE OF NORTH DAKOTA\". Bills introduced in the Legislative Assembly use the constitutional style: \"BE IT ENACTED BY THE LEGISLATIVE ASSEMBLY OF THE STATE OF NORTH DAKOTA\".",
+    "source": "https://ndlegis.gov/legislative-drafting-manual"
+  },
+
+  "legislature": {
+    "chambers": ["House of Representatives", "Senate"],
+    "sessionType": "Biennial. The Legislative Assembly may be in session no more than 80 natural days during each two-year biennium; that time is normally used in a single regular session in the odd-numbered year, with a small number of days reserved for a possible reconvened session.",
+    "typicalConvene": "The regular legislative biennium generally begins the second Tuesday in January of odd-numbered years; an organizational session is held in early December of the preceding even-numbered year.",
+    "typicalAdjourn": "Late April or early May of the odd-numbered year, on or before the 80th legislative day.",
+    "billIntroductionDeadline": null,
+    "carryover": false,
+    "source": "https://ndlegis.gov/faq"
+  },
+
+  "data": {
+    "officialApi": "https://ndlegis.gov/legislative-api-documentation",
+    "officialApiNotes": "The North Dakota Legislative Branch publishes a free public REST API covering data from the 62nd Legislative Assembly (2011) forward. Plain GET requests; no authorization key required. Documentation page includes dropdown selectors for each dataset.",
+    "bulkDownload": null,
+    "openStatesCoverage": "full",
+    "source": "https://ndlegis.gov/legislative-api-documentation"
+  },
+
+  "citizenRoute": {
+    "canRequestDraft": false,
+    "notes": "Legislative Council receives bill draft requests from legislators, legislative committees, and executive branch agencies. Only members of the Legislative Assembly and certain state entities may introduce a bill, so a member of the public must work through a legislator — or bypass the Legislative Assembly entirely using the initiative, where the Secretary of State (not Legislative Council) reviews the petition for form and supplies drafting templates on request.",
+    "source": "https://www.sos.nd.gov/elections/voter/ballot-measures/drafting-ballot-measures"
+  },
+
+  "gaps": [
+    "Signature counts (15,582 / 31,164) are taken from the Secretary of State's own Ballot Measures page, which states the percentages (2% and 4%) and the absolute numbers but does not name the census year on that page. The 2020 federal decennial census (ND population 779,094) is the arithmetic basis; a page explicitly naming the census year was not located.",
+    "Constitutional Measure 1 (single subject for constitutional amendments) was reported approved on June 9, 2026 with roughly 66% yes; the State Canvassing Board has certified the 2026 primary results, but the certified vote totals for Measure 1 were not retrieved directly from the Secretary of State's results site.",
+    "Bill introduction deadlines are set by legislative rule each session and were not verified from an official source; left null.",
+    "Whether unpassed bills formally carry over is recorded as false based on the single-regular-session-per-biennium structure; an explicit official statement of the carryover rule was not located.",
+    "Signature thresholds for city-level initiative under N.D.C.C. ch. 40-12 and under home rule charters were not verified."
+  ]
+}

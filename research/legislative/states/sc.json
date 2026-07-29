@@ -1,0 +1,76 @@
+{
+  "code": "SC",
+  "name": "South Carolina",
+  "asOf": "2026-07",
+
+  "initiative": {
+    "statute": "none",
+    "constitutional": "none",
+    "referendum": false,
+    "signatures": {
+      "statuteFormula": "Not applicable. South Carolina has no statewide citizen initiative for statutes; there is no signature threshold to report.",
+      "statuteCount": null,
+      "constitutionalFormula": "Not applicable. South Carolina has no statewide citizen initiative for constitutional amendments. Under S.C. Const. art. XVI, sec. 1 an amendment may be proposed only in the Senate or House; if agreed to by two-thirds of the members elected to each house it is entered on the journals with the yeas and nays and submitted to the qualified electors at the next general election for Representatives; if a majority of those voting on the question approve it, a majority of each branch of the NEXT General Assembly must then also ratify it before it becomes part of the Constitution. Art. XVI, sec. 2 requires two or more amendments to be voted on separately. Art. XVI, sec. 3 allows a constitutional convention only on a two-thirds vote of each branch plus a majority of all electors voting at the election.",
+      "constitutionalCount": null,
+      "distribution": null,
+      "source": "https://www.scstatehouse.gov/scconstitution/A16.pdf"
+    },
+    "circulationDays": null,
+    "filingDeadline": null,
+    "subjectLimits": [],
+    "preFilingReview": null,
+    "source": "https://www.scstatehouse.gov/scconstitution/A16.pdf"
+  },
+
+  "localOrdinance": {
+    "citizenInitiative": true,
+    "notes": "South Carolina is the strongest of the three non-initiative states in this group at the local level, because the initiative right is granted by general statute rather than left to individual charters. COUNTIES, S.C. Code sec. 4-9-1210: the qualified electors of any county may propose any ordinance except one appropriating money or authorizing the levy of taxes, by petition signed by qualified electors of the county equal to at least 15% of the qualified electors of the county. MUNICIPALITIES, S.C. Code sec. 5-17-10: the electors of a municipality may propose any ordinance, subject to the same money/tax exception, by petition signed by qualified electors equal to at least 15% of the registered voters at the last regular municipal election, certified by the municipal election commission. In both cases, if the council fails to pass the proposed ordinance, or passes it in substantially different form, the question goes to the electors not less than 30 days nor more than one year from the council's final vote, and the council is bound by the result (sec. 4-9-1230). Note the different denominators: county petitions are measured against qualified electors of the county, municipal petitions against registered voters at the last regular municipal election. Parallel repeal-petition rights for full-faith-and-credit debt ordinances exist at 15% under secs. 4-9-1220 and 5-17-20, within 60 days of enactment.",
+    "source": "https://www.scstatehouse.gov/code/t04c009.php"
+  },
+
+  "drafting": {
+    "manualUrl": null,
+    "manualName": null,
+    "requiredSections": [
+      "title, in the form \"A BILL TO ...\" stating the subject and, for amendatory bills, the S.C. Code sections affected",
+      "enacting clause",
+      "numbered SECTIONs, with catch-line headings on new chapters or articles",
+      "effective date section (a law takes effect twenty days after approval by the Governor unless a date is specified)"
+    ],
+    "enactingClause": "Be it enacted by the General Assembly of the State of South Carolina:",
+    "source": "https://www.scstatehouse.gov/sess126_2025-2026/bills/2.htm"
+  },
+
+  "legislature": {
+    "chambers": ["House of Representatives", "Senate"],
+    "sessionType": "Two-year session (the 126th General Assembly runs 2025-2026), with an annual session each year.",
+    "typicalConvene": "The second Tuesday of January of each year, at the State Capitol in Columbia (S.C. Const. art. III, sec. 9).",
+    "typicalAdjourn": "Sine die not later than 5:00 p.m. on the second Thursday in May (S.C. Code sec. 2-1-180). The session is extended automatically one statewide day for each statewide day after March 31 that the House has not given the general appropriations bill third reading; it may also be extended up to two weeks on a post-April-10 Board of Economic Advisors forecast reduction with the agreement of the Speaker and the President, or by a two-thirds concurrent resolution of both chambers adopted by 5:00 p.m. on the second Thursday in May.",
+    "billIntroductionDeadline": null,
+    "carryover": true,
+    "source": "https://www.scstatehouse.gov/code/t02c001.php"
+  },
+
+  "data": {
+    "officialApi": null,
+    "officialApiNotes": "No documented public API or bulk download. The South Carolina Legislative Services Agency serves everything as HTML from scstatehouse.gov: bill text and status at https://www.scstatehouse.gov/sess126_2025-2026/bills/<number>.htm, multi-criteria search at https://www.scstatehouse.gov/multicriteria2/search.php, roll call votes at https://www.scstatehouse.gov/votehistory.php, the Code of Laws at https://www.scstatehouse.gov/code/statmast.php, and the Constitution at https://www.scstatehouse.gov/scconstitution/scconst.php. A per-user 'Track Legislation' list service provides alerts, not data access.",
+    "bulkDownload": null,
+    "openStatesCoverage": "full",
+    "source": "https://www.scstatehouse.gov/legislation.php"
+  },
+
+  "citizenRoute": {
+    "canRequestDraft": false,
+    "notes": "The Legislative Council, created by Act 294 of 1949 (S.C. Code sec. 2-11-10), is responsible for the research, reference and bill drafting facilities serving the General Assembly. Bills typically start there: a member tells a Legislative Council attorney the type of bill he wants to introduce and it is put into legal form, then the member gives it to the Clerk of his body. A member of the public cannot originate a drafting request and must find a legislator to sponsor the bill. Note that the Council's own mission statement refers to serving 'the General Assembly and others,' but no public-facing drafting request process was found. With no statewide initiative, the citizen-driven route in South Carolina is the local ordinance initiative under S.C. Code secs. 4-9-1210 and 5-17-10.",
+    "source": "https://www.scstatehouse.gov/council.php"
+  },
+
+  "gaps": [
+    "SOUTH CAROLINA HAS NO STATEWIDE INITIATIVE OR VETO REFERENDUM. This is settled law, not an unverified field: initiative.statute and initiative.constitutional are 'none' and initiative.referendum is false. Statewide constitutional amendments require two-thirds of each house, then voter approval, then ratification by the next General Assembly.",
+    "Could not locate any published South Carolina bill drafting manual or style guide from the Legislative Council. drafting.manualUrl and manualName are null. The closest official public documents are 'South Carolina's Legislative Process', 15th ed. 2016 (https://www.scstatehouse.gov/publicationspage/Booklet_2016_15thedition.pdf) and the 'How A Bill Becomes An Act' flowchart (https://www.scstatehouse.gov/publicationspage/FlowChart_2010_14th%20edition.pdf), both of which describe process and terminology rather than drafting form. The annual South Carolina Legislative Manual (https://www.scstatehouse.gov/man25/manual25.php) is a directory, not a drafting guide.",
+    "drafting.requiredSections and the enacting clause were derived from the text of an actual 2025-2026 session bill (S. 2) and from the definition of 'Enacting Clause' and 'Effective Date' in the General Assembly's own legislative process booklet, because no drafting manual is published.",
+    "Could not verify a bill introduction or prefiling deadline from an official source; prefiling occurs in December before each session but no rule text was confirmed. That field is null.",
+    "Carryover is recorded as true on the strength of the General Assembly's own definitions: 'Carryover Legislation - Legislation held over from the first year of a two-year session', and 'Continue - ... Legislation continued in the last year of a two-year legislative term dies on Monday following the General Election in November (House Rule 8.15; Senate Rule 36).' The underlying rule text was not read directly.",
+    "S.C. Code sec. 4-9-1210 measures the county petition against '15% of the qualified electors of the county', which is not the same base as votes cast in a prior election and is not published as a running number by any state office. A county campaign must obtain the current qualified-elector count from the county election commission; no statewide figure exists to report here."
+  ]
+}
