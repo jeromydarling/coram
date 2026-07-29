@@ -26,6 +26,7 @@ import { runRetentionSweep } from './cron/purge';
 import { handlePurge } from './jobs/purge';
 import { handleSend } from './jobs/send';
 import { auth } from './routes/api/auth';
+import { brand } from './routes/api/brand';
 import { campaigns } from './routes/api/campaigns';
 import { consilium } from './routes/api/consilium';
 import { contacts } from './routes/api/contacts';
@@ -93,6 +94,8 @@ app.route('/api/imports', imports);
 app.route('/api/exports', exports);
 app.route('/api/events', events);
 app.route('/api/campaigns', campaigns);
+// Workspace branding and the flyer composer. Not a module — see 0011_brand.sql.
+app.route('/api/brand', brand);
 app.route('/api/funds', funds);
 app.route('/api/vinculum', vinculum);
 app.route('/api/consilium', consilium);
