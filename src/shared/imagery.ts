@@ -33,7 +33,13 @@ export const STYLE =
   'vivid documentary color photograph, 35mm, bright natural daylight flooding the room, ' +
   'rich saturated colour, warm golden hour light, high energy, people in motion, ' +
   'motion blur on moving hands and bodies, shallow depth of field, fine grain, ' +
-  'candid and unposed, no one aware of the camera';
+  'candid and unposed, no one aware of the camera, ' +
+  // Applies to everyone in frame, not only the named subject. The /why frame
+  // was written for a single figure and the model populated the hall behind
+  // them with a cheering crowd, one of whom came back as a sharp profile.
+  // A prompt-level check cannot catch people the prompt never asked for, so
+  // the instruction has to cover the whole frame.
+  'every person in the frame is turned away from the camera';
 
 /**
  * Colour is now the point rather than the exception.
@@ -174,9 +180,9 @@ export const IMAGES: ImageSpec[] = [
   {
     id: 'why-portrait',
     subject:
-      'someone carrying a tall stack of folding chairs across a sunlit hall, seen from behind ' +
-      'mid-stride, bright teal jacket, long shadow thrown across a wooden floor, sunlight ' +
-      'flaring past them',
+      'a single figure alone in an empty sunlit hall carrying a tall stack of folding chairs, ' +
+      'seen from behind mid-stride, bright teal jacket, a long shadow thrown across a wooden ' +
+      'floor, low sun flaring through high windows, nobody else in the hall',
     faceClause: 'seen entirely from behind, no faces visible',
     accent: true,
     width: 1200,

@@ -27,6 +27,14 @@ describe('§8.2 direction', () => {
       // quietly drift back.
       expect(prompt(spec)).toContain('rich saturated colour');
       expect(prompt(spec)).toContain('bright natural daylight');
+      /*
+       * The global turned-away clause. Per-image face clauses describe the
+       * named subject, and the model routinely adds people the prompt never
+       * mentioned — the /why frame asked for one figure and got a cheering
+       * crowd, one of whom came back as a sharp profile. This covers the
+       * whole frame rather than the subject.
+       */
+      expect(prompt(spec)).toContain('every person in the frame is turned away');
       expect(prompt(spec)).not.toContain('muted desaturated');
     }
   });
