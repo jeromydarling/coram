@@ -1,0 +1,85 @@
+{
+  "code": "NY",
+  "name": "New York",
+  "asOf": "2026-07",
+
+  "initiative": {
+    "statute": "none",
+    "constitutional": "none",
+    "referendum": false,
+    "signatures": {
+      "statuteFormula": null,
+      "statuteCount": null,
+      "constitutionalFormula": null,
+      "constitutionalCount": null,
+      "referendumFormula": null,
+      "referendumCount": null,
+      "distribution": null,
+      "source": "https://ballotpedia.org/Laws_governing_ballot_measures_in_New_York"
+    },
+    "circulationDays": null,
+    "filingDeadline": null,
+    "subjectLimits": [
+      "New York has NO statewide citizen initiative and NO statewide veto referendum. There is no signature threshold to report because there is no petition route to the statewide ballot. Do not treat any signature number quoted for New York as a statewide ballot-measure threshold — statewide petitioning in New York exists only for candidate ballot access.",
+      "Statewide measures reach the ballot only when the Legislature refers them: a constitutional amendment must pass both houses by simple majority in two successive legislatures with a general election of the Senate and Assembly in between, and is then submitted to the voters (N.Y. Const. art. XIX, § 1); bond acts must pass the Legislature and be approved by the voters.",
+      "A ballot question on whether to hold a constitutional convention is automatically submitted to the voters every 20 years (N.Y. Const. art. XIX, § 2); the last such question was in 2017, so the next is in 2037."
+    ],
+    "adoptionThreshold": "Simple majority of votes cast on the question, for the legislatively referred measures that do reach the ballot.",
+    "preFilingReview": null,
+    "source": "https://ballotpedia.org/Types_of_ballot_measures_in_New_York"
+  },
+
+  "localOrdinance": {
+    "citizenInitiative": true,
+    "notes": "This is where New York organizers actually have a petition route, and it is charter-based rather than ordinance-based. (1) CITY CHARTER INITIATIVE — Municipal Home Rule Law § 37 lets qualified electors of a city petition to amend the city charter or adopt a new one. The petition needs signatures equal to at least 10% of the total valid votes cast for governor in that city at the last gubernatorial election, OR 30,000, whichever is LESS. In New York City the 30,000 cap controls, since 10% of the city's gubernatorial vote is far higher. If the city's legislative body does not adopt or submit the proposal within two months, supporters file a supplemental petition of 5% of the gubernatorial vote or 15,000, whichever is less, between two and four months after the original filing; the proposal then goes to the next general election held at least 60 days after that filing, and takes effect if approved by a majority. The applicable gubernatorial election as of July 2026 is November 8, 2022; the numbers reset after the November 3, 2026 election. (2) PERMISSIVE REFERENDUM ON PETITION — Municipal Home Rule Law § 24 lets electors force a referendum on an already-adopted local law in an enumerated list of subjects (public bidding and purchasing, condemnation, bonding, sale or lease of public property, mid-term salary increases for elected officials, apportionment, and others). The threshold is 10% of the total votes cast for governor in that local government at the last gubernatorial election (5% or 15,000, whichever is less, for apportionment laws). The local law cannot take effect for at least 45 days after adoption, and the petition must be filed inside that window; the clerk has 30 days to certify. (3) New York City's own Charter also provides for charter revision commissions, whose proposals go directly to the voters — a separate route that does not require petitioning.",
+    "source": "https://www.nysenate.gov/legislation/laws/MHR/37"
+  },
+
+  "drafting": {
+    "manualUrl": "https://n94012.eos-intl.net/elibsql11_N94012_Documents/Bill%20Drafting%20Manual%202023.pdf",
+    "manualName": "Bill Drafting Manual (New York State Legislative Bill Drafting Commission), 2023 edition",
+    "requiredSections": [
+      "bill title / purpose clause",
+      "enacting clause",
+      "numbered sections",
+      "amendatory language with new matter underscored and repealed matter in brackets",
+      "effective date section",
+      "sponsor's memorandum in support (filed with the bill, required by legislative rule)"
+    ],
+    "enactingClause": "The People of the State of New York, represented in Senate and Assembly, do enact as follows:",
+    "source": "https://www.nysenate.gov/legislation/laws/CNS/A3S13"
+  },
+
+  "legislature": {
+    "chambers": ["Assembly", "Senate"],
+    "sessionType": "Two-year legislative term with an annual regular session in each year of the term (e.g., the 2025-2026 term). Bills keep their numbers and their place across both years of the term.",
+    "typicalConvene": "Early January each year — by long-standing practice the first Wednesday after the first Monday in January.",
+    "typicalAdjourn": "No constitutional adjournment date. The Legislature customarily finishes its scheduled session days in June and may return for special sessions.",
+    "billIntroductionDeadline": null,
+    "carryover": true,
+    "source": "https://www.nysenate.gov/legislation"
+  },
+
+  "data": {
+    "officialApi": "https://legislation.nysenate.gov/",
+    "officialApiNotes": "NY Senate Open Legislation API — an official, free REST API delivering bills and resolutions, committee agendas, Senate calendars, New York State laws, floor and hearing transcripts, member and committee data in near-real time. It ingests raw data directly from the Legislative Bill Drafting Commission. Requires a free API key obtained from the Open Legislation homepage. Source code is open source. Full API documentation is at https://legislation.nysenate.gov/static/docs/html/index.html.",
+    "bulkDownload": null,
+    "openStatesCoverage": "full",
+    "source": "https://legislation.nysenate.gov/static/docs/html/index.html"
+  },
+
+  "citizenRoute": {
+    "canRequestDraft": false,
+    "notes": "The Legislative Bill Drafting Commission is the nonpartisan drafting office serving the Senate and Assembly; drafting requests come from legislators and legislative staff, not from the public. With no statewide initiative, a New York resident's only routes are (a) persuade a legislator to sponsor and request a draft, or (b) go local, using the Municipal Home Rule Law § 37 charter-amendment petition.",
+    "source": "https://legislation.nysenate.gov/static/docs/html/index.html"
+  },
+
+  "gaps": [
+    "New York has no statewide initiative or referendum, so every statewide signature field is null by fact, not by failure to verify. The authoritative negative is the state constitution: art. XIX reserves amendment only to the Legislature and to a constitutional convention. Ballotpedia is cited as the plain-language confirmation because no New York state agency publishes a page saying 'we have no initiative.'",
+    "The Bill Drafting Manual (2023) is hosted on the New York State Library's digital document server (n94012.eos-intl.net), not on a nysenate.gov or state .gov domain; the URL was verified to return the 3.1 MB PDF and its title page reads 'State of New York Legislative Bill Drafting Commission — Bill Drafting Manual'. The Legislative Bill Drafting Commission does not appear to host a public copy itself. A newer edition than 2023 may exist and was not located.",
+    "The requiredSections list is a reasonable summary of New York bill form and was not read verbatim out of the manual (PDF text extraction failed in this environment).",
+    "The statutory or constitutional citation fixing the annual convening date was not located; the convening date given is descriptive practice.",
+    "Bill carryover within the two-year term is recorded as true based on how sessions and bill numbering are organized on nysenate.gov; an explicit official rule citation was not located.",
+    "Signature counts under Municipal Home Rule Law §§ 24 and 37 depend on each city's own gubernatorial-election vote total; per-city numbers were not computed."
+  ]
+}

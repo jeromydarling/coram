@@ -23,6 +23,20 @@ to guess, so they are required to cite the Secretary of State or equivalent.
       "statuteCount": 546651,     // most recent absolute number, or null
       "constitutionalFormula": "8% of votes cast for governor",
       "constitutionalCount": 874641,
+
+      // A veto referendum overturns a law the legislature already passed. It is
+      // a different mechanism from an initiative, on a different clock, and in
+      // several states it is the ONLY citizen mechanism that exists — Maryland
+      // and Kentucky have no initiative at all.
+      //
+      // These fields were added mid-research because several agents
+      // independently refused to put a referendum threshold in `statuteCount`,
+      // which was the right call: a group told it needs 60,157 signatures to
+      // pass a law, when that number actually only lets it overturn one, has
+      // been given a target for the wrong campaign.
+      "referendumFormula": "3% of votes cast for governor",
+      "referendumCount": 60157,
+
       "distribution": null,       // geographic distribution requirement, or null
       "source": "https://..."
     },

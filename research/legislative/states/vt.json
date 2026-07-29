@@ -1,0 +1,75 @@
+{
+  "code": "VT",
+  "name": "Vermont",
+  "asOf": "2026-07",
+
+  "initiative": {
+    "statute": "none",
+    "constitutional": "none",
+    "referendum": false,
+    "signatures": {
+      "statuteFormula": null,
+      "statuteCount": null,
+      "constitutionalFormula": null,
+      "constitutionalCount": null,
+      "distribution": null,
+      "source": "https://outside.vermont.gov/dept/sos/VSARA/Publications/Vermont_LegislativeDirectory_StateManual_current.pdf"
+    },
+    "circulationDays": null,
+    "filingDeadline": null,
+    "subjectLimits": [],
+    "preFilingReview": null,
+    "source": "https://outside.vermont.gov/dept/sos/VSARA/Publications/Vermont_LegislativeDirectory_StateManual_current.pdf"
+  },
+
+  "localOrdinance": {
+    "citizenInitiative": true,
+    "notes": "Vermont has no statewide initiative but has one of the strongest local petition rights in the country, and it is the route that matters here. Under 17 V.S.A. sec. 2642(a)(3)(A) the warning for a municipal meeting must contain any article requested by a petition signed by at least five percent of the voters of the municipality and filed with the municipal clerk not less than 47 days before the day of the meeting. Town Meeting Day is the first Tuesday in March (17 V.S.A. sec. 2640(a)); towns may begin their annual meeting on the three preceding days (sec. 2640(b)), but the 47-day clock still runs from the statutory Town Meeting Day, not from the earlier start. The clerk must examine the petition immediately and, if it does not conform, must state in writing why and return it to the petitioners within 24 hours. An article that includes a bonding proposal requires ten percent rather than five percent. Vermont municipalities may also be petitioned for non-binding advisory articles, and the Vermont League of Cities and Towns notes that a selectboard has some discretion to decline purely advisory petitions - so an organizer should draft the article as a binding question within the municipality's legal authority wherever possible.",
+    "source": "https://www.vlct.org/voter-backed-petitions-deadline"
+  },
+
+  "drafting": {
+    "manualUrl": null,
+    "manualName": null,
+    "requiredSections": [
+      "title",
+      "enacting clause",
+      "numbered sections of the body"
+    ],
+    "enactingClause": "It is hereby enacted by the General Assembly of the State of Vermont.",
+    "source": "https://outside.vermont.gov/dept/sos/VSARA/Publications/Vermont_LegislativeDirectory_StateManual_current.pdf"
+  },
+
+  "legislature": {
+    "chambers": ["House of Representatives", "Senate"],
+    "sessionType": "Biennial General Assembly (150 House members, 30 Senators) meeting in a two-year biennium; it convenes in odd-numbered years and reconvenes for a second year, and legislation carries across the two years of the biennium. 2025-2026 is the current biennium.",
+    "typicalConvene": "The first Wednesday after the first Monday in January of each odd-numbered year (Vt. Const. ch. II, sec. 7); members' terms begin the same day. The second year of the biennium reconvenes in January.",
+    "typicalAdjourn": "May, by concurrent resolution; neither house may adjourn for more than three days without the consent of the other (Vt. Const. ch. II, sec. 6).",
+    "billIntroductionDeadline": "Set by House Rule 40 and keyed to the biennium year. FIRST YEAR: a member must submit a standard-form bill request to the Office of Legislative Counsel on or before the last legislative day of January and approve it for public release on or before the fourth legislative day before the end of February. SECOND YEAR: the member must submit the request on or before the first weekday of December (i.e. the December before the session), must not request content changes after the Friday before the session opens, and for short-form bills must submit by February 15 and approve release by the second Friday after Town Meeting Day. Committees may request standard-form bills at any time in the first year; in the second year a committee bill must be approved for release by the last legislative day of March (Appropriations and Ways and Means excepted). Bills relating to adoption or amendment of a municipal charter, or to a municipal merger, may be requested and introduced at any time - which matters for organizers, because the Vermont charter-change route is exempt from the introduction deadlines. Any of these deadlines may be waived with the prior consent of the Committee on Rules.",
+    "carryover": true,
+    "source": "https://outside.vermont.gov/dept/sos/VSARA/Publications/Vermont_LegislativeDirectory_StateManual_current.pdf"
+  },
+
+  "data": {
+    "officialApi": null,
+    "officialApiNotes": "Bill status, text, committee agendas and journals are published at https://legislature.vermont.gov/. No public developer API or bulk download for Vermont legislative data could be confirmed. All requests to legislature.vermont.gov from this environment returned HTTP 503 or failed TLS validation, and sos.vermont.gov returned 403, so first-party sources could not be read directly; the Vermont facts in this file come instead from the Vermont Legislative Directory and State Manual published by the Vermont State Archives and Records Administration (Office of the Secretary of State) on the outside.vermont.gov host, which reproduces the constitutional provisions, the legislative rules and the election law summaries verbatim.",
+    "bulkDownload": "https://openstates.org/data/session-csv/",
+    "openStatesCoverage": "full",
+    "source": "https://openstates.org/data/session-csv/"
+  },
+
+  "citizenRoute": {
+    "canRequestDraft": false,
+    "notes": "The Office of Legislative Counsel is the nonpartisan office that drafts and edits all bills and amendments and maintains the Vermont Statutes Annotated (2 V.S.A. ch. 13). Under House Rule 40 the requester is always a member or a committee - the rule is written entirely in terms of 'no member may introduce a bill ... unless the member submits the request to the Office of Legislative Counsel'. A member of the public cannot commission a draft. Two things make Vermont unusually workable anyway: the deadlines are early enough that a citizen must approach a legislator by the preceding autumn for a second-year bill, and municipal charter bills are exempt from the introduction deadlines entirely, so a town that passes a charter change at Town Meeting can get it introduced at any point in the session.",
+    "source": "https://outside.vermont.gov/dept/sos/VSARA/Publications/Vermont_LegislativeDirectory_StateManual_current.pdf"
+  },
+
+  "gaps": [
+    "COULD NOT FIND A VERMONT BILL DRAFTING MANUAL. drafting.manualUrl is null. The Office of Legislative Counsel does all Vermont drafting, but no publicly posted drafting manual or style guide could be located: the Open Law Library survey of state drafting guides records Vermont as 'Not Available', a Wayback CDX search of legislature.vermont.gov for any URL containing 'draft' returned nothing, and legislature.vermont.gov itself was unreachable from this environment. It is likely the office keeps its style guidance internal. The closest published substitutes are the Office of Legislative Counsel page at https://legislature.vermont.gov/staff-and-offices/staff-offices/legislative-counsel/ and the Clerk of the House's 'Overview of Vermont's Legislative Process' at https://legislature.vermont.gov/assets/Clerk-of-the-House-Documents/Overview-and-Training-Docs/2025_Vermont_Legislative_Process_htm.pdf - neither was fetchable at the time of checking and neither is a drafting manual. Do not link organizers to a Vermont drafting manual until one is confirmed to exist.",
+    "Vermont is one of the states with no statewide initiative, no statewide veto referendum and no citizen constitutional initiative. Constitutional amendments originate in the Senate (Proposals of Amendment), must pass two successive biennia, and only then go to the voters. All statewide initiative fields are null because the mechanism does not exist, not because a number could not be found.",
+    "drafting.requiredSections is minimal and is inferred from the constitutional enacting-clause requirement and standard Vermont act structure rather than from a drafting manual, because no manual was found. Treat it as indicative, not authoritative.",
+    "Vermont's own web properties (legislature.vermont.gov, sos.vermont.gov) were not reachable from this environment - repeated 503s, 403s and TLS failures. Every Vermont fact here therefore rests on the Vermont Legislative Directory and State Manual 2025-2026, published by the Secretary of State's archives division, and on the Vermont League of Cities and Towns for the local petition deadline. Both are reliable, but a future pass should re-verify against legislature.vermont.gov and sos.vermont.gov directly, in particular the current-biennium session and adjournment dates, which the State Manual does not give as specific calendar dates.",
+    "legislature.carryover is set true on the basis of the biennial structure and House Rule 40's explicit first-year/second-year distinction; no rule stating in terms that pending bills survive into the second year was located in the accessible sources.",
+    "openStatesCoverage was verified by confirming a current 2025-2026 Regular Session bulk CSV exists at openstates.org/data/session-csv/, updated 2026-07-28 (bills, votes, sponsorships). Committee-level coverage was not separately verified."
+  ]
+}
