@@ -33,6 +33,13 @@ import { Hono } from 'hono';
 import type { Env, Vars } from '../env';
 import { Picture } from '../lib/picture';
 import { anyOverdue, describe, loadArtifacts, staleness } from '../lib/trust';
+import {
+  ABUSE_CONTACT,
+  ENFORCEMENT,
+  LIMITS,
+  PROHIBITED,
+  PROTECTED,
+} from '../../shared/policy';
 
 export const marketing = new Hono<{ Bindings: Env; Variables: Vars }>();
 
@@ -316,6 +323,7 @@ function Page(props: {
         {props.children}
         <footer class="col">
           <p>
+            <a href="/terms">Acceptable use</a> ·{' '}
             <a href="/canary.txt">Warrant canary</a> ·{' '}
             <a href="/.well-known/security.txt">security.txt</a> ·{' '}
             <a href="/trust">Trust</a>
@@ -882,6 +890,106 @@ marketing.get('/why', (c) =>
           None of that is a policy page. It is the schema. Every one of those decisions is
           something you could verify by reading a migration, which is why we publish audits
           instead of promises.
+        </p>
+      </main>
+    </Page>,
+  ),
+);
+
+// ---------------------------------------------------------------------------
+// /terms — acceptable use
+// ---------------------------------------------------------------------------
+
+/*
+ * Rendered from src/shared/policy.ts rather than written here, so the page and
+ * the tested registry cannot drift apart. The tests that keep this honest —
+ * conduct not belief, protections named, limits published — live beside it.
+ */
+marketing.get('/terms', (c) =>
+  c.html(
+    <Page
+      title="Acceptable use — Coram"
+      description="What Coram will not host, what it explicitly protects, and how enforcement actually works."
+    >
+      <main class="col editorial">
+        <h1>Acceptable use</h1>
+        <p class="lead">
+          Two lists. What we will not host, and what we will not remove you for. The second one
+          matters as much as the first.
+        </p>
+
+        <p>
+          Most of this product is built so that we cannot see what you do with it. That is the
+          point, and it has a consequence worth stating before anything else: we are not
+          watching. What follows is what we do when something is brought to us, and what we
+          will refuse to do no matter who brings it.
+        </p>
+
+        <h2>What we will not host</h2>
+        <p class="muted small">
+          Every rule below describes conduct — something a person does. None describes a belief,
+          a movement, or a designation. That is deliberate.
+        </p>
+        {PROHIBITED.map((rule) => (
+          <div class="card">
+            <h3 style="color:var(--warn)">{rule.title}</h3>
+            <p style="margin:.35rem 0 .5rem">{rule.rule}</p>
+            <p class="muted small" style="margin:0">
+              {rule.why}
+            </p>
+          </div>
+        ))}
+
+        <h2>What we will not remove you for</h2>
+        <p>
+          Everything below has been reported to some platform, by someone, as violence or
+          extremism, in order to get an organisation removed. Naming them here means a report
+          citing one gets this page as its answer.
+        </p>
+        {PROTECTED.map((rule) => (
+          <div class="card" style="border-color:rgba(18,133,122,.4)">
+            <h3 style="color:var(--teal)">{rule.title}</h3>
+            <p style="margin:.35rem 0 .5rem">{rule.rule}</p>
+            <p class="muted small" style="margin:0">
+              {rule.why}
+            </p>
+          </div>
+        ))}
+
+        <h2>What we can actually see</h2>
+        <ul>
+          {LIMITS.map((line) => (
+            <li>{line}</li>
+          ))}
+        </ul>
+
+        <h2>How a report is handled</h2>
+        <ol>
+          {ENFORCEMENT.map((line) => (
+            <li style="margin-bottom:.6rem">{line}</li>
+          ))}
+        </ol>
+
+        <div class="highlight">
+          <p style="margin:0">
+            Report specific conduct to <strong>{ABUSE_CONTACT}</strong>.
+          </p>
+          <p class="muted small" style="margin:.4rem 0 0">
+            Name the workspace and describe what was done. Reports that describe a group rather
+            than an act get no action.
+          </p>
+        </div>
+
+        <h2>The part we are least comfortable with</h2>
+        <p>
+          A policy like this is enforced by people, and people can be leaned on. The protections
+          above are the ones most likely to be tested by a government, a landlord, or an
+          employer with a lawyer. We have written them down so that giving way would be a
+          visible reversal rather than a quiet judgement call.
+        </p>
+        <p>
+          If we ever do give way, the counts will appear in the{' '}
+          <a href="/trust">transparency report</a>, and you will be able to see it.
         </p>
       </main>
     </Page>,

@@ -21,7 +21,7 @@ function fakeEnv(seed: Record<string, string> = {}): Env {
 const get = (path: string, env: Env) => marketing.request(path, {}, env);
 
 describe('marketing pages', () => {
-  it.each(['/', '/pricing', '/why', '/trust'])('renders %s', async (path) => {
+  it.each(['/', '/pricing', '/why', '/trust', '/terms'])('renders %s', async (path) => {
     const res = await get(path, fakeEnv());
     expect(res.status).toBe(200);
     const html = await res.text();
@@ -39,7 +39,7 @@ describe('marketing pages', () => {
    * that costs exactly the trust §7 exists to build.
    */
   it('never claims to be open source anywhere on the site', async () => {
-    for (const path of ['/', '/pricing', '/why', '/trust']) {
+    for (const path of ['/', '/pricing', '/why', '/trust', '/terms']) {
       const html = await (await get(path, fakeEnv())).text();
 
       // The phrase may appear, but only inside a denial — /trust says "we do
@@ -61,7 +61,7 @@ describe('marketing pages', () => {
    * object-fit on the hero and the width cap on the /why portrait, with no
    * error in the console and nothing visibly wrong until an image was real.
    */
-  it.each(['/', '/pricing', '/why', '/trust'])('emits unescaped CSS on %s', async (path) => {
+  it.each(['/', '/pricing', '/why', '/trust', '/terms'])('emits unescaped CSS on %s', async (path) => {
     const html = await (await get(path, fakeEnv())).text();
     const styles = [...html.matchAll(/<style[^>]*>([\s\S]*?)<\/style>/g)].map((m) => m[1]);
 
@@ -167,5 +167,38 @@ describe('machine-readable endpoints', () => {
     const expires = body.match(/^Expires: (.+)$/m)?.[1];
     expect(expires).toBeTruthy();
     expect(Date.parse(expires!)).toBeGreaterThan(Date.now());
+  });
+});
+
+/*
+ * The acceptable-use page is the one an adversary reads before deciding whether
+ * a complaint is worth filing. These assert the parts that make it answerable
+ * rather than decorative.
+ */
+describe('/terms', () => {
+  it('publishes the protections, not only the prohibitions', async () => {
+    const html = await (await get('/terms', fakeEnv())).text();
+    expect(html).toContain('What we will not remove you for');
+    for (const phrase of ['civil disobedience', 'Bail funds', 'Mutual aid', 'Strikes']) {
+      expect(html.toLowerCase()).toContain(phrase.toLowerCase());
+    }
+  });
+
+  it('says plainly that sealed content is unreadable to us', async () => {
+    const html = await (await get('/terms', fakeEnv())).text();
+    expect(html).toContain('do not read your channel messages');
+    expect(html).not.toMatch(/we (scan|monitor) (your )?(content|messages)/i);
+  });
+
+  it('states the two-person requirement for removing an organisation', async () => {
+    const html = await (await get('/terms', fakeEnv())).text();
+    expect(html).toContain('two people');
+  });
+
+  it('is reachable from every page footer', async () => {
+    for (const path of ['/', '/pricing', '/why', '/trust', '/terms']) {
+      const html = await (await get(path, fakeEnv())).text();
+      expect(html).toContain('href="/terms"');
+    }
   });
 });
