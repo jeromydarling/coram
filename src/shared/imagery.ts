@@ -99,6 +99,12 @@ const CROWD = /\b(crowd|crowded|packed|dozens|people|callers|everyone|others)\b/
  */
 export const BANNED = [
   /\braised fists?\b/i,
+  /* Naming three primary colours produced a hall full of matching t-shirts —
+     a school assembly rather than a meeting, and the uniformity read as
+     exactly the stock-photo grammar §8.2 bans. Describe varied everyday
+     clothing instead of specifying a palette for it. */
+  /\bmatching (shirts|t-shirts|uniforms)\b/i,
+  /\bred and yellow and blue shirts\b/i,
   /\briots?\b/i,
   /\btear gas\b/i,
   /\bflags?\b/i,
@@ -155,8 +161,9 @@ export const IMAGES: ImageSpec[] = [
     subject:
       'a packed community hall mid-meeting on a bright afternoon, photographed from the back of ' +
       'the room over the heads of the crowd, dozens of raised hands and the backs of heads, ' +
-      'everyone facing away toward tall windows with sun pouring through, red and yellow and ' +
-      'blue shirts, a long table of food along one wall',
+      'everyone facing away toward tall windows with sun pouring through, ordinary mismatched ' +
+      'everyday clothes in many different colours — work jackets, hoodies, cardigans, a ' +
+      'headscarf, a hi-vis vest — a long table of food along one wall',
     faceClause: 'seen entirely from behind, no faces visible',
     accent: true,
     width: 1920,
