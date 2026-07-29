@@ -1,0 +1,79 @@
+{
+  "code": "KS",
+  "name": "Kansas",
+  "asOf": "2026-07",
+
+  "initiative": {
+    "statute": "none",
+    "constitutional": "none",
+    "referendum": false,
+    "signatures": {
+      "statuteFormula": null,
+      "statuteCount": null,
+      "constitutionalFormula": null,
+      "constitutionalCount": null,
+      "referendumFormula": null,
+      "referendumCount": null,
+      "distribution": null,
+      "source": "https://ksrevisor.gov/kanconst.html"
+    },
+    "circulationDays": null,
+    "filingDeadline": null,
+    "subjectLimits": [],
+    "preFilingReview": null,
+    "process": "Kansas has NO statewide citizen initiative and NO statewide veto referendum. The Kansas Constitution contains no initiative or referendum article; its index of articles lists no such provision. Statewide ballot measures reach voters only when the Legislature refers a constitutional amendment (two-thirds of each chamber) or calls a constitutional convention. Citizen-drafted legislation therefore reaches the Kansas Legislature only by persuading a member or committee to introduce it, commonly with a 'By Request' notation after the sponsor's name.",
+    "source": "https://ksrevisor.gov/kanconst.html"
+  },
+
+  "localOrdinance": {
+    "citizenInitiative": true,
+    "notes": "Two distinct local routes. (1) Ordinance initiative, K.S.A. 12-3013: a proposed ordinance may be submitted to the city governing body by petition signed by electors equal to at least 25% (cities of the first class) or 40% (cities of the second and third class) of those who voted at the last regular city election. The governing body must either pass the ordinance without change within 20 days or call a special election (unless a regular election falls within 90 days). It does not apply to administrative ordinances, ordinances relating to special-assessment public improvements, or ordinances for which another statute prescribes a referendum. An ordinance adopted this way may not be repealed or amended except by a vote of the electors, or by the governing body after it has been in effect 10 years. Note the thresholds are very high by national standards. (2) Charter-ordinance protest referendum, Kan. Const. art. 12, sec. 5(c)(3): a charter ordinance does not take effect for 60 days after final publication, and a petition signed by electors equal to at least 10% of the number who voted at the last regular city election forces it to a referendum.",
+    "source": "https://ksrevisor.gov/statutes/chapters/ch12/012_030_0013.html"
+  },
+
+  "drafting": {
+    "manualUrl": "https://www.kslegresearch.org/KLRD-web/Publications/legproc.pdf",
+    "manualName": "Legislative Procedure in Kansas (Kansas Legislative Research Department, 12th edition, November 2006)",
+    "requiredSections": [
+      "title (every act must have one; the title of an amendatory or repealing act must specify the act or part amended or repealed)",
+      "enacting clause",
+      "body (one or more sections, unless the act is purely a repealing act)",
+      "repeal section, when applicable",
+      "section designating when the act takes effect"
+    ],
+    "enactingClause": "Be it enacted by the Legislature of the State of Kansas:",
+    "source": "https://ksrevisor.gov/kanconst/093_002_0020.html"
+  },
+
+  "legislature": {
+    "chambers": ["House of Representatives", "Senate"],
+    "sessionType": "Annual regular sessions organized on a two-year biennium. Odd-year sessions have no constitutional length limit; even-year sessions may not exceed 90 calendar days unless extended by a two-thirds vote of the members elected to each house.",
+    "typicalConvene": "second Monday in January",
+    "typicalAdjourn": "Even-year sessions must conclude within 90 calendar days of convening unless extended by two-thirds vote of each house; odd-year sessions have no constitutional deadline.",
+    "billIntroductionDeadline": "Set by joint rule each session rather than by constitution or statute; the joint rules fix separate cutoff dates for bill-drafting requests by individual members and committees and for introduction and consideration. A house may make exceptions by majority-vote resolution, and a different schedule may be adopted by concurrent resolution.",
+    "carryover": true,
+    "source": "https://ksrevisor.gov/kanconst/093_002_0008.html"
+  },
+
+  "data": {
+    "officialApi": "https://www.kslegislature.gov/li/api/v11/rev-1/",
+    "officialApiNotes": "Undocumented JSON endpoints served from the Legislature's own host and used by its website; e.g. https://www.kslegislature.gov/li/api/v11/rev-1/bill_status/hb2001/ returns bill number, effective-date clause, and full action history as JSON. Verified returning 200 with valid JSON on 2026-07-29. There is no published documentation, versioning policy, or terms of use, so treat it as unsupported.",
+    "bulkDownload": null,
+    "openStatesCoverage": "full",
+    "source": "https://open.pluralpolicy.com/data/session-csv/"
+  },
+
+  "citizenRoute": {
+    "canRequestDraft": false,
+    "notes": "Revisor of Statutes staff 'draft bills, resolutions, and other legislative documents upon request of any member or committee of the Legislature' and advise only members and committees. Only a member, a standing committee, an interim committee of either house, and certain statutory committees may introduce a bill. A member or committee may introduce a constituent's bill with the notation 'By Request' after the sponsor's name, which signals the sponsor is not necessarily an advocate. There is no public drafting-request channel.",
+    "source": "https://www.kslegresearch.org/KLRD-web/Publications/legproc.pdf"
+  },
+
+  "gaps": [
+    "All statewide signature fields are null because Kansas has no statewide initiative or veto referendum at all — this is a legal absence, not an unverified number. Verified against the Kansas Constitution's own article/section index at ksrevisor.gov, which contains no initiative or referendum provision.",
+    "Kansas publishes no public bill-drafting or style manual. The Office of the Revisor of Statutes site (ksrevisor.gov) lists no drafting guide, and its drafting standards appear to be internal. The manual URL given is the Kansas Legislative Research Department's 'Legislative Procedure in Kansas', which is the closest public substitute and does cover the structural parts of an act, but its most recent public edition is dated November 2006, so its rule and deadline details may be stale. The same PDF is also served from https://www.kslegislature.gov/static/docs/kansas_legislative_procedure.c2eb5d2f2675.pdf (linked from https://www.kslegislature.gov/b2025_26/legislative-procedure/), also the 2006 edition.",
+    "The Kansas Legislature JSON API is undocumented and unsupported; it timed out on one probe before succeeding on retry. Do not depend on its stability.",
+    "Specific joint-rule bill-introduction cutoff dates for the 2027 session were not confirmed; they are adopted anew each biennium.",
+    "Schema note: an extra 'referendumFormula'/'referendumCount' pair and a 'process' string were added inside the initiative object so that veto-referendum figures are never confused with initiative figures. Both are null here."
+  ]
+}

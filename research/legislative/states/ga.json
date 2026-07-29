@@ -1,0 +1,72 @@
+{
+  "code": "GA",
+  "name": "Georgia",
+  "asOf": "2026-07",
+
+  "initiative": {
+    "statute": "none",
+    "constitutional": "none",
+    "referendum": false,
+    "signatures": {
+      "statuteFormula": null,
+      "statuteCount": null,
+      "constitutionalFormula": null,
+      "constitutionalCount": null,
+      "distribution": null,
+      "source": "https://ballotpedia.org/Laws_governing_ballot_measures_in_Georgia"
+    },
+    "circulationDays": null,
+    "filingDeadline": null,
+    "subjectLimits": [],
+    "preFilingReview": null,
+    "notes": "Georgia citizens have NO power to initiate ballot measures at the state level — no initiated statute, no initiated constitutional amendment, and no veto referendum. There is no mention of the powers of initiative and referendum in the Georgia Constitution. Statewide measures reach the ballot only two ways: (1) a legislatively referred constitutional amendment, requiring a two-thirds vote of each chamber in a single legislative session (a minimum of 120 votes in the 180-member House and 38 votes in the 56-member Senate, absent vacancies); the Governor's signature is not required to refer it; or (2) a convention-referred change. The legislature may also refer statutory measures and advisory questions. The only citizen petition routes in Georgia are at the municipal level (see localOrdinance) and recall of elected officials.",
+    "source": "https://ballotpedia.org/Laws_governing_ballot_measures_in_Georgia"
+  },
+
+  "localOrdinance": {
+    "citizenInitiative": true,
+    "notes": "Georgia's real citizen-petition power is municipal, and it is a charter-amendment power rather than a general ordinance power. Under Ga. Const. art. IX, sec. II and O.C.G.A. sec. 36-35-3 (Municipal Home Rule), voters may petition to amend a municipal charter. Thresholds scale inversely with size, measured against electors registered for the last general municipal election: 25% for municipalities of 5,000 residents or fewer; 20% for municipalities over 5,000 but under 100,000; 15% for municipalities over 100,000. Signatures must be submitted within 60 days of the date the petition sponsor first obtained the petition copies from the clerk of the local governing body. These are high thresholds and a short window by national standards. Approved measures go to a general primary/election or to a statutorily fixed special-election date (in odd years, the third Tuesday in March or the Tuesday after the first Monday in November; in even years, the presidential preference primary date, the third Tuesday in March, the general primary date, or the Tuesday after the first Monday in November). Simple majority to pass. Georgia also allows recall of every elected official.",
+    "source": "https://ballotpedia.org/Laws_governing_local_ballot_measures_in_Georgia"
+  },
+
+  "drafting": {
+    "manualUrl": "https://www.legis.ga.gov/api/document/docs/default-source/legislative-counsel-document-library/a_brief_guide_to_legislation_v18.pdf?sfvrsn=d1ce9879_2",
+    "manualName": "A Brief Guide to Legislation for Members and Officers of the Georgia General Assembly (Office of Legislative Counsel), version 18",
+    "manualCaveat": "Verified live (HTTP 200, 1.6 MB PDF, 38 pages) and hosted by the General Assembly's own Office of Legislative Counsel document library. It is a scanned/image PDF with no extractable text layer, so its contents could not be machine-read during this research. Georgia does not appear to publish a separate public bill-drafting style manual; this Brief Guide is the Office of Legislative Counsel's public drafting reference and includes a primer on the constitutional requirements for legislation.",
+    "requiredSections": null,
+    "enactingClause": null,
+    "source": "https://www.legis.ga.gov/joint-office/legislative-counsel"
+  },
+
+  "legislature": {
+    "chambers": ["House of Representatives", "Senate"],
+    "sessionType": "Annual regular session limited to 40 legislative days, spread over roughly January to early April; the General Assembly sets its own calendar by resolution so the 40 legislative days do not map to 40 calendar days. Bicameral: up to 56 Senators and 180 Representatives, all elected to two-year terms, so a General Assembly spans a two-year term.",
+    "typicalConvene": "January. The 2026 regular session convened January 12, 2026.",
+    "typicalAdjourn": "The 40th legislative day, typically late March or early April. The 2026 regular session adjourned April 2, 2026.",
+    "billIntroductionDeadline": null,
+    "carryover": null,
+    "source": "https://ballotpedia.org/Dates_of_2026_state_legislative_sessions"
+  },
+
+  "data": {
+    "officialApi": "http://webservices.legis.ga.gov/GGAServices/",
+    "officialApiNotes": "Georgia operates a SOAP web service at webservices.legis.ga.gov (e.g. /GGAServices/Session/Service.svc, which responds HTTP 200) that backs legis.ga.gov and is the source third-party trackers scrape. It is undocumented and unsupported for public use — there is no published schema, key registration, or terms of service, and it may change without notice. legis.ga.gov itself is a JavaScript single-page application that returns no server-rendered HTML, so it cannot be scraped directly. For anything production-facing, prefer Open States (Plural) or LegiScan.",
+    "bulkDownload": "https://open.pluralpolicy.com/data/",
+    "openStatesCoverage": "full",
+    "source": "https://open.pluralpolicy.com/data/"
+  },
+
+  "citizenRoute": {
+    "canRequestDraft": false,
+    "notes": "The Office of Legislative Counsel is a joint office of the General Assembly created by statute in 1959 (O.C.G.A. sec. 28-4-3). It serves as legal counsel to the General Assembly and provides services 'to all members in their official capacities on a confidential, nonpartisan, and impartial basis' — that is, to members, not to the public. Most legislators rely on Legislative Counsel attorneys to draft the actual text of a bill. With no statewide initiative available, a Georgia resident's only route to a state law is to persuade a legislator to sponsor the idea and request the draft from Legislative Counsel.",
+    "source": "https://www.legis.ga.gov/joint-office/legislative-counsel"
+  },
+
+  "gaps": [
+    "Primary-source verification was limited for Georgia. legis.ga.gov is a JavaScript SPA that serves no readable HTML to a fetcher, sos.ga.gov returns 403, and both Justia's and NCSL's copies of the Georgia Constitution returned 403 from this environment. The statements that Georgia has no citizen initiative or referendum, and the local charter-amendment percentages, are therefore sourced to Ballotpedia rather than to the Georgia Constitution or O.C.G.A. text. Verify Ga. Const. art. X (amendments), art. III, sec. IV (sessions) and art. IX, sec. II with O.C.G.A. secs. 36-35-3 and 36-35-6 before publishing.",
+    "Could not verify from a primary source the constitutional session provisions (the second-Monday-in-January convening date and the 40-legislative-day limit); the 2026 dates recorded come from Ballotpedia's 2026 session calendar.",
+    "Could not verify whether bills carry over from the first to the second year of a Georgia General Assembly's two-year term (carryover is null), nor any bill-introduction deadline (Georgia uses a 'Crossover Day' convention set by resolution each session, which was not verified).",
+    "Georgia's required bill parts and enacting-clause wording are null — the Office of Legislative Counsel's Brief Guide is an image-only PDF that could not be machine-read.",
+    "County-level (as opposed to municipal) citizen petition power under Georgia's county home-rule provisions was not verified."
+  ]
+}

@@ -1,0 +1,77 @@
+{
+  "code": "NJ",
+  "name": "New Jersey",
+  "asOf": "2026-07",
+
+  "initiative": {
+    "statute": "none",
+    "constitutional": "none",
+    "referendum": false,
+    "signatures": {
+      "statuteFormula": null,
+      "statuteCount": null,
+      "constitutionalFormula": null,
+      "constitutionalCount": null,
+      "distribution": null,
+      "source": null
+    },
+    "circulationDays": null,
+    "filingDeadline": null,
+    "subjectLimits": [],
+    "preFilingReview": null,
+    "source": "https://www.njleg.state.nj.us/constitution"
+  },
+
+  "localOrdinance": {
+    "citizenInitiative": true,
+    "notes": "There is no statewide initiative, but municipal initiative and referendum exist in New Jersey municipalities that have adopted certain optional forms of government. The principal vehicle is the Faulkner Act (Optional Municipal Charter Law), N.J.S.A. 40:69A-184 et seq., which reserves to the voters of a Faulkner Act municipality the power to propose ordinances by initiative and to require submission of any ordinance to referendum. Commission-form municipalities have a parallel power under the Walsh Act, N.J.S.A. 40:74-1 et seq. Availability depends entirely on the municipality's charter form, so the first step for any local campaign is to determine which optional charter the municipality operates under. The signature threshold was not verified - see gaps.",
+    "source": "https://www.njleg.state.nj.us/constitution"
+  },
+
+  "drafting": {
+    "manualUrl": null,
+    "manualName": null,
+    "requiredSections": [
+      "title",
+      "enacting clause",
+      "numbered sections",
+      "when amending or reviving an existing law, the act revived or the section amended must be inserted at length (N.J. Const. art. IV, sec. 7, para. 5)",
+      "repealer where applicable",
+      "effective date section"
+    ],
+    "enactingClause": "Be it enacted by the Senate and General Assembly of the State of New Jersey.",
+    "source": "https://www.njleg.state.nj.us/constitution"
+  },
+
+  "legislature": {
+    "chambers": ["General Assembly", "Senate"],
+    "sessionType": "Two-year Legislature (40 senators, 80 assembly members) meeting year-round rather than in a short fixed session. Bills are introduced and heard throughout the two-year term. New Jersey is one of only a handful of states with no statewide initiative and no citizen veto referendum, so the legislative path and the local Faulkner Act path are the only routes available to a citizen drafter.",
+    "typicalConvene": "second Tuesday in January",
+    "typicalAdjourn": null,
+    "billIntroductionDeadline": null,
+    "carryover": true,
+    "source": "https://www.njleg.state.nj.us/our-legislature"
+  },
+
+  "data": {
+    "officialApi": null,
+    "officialApiNotes": "The Legislature runs a public downloads site covering bills by session, New Jersey Statutes, legislative votes from 1988 to the present, and bill tracking information in Microsoft Access database format, plus GIS district data. Each top-level directory carries a read-me file. There is no documented REST API.",
+    "bulkDownload": "https://www.njleg.state.nj.us/downloads",
+    "openStatesCoverage": "full",
+    "source": "https://www.njleg.state.nj.us/downloads"
+  },
+
+  "citizenRoute": {
+    "canRequestDraft": false,
+    "notes": "The Office of Legislative Services drafts bills for legislators; the public cannot request a draft. OLS does operate a Public Information Assistance office for the public (https://www.njleg.state.nj.us/public-info-assistance), and publishes citizen-facing guides including 'The Legislative Process in New Jersey' (https://pub.njleg.gov/publications/Legislative_Process.pdf), a 'Citizens Guide' (https://pub.njleg.gov/publications/Citizens_Guide.pdf) and a glossary. A citizen with draft language must recruit a senator or assembly member to introduce it. New Jersey's constitution does reserve one direct-democracy power to the people - recall of elected officials after at least one year of service (N.J. Const. art. I, para. 2(b)) - but not initiative or referendum.",
+    "source": "https://www.njleg.state.nj.us/publications"
+  },
+
+  "gaps": [
+    "New Jersey has NO statewide initiative and NO citizen veto referendum. Verified directly from N.J. Const. art. IX: amendments may be proposed only in the Senate or General Assembly, require three-fifths of all members of each house in one year (or a majority in each house in two consecutive legislative years), a public hearing at least 20 days after the text is placed on members' desks, newspaper publication at least three months before submission, and approval by a majority of voters voting; a rejected amendment may not be resubmitted before the third general election thereafter. The only reserved popular power in the constitution is recall (art. I, para. 2(b)).",
+    "New Jersey's Office of Legislative Services publishes no public bill drafting manual or style guide. manualUrl is therefore null. The closest public official substitutes are 'The Legislative Process in New Jersey' (https://pub.njleg.gov/publications/Legislative_Process.pdf) and the 'Citizens Guide' (https://pub.njleg.gov/publications/Citizens_Guide.pdf), both verified to resolve, but neither is a drafting style manual and neither should be presented as one.",
+    "The Faulkner Act initiative signature threshold (N.J.S.A. 40:69A-184 et seq.) could not be verified. The official statute host lis.njleg.state.nj.us serves the statutes through a legacy NXT gateway that was not retrievable here, and the Justia mirror returned HTTP 403. Commonly cited as a percentage of the votes cast in the municipality at the last general Assembly election, but that figure is NOT confirmed and must not be relied on.",
+    "The enacting clause is quoted from N.J. Const. art. IV, sec. 7, para. 6 ('The laws of this State shall begin in the following style: \"Be it enacted by the Senate and General Assembly of the State of New Jersey.\"'), verified directly. Bills as printed capitalize it; the constitutional text is what is recorded here.",
+    "Session adjournment practice and any bill introduction deadline were not verified against official legislative calendars."
+  ]
+}

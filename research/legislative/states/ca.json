@@ -1,0 +1,86 @@
+{
+  "code": "CA",
+  "name": "California",
+  "asOf": "2026-07",
+
+  "initiative": {
+    "statute": "direct",
+    "constitutional": "direct",
+    "referendum": true,
+    "signatures": {
+      "statuteFormula": "At least 5 percent of the total votes cast for the office of Governor at the last gubernatorial election (Cal. Const. art. II, § 8(b); Elec. Code § 9035).",
+      "statuteCount": 546651,
+      "constitutionalFormula": "At least 8 percent of the total votes cast for the office of Governor at the last gubernatorial election (Cal. Const. art. II, § 8(b); Elec. Code § 9035).",
+      "constitutionalCount": 874641,
+      "referendumFormula": "At least 5 percent of the total votes cast for the office of Governor at the last gubernatorial election (Cal. Const. art. II, § 9(b)).",
+      "referendumCount": 546651,
+      "countBasis": "From the Secretary of State's 2026 Statewide Initiative Guide. The base is 10,933,018 total votes cast for Governor at the November 2022 gubernatorial election (5% = 546,651; 8% = 874,641). California elects its governor in midterm years, so the 2022 canvass governs every petition circulated before the November 2026 gubernatorial election; these numbers will be recomputed from the 2026 canvass.",
+      "distribution": null,
+      "distributionNote": "California has no geographic distribution requirement.",
+      "source": "https://elections.cdn.sos.ca.gov/ballot-measures/pdf/statewide-initiative-guide.pdf"
+    },
+    "circulationDays": 180,
+    "filingDeadline": "Proponents have a maximum of 180 days from the Attorney General's official summary date to gather signatures and file the petition sections with county elections officials (Elec. Code § 9014). A qualifying petition is eligible for the next statewide general election held at least 131 days after it qualifies; the Secretary of State qualifies measures on the 131st day before the general election. Referendum is far tighter: only 90 days from the date of enactment of the bill to request and receive a circulating title and summary, circulate, gather 546,651 valid signatures, and file.",
+    "quarterMilestone": "Once proponents have gathered 25 percent of the required signatures (136,663 for an initiative statute, 218,661 for an initiative constitutional amendment) they must immediately certify that fact to the Secretary of State under penalty of perjury (Elec. Code § 9034(a)). Each house must then assign the measure to committee and hold joint public hearings at least 131 days before the election. The Legislature cannot amend the measure or keep it off the ballot (Elec. Code § 9034(c)).",
+    "subjectLimits": [
+      "single subject: 'no initiative measure addressing more than one subject area may be submitted to the voters or have any effect' (Cal. Const. art. II, § 8(d))",
+      "referendum may not be used on urgency statutes, statutes calling elections, or statutes providing for tax levies or appropriations for current expenses of the State (Cal. Const. art. II, § 9(a))"
+    ],
+    "preFilingReview": "Submit a printed copy of the text to the Attorney General with a written request for a circulating title and summary (Elec. Code § 9001). The Attorney General posts the text and runs a 30-DAY PUBLIC REVIEW PERIOD during which anyone may submit written comments, which are forwarded to the proponents (Elec. Code § 9002(a)). During that window the proponents (all of them, signing) may submit amendments, which must be reasonably germane to the theme, purpose or subject of the measure as originally proposed; no amendment is accepted more than five days after the review period closes (Elec. Code § 9002(b)). After the review period the Attorney General prepares the circulating title and summary (Elec. Code § 9004(a)), including in boldface a fiscal estimate jointly prepared by the Department of Finance and the Legislative Analyst within 50 days (Elec. Code § 9005). Optionally, proponents may ask the Secretary of State to review the measure for form and language clarity and obtain a Legislative Analyst fiscal statement before circulation (Gov. Code § 12172).",
+    "signatureVerification": "Random sampling: if the projected valid count is under 95 percent of the requirement the measure fails; between 95 and 110 percent triggers a full check; over 110 percent the measure is eligible (Elec. Code §§ 9030-9031).",
+    "source": "https://elections.cdn.sos.ca.gov/ballot-measures/pdf/statewide-initiative-guide.pdf"
+  },
+
+  "localOrdinance": {
+    "citizenInitiative": true,
+    "notes": "City (general law): an initiative petition signed by not less than 10 percent of the voters of the city, per the last report of registration to the Secretary of State effective when the notice of intention was published (or, in a city with 1,000 or fewer registered voters, 25 percent of the voters or 100 voters, whichever is less), obliges the legislative body either to adopt the ordinance without alteration, submit it to the voters, or order a report and then do one of the two (Elec. Code § 9215). A higher threshold under Elec. Code § 9214 compels a special election rather than waiting for the next regular one; that percentage was not verified here. County: an initiative petition signed by voters not less in number than 10 percent of the entire vote cast in the county for all candidates for Governor at the last gubernatorial election preceding publication of the notice of intention obliges the board of supervisors to adopt the ordinance or put it to the voters (Elec. Code § 9118). Charter cities may set their own procedures by charter.",
+    "source": "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?sectionNum=9215.&lawCode=ELEC"
+  },
+
+  "drafting": {
+    "manualUrl": null,
+    "manualName": null,
+    "manualUrlNote": "California is an outlier: the Office of Legislative Counsel does not publish a public bill drafting manual or style guide. NCSL's online drafting manuals list records California as 'Not available', and legislativecounsel.ca.gov lists no such publication. The closest official substitute for a citizen drafter is the Secretary of State's 2026 Statewide Initiative Guide (https://elections.cdn.sos.ca.gov/ballot-measures/pdf/statewide-initiative-guide.pdf), which covers process rather than drafting style, plus the free Legislative Counsel drafting service described in citizenRoute below — which is the intended path.",
+    "requiredSections": null,
+    "enactingClause": "The people of the State of California do enact as follows:",
+    "enactingClauseNote": "This is the clause that appears at the head of every California statute (verified against the text of a 2025-2026 session bill on leginfo). It is a Legislative Counsel drafting convention: the former constitutional command prescribing it was removed in the 1966 constitutional revision and no current statute was found that prescribes it. Initiative measures conventionally use the same clause.",
+    "source": "https://leginfo.legislature.ca.gov/faces/billTextClient.xhtml?bill_id=202520260AB1"
+  },
+
+  "legislature": {
+    "chambers": ["Assembly", "Senate"],
+    "sessionType": "Biennial two-year session. The Legislature convenes in regular session at noon on the first Monday in December of each even-numbered year, and the session ends at midnight on November 30 of the following even-numbered year (Cal. Const. art. IV, § 3(a)).",
+    "typicalConvene": "First Monday in December of each even-numbered year (organizational); regular business resumes in January.",
+    "typicalAdjourn": "November 30 of the even-numbered year — the constitutional end of the two-year session.",
+    "billIntroductionDeadline": null,
+    "carryover": true,
+    "carryoverNote": "True by structure: the session runs two years, so bills introduced in the first year remain alive into the second year of the same biennium (subject to Joint Rule deadlines, which were not verified). Everything dies at the November 30 end of the biennium.",
+    "thirtyDayRule": "No bill other than the budget bill may be heard or acted on by committee or either house until the 31st day after introduction, unless waived by three-fourths vote (Cal. Const. art. IV, § 8). No bill may be passed unless it has been printed, distributed and published on the Internet in final form for at least 72 hours before the vote.",
+    "source": "https://leginfo.legislature.ca.gov/faces/codes_displayText.xhtml?lawCode=CONS&division=&title=&part=&chapter=&article=IV"
+  },
+
+  "data": {
+    "officialApi": null,
+    "officialApiNotes": "California publishes no REST API for legislative data. The official machine-readable channel is bulk download of the LegInfo public data set.",
+    "bulkDownload": "https://downloads.leginfo.legislature.ca.gov/",
+    "bulkDownloadNotes": "Open directory index of pubinfo_*.zip archives, one per session going back to 1989, plus current-session daily archives (verified 2026-07-29). Each archive contains delimited files intended for load into a relational database (bills, versions, history, authors, committees, votes).",
+    "openStatesCoverage": "full",
+    "openStatesNotes": "Open States (Plural) lists California bulk CSV archives across 65+ sessions, 1989-2026 — the deepest coverage of any state.",
+    "source": "https://downloads.leginfo.legislature.ca.gov/"
+  },
+
+  "citizenRoute": {
+    "canRequestDraft": true,
+    "notes": "CALIFORNIA IS THE STRONGEST CITIZEN-DRAFTING ROUTE OF THESE FIVE STATES. Under Gov. Code § 10243, initiative proponents may obtain assistance from the Office of Legislative Counsel in drafting the language of the proposed law. The proponents submit a written request signed by 25 or more electors; if the Legislative Counsel determines there is a reasonable probability the measure will eventually be submitted to the voters, the Legislative Counsel will draft the proposed law. Office of Legislative Counsel, 1021 O Street, Suite 3210, Sacramento, CA 95814, (916) 341-8000, www.legislativecounsel.ca.gov. Separately, the Secretary of State will on request review a drafted measure for form and language clarity and obtain a fiscal statement from the Legislative Analyst's Office before circulation (Gov. Code § 12172).",
+    "source": "https://elections.cdn.sos.ca.gov/ballot-measures/pdf/statewide-initiative-guide.pdf"
+  },
+
+  "gaps": [
+    "Could not verify a California bill introduction deadline. Deadlines are set by the Joint Rules of the Senate and Assembly (Joint Rule 54 et seq.), which were not retrieved. The commonly cited 'February of the second year' date is a Joint Rule deadline, not a constitutional one, and it is re-adopted each biennium — do not present it as fixed.",
+    "Could not verify the percentage in Elec. Code § 9214 (the city-initiative threshold that compels a special election rather than placement on the next regular ballot); the leginfo page for § 9214 did not render its section text on 2026-07-29. Only the § 9215 10-percent regular-election threshold is recorded.",
+    "No public California bill drafting manual exists to link to. manualUrl is null by fact, not by uncertainty. Route organizers to the Legislative Counsel drafting service under Gov. Code § 10243 instead.",
+    "The enacting clause is recorded from the text of an actual session bill, which is evidence of universal practice, not of a rule. No current constitutional or statutory provision prescribing it was located.",
+    "Charter city initiative thresholds vary by charter and were not surveyed.",
+    "The 546,651 / 874,641 figures are from the Secretary of State's 2026 Statewide Initiative Guide and are keyed to the November 2022 gubernatorial election. They will change once the November 2026 gubernatorial results are certified — any campaign planning to circulate in 2027 must use the new numbers."
+  ]
+}
