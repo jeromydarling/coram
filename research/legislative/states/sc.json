@@ -44,7 +44,7 @@
   "legislature": {
     "chambers": ["House of Representatives", "Senate"],
     "sessionType": "Two-year session (the 126th General Assembly runs 2025-2026), with an annual session each year.",
-    "typicalConvene": "The second Tuesday of January of each year, at the State Capitol in Columbia (S.C. Const. art. III, sec. 9).",
+    "typicalConvene": "The second Tuesday of January of each year, at the State Capitol in Columbia (S.C. Const. art. III, sec. 9, verified at https://www.scstatehouse.gov/scconstitution/A03.pdf).",
     "typicalAdjourn": "Sine die not later than 5:00 p.m. on the second Thursday in May (S.C. Code sec. 2-1-180). The session is extended automatically one statewide day for each statewide day after March 31 that the House has not given the general appropriations bill third reading; it may also be extended up to two weeks on a post-April-10 Board of Economic Advisors forecast reduction with the agreement of the Speaker and the President, or by a two-thirds concurrent resolution of both chambers adopted by 5:00 p.m. on the second Thursday in May.",
     "billIntroductionDeadline": null,
     "carryover": true,

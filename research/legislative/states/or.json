@@ -51,12 +51,12 @@
 
   "legislature": {
     "chambers": ["House of Representatives", "Senate"],
-    "sessionType": "Annual sessions since the 2010 constitutional amendment: a maximum of 160 days in odd-numbered years and 35 days in even-numbered years (Or. Const. art. IV, sec. 10). Either may be extended by five days by a two-thirds vote of each house, more than once.",
-    "typicalConvene": "Odd-numbered years: the Tuesday after the Martin Luther King, Jr. holiday. Even-numbered years: February 1, except that when February 1 falls on a Thursday, Friday, Saturday or Sunday the session begins on the first Monday in February.",
+    "sessionType": "Annual sessions since the 2010 constitutional amendment: sessions may not exceed 160 days in odd-numbered years and 35 days in even-numbered years (Or. Const. art. IV, sec. 10). Either may be extended by five days by a two-thirds vote of each house, more than once.",
+    "typicalConvene": "In odd-numbered years the Legislative Assembly convenes on the second Monday in January for swearing-in and organizational procedures. Statute additionally fixes the start of business for odd-year sessions on the Tuesday after the Martin Luther King, Jr. holiday and for even-year sessions on February 1, or the first Monday in February when February 1 falls on a Thursday through Sunday; the statutory even-year date was not verified against ORS text.",
     "typicalAdjourn": null,
     "billIntroductionDeadline": null,
     "carryover": null,
-    "source": "https://sos.oregon.gov/blue-book/Pages/state/legislative/about.aspx"
+    "source": "https://www.oregonlegislature.gov/citizen_engagement/Pages/Legislative-Process.aspx"
   },
 
   "data": {
