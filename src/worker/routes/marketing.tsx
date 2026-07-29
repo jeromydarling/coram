@@ -48,117 +48,143 @@ export const marketing = new Hono<{ Bindings: Env; Variables: Vars }>();
 const STYLE = `
   :root {
     color-scheme: light dark;
-    --fg: #1c1a17; --bg: #fbfaf7; --muted: #6b6560;
-    --line: #e2ddd6; --accent: #c9821f; --warn: #b03a2e;
+    --fg: #17150f; --bg: #faf8f3; --muted: #6d665c;
+    --line: #e4ded2; --accent: #b8721a; --warn: #a8341f;
+    --ink: #100e0a;            /* dark bands */
+    --ink-fg: #f2ece1;
+    --measure: 34rem;
+    /* System serif. §10 forbids external fonts, and a display serif against a
+       sans body is what stops this reading as a default stylesheet. */
+    --display: ui-serif, Iowan Old Style, Palatino Linotype, Georgia, serif;
+    --body: ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif;
   }
   @media (prefers-color-scheme: dark) {
-    :root { --fg: #ece7df; --bg: #191715; --muted: #9b938a; --line: #333029; }
+    :root { --fg: #ece6da; --bg: #14120f; --muted: #9a9184; --line: #2e2a23;
+            --ink: #0b0a08; --ink-fg: #f2ece1; --accent: #d08a25; }
   }
   * { box-sizing: border-box; }
   body { margin: 0; background: var(--bg); color: var(--fg);
-         font: 17px/1.6 ui-sans-serif, system-ui, -apple-system, sans-serif; }
-  main, header, footer { max-width: 46rem; margin: 0 auto; padding: 0 1.25rem; }
-  header { padding-top: 2rem; padding-bottom: 1rem; }
-  nav a { color: var(--muted); text-decoration: none; margin-right: 1.25rem; font-size: .95rem; }
-  nav a:hover { color: var(--fg); }
-  h1 { font-size: 2.1rem; line-height: 1.15; letter-spacing: -.02em; margin: 2.5rem 0 .75rem; }
-  h2 { font-size: 1.3rem; margin: 3rem 0 .75rem; letter-spacing: -.01em; }
-  h3 { font-size: 1rem; margin: 1.75rem 0 .35rem; }
-  p { margin: 0 0 1rem; max-width: 34em; }
-  .lead { font-size: 1.15rem; color: var(--muted); }
-  .muted { color: var(--muted); }
-  ul { padding-left: 1.1rem; }
-  li { margin-bottom: .4rem; }
-  table { border-collapse: collapse; width: 100%; font-size: .9rem; margin: 1rem 0; }
-  th, td { text-align: left; padding: .5rem .6rem; border-bottom: 1px solid var(--line); }
-  th { font-weight: 600; }
-  /* §8.3: sticky first column on mobile. */
-  .scroll { overflow-x: auto; }
-  .scroll th:first-child, .scroll td:first-child {
-    position: sticky; left: 0; background: var(--bg); }
-  .card { border: 1px solid var(--line); border-radius: 8px; padding: 1rem 1.1rem; margin: .75rem 0; }
-  .flag { border-left: 3px solid var(--warn); padding: .6rem 0 .6rem .9rem; margin: 1.5rem 0; }
-  .highlight { border-left: 3px solid var(--accent); padding: .6rem 0 .6rem .9rem; }
-  footer { border-top: 1px solid var(--line); margin-top: 4rem; padding-top: 1.5rem;
-           padding-bottom: 4rem; font-size: .9rem; color: var(--muted); }
-  footer a { color: var(--muted); }
-  code { font-size: .9em; }
+         font: 400 17px/1.65 var(--body); -webkit-font-smoothing: antialiased; }
 
-  /* ---- §8.1 hero: full-bleed, dark scrim, Ken Burns on the frame ---- */
-  .hero { position: relative; width: 100%; height: min(82vh, 640px);
-          overflow: hidden; background: #14120f; }
-  /* The animated element. Scaling this never re-decodes the image inside it. */
+  /* One column rule. Bands break out of it deliberately. */
+  .col { max-width: 46rem; margin: 0 auto; padding: 0 1.5rem; }
+
+  header { padding: 1.6rem 0 .4rem; }
+  nav { display: flex; align-items: baseline; gap: 1.5rem; }
+  nav .wordmark { font-family: var(--display); font-size: 1.15rem; letter-spacing: .01em;
+                  color: var(--fg); text-decoration: none; margin-right: auto; }
+  nav a { color: var(--muted); text-decoration: none; font-size: .93rem; }
+  nav a:hover { color: var(--fg); }
+
+  h1, h2, h3 { font-family: var(--display); font-weight: 500; letter-spacing: -.015em; }
+  h1 { font-size: clamp(2.3rem, 6vw, 3.6rem); line-height: 1.05; margin: 0 0 1rem; }
+  h2 { font-size: clamp(1.5rem, 3.2vw, 2rem); line-height: 1.15; margin: 4.5rem 0 1rem; }
+  h3 { font-size: 1.02rem; margin: 0 0 .2rem; letter-spacing: -.005em; }
+  p { margin: 0 0 1.15rem; max-width: var(--measure); }
+  .lead { font-size: 1.2rem; line-height: 1.5; color: var(--muted); max-width: 30em; }
+  .muted { color: var(--muted); }
+  .small { font-size: .87rem; }
+  a { color: inherit; text-underline-offset: .18em; text-decoration-thickness: 1px; }
+  ul { padding-left: 1.1rem; } li { margin-bottom: .4rem; }
+
+  /* ---- §8.1 hero ---- */
+  .hero { position: relative; width: 100%; height: min(88vh, 720px);
+          overflow: hidden; background: var(--ink); }
   .hero-frame { position: absolute; inset: 0; will-change: transform; }
   .hero-frame img, .hero-frame > div { width: 100%; height: 100%; object-fit: cover; display: block; }
-  /*
-   * Tuned against the actual photograph, not guessed. The subject of the hero
-   * sits in the lower third — which is also where the copy sits — so a scrim
-   * heavy enough to guarantee text contrast everywhere turns a crowded hall
-   * into an empty dark room. This stays light through the top two thirds and
-   * ramps late, and the headline gets a shadow of its own instead of making
-   * the whole image pay for its legibility.
-   */
   .hero-scrim { position: absolute; inset: 0;
-                background: linear-gradient(180deg, rgba(20,18,15,.18) 0%,
-                            rgba(20,18,15,.30) 42%, rgba(20,18,15,.62) 72%,
-                            rgba(20,18,15,.88) 100%); }
-  .hero-copy { position: absolute; left: 0; right: 0; bottom: 0;
-               max-width: 46rem; margin: 0 auto; padding: 0 1.25rem 2.75rem; }
-  .hero-copy h1 { color: #f8f5f0; margin: 0 0 .6rem; font-size: clamp(2rem, 5.2vw, 3.1rem);
-                  text-shadow: 0 1px 24px rgba(12,10,8,.85), 0 1px 3px rgba(12,10,8,.6); }
-  .hero-copy p { color: #ddd6cb; margin: 0; max-width: 30em;
-                 text-shadow: 0 1px 16px rgba(12,10,8,.9); }
+                background: linear-gradient(180deg, rgba(16,14,10,.18) 0%,
+                            rgba(16,14,10,.28) 40%, rgba(16,14,10,.60) 70%,
+                            rgba(16,14,10,.90) 100%); }
+  .hero-copy { position: absolute; left: 0; right: 0; bottom: 0; padding-bottom: 3rem; }
+  .hero-copy h1 { color: #fbf7f0; max-width: 15ch;
+                  text-shadow: 0 2px 40px rgba(8,6,4,.7); }
+  .hero-copy p { color: #ded5c7; max-width: 32ch; margin: 0;
+                 text-shadow: 0 1px 20px rgba(8,6,4,.85); }
 
-  /* ---- §8.1 "The problem": six tools converge on one mark ---- */
-  /* overflow:hidden is structural, not cosmetic — the scattered state of the
-     scroll sequence must never reach the copy of the next section. */
-  .merge { position: relative; height: 360px; margin: 2rem 0 1.5rem;
-           overflow: hidden; border: 1px solid var(--line); border-radius: 8px;
-           background: linear-gradient(180deg, transparent, rgba(201,130,31,.04)); }
+  /* ---- full-bleed photographic bands ---- */
+  .band { position: relative; width: 100%; margin: 4.5rem 0; overflow: hidden;
+          background: var(--ink); }
+  .band img, .band > div { width: 100%; display: block;
+                           max-height: 62vh; object-fit: cover; }
+  .band figcaption { color: var(--muted); font-size: .84rem; padding: .7rem 1.5rem 0;
+                     max-width: 46rem; margin: 0 auto; }
+
+  /* ---- the dark commitments section: §8.1 calls this the emotional centre ---- */
+  .creed { background: var(--ink); color: var(--ink-fg); padding: 5rem 0 5.5rem;
+           margin: 5rem 0; position: relative; }
+  .creed h2 { margin: 0 0 2.5rem; color: var(--ink-fg); }
+  .creed p { font-family: var(--display); font-size: clamp(1.35rem, 3vw, 1.85rem);
+             line-height: 1.4; max-width: 32ch; margin: 0 0 2.2rem; color: var(--ink-fg); }
+  .creed p:last-child { margin-bottom: 0; }
+  .creed .rule { width: 2.5rem; height: 2px; background: var(--accent);
+                 margin-bottom: 2.5rem; }
+
+  /* ---- §8.1 "The problem": six tools converge ---- */
+  .merge { position: relative; height: 380px; margin: 2.5rem 0 1rem;
+           overflow: hidden; border-radius: 10px;
+           background: radial-gradient(80% 70% at 50% 50%, rgba(184,114,26,.07), transparent 70%); }
   .tool { position: absolute; transform-origin: center;
-          width: 8.5rem; margin-left: -4.25rem; margin-top: -1.1rem;
-          border: 1px solid var(--line); border-radius: 6px; background: var(--bg);
-          padding: .4rem .5rem; font-size: .78rem; text-align: center; color: var(--muted);
+          width: 8.5rem; margin-left: -4.25rem; margin-top: -1.05rem;
+          border: 1px solid var(--line); border-radius: 999px; background: var(--bg);
+          padding: .38rem .6rem; font-size: .78rem; text-align: center; color: var(--muted);
           will-change: transform; }
-  .merge-mark { position: absolute; left: 50%; top: 50%; width: 104px; height: 104px;
-                margin: -52px 0 0 -52px; will-change: transform, opacity; }
+  .merge-mark { position: absolute; left: 50%; top: 50%; width: 116px; height: 116px;
+                margin: -58px 0 0 -58px; will-change: transform, opacity; }
   @media (max-width: 34rem) {
     .merge { height: 320px; }
-    .tool { width: 6.5rem; margin-left: -3.25rem; font-size: .7rem; }
+    .tool { width: 6.6rem; margin-left: -3.3rem; font-size: .7rem; }
   }
 
   /* ---- §8.1 module grid ---- */
-  .grid { display: grid; gap: .75rem; margin: 1rem 0;
-          grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr)); }
-  /* Column + auto margin so every demo sits on the card's baseline however
-     long the description wraps. Ragged demo positions read as a bug. */
-  .module { border: 1px solid var(--line); border-radius: 8px; padding: .85rem .9rem;
+  /* Self-bordered cards rather than a hairline grid drawn by the container's
+     background. Eleven cards never fill a responsive grid evenly, and with a
+     divider colour behind them the leftover cell reads as a rendering fault.
+     Cards that own their own border let empty cells be invisible. */
+  .grid { display: grid; gap: .8rem; margin: 2rem 0 0;
+          grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr)); }
+  .module { background: var(--bg); padding: 1.05rem 1.1rem .95rem;
+            border: 1px solid var(--line); border-radius: 9px;
             display: flex; flex-direction: column; will-change: transform, opacity; }
-  .module h3 { margin: 0 0 .15rem; font-size: .95rem; }
-  .module p { margin: 0; font-size: .85rem; color: var(--muted); max-width: none; }
-  .module svg { display: block; margin-top: auto; padding-top: .9rem;
-                width: 100%; height: 34px; overflow: visible; }
+  .module p { margin: 0; font-size: .87rem; color: var(--muted); max-width: none; }
+  .module svg { display: block; margin-top: auto; padding-top: 1.15rem;
+                width: 100%; height: 42px; overflow: visible; }
   .module svg [data-demo-part] { transform-origin: center bottom; }
 
-  /* ---- §8.1 "Why we built this": editorial column, 68ch measure ---- */
-  .editorial { max-width: 68ch; }
-  .editorial p { max-width: none; line-height: 1.75; }
-  .portrait { float: right; width: 15rem; margin: .35rem 0 1rem 1.5rem; border-radius: 6px; }
-  /* height:auto is required, not tidiness. <img> carries width and height
-     attributes so the browser can reserve space before the bytes land, and
-     those act as presentational hints — constraining only the width leaves
-     the height hint in force and the picture renders squashed. */
-  .portrait img, .portrait > div { width: 100%; height: auto;
-                                   border-radius: 6px; display: block; }
-  @media (max-width: 40rem) { .portrait { float: none; width: 100%; margin: 1rem 0; } }
 
-  .full { max-width: none; padding: 0; }
+  /* ---- §8.3 comparison ---- */
+  .scroll { overflow-x: auto; margin: 1.5rem 0; }
+  table { border-collapse: collapse; width: 100%; font-size: .89rem; min-width: 40rem; }
+  th, td { text-align: left; padding: .62rem .7rem; border-bottom: 1px solid var(--line); }
+  thead th { font-family: var(--body); font-weight: 600; font-size: .8rem;
+             text-transform: uppercase; letter-spacing: .06em; color: var(--muted);
+             border-bottom-width: 1px; }
+  tbody th { font-weight: 500; }
+  /* The column the reader is here for — scoped to the comparison table.
+     Unscoped, nth-child(2) tinted the "Who" column on the pricing table,
+     which is a different table that happens to share a tag name. */
+  .compare th:nth-child(2), .compare td:nth-child(2) {
+    background: rgba(184,114,26,.07); font-weight: 600; }
+  .scroll th:first-child, .scroll td:first-child {
+    position: sticky; left: 0; background: var(--bg); }
 
-  /*
-   * §8.4: a real static fallback, not a zero-duration transition. The motion
-   * bundle returns early under reduced motion, leaving the server-rendered
-   * state — this only stops anything mid-flight and disables hover drift.
-   */
+  .card { border: 1px solid var(--line); border-radius: 10px; padding: 1.1rem 1.2rem; margin: .8rem 0; }
+  .flag { border-left: 2px solid var(--warn); padding: .6rem 0 .6rem 1rem; margin: 1.75rem 0; }
+  .highlight { border-left: 2px solid var(--accent); padding: .75rem 0 .75rem 1rem; margin: 1.5rem 0; }
+
+  footer { border-top: 1px solid var(--line); margin-top: 5rem; padding-top: 2rem;
+           padding-bottom: 4rem; font-size: .9rem; color: var(--muted); }
+  footer a { color: var(--muted); }
+
+  /* ---- /why editorial ---- */
+  .editorial { max-width: 40rem; }
+  .editorial p { max-width: none; line-height: 1.78; }
+  .editorial p:first-of-type { font-size: 1.15rem; }
+  .portrait { float: right; width: 16rem; margin: .4rem 0 1.25rem 2rem; }
+  .portrait img, .portrait > div { width: 100%; height: auto; border-radius: 8px; display: block; }
+  .portrait figcaption { font-size: .8rem; color: var(--muted); margin-top: .5rem; }
+  @media (max-width: 42rem) { .portrait { float: none; width: 100%; margin: 1.5rem 0; } }
+
   @media (prefers-reduced-motion: reduce) {
     * { animation: none !important; transition: none !important; }
   }
@@ -225,22 +251,22 @@ function Page(props: {
         {props.motion ? <script type="module" src="/marketing/motion.js" defer /> : null}
       </head>
       <body>
-        <header>
+        <header class="col">
           <nav>
-            <a href="/">Coram</a>
+            <a class="wordmark" href="/">Coram</a>
             <a href="/why">Why</a>
             <a href="/pricing">Pricing</a>
             <a href="/trust">Trust</a>
           </nav>
         </header>
         {props.children}
-        <footer>
+        <footer class="col">
           <p>
             <a href="/canary.txt">Warrant canary</a> ·{' '}
             <a href="/.well-known/security.txt">security.txt</a> ·{' '}
             <a href="/trust">Trust</a>
           </p>
-          <p>Coram is closed source. We publish audits instead of code.</p>
+          <p class="small">Coram is closed source. We publish audits instead of code.</p>
         </footer>
       </body>
     </html>
@@ -296,7 +322,7 @@ function Demo({ kind }: { kind: 'rows' | 'graph' | 'grid' | 'send' | 'bars' | 's
     case 'bars':
       return (
         <svg data-demo viewBox="0 0 120 32" aria-hidden="true">
-          {[6, 14, 10, 22, 17, 27].map((h, i) => bar(i * 12, h, 0.35 + i * 0.11))}
+          {[6, 14, 10, 22, 17, 27].map((h, i) => bar(i * 12, h, 0.5 + i * 0.09))}
         </svg>
       );
     case 'rows':
@@ -311,7 +337,7 @@ function Demo({ kind }: { kind: 'rows' | 'graph' | 'grid' | 'send' | 'bars' | 's
               height="4"
               rx="2"
               fill="var(--fg)"
-              opacity={0.7 - i * 0.13}
+              opacity={0.85 - i * 0.13}
             />
           ))}
         </svg>
@@ -319,7 +345,7 @@ function Demo({ kind }: { kind: 'rows' | 'graph' | 'grid' | 'send' | 'bars' | 's
     case 'graph':
       return (
         <svg data-demo viewBox="0 0 120 32" aria-hidden="true">
-          <path d="M12 16 L44 8 M12 16 L44 26 M44 8 L84 16 M44 26 L84 16" stroke="var(--line)" stroke-width="1.5" fill="none" />
+          <path d="M12 16 L44 8 M12 16 L44 26 M44 8 L84 16 M44 26 L84 16" stroke="var(--muted)" stroke-width="1.5" fill="none" opacity="0.5" />
           {[
             [12, 16],
             [44, 8],
@@ -327,7 +353,7 @@ function Demo({ kind }: { kind: 'rows' | 'graph' | 'grid' | 'send' | 'bars' | 's
             [84, 16],
             [108, 16],
           ].map(([cx, cy], i) => (
-            <circle data-demo-part cx={cx} cy={cy} r="4.5" fill="var(--fg)" opacity={0.4 + i * 0.14} />
+            <circle data-demo-part cx={cx} cy={cy} r="5" fill="var(--fg)" opacity={0.55 + i * 0.11} />
           ))}
         </svg>
       );
@@ -343,7 +369,7 @@ function Demo({ kind }: { kind: 'rows' | 'graph' | 'grid' | 'send' | 'bars' | 's
               height="11"
               rx="2"
               fill="var(--fg)"
-              opacity={0.2 + ((i * 7) % 10) / 14}
+              opacity={0.38 + ((i * 7) % 10) / 13}
             />
           ))}
         </svg>
@@ -360,10 +386,10 @@ function Demo({ kind }: { kind: 'rows' | 'graph' | 'grid' | 'send' | 'bars' | 's
               height="8"
               rx="4"
               fill="var(--fg)"
-              opacity={0.65 - i * 0.16}
+              opacity={0.8 - i * 0.15}
             />
           ))}
-          <circle data-demo-part cx="106" cy="16" r="6" fill="var(--accent)" opacity="0.8" />
+          <circle data-demo-part cx="106" cy="16" r="6.5" fill="var(--accent)" />
         </svg>
       );
     case 'shield':
@@ -378,7 +404,7 @@ function Demo({ kind }: { kind: 'rows' | 'graph' | 'grid' | 'send' | 'bars' | 's
               fill="none"
               stroke="var(--fg)"
               stroke-width="1.5"
-              opacity={0.2 + i * 0.2}
+              opacity={0.35 + i * 0.22}
             />
           ))}
         </svg>
@@ -387,7 +413,7 @@ function Demo({ kind }: { kind: 'rows' | 'graph' | 'grid' | 'send' | 'bars' | 's
       return (
         <svg data-demo viewBox="0 0 120 32" aria-hidden="true">
           {[0, 1, 2].map((i) => (
-            <rect data-demo-part x="0" y={i * 11} width={112 - i * 24} height="5" rx="2.5" fill="var(--fg)" opacity="0.55" />
+            <rect data-demo-part x="0" y={i * 11} width={112 - i * 24} height="5" rx="2.5" fill="var(--fg)" opacity="0.72" />
           ))}
           {/* The redaction: §5.10 strips identifying values before inference. */}
           <rect data-demo-part x="42" y="11" width="34" height="5" rx="2.5" fill="var(--accent)" />
@@ -424,32 +450,38 @@ marketing.get('/', (c) =>
         </div>
         <div class="hero-scrim" />
         <div class="hero-copy">
-          <h1>Everything your movement runs on. One place.</h1>
-          <p>
-            Replaces your CRM, events tool, texting tool, donation page, spreadsheet, and group
-            chat. One login, one shared record of who your people are.
-          </p>
+          <div class="col">
+            <h1>Everything your movement runs on. One place.</h1>
+            <p>
+              Replaces your CRM, events tool, texting tool, donation page, spreadsheet, and
+              group chat. One login, one shared record of who your people are.
+            </p>
+          </div>
         </div>
       </section>
 
-      <main>
-        {/* 2. The problem (§8.1) — six tools drift, collide, merge into the mark. */}
+      {/* 2. The problem (§8.1) — six tools drift, collide, merge into the mark. */}
+      <div class="col">
         <h2>The problem</h2>
         <p>
           A typical group runs six disconnected tools with no shared data layer. The person who
-          came to Tuesday's meeting, gave twenty dollars, and replied to a text is three different
-          records in three systems that have never met.
+          came to Tuesday's meeting, gave twenty dollars, and replied to a text is three
+          different records in three systems that have never met.
         </p>
         <p>
           The market is fragmented because organizers are poor, not because they prefer variety.
         </p>
 
         {/*
-         * Rendered merged: this is the finished state of the scroll sequence
-         * and, unchanged, the static fallback §8.1 asks for under reduced
-         * motion or no JavaScript.
+         * Rendered merged: the finished state of the scroll sequence, and
+         * unchanged, the static fallback §8.1 asks for under reduced motion.
          */}
-        <div class="merge" data-motion="merge" role="img" aria-label="Six separate tools — CRM, events, texting, donations, spreadsheet, group chat — gathered into one.">
+        <div
+          class="merge"
+          data-motion="merge"
+          role="img"
+          aria-label="Six separate tools — CRM, events, texting, donations, spreadsheet, group chat — gathered into one."
+        >
           {REPLACED.map((label, i) => {
             const angle = (i / REPLACED.length) * Math.PI * 2 - Math.PI / 2;
             return (
@@ -463,23 +495,35 @@ marketing.get('/', (c) =>
             );
           })}
           <div class="merge-mark" data-mark>
-            <Mark />
+            <Mark size={116} />
           </div>
         </div>
+      </div>
 
-        {/* 3. What we owe you (§8.1, §2) — the emotional centre. Four sentences,
-            no icons, no headers on each. No tradition named. */}
-        <h2>What we owe you</h2>
-        <p>We do not surveil the people who use this.</p>
-        <p>
-          Data and decisions stay at the smallest competent level. A coalition does not
-          automatically see a chapter's records.
+      <Band id="shared-table" caption="One table, one set of papers, and no question about who is on the list. The tool should not be the thing that splits them up." />
+
+      {/* 3. What we owe you (§8.1, §2) — the emotional centre. Four sentences,
+          no icons, no headers on each. No tradition named. */}
+      <section class="creed">
+        <div class="col">
+          <div class="rule" />
+          <h2>What we owe you</h2>
+          <p>We do not surveil the people who use this.</p>
+          <p>
+            Data and decisions stay at the smallest competent level. A coalition does not
+            automatically see a chapter's records.
+          </p>
+          <p>The free tier is not a funnel. It is the point.</p>
+          <p>We take nothing from bail funds and mutual aid.</p>
+        </div>
+      </section>
+
+      {/* 4. Module grid (§8.1) — staggered fade-up, looping micro-demos. */}
+      <div class="col">
+        <h2>Eleven modules, one record</h2>
+        <p class="muted">
+          Every one reads the same people. Nothing here is an integration you have to maintain.
         </p>
-        <p>The free tier is not a funnel. It is the point.</p>
-        <p>We take nothing from bail funds and mutual aid.</p>
-
-        {/* 4. Module grid (§8.1) — staggered fade-up, looping micro-demos. */}
-        <h2>What it does</h2>
         <div class="grid" data-motion="stagger">
           {MODULES.map((m) => (
             <div class="module">
@@ -489,13 +533,17 @@ marketing.get('/', (c) =>
             </div>
           ))}
         </div>
+      </div>
 
-        {/* 5. Comparison (§8.3) — sticky first column on mobile. */}
+      <Band id="phone-bank" caption="A phone bank runs on paper because the software costs more than the campaign." />
+
+      {/* 5. Comparison (§8.3) — sticky first column on mobile. */}
+      <div class="col">
         <h2>How it compares</h2>
         <div class="scroll">
           <ComparisonTable />
         </div>
-        <p class="muted" style="font-size:.85rem">
+        <p class="muted small">
           Compiled from publicly documented features. Competitors change what they offer; if
           something here is out of date, tell us and we will correct it.
         </p>
@@ -512,8 +560,12 @@ marketing.get('/', (c) =>
           <a href="/trust">See where they stand</a> — including the ones we have not published
           yet.
         </p>
+      </div>
 
-        {/* 7. Pricing (§8.1) — the bail-fund waiver gets its own row. */}
+      <Band id="folding-chairs" caption="Before anyone arrives. This is the part the software never sees." />
+
+      {/* 7. Pricing (§8.1) — the bail-fund waiver gets its own row. */}
+      <div class="col">
         <h2>What it costs</h2>
         <p>
           Free under 250 contacts, with all eleven modules. Not a trial, not feature-gated, no
@@ -523,11 +575,32 @@ marketing.get('/', (c) =>
           <p style="margin:0">
             <strong>1% on fundraising and dues. Zero on bail and mutual aid.</strong>
           </p>
+          <p class="muted small" style="margin:.4rem 0 0">
+            The waiver is written into a database function, not a settings page.
+          </p>
         </div>
-      </main>
+      </div>
     </Page>,
   ),
 );
+
+/**
+ * A full-bleed photograph between sections.
+ *
+ * §8.1 asks for a page that reads like a photo essay rather than a feature
+ * list, and the rhythm is what does that: a narrow column of text, then the
+ * whole width given over to a room with people in it. The caption carries a
+ * line of argument rather than describing the picture — the alt text already
+ * describes the picture, for the people who need that.
+ */
+function Band({ id, caption }: { id: Parameters<typeof Picture>[0]['id']; caption: string }) {
+  return (
+    <figure class="band" style="margin-left:0;margin-right:0">
+      <Picture id={id} sizes="100vw" />
+      <figcaption>{caption}</figcaption>
+    </figure>
+  );
+}
 
 /** §8.3, as specified. */
 function ComparisonTable() {
@@ -546,7 +619,7 @@ function ComparisonTable() {
   ];
 
   return (
-    <table>
+    <table class="compare">
       <thead>
         <tr>
           <th />
@@ -575,7 +648,7 @@ function ComparisonTable() {
 marketing.get('/pricing', (c) =>
   c.html(
     <Page title="Pricing — Coram">
-      <main>
+      <main class="col">
         <h1>Pricing</h1>
         <p class="lead">
           Revenue comes from payment volume and coalitions, not seats. A volunteer group with a
@@ -652,7 +725,7 @@ marketing.get('/why', (c) =>
     >
       {/* §8.1 item 8: long-form editorial, measure capped at 68 characters,
           generous line height, one portrait-orientation photograph. */}
-      <main class="editorial">
+      <main class="col editorial">
         <h1>Why we built this</h1>
 
         <div class="portrait">
@@ -708,7 +781,7 @@ marketing.get('/trust', async (c) => {
 
   return c.html(
     <Page title="Trust — Coram">
-      <main>
+      <main class="col">
         <h1>Trust</h1>
         <p class="lead">
           Coram is closed source. That is a choice, and it costs us something, so here is what we
