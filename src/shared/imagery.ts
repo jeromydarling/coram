@@ -165,11 +165,11 @@ export const IMAGES: ImageSpec[] = [
      * makes the rule geometric instead of hoping an effect reaches everyone.
      */
     subject:
-      'a packed community hall mid-meeting on a bright afternoon, photographed from the back of ' +
-      'the room over the heads of the crowd, dozens of raised hands and the backs of heads, ' +
-      'everyone facing away toward tall windows with sun pouring through, ordinary mismatched ' +
-      'everyday clothes in many different colours — work jackets, hoodies, cardigans, a ' +
-      'headscarf, a hi-vis vest — a long table of food along one wall',
+      'a packed community hall mid-vote on a bright afternoon, photographed from the back of ' +
+      'the room over the heads of the crowd, a forest of raised hands and rows of the backs of ' +
+      'heads, the whole room facing one way toward a speaker at the far end beneath tall ' +
+      'windows with sun pouring through, ordinary mismatched everyday clothes in many ' +
+      'different colours — work jackets, hoodies, cardigans, a headscarf, a hi-vis vest',
     faceClause: 'seen entirely from behind, no faces visible',
     accent: true,
     width: 1920,
