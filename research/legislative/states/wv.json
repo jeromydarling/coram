@@ -1,0 +1,84 @@
+{
+  "code": "WV",
+  "name": "West Virginia",
+  "asOf": "2026-07",
+
+  "initiative": {
+    "statute": "none",
+    "constitutional": "none",
+    "referendum": false,
+    "noStatewideInitiative": true,
+    "noStatewideInitiativeExplanation": "West Virginia has NO statewide initiative and NO statewide veto referendum. Citizens cannot place a statute or a constitutional amendment on the ballot by petition, and cannot petition to repeal an act of the Legislature. The only statewide ballot measures are those the Legislature refers: proposed constitutional amendments, which require a two-thirds vote of each house and then ratification by the voters (W. Va. Const. art. XIV), plus bond and similar questions the Legislature submits. There is no signature threshold to report because no statewide petition mechanism exists. The routes actually available to a West Virginia organizer are (1) find a legislator to sponsor a bill — and West Virginia is unusually helpful here, because the Legislative Services Division publicly publishes its full Bill Drafting Manual, a Word bill template, and instructions specifically so that 'citizens and organizations may download and use [them] to prepare their own versions of draft legislation to offer to their legislators'; and (2) the municipal charter petition route described under localOrdinance.",
+    "signatures": {
+      "statuteFormula": null,
+      "statuteCount": null,
+      "constitutionalFormula": null,
+      "constitutionalCount": null,
+      "distribution": null,
+      "source": "https://home.wvlegislature.gov/constitution-of-west-virginia/"
+    },
+    "circulationDays": null,
+    "filingDeadline": null,
+    "subjectLimits": [],
+    "preFilingReview": null,
+    "source": "https://home.wvlegislature.gov/constitution-of-west-virginia/"
+  },
+
+  "localOrdinance": {
+    "citizenInitiative": false,
+    "notes": "West Virginia provides no general municipal or county initiative or referendum on ordinances. W. Va. Code ch. 8, art. 11 (Powers and Duties With Respect to Ordinances and Ordinance Procedures, sections 8-11-1 through 8-11-5) contains no citizen petition mechanism to enact or repeal a municipal ordinance. What West Virginia residents DO have at the local level is a charter petition route, which is slower but can achieve structural change: (a) FRAMING A NEW CHARTER — under W. Va. Code sec. 8-4-1 the governing body of a city must submit the charter question to the voters upon a petition signed in the signers' own handwriting by 15 percent of the qualified voters of the city (Class I or Class II city) or 10 percent (Class III city); if the petition is presented more than 120 days before the next general or regular municipal election and requests a special election, the governing body must call one to be held not less than 30 nor more than 60 days after presentation. (b) REVISING OR AMENDING AN EXISTING CHARTER — under W. Va. Code sec. 8-4-7 qualified voters may amend a charter on the same 15%/10% petition thresholds, filed more than 120 days before the next regular municipal election to trigger a special municipal election; a charter may not be revised as a whole within four years of its effective date or last revision, and may not be amended within one year of its effective date or last revision. Sufficiency of any petition filed under ch. 8 is determined under sec. 8-5-18. Because charters can allocate powers and create or restructure municipal bodies, a charter amendment petition is the closest thing West Virginia has to citizen-initiated local lawmaking. Individual home-rule municipalities may also have charter-based initiative or referendum provisions of their own; check the specific city charter.",
+    "statuteCitation": "W. Va. Code sec. 8-4-1 (framing a charter), sec. 8-4-7 (revising or amending a charter), sec. 8-5-18 (sufficiency of petitions)",
+    "source": "https://code.wvlegislature.gov/8-4-7/"
+  },
+
+  "drafting": {
+    "manualUrl": "https://www.wvlegislature.gov/legisdocs/misc/pub/Drafting_Manual.pdf",
+    "manualName": "West Virginia Legislature Bill Drafting Manual (prepared by the House Clerk's Office, Legislative Services, and the Senate Clerk's Office; revised December 2022)",
+    "manualLandingPage": "https://www.wvlegislature.gov/Joint/legis_services.cfm",
+    "manualNotes": "140 pages, verified to resolve (HTTP 200, application/pdf, 640 KB) 2026-07-29. This is the single best drafting resource in this five-state group for a non-legislator, because West Virginia publishes it expressly for public use. The Legislative Services Division page states: 'The Legislative Services Division also provides information to understand legislative drafting style and to prepare drafts of bills in the Legislature's standard format. The following links are basic tools that citizens and organizations may download and use to prepare their own versions of draft legislation to offer to their legislators.' Two companion files are published alongside it and also resolve: a Microsoft Word bill template at https://www.wvlegislature.gov/legisdocs/misc/pub/bill_template.dotx and a how-to at https://www.wvlegislature.gov/legisdocs/misc/pub/Using_Microsoft_Word_to_Prepare_Draft_Bills.docx. Contents include word-processing format of bills, general drafting rules, preliminary steps, capitalization, spelling, words frequently confused, numbers/money/dates/time, punctuation, style and grammar, common drafting issues, strike-throughs and underscoring, subsections and subdivisions, provisos, internal citations to the West Virginia Code, adoption of federal authorities by reference, criminal penalties, special revenue accounts, reports and other filings, rules, use of agency and subdivision names, and a large part III of worked bill-title and bill-body examples.",
+    "requiredSections": [
+      "bill title beginning 'A BILL to amend and reenact [section citation] of the Code of West Virginia, 1931, as amended' (or 'to repeal'/'to amend the code by adding thereto a new section'), followed by 'relating to ...' (or 'all relating to ...' if more than one section is affected), with each descriptive clause in parallel participle form and separated by semicolons",
+      "enacting clause",
+      "article headings (set forth in all bills)",
+      "chapter headings (only when more than one chapter is amended or a new chapter is added)",
+      "section numbers and headings, in the form sec. 1-2-3 = chapter 1, article 2, section 3",
+      "amended text shown with strike-throughs and underscoring"
+    ],
+    "enactingClause": "\"Be it enacted by the Legislature of West Virginia:\" — required for all bills by W. Va. Const. art. VI, sec. 1, and stated at Bill Drafting Manual, Enacting Clause.",
+    "source": "https://www.wvlegislature.gov/legisdocs/misc/pub/Drafting_Manual.pdf"
+  },
+
+  "legislature": {
+    "chambers": ["House of Delegates", "Senate"],
+    "sessionType": "Annual regular sessions. W. Va. Const. art. VI, sec. 18: 'The Legislature shall assemble annually at the seat of government ... Regular sessions of the Legislature shall commence on the second Wednesday of January of each year.' In each odd-numbered year each house first organizes and elects officers for two-year terms and the houses open and publish election returns in joint assembly. In the year following a gubernatorial election (1973 and every fourth year thereafter, i.e. 2029, 2033, ...), the Legislature adjourns after organizing until the second Wednesday of February, when the governor submits the budget. W. Va. Const. art. VI, sec. 22: the regular session shall not exceed sixty calendar days computed from and including the second Wednesday of January (or, in a post-gubernatorial year, from and including the second Wednesday of February), extendable only by concurrent resolution adopted by a two-thirds vote of the members elected to each house.",
+    "typicalConvene": "Second Wednesday of January each year; in the year following a gubernatorial election, organizational meeting in January then reconvening the second Wednesday of February.",
+    "typicalAdjourn": "Sixty calendar days after commencement — normally mid-March, or mid-April in a post-gubernatorial year.",
+    "billIntroductionDeadline": null,
+    "billIntroductionNotes": "Bill introduction deadlines are fixed each session by the House and Senate rules and the session calendar (typically around the 41st day for House bills and the 41st day for Senate bills, with crossover around day 47), not by statute or constitution. Verify against the current session's calendar.",
+    "carryover": false,
+    "carryoverNotes": "West Virginia bills do not carry over. Each regular session is a fresh start; a measure that does not complete passage dies at adjournment and must be reintroduced. Bills 'die in committee' when the committee does not act, and a bill in conference dies if no compromise is reached before adjournment.",
+    "source": "https://home.wvlegislature.gov/constitution-of-west-virginia/"
+  },
+
+  "data": {
+    "officialApi": null,
+    "officialApiNotes": "West Virginia publishes no documented public REST API for legislative data. Bill status, text, votes, journals and committee information are served as HTML/PDF from www.wvlegislature.gov (Bill Status at /Bill_Status/, session documents under /legisdocs/), and the Code is at code.wvlegislature.gov with per-chapter, per-article and per-section pages (e.g. https://code.wvlegislature.gov/8-4-7/). Acts of the Legislature and the Code of 1931 are published under /Educational/publications.cfm. There is a bill tracking service for registered users at /bill-track/login.cfm. No bulk download endpoint was located.",
+    "bulkDownload": null,
+    "openStatesCoverage": "full",
+    "source": "https://www.wvlegislature.gov/"
+  },
+
+  "citizenRoute": {
+    "canRequestDraft": false,
+    "notes": "Qualified no, but West Virginia is the friendliest of these five states to a citizen drafter. The Legislative Services Division (created 1965 by the Joint Committee on Government and Finance) provides legal services, research and bill drafting to legislators and committees, not to the general public. The Legislature's own 'How a Bill Becomes Law' page states: 'Anyone can propose an idea for a bill to a legislator - a private citizen, corporation, professional association, special interest group or even a governmental unit. But all bills must be sponsored by one or more legislators to be considered' and 'Bills may go through the Office of Legislative Services or legislative staff counsel to assure that they are in proper bill form.' In practice the path is: draft it yourself using the publicly posted Bill Drafting Manual and .dotx template, then take it to a legislator, who submits it to Legislative Services for conforming and to the clerk of the member's chamber for introduction. House bills may carry up to eleven sponsors; the Senate has no sponsorship limit. Legislative Services Division contact: Anne Ellison, Director, anne.ellison@wvlegislature.gov, (304) 347-4800.",
+    "source": "https://www.wvlegislature.gov/Joint/legis_services.cfm"
+  },
+
+  "gaps": [
+    "No signature thresholds are reported for West Virginia because none exist statewide — this is a definite absence, not an unverified number.",
+    "Local charter petition thresholds are expressed as a percentage of 'qualified voters of the city' (15% for Class I/II, 10% for Class III); the underlying voter count is per-municipality and must be obtained from the municipal clerk or county clerk. No absolute number can be given.",
+    "Bill introduction deadlines are set by chamber rule and the session calendar each year, not by statute, so billIntroductionDeadline is null rather than a stale date.",
+    "No bulk data download or API was found for West Virginia legislative data; officialApi and bulkDownload are null rather than guesses.",
+    "Whether any individual West Virginia home-rule municipality's charter contains its own initiative or referendum on ordinances was not checked city by city."
+  ]
+}

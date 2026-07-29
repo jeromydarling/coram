@@ -70,13 +70,13 @@
 
   "citizenRoute": {
     "canRequestDraft": false,
-    "notes": "The Legislative Drafting Division is a central, nonpartisan office of the General Assembly whose attorney-drafters work with legislators to prepare bills; it does not take drafting requests from the public. With no statewide initiative, a North Carolina resident's routes are (a) get a legislator to sponsor the bill and request the draft from the Drafting Division, or (b) at city level, a G.S. 160A-104 charter-amendment petition.",
-    "source": "https://sites.ncleg.gov/legislativedrafting/"
+    "notes": "The Legislative Drafting Division is a central, nonpartisan office of the General Assembly. Its own page states that 'A legislator with an idea for legislation should contact the Legislative Drafting Division' — drafts are requested by legislators, not by the public, and a drafting request stays confidential until the sponsoring legislator releases it. The Legislative Analysis Division also drafts bills for members. With no statewide initiative, a North Carolina resident's routes are (a) get a legislator to sponsor the bill and request the draft, or (b) at city level, a G.S. 160A-104 charter-amendment petition.",
+    "source": "https://sites.ncleg.gov/legislativedrafting/the-drafting-process/"
   },
 
   "gaps": [
     "North Carolina's statewide initiative fields are null because no such process exists, not because verification failed. The negative is established directly by N.C. Const. art. XIII, § 2 ('but in no other way').",
-    "COULD NOT VERIFY A BILL DRAFTING MANUAL. The Legislative Drafting Division's public site (sites.ncleg.gov/legislativedrafting) walks through the drafting process, preparation for introduction, introduction, amendments, conference reports, and enrollment, but links no drafting manual, style guide, or downloadable PDF. No North Carolina legislative drafting manual was found on any ncleg.gov domain. manualUrl and manualName are null. If a manual exists it is likely internal to the Division; organizers should be pointed at https://sites.ncleg.gov/legislativedrafting/the-drafting-process/ as the nearest public substitute.",
+    "NO PUBLIC BILL DRAFTING MANUAL. The Legislative Drafting Division's public site (sites.ncleg.gov/legislativedrafting) walks through the drafting process, preparation for introduction, introduction, amendments, conference reports, and enrollment, but its Drafting Process page explicitly links no drafting manual, style guide, or bill-form document — only a PDF of drafter assignments by subject area and contact information. No North Carolina legislative drafting manual was found on any ncleg.gov domain. manualUrl and manualName are null. Any manual appears to be internal to the Division; organizers should be pointed at https://sites.ncleg.gov/legislativedrafting/the-drafting-process/ as the nearest public substitute.",
     "The requiredSections list is a description of standard North Carolina bill form, not a quotation from an official drafting manual (none was found).",
     "Bill introduction deadlines are set by each chamber's rules and adjournment resolutions each biennium and were not verified; left null."
   ]

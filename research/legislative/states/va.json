@@ -1,0 +1,85 @@
+{
+  "code": "VA",
+  "name": "Virginia",
+  "asOf": "2026-07",
+
+  "initiative": {
+    "statute": "none",
+    "constitutional": "none",
+    "referendum": false,
+    "noStatewideInitiative": true,
+    "noStatewideInitiativeExplanation": "Virginia has NO statewide initiative and NO statewide veto referendum. Citizens cannot place a statute or a constitutional amendment on the ballot by petition, and cannot petition to repeal an act of the General Assembly. Legislative referral is the sole avenue for amending the Constitution of Virginia: a proposed amendment must be agreed to by a majority of each house of the General Assembly, then agreed to again by a majority of each house in the session immediately following a House of Delegates election (i.e. after an intervening general election of the House), and then approved by a majority of voters at a referendum (Va. Const. art. XII, sec. 1). A constitutional convention route also exists but requires a two-thirds vote of each house. There is no signature threshold to report because no statewide petition mechanism exists. Additionally, Va. Code sec. 24.2-684 provides that 'No referendum shall be placed on the ballot unless specifically authorized by statute or by charter' — so even a local referendum requires prior authorization from the General Assembly or a city charter. Virginia is a strong Dillon Rule state, which compounds this: localities have only the powers the General Assembly expressly grants. The practical route for a Virginia organizer is to get a Delegate or Senator to request a draft from the Division of Legislative Services.",
+    "signatures": {
+      "statuteFormula": null,
+      "statuteCount": null,
+      "constitutionalFormula": null,
+      "constitutionalCount": null,
+      "distribution": null,
+      "source": "https://law.lis.virginia.gov/constitution/article12/section1/"
+    },
+    "circulationDays": null,
+    "filingDeadline": null,
+    "subjectLimits": [],
+    "preFilingReview": null,
+    "source": "https://law.lis.virginia.gov/vacode/title24.2/chapter6/section24.2-684/"
+  },
+
+  "localOrdinance": {
+    "citizenInitiative": false,
+    "notes": "Virginia has no citizen initiative for local ordinances. Va. Code sec. 15.2-1427 governs how localities adopt, amend and repeal ordinances and provides only for action by the governing body — 'an ordinance may be adopted by majority vote of those present and voting at any lawful meeting' — with no petition or ballot mechanism. Va. Code sec. 24.2-684 is the controlling limit: 'No referendum shall be placed on the ballot unless specifically authorized by statute or by charter,' and every referendum must be held pursuant to a circuit court order. What Virginia residents do have is a set of NARROW, SUBJECT-SPECIFIC petition-triggered referenda, each individually authorized by a statute or by a locality's charter — examples include local option alcohol questions, meals and cigarette tax questions in some localities, certain bond questions, changes in form of government, and questions expressly enabled by charter. Where a statute or charter does authorize a voter petition, Va. Code sec. 24.2-684.1 supplies the uniform petition rules: the filer and each signer must be a qualified voter of the county or city, validly registered both when signing and when the signature is validated; each signer must date the signature; each witness must be qualified to vote in the jurisdiction; where the authorizing law states a percentage, the denominator is the number of voters registered on January 1 of the year of the clerk's certification; and the petitions must be circulated, completed and filed WITHIN NINE MONTHS of the clerk's certification or 'the petitions and the signatures on them shall be invalid for all purposes.' Section 24.2-684.1 overrides conflicting general or special law but not conflicting charter provisions. The upshot for an organizer: in Virginia you cannot invent a local ballot question — you first have to find the statute or charter provision that authorizes the specific question, and if none exists the only path is a bill in Richmond, which for a locality-specific power typically means a charter bill.",
+    "statuteCitation": "Va. Code sec. 15.2-1427 (adoption of local ordinances); sec. 24.2-684 (referendum must be authorized by statute or charter and ordered by the circuit court); sec. 24.2-684.1 (uniform requirements for voter petitions calling for referendum elections)",
+    "source": "https://law.lis.virginia.gov/vacode/title24.2/chapter6/section24.2-684.1/"
+  },
+
+  "drafting": {
+    "manualUrl": "https://dls.virginia.gov/pubs/LegisGuideToDLS.pdf",
+    "manualName": "A Legislator's Guide to the Division of Legislative Services",
+    "manualLandingPage": "https://dls.virginia.gov/publications.html",
+    "manualNotes": "IMPORTANT CAVEAT: this is NOT a full bill drafting manual and should not be presented to organizers as one. It is the Division of Legislative Services' public guide to its own drafting services, verified to resolve (HTTP 200, application/pdf) 2026-07-29. Its structure is Part I Introduction; Part II The Division as Drafters (prefiled vs. non-prefiled requests, communication and authorization, DRAFTING RULES AND CONVENTIONS, summaries, fiscal impact statements, corrections impact statements, first/second reference resolutions, ballot bills and ballot explanations); Part III The Division as Committee Counsel (line amendments and amendments in the nature of a substitute, how and when to request); Part IV The Division in the Interim; Appendix A Glossary of Terms; APPENDIX B PARTS OF A BILL; Appendix C What Does That Look Like? (worked examples of a bill, a bill with corrections impact, commending and memorial resolutions, study resolutions, a charter amendment, and a constitutional amendment first reference). Appendix B and Appendix C are the parts a citizen drafter should read. Virginia's Division of Legislative Services does not appear to publish a full public drafting manual or style guide comparable to West Virginia's or Washington's; the DLS 'Legislative Guidelines' PDF at https://dls.virginia.gov/pubs/LegislativeGuidelines.pdf is a Joint Rules Committee document about studies, commissions and resolutions (last amended November 17, 2004), NOT a drafting style guide, and should not be linked as one. To see current drafting conventions in practice, read enacted chapters and bill text in LIS at https://lis.virginia.gov and the Code at https://law.lis.virginia.gov.",
+    "requiredSections": [
+      "bill title / patron line ('A BILL to amend and reenact sec. ... of the Code of Virginia, relating to ...')",
+      "enacting clause",
+      "numbered enactment clauses ('1. That sec. ... of the Code of Virginia is amended and reenacted as follows:'), with second and later enactments used for effective dates, contingencies, reenactment clauses and appropriations",
+      "amended Code text with additions underscored and deletions struck through",
+      "any required fiscal impact statement or corrections impact statement is prepared alongside the bill, not inside it"
+    ],
+    "enactingClause": null,
+    "enactingClauseNotes": "Virginia bills open with the numbered enactment formula 'Be it enacted by the General Assembly of Virginia:' followed by '1. That ...'. I was not able to verify this wording against a primary source in this pass — Va. Const. art. IV, sec. 11 states only that 'No law shall be enacted except by bill' and prescribes readings and recorded votes, and it does not prescribe a style-of-laws clause the way Washington, Wisconsin, West Virginia and Wyoming constitutions do. Treat the wording as unverified and confirm against any enacted chapter in LIS before using it. See gaps.",
+    "source": "https://dls.virginia.gov/publications.html"
+  },
+
+  "legislature": {
+    "chambers": ["House of Delegates", "Senate"],
+    "sessionType": "Annual regular sessions on a two-year term of the House of Delegates. Va. Const. art. IV, sec. 6: 'The General Assembly shall meet once each year on the second Wednesday in January.' A regular session in an even-numbered year may not exceed 60 days; in an odd-numbered year it may not exceed 30 days; either may be extended by up to 30 additional days by a two-thirds vote of the members elected to each house (in practice the odd-year 'short session' is routinely extended to 45-46 days). Section 6 also provides for special sessions and for the reconvened (veto) session to act on the Governor's amendments and vetoes.",
+    "typicalConvene": "Second Wednesday in January each year.",
+    "typicalAdjourn": "Even-numbered years: early-to-mid March (60 days). Odd-numbered years: late February (30 days, commonly extended to about 45 days). A reconvened session follows in April to consider the Governor's amendments and vetoes.",
+    "billIntroductionDeadline": null,
+    "billIntroductionNotes": "Introduction deadlines are set each session by the procedural resolution adopted by the House and Senate, not by statute or constitution; the resolution fixes prefiling dates, introduction cutoffs, crossover, and committee deadlines. Prefiling with DLS well before session is the normal path for a citizen-originated bill because DLS drafting demand spikes in December and January.",
+    "carryover": true,
+    "carryoverNotes": "Virginia bills that are not acted on in the first year of the two-year term may be 'continued' by the committee of jurisdiction to the next regular session (LIS bill histories show these as 'Continued to [year] in [committee]'). Bills die at the end of the two-year term. See gaps — I could not cite a rule text for this online, so treat it as descriptive of practice.",
+    "source": "https://law.lis.virginia.gov/constitution/article4/section6/"
+  },
+
+  "data": {
+    "officialApi": null,
+    "officialApiNotes": "Virginia publishes no documented free public API for legislative data. The Legislative Information System (https://lis.virginia.gov) was rebuilt as a single-page application, so its URLs do not expose a stable machine-readable interface; a legacy interface remains at https://legacylis.virginia.gov. The Division of Legislative Automated Systems (https://dlas.virginia.gov) runs LIS and sells subscription products (Lobbyist-in-a-Box at https://help.lis.virginia.gov/liab/index.asp, the Bill Box printed subscription) rather than publishing bulk data. The Code of Virginia and the Constitution of Virginia are published as stable, well-formed HTML at https://law.lis.virginia.gov (e.g. /vacode/title24.2/chapter6/section24.2-684.1/, /constitution/article4/section6/), which is the most reliable machine-readable Virginia source. The budget is at https://budget.lis.virginia.gov/.",
+    "bulkDownload": null,
+    "openStatesCoverage": "full",
+    "source": "https://dlas.virginia.gov/"
+  },
+
+  "citizenRoute": {
+    "canRequestDraft": false,
+    "notes": "The Division of Legislative Services drafts bills, resolutions and amendments on request from members of the General Assembly and its committees and commissions; it is not a public drafting service. A Virginia resident must persuade a Delegate or Senator to request the draft. The Legislator's Guide to DLS describes the request path (prefiled and non-prefiled requests, communication and authorization) and Appendix B/C show what the finished product looks like, which makes it a useful thing to hand a legislator's aide along with your proposed text. DLS contact: https://dls.virginia.gov/contact.html; Legislative Reference Center 804.698.1888. Because Virginia is a Dillon Rule state with no local initiative, a proposal that would give a single locality a new power usually has to take the form of a CHARTER BILL requested by that locality's delegation — the Legislator's Guide Appendix C includes a worked 'Amending a charter' example.",
+    "source": "https://dls.virginia.gov/pubs/LegisGuideToDLS.pdf"
+  },
+
+  "gaps": [
+    "No signature thresholds are reported for Virginia because none exist statewide or locally as a general matter — this is a definite absence, not an unverified number.",
+    "Could not verify Virginia's enacting-clause wording from a primary source. Va. Const. art. IV, sec. 11 prescribes procedure ('No law shall be enacted except by bill', three readings, recorded vote) but no style-of-laws formula, and attempts to pull the full text of an enacted chapter from legacylis.virginia.gov returned 'document does not exist or is not available.' enactingClause is null rather than a guess; confirm against any 2026 enacted chapter in LIS.",
+    "Virginia does not publish a full public bill drafting manual. manualUrl points to 'A Legislator's Guide to the Division of Legislative Services' (which contains drafting rules and conventions, Parts of a Bill, and worked examples) because that is the best public official document available. Note that dls.virginia.gov/pubs/LegislativeGuidelines.pdf is NOT a drafting manual (it is a 2004 Joint Rules Committee document on studies, commissions and resolutions) and should not be linked as one.",
+    "Bill carryover ('continued to [year] in [committee]') is well-established Virginia practice visible in LIS bill histories, but I could not locate an online rule text stating it; carryover: true should be treated as descriptive rather than rule-cited.",
+    "Session introduction deadlines are set by a procedural resolution each session; billIntroductionDeadline is null rather than a stale date.",
+    "Virginia LIS has no documented public API; officialApi and bulkDownload are null rather than guesses. If a machine-readable feed is needed, law.lis.virginia.gov (Code and Constitution) is stable, and Open States is the practical source for bills and votes."
+  ]
+}
