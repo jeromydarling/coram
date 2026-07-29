@@ -233,9 +233,17 @@ export const IMAGES: ImageSpec[] = [
   {
     id: 'phone-bank',
     subject:
-      'a phone bank along a table in a sunlit room, photographed from behind the row of callers ' +
-      'looking down the line, the backs of their heads and headset bands, bright sticky notes ' +
-      'and a hand-drawn tally in colour on the wall ahead of them',
+      /*
+       * From directly behind the row, not along it. "Looking down the line"
+       * points the lens across every head in profile, and profiles are faces —
+       * the version shot that way came back with several. Standing behind the
+       * callers and shooting past them at the wall gives backs of heads and
+       * puts the colour where it belongs, on the sticky notes ahead.
+       */
+      'a phone bank along a table in a sunlit room, photographed from directly behind the row ' +
+      'of callers over their shoulders, backs of heads and headset bands in the foreground, ' +
+      'the far wall ahead of them covered in bright sticky notes and a hand-drawn tally in ' +
+      'colour, low sun across the wall',
     faceClause: 'seen entirely from behind, no faces visible',
     accent: true,
     width: 1600,
