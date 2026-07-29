@@ -1,1 +1,179 @@
-{}
+{
+  "hero-hall": {
+    "id": "hero-hall",
+    "width": 1920,
+    "height": 1072,
+    "lqip": "data:image/webp;base64,UklGRlIAAABXRUJQVlA4IEYAAACQAwCdASoUAAsAPxF0slCsJqSisAgBgCIJQAAHhdzGK4FZivwAAP6GI9dW3qjy7oJfYmVvnrF6bxqA5DPQHz6ANWw4AAAA",
+    "bytes": {
+      "hero-hall-1920.avif": 76177,
+      "hero-hall-1920.webp": 125180,
+      "hero-hall-1920.jpg": 151507,
+      "hero-hall-1440.avif": 34477,
+      "hero-hall-1440.webp": 53554,
+      "hero-hall-1440.jpg": 82243,
+      "hero-hall-1024.avif": 21785,
+      "hero-hall-1024.webp": 26436,
+      "hero-hall-1024.jpg": 46338,
+      "hero-hall-640.avif": 12271,
+      "hero-hall-640.webp": 13484,
+      "hero-hall-640.jpg": 22479
+    }
+  },
+  "why-portrait": {
+    "id": "why-portrait",
+    "width": 1200,
+    "height": 1600,
+    "lqip": "data:image/webp;base64,UklGRnwAAABXRUJQVlA4IHAAAACwBACdASoUABsAPxFyrVCsJqQisBgMAYAiCWYAAC56BhLl7d71X7US8GlMWpdWAPltZJKfJfwNosUNhdDgawnPQx08wijjrJ3XPW4DsiyD9HWkrprN6ySTZiI3wk5XmAygBvGrSkoREWE9GYxgAAAA",
+    "bytes": {
+      "why-portrait-1200.avif": 11375,
+      "why-portrait-1200.webp": 40206,
+      "why-portrait-1200.jpg": 68322,
+      "why-portrait-900.avif": 7897,
+      "why-portrait-900.webp": 15292,
+      "why-portrait-900.jpg": 36547,
+      "why-portrait-640.avif": 5755,
+      "why-portrait-640.webp": 9168,
+      "why-portrait-640.jpg": 21533
+    }
+  },
+  "shared-table": {
+    "id": "shared-table",
+    "width": 1600,
+    "height": 992,
+    "lqip": "data:image/webp;base64,UklGRlwAAABXRUJQVlA4IFAAAAAQBACdASoUAAwAPxFysVAsJqSisAgBgCIJQBWAA9D1ElWyC1FT7LfAAAD+5AqvnZXmfvX4fH9KwCjeWRwy4rHA8ryg02smvRIsQYiB2wAAAA==",
+    "bytes": {
+      "shared-table-1920.avif": 45468,
+      "shared-table-1920.webp": 80346,
+      "shared-table-1920.jpg": 112694,
+      "shared-table-1440.avif": 33062,
+      "shared-table-1440.webp": 59944,
+      "shared-table-1440.jpg": 88856,
+      "shared-table-1024.avif": 17073,
+      "shared-table-1024.webp": 27182,
+      "shared-table-1024.jpg": 46094,
+      "shared-table-640.avif": 10765,
+      "shared-table-640.webp": 13548,
+      "shared-table-640.jpg": 22995
+    }
+  },
+  "sign-in-sheet": {
+    "id": "sign-in-sheet",
+    "width": 1600,
+    "height": 992,
+    "lqip": "data:image/webp;base64,UklGRlgAAABXRUJQVlA4IEwAAAAQBACdASoUAAwAPxFysFAsJqSisAgBgCIJQBUehER6Jbw/aeJwag1AAAD19s3FGEYy0M3x5KYaZJLsBZh13Xlvwr7WrjC4pzazgAAA",
+    "bytes": {
+      "sign-in-sheet-1920.avif": 34933,
+      "sign-in-sheet-1920.webp": 68482,
+      "sign-in-sheet-1920.jpg": 100344,
+      "sign-in-sheet-1440.avif": 26717,
+      "sign-in-sheet-1440.webp": 50992,
+      "sign-in-sheet-1440.jpg": 81775,
+      "sign-in-sheet-1024.avif": 17351,
+      "sign-in-sheet-1024.webp": 27446,
+      "sign-in-sheet-1024.jpg": 45766,
+      "sign-in-sheet-640.avif": 10369,
+      "sign-in-sheet-640.webp": 14070,
+      "sign-in-sheet-640.jpg": 22522
+    }
+  },
+  "union-hall": {
+    "id": "union-hall",
+    "width": 1600,
+    "height": 992,
+    "lqip": "data:image/webp;base64,UklGRlYAAABXRUJQVlA4IEoAAACwAwCdASoUAAwAPxF0sVAsJySisAgBgCIJYwC06CDVTkVMniZr4AD769nCqpjTEYcxTB4da+bqyOfa/nxy+jNyNXOF850bVGcAAA==",
+    "bytes": {
+      "union-hall-1920.avif": 60301,
+      "union-hall-1920.webp": 102662,
+      "union-hall-1920.jpg": 122594,
+      "union-hall-1440.avif": 42093,
+      "union-hall-1440.webp": 66032,
+      "union-hall-1440.jpg": 100482,
+      "union-hall-1024.avif": 28069,
+      "union-hall-1024.webp": 34632,
+      "union-hall-1024.jpg": 56799,
+      "union-hall-640.avif": 15676,
+      "union-hall-640.webp": 18448,
+      "union-hall-640.jpg": 28130
+    }
+  },
+  "phone-bank": {
+    "id": "phone-bank",
+    "width": 1600,
+    "height": 992,
+    "lqip": "data:image/webp;base64,UklGRloAAABXRUJQVlA4IE4AAACwAwCdASoUAAwAPxF0sFCsJqSisAgBgCIJYwCdABjZ0jtjjxklAAD+waYHbZuFtpskivxZ6fmmAuYJ9cVlzNFYY85YfQasGorhyxCSAAA=",
+    "bytes": {
+      "phone-bank-1920.avif": 52716,
+      "phone-bank-1920.webp": 98572,
+      "phone-bank-1920.jpg": 114702,
+      "phone-bank-1440.avif": 33903,
+      "phone-bank-1440.webp": 58436,
+      "phone-bank-1440.jpg": 89616,
+      "phone-bank-1024.avif": 19365,
+      "phone-bank-1024.webp": 27474,
+      "phone-bank-1024.jpg": 46117,
+      "phone-bank-640.avif": 11834,
+      "phone-bank-640.webp": 14128,
+      "phone-bank-640.jpg": 22615
+    }
+  },
+  "coffee-urn": {
+    "id": "coffee-urn",
+    "width": 1600,
+    "height": 992,
+    "lqip": "data:image/webp;base64,UklGRlQAAABXRUJQVlA4IEgAAABQAwCdASoUAAwAPxFysVAsJqSisAgBgCIJZAAAH8EAInVmoAD6cbpDoa8d7lc7qXkW96mcEBWX8Z97JWv60Z52JYPZ8KRAAAA=",
+    "bytes": {
+      "coffee-urn-1920.avif": 62831,
+      "coffee-urn-1920.webp": 112260,
+      "coffee-urn-1920.jpg": 117818,
+      "coffee-urn-1440.avif": 34350,
+      "coffee-urn-1440.webp": 64566,
+      "coffee-urn-1440.jpg": 89824,
+      "coffee-urn-1024.avif": 17567,
+      "coffee-urn-1024.webp": 25408,
+      "coffee-urn-1024.jpg": 44544,
+      "coffee-urn-640.avif": 10034,
+      "coffee-urn-640.webp": 12274,
+      "coffee-urn-640.jpg": 20756
+    }
+  },
+  "whiteboard": {
+    "id": "whiteboard",
+    "width": 1600,
+    "height": 992,
+    "lqip": "data:image/webp;base64,UklGRlgAAABXRUJQVlA4IEwAAADQAwCdASoUAAwAPxF0slCsJqSisAgBgCIJZQAAVEeJrKNsGrCCyAAA/DV4Er+c2bL4qZmM6ShpDUupnf+VhFFwS502rvLuXVvAQAAA",
+    "bytes": {
+      "whiteboard-1920.avif": 31563,
+      "whiteboard-1920.webp": 63516,
+      "whiteboard-1920.jpg": 92466,
+      "whiteboard-1440.avif": 25544,
+      "whiteboard-1440.webp": 43430,
+      "whiteboard-1440.jpg": 75481,
+      "whiteboard-1024.avif": 18278,
+      "whiteboard-1024.webp": 24146,
+      "whiteboard-1024.jpg": 43365,
+      "whiteboard-640.avif": 12323,
+      "whiteboard-640.webp": 13950,
+      "whiteboard-640.jpg": 22547
+    }
+  },
+  "folding-chairs": {
+    "id": "folding-chairs",
+    "width": 1600,
+    "height": 992,
+    "lqip": "data:image/webp;base64,UklGRlQAAABXRUJQVlA4IEgAAADQAwCdASoUAAwAPxFysVAsJqSisAgBgCIJQAALezLXikQ6sjseq1AA/kD+5uwikutZR7NjE+YeOCR5NZFiNkbZVvTm2MOjAAA=",
+    "bytes": {
+      "folding-chairs-1920.avif": 29257,
+      "folding-chairs-1920.webp": 66676,
+      "folding-chairs-1920.jpg": 98774,
+      "folding-chairs-1440.avif": 23062,
+      "folding-chairs-1440.webp": 43532,
+      "folding-chairs-1440.jpg": 79642,
+      "folding-chairs-1024.avif": 15435,
+      "folding-chairs-1024.webp": 21122,
+      "folding-chairs-1024.jpg": 43360,
+      "folding-chairs-640.avif": 9529,
+      "folding-chairs-640.webp": 11434,
+      "folding-chairs-640.jpg": 21213
+    }
+  }
+}
