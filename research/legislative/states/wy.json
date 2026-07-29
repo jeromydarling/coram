@@ -1,0 +1,106 @@
+{
+  "code": "WY",
+  "name": "Wyoming",
+  "asOf": "2026-07",
+
+  "initiative": {
+    "statute": "direct",
+    "constitutional": "none",
+    "referendum": true,
+    "signatures": {
+      "statuteFormula": "Signatures of qualified registered voters equal to 15% of those who voted in the preceding general election, AND equal to 15% of those who voted in the preceding general election in each of at least two-thirds of Wyoming's counties. Wyo. Const. art. 3, sec. 52(c); W.S. 22-24-315, 22-24-316.",
+      "statuteCount": 40669,
+      "constitutionalFormula": null,
+      "constitutionalCount": null,
+      "distribution": "MANDATORY and the binding constraint in Wyoming. In addition to the 40,669 statewide total, the petition must separately clear 15% of the 2024 general-election turnout in at least 16 of the 23 counties. Per-county 15% thresholds published by the Secretary of State for 2025-2026: Albany 2,699; Big Horn 869; Campbell 2,768; Carbon 967; Converse 1,017; Crook 656; Fremont 2,610; Goshen 933; Hot Springs 397; Johnson 744; Laramie 6,542; Lincoln 1,641; Natrona 5,131; Niobrara 187; Park 2,532; Platte 721; Sheridan 2,487; Sublette 746; Sweetwater 2,523; Teton 2,014; Uinta 1,376; Washakie 588; Weston 530. Because Laramie (6,542) and Natrona (5,131) alone are large, and because the cheapest 16 counties still sum to well over 20,000, a campaign cannot qualify by working the Front Range population centers only — it has to run a genuine statewide field operation across at least 16 counties, several of them very sparsely populated. This distribution rule (added by Amendment B, ratified 1998) is the single biggest reason Wyoming initiatives fail.",
+      "source": "https://sos.wyo.gov/Elections/Docs/2024/Signature_requirement_2025-26.pdf"
+    },
+    "signatureBasis": "Derived from the 2024 GENERAL ELECTION turnout, not the gubernatorial vote. The Wyoming Secretary of State's published sheet shows 271,123 total ballots cast in the 2024 general election x .15 = 40,669. Note the base is total votes cast in the preceding general election, so it is recomputed every two years (after each general election), not only after gubernatorial elections. Wyoming's last gubernatorial election was 2022; the next is 2026, but the initiative threshold will move again after the November 2026 general election regardless. Important timing wrinkle stated on the SoS sheet: 'Pursuant to a decision of the Wyoming Supreme Court in 1994, initiative petitions submitted to the Wyoming Secretary of State before the general election are subject to the signature requirements from the previous general election.'",
+    "referendumSignatures": {
+      "formula": "Same as initiative: 15% of those who voted in the preceding general election and 15% in at least two-thirds of the counties. Wyo. Const. art. 3, sec. 52.",
+      "count": 40669,
+      "source": "https://sos.wyo.gov/Elections/Docs/2024/Signature_requirement_2025-26.pdf"
+    },
+    "circulationDays": 548,
+    "circulationNotes": "W.S. 22-24-315(b): 'Petitions for an initiative shall be submitted to the secretary of state for verification within the eighteen (18) month period following the date the first set of petition forms are provided to the sponsors. Any petition not submitted within the eighteen (18) month period is void for all purposes.' 18 months is the nominal window (548 days is the calendar approximation), but the EFFECTIVE window is much tighter than 18 months for two reasons. (1) Front-loaded gatekeeping consumes months before circulation can start: the SoS schedules a review-and-comment conference within 14 days of submission (postponed to 10 days after adjournment if the legislature is in session), the committee then has 5 days to say whether it will amend, an amendment triggers another 14-day review round, then 30 days to produce 100 qualified sponsor signatures, then a 7-day certification review, then a fiscal-impact estimate process of up to 14 + 14 days, and only then does the SoS prescribe and print the petition forms at the sponsors' expense. (2) Ballot placement is gated at the far end by W.S. 22-24-319: the measure goes on the first statewide general election held after (i) sufficient petitions were filed, (ii) a legislative session has convened AND adjourned, and (iii) 120 days have passed since that adjournment. Miss that stack and you wait two more years. On top of that, if the legislature enacts something the Attorney General determines is 'substantially the same' as the proposal after the petition is filed, the petition is VOID and never reaches the ballot.",
+    "filingDeadline": "No fixed calendar deadline. The petition must be filed within 18 months of the date the first petition forms were provided, and to reach a given general election it must be filed early enough that a legislative session has convened and adjourned and 120 days have elapsed since that adjournment before that election (W.S. 22-24-315(b), 22-24-319).",
+    "subjectLimits": [
+      "One subject only, and the entire subject must be expressed in the title (W.S. 22-24-304(a))",
+      "May not dedicate revenues",
+      "May not make or repeal appropriations",
+      "May not create courts, define the jurisdiction of courts, or prescribe their rules",
+      "May not enact local or special legislation",
+      "May not enact anything the constitution prohibits the legislature from enacting",
+      "May not be substantially the same as a measure defeated by an initiative election within the preceding five years (W.S. 22-24-301)",
+      "The initiative may NOT be used to amend the Wyoming Constitution — statutory initiatives only",
+      "An initiated law may not be repealed by the legislature within two years of its effective date, but may be amended at any time (W.S. 22-24-... / Wyo. Const. art. 3, sec. 52)"
+    ],
+    "preFilingReview": "Mandatory, and it is the closest thing Wyoming has to free drafting help. The proposed bill must be submitted to the Secretary of State concurrently with the application, in the bill format required by W.S. 8-1-105. If the SoS determines the bill is not in the required format, the SoS must give the committee a copy of W.S. 8-1-105 and an example bill meeting the format and request a revision. No later than 14 calendar days after submission the SoS holds a conference with the committee of applicants and delivers comments on format and content problems; the Legislative Service Office or any executive agency must assist the SoS in reviewing and commenting on the bill if the SoS asks (W.S. 22-24-304(b)). Comments are confidential until certification, then become public record. The committee may accept the comments, amend and resubmit (triggering another 14-day round), or disregard them entirely. The SoS also prepares a fiscal impact estimate that appears on the ballot, and the committee may submit a competing estimate (W.S. 22-24-309).",
+    "filingFee": "$1,000.00 must accompany the initiative application (W.S. 22-24-302). Same $1,000 for a referendum application (W.S. 22-24-402). Sponsors also bear the cost of printing petitions, which are prepared by the Secretary of State at the sponsors' expense (W.S. 22-24-310(b)).",
+    "otherRequirements": [
+      "A committee of three applicants, all qualified registered voters, must be designated (W.S. 22-24-303)",
+      "Within 30 days after submitting the final bill for certification, the committee must submit names, signatures, addresses and signing dates for 100 qualified registered voters as sponsors (W.S. 22-24-304(c))",
+      "Only designated sponsors/circulators may circulate, and only in person; circulators must be U.S. citizens at least 18 years old but need not be registered voters; the committee must give the SoS written notice verifying each circulator's name, qualifications and address (W.S. 22-24-306, 22-24-312)",
+      "Paid circulators must carry a 12-point boldface statement on every signature page: 'This circulator is being paid to solicit signatures for this ballot proposition.' (W.S. 22-24-310(a)(v))",
+      "Paying per signature is prohibited (W.S. 22-24-323)",
+      "The SoS prescribes and prints the only petition form that may be circulated; sponsors may not design their own (W.S. 22-24-310)",
+      "The SoS has 60 days after filing to determine sufficiency (W.S. 22-24-316); challenges go to Laramie County district court within 30 days (W.S. 22-24-321)",
+      "An initiated law takes effect 90 days after certification of the election, is not subject to gubernatorial veto, and passes on a simple majority of those voting on it"
+    ],
+    "source": "https://sos.wyo.gov/Elections/Docs/IPInfo.pdf"
+  },
+
+  "localOrdinance": {
+    "citizenInitiative": false,
+    "notes": "Wyoming provides no general municipal or county initiative or referendum on ordinances. A full-text scan of W.S. Title 15 (Cities and Towns) found no citizen initiative power to propose or repeal ordinances and no occurrence of 'referendum' at all. The only petition-triggered municipal mechanisms found are narrow and subject-specific: a petition of 25 or more electors can force the governing body to consider an urban-renewal finding resolution (W.S. 15-9-106), and property owners can protest or initiate local improvement districts (W.S. 15-6-202, 15-6-203). Other petition-triggered local votes in Wyoming exist outside Title 15 (for example local-option sales tax and bond questions, annexation, and changes in form of government) but they are individually authorized questions, not a general initiative power. Wyoming municipalities do have limited home rule under Wyo. Const. art. 13, sec. 1(b), so a specific city's charter ordinances should be checked before concluding no local route exists.",
+    "source": "https://wyoleg.gov/statutes/compress/title15.pdf"
+  },
+
+  "drafting": {
+    "manualUrl": "https://sos.wyo.gov/Elections/Docs/Initiative_Bill_Template.pdf",
+    "manualName": "Initiative - Bill Template (Wyoming Secretary of State, Elections Division)",
+    "manualNotes": "Verified to resolve (HTTP 200, application/pdf) 2026-07-29. This is the official template a citizen initiative bill must follow. It is not a full drafting manual. Wyoming's binding drafting rules for an initiative are statutory: the bill must be in the format required by W.S. 8-1-105 (numbering and designation of sections, subsections, paragraphs, subparagraphs), confined to one subject with the entire subject expressed in the title, carry the prescribed enacting clause, and have an effective date. W.S. 22-24-304(d) requires the Legislative Service Office to give the Secretary of State a template of the W.S. 8-1-105 format and requires the SoS to publish it on its website — this template is that publication. The Legislative Service Office does not appear to publish a public bill drafting manual or style guide of its own.",
+    "requiredSections": [
+      "title stating the entire subject of the bill",
+      "enacting clause",
+      "numbered sections identified per W.S. 8-1-105: sections as Arabic numerals; statute sections cited as title-chapter-section (e.g. 8-1-105); subsections as (a),(b),(c); paragraphs as (i),(ii),(iii); subparagraphs as (A),(B),(C); further subdivisions as (I),(II),(III)",
+      "effective date (required for an initiative bill)"
+    ],
+    "enactingClause": "\"Be it enacted by the people of the state of Wyoming:\" — required by W.S. 22-24-304(a). (An ordinary legislative bill uses \"Be it enacted by the Legislature of the State of Wyoming\".)",
+    "source": "https://sos.wyo.gov/Elections/Docs/IPInfo.pdf"
+  },
+
+  "legislature": {
+    "chambers": ["House of Representatives", "Senate"],
+    "sessionType": "Biennial pattern of two annual sessions. Odd-numbered years: a combined general and budget session. Even-numbered years: a budget session at which no bill except the budget bill may be introduced unless placed on call by a two-thirds vote of the house of introduction. Wyo. Const. art. 3, sec. 6 caps the legislature at 60 legislative working days (excluding Sundays) per two-year term and at 40 legislative working days in any one calendar year.",
+    "typicalConvene": "General session: 12:00 noon on the second Tuesday of January of odd-numbered years (Wyo. Const. art. 3, sec. 7; W.S. 28-1-102(a)). Budget session: the second Monday of February of even-numbered years (W.S. 28-1-102(b)).",
+    "typicalAdjourn": "General session: the commencement day plus 39 additional legislative working days (i.e. 40 working days total), unless both houses agree to adjourn earlier — typically early March of odd years. Budget session: as agreed by both houses within the constitutional cap — typically 20 working days, ending in early-to-mid March of even years.",
+    "billIntroductionDeadline": "Set by joint rule each session rather than by statute. In a budget session, W.S. / Wyo. Const. art. 3, sec. 6 independently bars introduction of any non-budget bill unless two-thirds of the house of introduction votes to place it on call — which is a hard practical barrier for citizen-originated legislation in even-numbered years.",
+    "carryover": false,
+    "carryoverNotes": "Wyoming bills do not carry over; a bill that does not pass dies at adjournment sine die and must be reintroduced in a later session.",
+    "source": "https://wyoleg.gov/statutes/compress/title28.pdf"
+  },
+
+  "data": {
+    "officialApi": "https://web.wyoleg.gov/LsoService/api/BillInformation/2026",
+    "officialApiNotes": "The Legislative Service Office runs an undocumented but public JSON API under https://web.wyoleg.gov/LsoService/api/. Verified 2026-07-29: GET /LsoService/api/BillInformation/{year} returns a JSON array of bills with fields including id, bill, lsoNumber, catchTitle, sponsor, lastAction (520 KB for 2026). No key required. Note the host is web.wyoleg.gov — the same path on wyoleg.gov returns 404. There is no published API documentation or terms of use, so treat it as best-effort. Wyoming statutes are also available as per-title PDFs at https://wyoleg.gov/statutes/compress/title{NN}.pdf (two-digit, zero-padded).",
+    "bulkDownload": "https://wyoleg.gov/statutes/compress/",
+    "openStatesCoverage": "full",
+    "source": "https://wyoleg.gov/"
+  },
+
+  "citizenRoute": {
+    "canRequestDraft": true,
+    "notes": "Qualified yes, but only through the initiative process. There is no general public bill-drafting service: the Legislative Service Office drafts for legislators and committees. However, a committee of three qualified registered voters who files an initiative application (with the $1,000 fee) gets a statutory review-and-comment process: the Secretary of State must schedule a conference within 14 calendar days and deliver comments on format and content problems, and on the SoS's request the Legislative Service Office or any executive-branch agency must assist in reviewing and commenting on the proposed bill (W.S. 22-24-304(b)). If the bill is not in the required W.S. 8-1-105 format, the SoS must supply the format rules and an example bill and ask for a revision. The comments are advisory — the committee may amend, resubmit, or ignore them. For an ordinary bill, a Wyoming citizen must persuade a legislator or an interim committee to sponsor it.",
+    "source": "https://sos.wyo.gov/Elections/Docs/IPInfo.pdf"
+  },
+
+  "gaps": [
+    "The Wyoming Secretary of State's Initiative & Referendum landing page still displays a commented-out legacy figure of 29,730; the live, current figure is the 2025-2026 county sheet (40,669 statewide, 15% per county in 16 of 23 counties). Use the PDF, not the page body.",
+    "The 40,669 figure derives from the 2024 GENERAL ELECTION turnout (271,123 ballots), not from a gubernatorial vote. It will be recomputed after the November 2026 general election. Verify the then-current SoS sheet before relying on it.",
+    "circulationDays is given as 548 (18 months) from the statutory text, but that is the outer limit, not a usable planning number — see circulationNotes for the gating steps that consume it at both ends.",
+    "Two Secretary of State documents describing the initiative process are online with different content: Initiative_Process.pdf (revised 12/2014, cites W.S. 22-24-101 to -125 and a $500 fee) and IPInfo.pdf (revised 07/2021, cites W.S. 22-24-301 to -323 and a $1,000 fee). The current statutes in Title 22 confirm the 22-24-301 series and the $1,000 fee, so IPInfo.pdf is the current one; the 2014 document is stale and should not be used.",
+    "The Wyoming Legislative Service Office does not appear to publish a public bill drafting manual or style guide; the drafting authority cited here is W.S. 8-1-105 plus the Secretary of State's initiative bill template. If a full LSO drafting manual exists it is not published at a URL I could locate.",
+    "No general municipal initiative was found in W.S. Title 15, but individual home-rule charter ordinances were not checked city by city."
+  ]
+}

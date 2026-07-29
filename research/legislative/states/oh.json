@@ -1,0 +1,85 @@
+{
+  "code": "OH",
+  "name": "Ohio",
+  "asOf": "2026-07",
+
+  "initiative": {
+    "statute": "indirect",
+    "constitutional": "direct",
+    "referendum": true,
+    "signatures": {
+      "statuteFormula": "Indirect, in two rounds, each equal to 3% of the total vote cast for governor at the last gubernatorial election. The current numbers derive from the November 8, 2022 gubernatorial election and remain in force through 2026; they are recomputed after the November 3, 2026 gubernatorial election. Round 1 (3%) forces the General Assembly to consider the proposed law; if the General Assembly does not enact it within four months, a supplementary petition of a further 3% places it on the ballot. Both rounds are preceded by an initial filing of at least 1,000 valid signatures with the Attorney General. Ohio Const. art. II, §§ 1a, 1b.",
+      "statuteCount": 124046,
+      "constitutionalFormula": "10% of the total vote cast for governor at the last gubernatorial election (November 8, 2022), plus an initial filing of at least 1,000 valid signatures with the Attorney General. Ohio Const. art. II, § 1a. Recomputed after the November 3, 2026 gubernatorial election.",
+      "constitutionalCount": 413487,
+      "referendumFormula": "6% of the total vote cast for governor at the last gubernatorial election (November 8, 2022), plus an initial 1,000-signature filing. Ohio Const. art. II, § 1c.",
+      "referendumCount": 248092,
+      "distribution": "Signatures must be obtained from at least 44 of Ohio's 88 counties, and within each of those 44 counties must equal at least half the statewide percentage measured against that county's 2022 gubernatorial vote: 5% per county for a constitutional amendment, 1.5% per county for each round of an initiated statute, 3% per county for a referendum.",
+      "source": "https://www.ohioattorneygeneral.gov/Legal/Ballot-Initiatives/Initiative-and-Referendum-Signature-Requirements"
+    },
+    "circulationDays": null,
+    "filingDeadline": "Ohio law places NO limit on how long a petition may be circulated. Constitutional amendment: signatures must be filed with the Secretary of State at least 125 days before the general election at which the measure is to appear (July 1, 2026 for the November 3, 2026 ballot); if filed later, a sufficient petition goes on the following year's general election ballot instead. Initiated statute round 1: signatures must be filed at least 10 days before the General Assembly convenes; the General Assembly then has four months to act. Initiated statute round 2: the supplementary petition must be filed within 90 days after the General Assembly fails to enact the measure, and at least 125 days before the general election. Referendum: the petition must be filed within 90 days after the challenged law is filed with the Secretary of State. If a filing is found insufficient, sponsors get a 10-day cure period to file additional signatures.",
+    "subjectLimits": [
+      "One proposed law or amendment per petition. Under R.C. 3505.062(A) the Ohio Ballot Board must examine each initiative petition within ten days of receiving it from the Attorney General to determine whether it contains only one proposed law or constitutional amendment; if it contains more than one, the Board divides it into separate petitions so voters can vote on each proposal separately.",
+      "An initiated measure may not authorize any classification of property for the purpose of levying different rates of taxation, nor any single tax on land or land values or land sites at a higher rate or by a different rule than is applied to improvements thereon or to personal property (Ohio Const. art. II, § 1e).",
+      "Monopoly screen: the Ohio Ballot Board must determine whether a proposed constitutional initiative would grant or create a monopoly, oligopoly or cartel, specify or determine a tax rate, or confer a commercial interest, right or license not available to other similarly situated persons. If so, a threshold question is placed on the ballot ahead of the measure itself (art. II, § 1e(B)).",
+      "A law approved by the voters is not subject to veto referendum.",
+      "The General Assembly may repeal or amend an initiated STATUTE by simple majority at any time. An initiated CONSTITUTIONAL amendment can be changed only by the ordinary amendment process — three-fifths of both chambers plus majority approval at a statewide election, or another initiative.",
+      "Ohio does not limit how soon an initiative may be re-attempted after a failure."
+    ],
+    "adoptionThreshold": "Simple majority of the votes cast for and against the measure — this is the rule currently in force. On August 8, 2023 Ohio voters REJECTED Issue 1, a legislatively referred amendment that would have raised the threshold for constitutional amendments to 60%, required signatures from all 88 counties rather than 44, and eliminated the 10-day cure period. Because Issue 1 failed, none of those changes took effect. Approved measures take effect 30 days after the election.",
+    "preFilingReview": "Step 1: petitioners file the full text of the proposal, a summary, and at least 1,000 valid signatures of registered voters with the Attorney General, who has 10 calendar days (10 business days for a referendum) to certify that the summary is a fair and truthful statement of the proposed measure. Step 2: the Ohio Ballot Board reviews within 10 days for the one-proposal rule (R.C. 3505.062) and, for constitutional amendments, the monopoly/special-privilege screen. Only then may the petition be circulated for the full signature requirement. Challenges to any aspect of the process go to the Ohio Supreme Court and may not be brought later than 95 days before the election (55 days for challenges to signatures gathered during the 10-day cure period).",
+    "source": "https://ballotpedia.org/Laws_governing_the_initiative_process_in_Ohio"
+  },
+
+  "localOrdinance": {
+    "citizenInitiative": true,
+    "notes": "Ohio has a strong and widely used municipal initiative. R.C. 731.28: ordinances and other measures providing for the exercise of any power of government granted by the constitution or delegated to a municipal corporation by the General Assembly may be proposed by initiative petition signed by not less than ten per cent of the number of electors who voted for governor at the most recent gubernatorial general election IN THAT MUNICIPALITY (as of July 2026, the November 8, 2022 election). The petition is filed with the city auditor or village clerk, who after ten days transmits a certified copy of the text to the board of elections. R.C. 731.29 provides the parallel municipal referendum. Charter municipalities may set their own initiative and referendum thresholds in their charters, which then control. Township and county-level initiative powers are narrower and subject-specific.",
+    "source": "https://codes.ohio.gov/ohio-revised-code/section-731.28"
+  },
+
+  "drafting": {
+    "manualUrl": null,
+    "manualName": null,
+    "requiredSections": [
+      "bill title stating the sections affected and the purpose",
+      "enacting clause",
+      "numbered sections, with amendatory sections quoting the section in full and a companion repealer section for existing sections being amended",
+      "effective date or emergency clause where applicable"
+    ],
+    "enactingClause": "Be it enacted by the General Assembly of the State of Ohio. (Ohio Const. art. II, § 15(B): 'The style of the laws of this state shall be, \"be it enacted by the general assembly of the state of Ohio.\"') Initiated measures circulated by petition are styled as being enacted by the people of the State of Ohio.",
+    "source": "https://codes.ohio.gov/ohio-constitution/section-2.15"
+  },
+
+  "legislature": {
+    "chambers": ["House of Representatives", "Senate"],
+    "sessionType": "Two-year General Assembly with two regular sessions. R.C. 101.01(A): the first regular session convenes on the first Monday of January in the odd-numbered year (or the succeeding day if that is a legal holiday), and the second regular session convenes on the same date the following year, 'in a continuum of the first regular session.' At the second regular session the General Assembly considers matters held over from the first regular session, revenue and appropriation bills, and other measures agreed to by a majority of either house or recommended by the governor.",
+    "typicalConvene": "First Monday of January of the odd-numbered year (or the next day if a holiday); the second regular session convenes on the same date the following year.",
+    "typicalAdjourn": "No constitutional or statutory adjournment date. The General Assembly meets year-round on a session calendar it sets itself and typically holds its final voting sessions in December of the even-numbered year.",
+    "billIntroductionDeadline": null,
+    "carryover": true,
+    "source": "https://codes.ohio.gov/ohio-revised-code/section-101.01"
+  },
+
+  "data": {
+    "officialApi": "https://search-prod.lis.state.oh.us/api/v2/",
+    "officialApiNotes": "The Ohio General Assembly's own legislation search is backed by a public JSON endpoint at search-prod.lis.state.oh.us/api/v2/, e.g. /api/v2/general_assembly_136/legislation/status?format=json. It responds without an API key and was verified live from this environment. It is undocumented — no published API reference, no stability guarantee, no versioning policy — so treat it as best-effort. The Revised Code and Constitution are separately browsable and downloadable as authenticated PDFs at codes.ohio.gov. LegiScan and Open States are the practical bulk sources.",
+    "bulkDownload": null,
+    "openStatesCoverage": "full",
+    "source": "https://search-prod.lis.state.oh.us/api/v2/general_assembly_136/legislation/status?format=json"
+  },
+
+  "citizenRoute": {
+    "canRequestDraft": false,
+    "notes": "The Legislative Service Commission's Office of Research and Drafting drafts bills for members of the General Assembly; it does not take drafting requests from the public. Ohio organizers, however, have the strongest self-help route in this group: they can draft their own measure and take it straight to the Attorney General with 1,000 signatures, using the direct constitutional initiative or the indirect statutory initiative, without any legislative sponsor.",
+    "source": "https://www.lsc.ohio.gov/about/employment/staff-roles/office-of-research-and-drafting"
+  },
+
+  "gaps": [
+    "COULD NOT REACH THE OHIO SECRETARY OF STATE. www.ohiosos.gov returns 403 to this environment's IP (its WAF blocks the request), so the SoS's own 'Putting an Issue on the Ballot' pages could not be read. The PERCENTAGES and the county-distribution rule (10% / 3% per round / 6%; 44 of 88 counties at 5% / 1.5% / 3%) are verified from the Ohio Attorney General's official signature-requirements page. The ABSOLUTE NUMBERS (413,487 / 124,046 per round / 248,092) are from Ballotpedia's year-by-year table, corroborated by contemporaneous reporting that the 2024 redistricting initiative needed 413,487 signatures. Organizers should confirm the absolute figures against the Secretary of State before relying on them.",
+    "COULD NOT VERIFY AN OHIO BILL DRAFTING MANUAL. lsc.ohio.gov and legislature.ohio.gov are unreachable from this environment (TLS chain failure via curl, HTTP 503 via fetch), so the Legislative Service Commission's publications page could not be read. Search results show LSC publishing a Rule Drafting Manual (for administrative rules, not bills) and 'A Guidebook for Ohio Legislators' (2025 edition at https://www.lsc.ohio.gov/assets/organizations/legislative-service-commission/files/a-guidebook-for-ohio-legislators-2025.pdf), but no public bill drafting manual was located. manualUrl is null. The Guidebook and https://www.lsc.ohio.gov/publications are the URLs to re-check when the host is reachable.",
+    "requiredSections for an Ohio bill is a description of standard Ohio bill form, not a quotation from an official manual (none was reachable).",
+    "The 125-day filing deadline, the four-month legislative consideration window, the 90-day supplementary-petition window and the 10-day cure period are sourced to Ballotpedia's summary of Ohio Const. art. II, §§ 1a-1g rather than to a Secretary of State page, because the SoS site was blocked.",
+    "Bill introduction deadlines are set by chamber rule and were not verified; left null."
+  ]
+}
