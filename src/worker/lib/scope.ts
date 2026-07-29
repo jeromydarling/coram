@@ -17,7 +17,7 @@
  * completion.
  */
 
-import { violatedRule } from '../../shared/policy';
+import { violatedRule, type Rule } from '../../shared/policy';
 
 export type ScopeRefusal =
   | 'crisis'
@@ -136,12 +136,14 @@ const INJECTION_RESPONSE = `I only do the three things above. Asking differently
  * Says plainly what was and was not sent, because the alternative — silence —
  * leaves an organizer guessing whether their draft is now in a log somewhere.
  */
-function prohibitedResponse(rule: string): string {
+function prohibitedResponse(rule: Rule): string {
   return `I will not help with this one.
 
-${rule}
+${rule.rule}
 
-Nothing was sent to a model and nothing was stored. If you think this is wrong, the acceptable use page lists what is protected here — protest, strikes, blockades, occupations, bail funds, and civil disobedience are all on it, including where they are unlawful.`;
+${rule.why}
+
+Nothing was sent to a model and nothing was stored. If you think this is wrong, /terms lists what is protected here — protest, strikes, blockades, occupations, lock-ons, bail funds, and non-violent civil disobedience are all on it, including where they are unlawful.`;
 }
 
 // ---------------------------------------------------------------------------
@@ -179,7 +181,7 @@ export function checkScope(message: string): ScopeResult {
    */
   const broken = violatedRule(text);
   if (broken) {
-    return { allowed: false, reason: 'prohibited', response: prohibitedResponse(broken.text) };
+    return { allowed: false, reason: 'prohibited', response: prohibitedResponse(broken) };
   }
   if (EMOTIONAL_SUPPORT.some((p) => p.test(text))) {
     return { allowed: false, reason: 'emotional_support', response: EMOTIONAL_RESPONSE };

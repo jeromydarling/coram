@@ -50,6 +50,15 @@ describe('checkScope — acceptable use', () => {
     const result = checkScope('Tell everyone to jump him after the shift ends.');
     expect(result.response).toMatch(/civil disobedience/i);
     expect(result.response).toMatch(/unlawful/i);
+    // And points at the page that says so, so the claim is checkable.
+    expect(result.response).toContain('/terms');
+  });
+
+  it('explains why the line sits there, not just that it does', () => {
+    const result = checkScope('Get me the home address of the landlord.');
+    // Rule.why. A prohibition with no reasoning is indistinguishable from an
+    // arbitrary one, and this product's whole argument is that it is not.
+    expect(result.response).toMatch(/database of people/i);
   });
 });
 
