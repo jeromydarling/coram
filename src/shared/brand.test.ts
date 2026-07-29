@@ -13,6 +13,8 @@ import {
   legibilityIssues,
   luminance,
   normaliseHex,
+  paletteFrom,
+  parseHex,
   postLength,
   readableInk,
 } from './brand';
@@ -150,5 +152,73 @@ describe('social channels', () => {
   it('has no duplicate channel ids', () => {
     const ids = CHANNELS.map((c) => c.id);
     expect(new Set(ids).size).toBe(ids.length);
+  });
+});
+
+describe('paletteFrom', () => {
+  /*
+   * The whole point of generating rather than proposing: the result cannot be
+   * something the contrast gate then rejects. This sweeps the hue wheel and
+   * every saturation/lightness corner, including the ones that break naive
+   * palette generators — near-black, near-white, and fully desaturated seeds.
+   */
+  const seeds: string[] = [];
+  for (let h = 0; h < 360; h += 15) {
+    for (const [s, l] of [
+      [90, 50],
+      [30, 70],
+      [100, 20],
+      [10, 95],
+      [0, 50],
+      [80, 8],
+    ] as const) {
+      // Cheap HSL -> hex for test input only.
+      const a = (s / 100) * Math.min(l / 100, 1 - l / 100);
+      const f = (n: number) => {
+        const k = (n + h / 30) % 12;
+        const v = l / 100 - a * Math.max(-1, Math.min(k - 3, 9 - k, 1));
+        return Math.round(255 * v)
+          .toString(16)
+          .padStart(2, '0');
+      };
+      seeds.push(`#${f(0)}${f(8)}${f(4)}`);
+    }
+  }
+
+  it.each(seeds.map((s) => [s]))('produces a legible palette from %s', (seed) => {
+    expect(legibilityIssues(paletteFrom(seed))).toEqual([]);
+  });
+
+  it('is deterministic', () => {
+    expect(paletteFrom('#1f5f4f')).toEqual(paletteFrom('#1f5f4f'));
+  });
+
+  it('keeps the seed hue recognisable in the primary', () => {
+    // A green seed must not come back with a red primary. Hue is what a group
+    // recognises as "our colour"; lightness and saturation are ours to move.
+    const hueOf = (hex: string) => {
+      const { r, g, b } = parseHex(hex);
+      const max = Math.max(r, g, b);
+      const min = Math.min(r, g, b);
+      if (max === min) return 0;
+      const d = max - min;
+      const h =
+        max === r ? ((g - b) / d + (g < b ? 6 : 0)) / 6 : max === g ? ((b - r) / d + 2) / 6 : ((r - g) / d + 4) / 6;
+      return h * 360;
+    };
+    for (const seed of ['#1f5f4f', '#7a2f8f', '#c0392b', '#1e3a8f']) {
+      const delta = Math.abs(hueOf(paletteFrom(seed).primary) - hueOf(seed));
+      expect(Math.min(delta, 360 - delta)).toBeLessThan(12);
+    }
+  });
+
+  it('gives the accent a visibly different hue from the primary', () => {
+    const p = paletteFrom('#1f5f4f');
+    expect(p.accent).not.toBe(p.primary);
+    expect(contrastRatio(p.accent, p.surface)).toBeGreaterThanOrEqual(AA_LARGE);
+  });
+
+  it('carries the name through', () => {
+    expect(paletteFrom('#1f5f4f', 'Riverside Mutual Aid').name).toBe('Riverside Mutual Aid');
   });
 });

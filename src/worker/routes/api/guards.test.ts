@@ -29,6 +29,7 @@ const PRIVATE_PATHS = [
   '/api/exports/contacts.csv',
   '/api/brand',
   '/api/brand/flyer.svg?headline=a&when=b&where=c',
+  '/api/brand/share-kit?headline=a&when=b&where=c',
 ];
 
 const env = {
