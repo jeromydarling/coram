@@ -1,0 +1,82 @@
+{
+  "code": "AR",
+  "name": "Arkansas",
+  "asOf": "2026-07",
+
+  "initiative": {
+    "statute": "direct",
+    "constitutional": "direct",
+    "referendum": true,
+    "signatures": {
+      "statuteFormula": "8 percent of the total number of votes cast for the office of governor in the last preceding general election (Ark. Const. amend. 7 / art. 5, § 1).",
+      "statuteCount": 72563,
+      "constitutionalFormula": "10 percent of the total number of votes cast for the office of governor in the last preceding general election.",
+      "constitutionalCount": 90704,
+      "referendumFormula": "6 percent of the total number of votes cast for the office of governor in the last preceding general election.",
+      "referendumCount": 54422,
+      "countBasis": "2025-2026 cycle, from the Arkansas Secretary of State's 2026 Initiatives and Referenda Handbook (revised December 2025). Derived from the November 2022 gubernatorial election — Arkansas elects its governor in midterm years, so the 2022 canvass is the base for every petition filed for the November 3, 2026 general election. These figures will be recomputed from the 2026 gubernatorial canvass.",
+      "distribution": "Signatures of qualified electors from at least 50 of Arkansas's 75 counties, and in each of those 50 counties at least half the statewide percentage: 5 percent for a constitutional amendment, 4 percent for an initiated act, 3 percent for a referendum, computed on that county's vote for governor in the most recent general election. A petition failing this at the time of filing is rejected without any signatures being verified. Per-county numbers are tabulated at pages 78-81 of the handbook.",
+      "source": "https://www.sos.arkansas.gov/uploads/elections/2025-2026_I_R_Handbook_-_December_2025_(00000005)_Final_copy_12.31_.25_.pdf"
+    },
+    "circulationDays": null,
+    "circulationDaysNote": "No fixed circulation window in the constitution. Circulation may begin only after the Attorney General certifies the popular name and ballot title (Ark. Code Ann. § 7-9-107), and the petition must be filed no later than four months before the election.",
+    "filingDeadline": "Friday, July 3, 2026 — statewide initiative measures must be filed with the Secretary of State not less than four months before the general election. The measure must also be published in a newspaper of statewide circulation, at the petitioners' expense, at least 30 calendar days before filing: deadline Wednesday, June 3, 2026. Referendum petitions must be filed not later than 90 days after final adjournment of the session at which the act was passed. Secretary of State certification of ballot measures to the counties: Thursday, August 20, 2026.",
+    "subjectLimits": [
+      "referendum does not extend to the Governor's veto power — 'The veto power of the Governor or mayor shall not extend to measures initiated by or referred to the people'",
+      "no local legislation may be enacted contrary to the Constitution or any general law of the state",
+      "the proposed ballot title must not exceed an eighth-grade reading level (added by 2025 legislation)"
+    ],
+    "preFilingReview": "The sponsor submits the full text with a proposed popular name and ballot title to the Attorney General, who issues an opinion on the popular name and ballot title; if rejected, the sponsor may amend and resubmit. Circulation may begin only after the Attorney General certifies the popular name and ballot title. Petition sheets must carry the Attorney General's Instructions to Canvassers, the popular name, the ballot title, the complete text of the measure, the petitioners' oath, and the penalty warning under the Attorney General's signature. Before signing, a petitioner must either read the ballot title in the canvasser's presence or have it read aloud to them.",
+    "source": "https://www.sos.arkansas.gov/uploads/elections/2025-2026_I_R_Handbook_-_December_2025_(00000005)_Final_copy_12.31_.25_.pdf"
+  },
+
+  "localOrdinance": {
+    "citizenInitiative": true,
+    "notes": "Ark. Const. amend. 7 reserves initiative and referendum to the legal voters of each municipality and county as to all local, special and municipal legislation. Fifteen percent (15%) of the legal voters of any municipality or county may invoke the initiative or order the referendum on any local measure. Base for computing the number of signatures: the total vote cast for the office of mayor at the last preceding general election in municipalities; the office of circuit clerk in counties. Timing: a local initiative petition must be filed not less than 60 nor more than 90 days before the election; a local referendum petition not less than 30 nor more than 90 days after passage of the measure by the municipal council (90 days for a local or special measure passed by the General Assembly). If a municipal or county petition is found insufficient, the sponsor has a correction opportunity.",
+    "source": "https://www.sos.arkansas.gov/uploads/elections/2025-2026_I_R_Handbook_-_December_2025_(00000005)_Final_copy_12.31_.25_.pdf"
+  },
+
+  "drafting": {
+    "manualUrl": "https://arkleg.state.ar.us/Home/FTPDocument?path=%2FBLR+Publications%2FLegal+Services+Division%2FLEGISLATIVE+DRAFTING+MANUAL--DECEMBER+2020_Updated.pdf",
+    "manualName": "Legislative Drafting Manual (Arkansas Bureau of Legislative Research, Legal Services Division), December 2020 updated edition",
+    "manualVerified": "2026-07-29, HTTP 200, application/pdf, 3.5 MB",
+    "requiredSections": null,
+    "enactingClause": "BE IT ENACTED BY THE PEOPLE OF THE STATE OF ARKANSAS",
+    "enactingClauseNote": "Ark. Const. amend. 7: 'The style of all bills initiated and submitted under the provisions of this section shall be, \"Be It Enacted by the People of the State of Arkansas, (municipality or county, as the case may be).\"' The parenthetical is used for local initiated measures. The Secretary of State's handbook reproduces the form as 'BE IT ENACTED BY THE PEOPLE OF THE STATE OF ARKANSAS, OR ______'.",
+    "source": "https://www.sos.arkansas.gov/uploads/elections/2025-2026_I_R_Handbook_-_December_2025_(00000005)_Final_copy_12.31_.25_.pdf"
+  },
+
+  "legislature": {
+    "chambers": ["House of Representatives", "Senate"],
+    "sessionType": "Biennial regular sessions in odd-numbered years plus fiscal sessions in even-numbered years (Ark. Const. amend. 86). The 95th General Assembly held its Fiscal Session in 2026.",
+    "typicalConvene": null,
+    "typicalAdjourn": null,
+    "billIntroductionDeadline": null,
+    "carryover": null,
+    "source": "https://www.arkleg.state.ar.us/"
+  },
+
+  "data": {
+    "officialApi": null,
+    "officialApiNotes": "No public API found. The Bureau of Legislative Research's site at arkleg.state.ar.us serves bills, acts, committees and calendars through a server-rendered web interface (e.g. https://www.arkleg.state.ar.us/Bills/Detail?id=HB1001&ddBienniumSession=2025%2F2025R, verified 2026-07-29). Documents are retrievable through the FTPDocument endpoint used for the drafting manual above.",
+    "bulkDownload": null,
+    "openStatesCoverage": "full",
+    "openStatesNotes": "Open States (Plural) lists bulk CSV archives for 18 Arkansas sessions, regular and extraordinary, 2017-2026.",
+    "source": "https://open.pluralpolicy.com/data/session-csv/"
+  },
+
+  "citizenRoute": {
+    "canRequestDraft": false,
+    "notes": "The Bureau of Legislative Research drafts bills for members of the General Assembly. For a statewide initiative, the sponsor drafts the measure and submits the full text with a proposed popular name and ballot title to the Attorney General for certification (Ark. Code Ann. § 7-9-107); the state reviews the popular name and ballot title but does not draft the measure.",
+    "source": "https://www.sos.arkansas.gov/uploads/elections/2025-2026_I_R_Handbook_-_December_2025_(00000005)_Final_copy_12.31_.25_.pdf"
+  },
+
+  "gaps": [
+    "ACTIVE LITIGATION WARNING. The Secretary of State's own handbook (revised December 2025) states: 'At the time this publication was revised, litigation was ongoing concerning Acts 218, 240, 241, 274, and 453 of 2025, Act 236 of 2023, and Ark. Code Ann. § 7-9-103.' Fourteen 2025 acts changed Arkansas initiative law (Acts 115, 153, 154, 218, 240, 241, 272, 273, 274, 453, 602, 764, 768 and 999 of 2025). Procedural requirements — canvasser instructions, the ballot-title reading requirement, signature-collection rules — may have been enjoined or modified after December 2025. Check the current handbook and pending cases before advising an organizer on procedure. The signature COUNTS are constitutional and not affected by that litigation.",
+    "The 50-county distribution requirement is the single most common reason Arkansas petitions are rejected: a petition that misses the per-county minimum in any of 50 counties at the time of filing is rejected outright, with no signature verification at all. Per-county numbers are at pages 78-81 of the handbook and were not transcribed here.",
+    "Could not verify Arkansas General Assembly convening dates, session length limits, or bill introduction deadlines from a primary source; those fields are null. Ark. Const. amend. 86 governs regular and fiscal session timing but the constitutional text was not retrieved.",
+    "Could not verify whether Arkansas bills carry over between sessions; recorded as null.",
+    "The Legislative Drafting Manual is the December 2020 updated edition — the most recent one published by the Bureau of Legislative Research that could be located. A newer edition may exist and not be indexed.",
+    "Could not enumerate required bill sections from the Arkansas drafting manual; the PDF resolves but its contents were not extracted."
+  ]
+}

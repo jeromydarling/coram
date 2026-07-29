@@ -1,0 +1,89 @@
+{
+  "code": "DC",
+  "name": "District of Columbia",
+  "asOf": "2026-07",
+
+  "initiative": {
+    "statute": "direct",
+    "constitutional": "none",
+    "referendum": true,
+    "signatures": {
+      "statuteFormula": "Valid signatures of at least 5% of the registered qualified electors of the District, provided that the total includes at least 5% of the registered qualified electors in each of 5 or more of the 8 wards. The denominator is the Board's latest official count of registered qualified electors made 30 days before the signatures are submitted, so the absolute number moves with the voter rolls.",
+      "statuteCount": null,
+      "constitutionalFormula": null,
+      "constitutionalCount": null,
+      "distribution": "5% of registered qualified electors in each of at least 5 of the District's 8 wards, in addition to the 5% District-wide total.",
+      "source": "https://www.dcboe.org/ballot-measures/initiative-measures-referenda",
+      "basisElection": "Not applicable — unlike states that peg the threshold to a past gubernatorial vote, D.C. pegs it to current voter registration. There is no fixed number that stays valid across a cycle; the Board recomputes it from the registration count 30 days before submission. As a rough order of magnitude, D.C. registration has run roughly 490,000-530,000 in recent years, implying a District-wide requirement in the mid-20,000s, but a campaign must get the operative number from the Board of Elections for its own filing, not from this file."
+    },
+    "circulationDays": 180,
+    "filingDeadline": "180 calendar days beginning on the first calendar day after the Board certifies/adopts the petition form (D.C. Code sec. 1-1001.16). An initiative that qualifies is placed on the ballot of an election held at least 90 days after the Board certifies sufficiency; a referendum is placed within 114 days. Referendum petitions must be circulated during the congressional review period for the Council act in question.",
+    "subjectLimits": [
+      "May not appropriate funds. The Home Rule Act defines 'initiative' as the process by which electors may propose laws 'EXCEPT LAWS APPROPRIATING FUNDS' (D.C. Code sec. 1-204.101(a)). This is the single most consequential limit on D.C. initiatives.",
+      "May not negate or limit an act of the Council adopted under section 446 of the Home Rule Act — i.e. the budget act (D.C. Code sec. 1-1001.16; D.C. Code sec. 1-204.46). Measures with meaningful fiscal consequences are routinely rejected or narrowed on this ground.",
+      "May not authorize discrimination prohibited under the D.C. Human Rights Act (Chapter 14 of Title 2, D.C. Official Code)",
+      "Must be a proper subject of legislation under the District Charter — the initiative power is co-extensive with, and no broader than, the Council's own legislative power",
+      "Must not violate the United States Constitution",
+      "Must be in proper filing form",
+      "Referendum only: emergency acts, acts levying taxes, and acts appropriating funds for the general operation budget are not subject to referendum, and no act is subject to referendum once it has become law (D.C. Code sec. 1-204.101(b))"
+    ],
+    "preFilingReview": "The proposer files with the D.C. Board of Elections five copies of the full text of the measure, a summary statement of not more than 100 words, a short title of 15 words or less, an affidavit that the proposer is a registered qualified elector, and a verified statement of contributions filed with the Office of Campaign Finance. Within one business day the Board requests advisory opinions from the Attorney General for the District of Columbia and from the Board's own General Counsel on whether the measure is a proper subject; those opinions are due in 15 business days for an initiative (5 for a referendum). The Board then makes a public 'proper subject matter' determination. Within 20 calendar days of accepting the measure the Board prepares the short title, summary statement and legislative form, adopts them at a public meeting, and publishes them within 24 hours; the formulation may be challenged in the D.C. Court of Appeals within 10 calendar days of publication in the D.C. Register. Only after the petition form is certified does the 180-day clock start.",
+    "postApproval": "An initiative approved by a majority of registered qualified electors voting on it takes effect the same as a permanent act passed by the Council, subject to passive congressional review (30 days; 60 days for measures amending Titles 22, 23 or 24 of the D.C. Official Code). The Council may subsequently amend or repeal an enacted initiative. If a referendum disapproves an act, the Council may not reenact it for 365 days after certification.",
+    "source": "https://code.dccouncil.gov/us/dc/council/code/sections/1-1001.16"
+  },
+
+  "localOrdinance": {
+    "citizenInitiative": true,
+    "notes": "D.C. is simultaneously the state-level and local-level government, so the Home Rule Act initiative described above IS the local ordinance route; there is no separate city-council-vs-state-legislature distinction. Sub-District bodies (Advisory Neighborhood Commissions) are advisory only and cannot enact ordinances. Separately, D.C. Code sec. 1-203.03 (Home Rule Act sec. 303) provides a Charter referendum: certain portions of the Charter may be amended by an act passed by the Council and ratified by a majority of registered qualified electors voting in a referendum — but that route starts with the Council, not with a citizen petition, which is why 'constitutional' is recorded as 'none' above.",
+    "source": "https://dccouncil.gov/wp-content/uploads/2019/02/Legislative-Drafting-Manual-2019-Edition-FINAL.pdf"
+  },
+
+  "drafting": {
+    "manualUrl": "https://dccouncil.gov/wp-content/uploads/2019/02/Legislative-Drafting-Manual-2019-Edition-FINAL.pdf",
+    "manualName": "Council of the District of Columbia Legislative Drafting Manual, 2019 Edition (Office of the General Counsel)",
+    "requiredSections": [
+      "long title (stating the purpose of the measure)",
+      "enacting clause",
+      "short title (a section citing the measure as the '... Act of 20__')",
+      "definitions (where needed)",
+      "fiscal impact statement section (required for permanent bills by D.C. Code sec. 1-301.47a; stock language provided in the manual)",
+      "effective date section",
+      "table of contents (for longer measures)"
+    ],
+    "enactingClause": "BE IT ENACTED BY THE ELECTORS OF THE DISTRICT OF COLUMBIA, — this is the standard enacting clause for an INITIATIVE. Council bills instead use 'BE IT ENACTED BY THE COUNCIL OF THE DISTRICT OF COLUMBIA,' and Council resolutions use 'RESOLVED, BY THE COUNCIL OF THE DISTRICT OF COLUMBIA,' (General Legislative Procedures Act of 1975, D.C. Official Code sec. 1-301.46; Drafting Manual sec. 4.6).",
+    "source": "https://dccouncil.gov/wp-content/uploads/2019/02/Legislative-Drafting-Manual-2019-Edition-FINAL.pdf"
+  },
+
+  "legislature": {
+    "chambers": ["Council of the District of Columbia (unicameral)"],
+    "sessionType": "Unicameral 13-member Council: a Chairman elected at large, four at-large members, and one member from each of the eight wards. The Council is in session year-round with brief recesses in summer and winter/early spring. Legislative business is organized into two-year 'Council Periods'; Council Period 26 covers 2025-2026.",
+    "typicalConvene": "Year-round; a new Council Period begins in January of each odd-numbered year.",
+    "typicalAdjourn": "No fixed sine die — the Council does not adjourn for the year in the way a state legislature does.",
+    "billIntroductionDeadline": null,
+    "carryover": null,
+    "congressionalReview": "Every permanent D.C. act is transmitted to Congress and becomes law only after a mandatory passive review period — 30 days for most acts, 60 days for acts amending Titles 22, 23 and 24 of the D.C. Official Code — unless Congress enacts a joint resolution of disapproval. Emergency acts take effect immediately on mayoral approval and last no more than 90 days.",
+    "source": "https://dccouncil.gov/about-the-council/"
+  },
+
+  "data": {
+    "officialApi": null,
+    "officialApiNotes": "The Council's Legislation Information Management System (LIMS) at https://lims.dccouncil.gov/ is the authoritative record of bills, resolutions, hearings and votes and backs the public site with JSON endpoints, but no documented, supported public API or bulk download was found. Structured copies of D.C. Council legislation and votes are available from Open States (Plural), which covers D.C. Council Periods from 2017 forward.",
+    "bulkDownload": "https://open.pluralpolicy.com/data/",
+    "openStatesCoverage": "full",
+    "source": "https://open.pluralpolicy.com/data/"
+  },
+
+  "citizenRoute": {
+    "canRequestDraft": false,
+    "notes": "The Council's Office of the General Counsel drafts legislation for Councilmembers, not for the public; it does, however, publish the Legislative Drafting Manual specifically as 'technical guidance for individuals who draft legislation for consideration by the Council.' For initiatives, the Board of Elections — not the Council — is the gatekeeper: the Board itself prepares the official short title, summary statement and 'legislative form' of a citizen's measure after accepting it, and the Attorney General's and Board General Counsel's advisory opinions on proper subject matter function as a de facto free legal review of the draft. In recent practice proposers have withdrawn and resubmitted revised texts in response to those advisory opinions before the Board's determination, which is the closest thing D.C. offers to iterative drafting help.",
+    "source": "https://www.dcboe.org/ballot-measures/initiative-measures-referenda"
+  },
+
+  "gaps": [
+    "statuteCount is null by design and NOT by omission: D.C. has no standing signature number. The threshold is 5% of the registered qualified electors as of the Board's official count 30 days before submission, so it changes continuously. Any campaign must obtain its operative number in writing from the D.C. Board of Elections. Do not publish a fixed D.C. signature count.",
+    "Could not verify from a primary source whether measures pending at the end of a Council Period die and must be reintroduced (carryover is null), nor any bill-introduction deadline within a Council Period. Check the Rules of Organization and Procedure for Council Period 26.",
+    "Could not verify the exact date on which a Council Period convenes (commonly January 2 of odd-numbered years).",
+    "The Legislative Drafting Manual located is the 2019 Edition; could not confirm whether the Office of the General Counsel has issued a newer edition. It cites the Council Rules for Council Period 23, so parts of its procedural discussion are dated even though the drafting style rules are current.",
+    "The 'may not appropriate funds' and 'may not negate or limit a budget act' limits are stated accurately here, but where the line falls for a given measure is contested and fact-specific — it is the usual reason a D.C. initiative is rejected. Organizers should expect the Attorney General's advisory opinion to be the decisive document and should budget time to revise and resubmit."
+  ]
+}

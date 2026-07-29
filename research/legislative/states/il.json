@@ -1,0 +1,86 @@
+{
+  "code": "IL",
+  "name": "Illinois",
+  "asOf": "2026-07",
+
+  "initiative": {
+    "statute": "none",
+    "constitutional": "direct",
+    "referendum": false,
+    "signatures": {
+      "statuteFormula": null,
+      "statuteCount": null,
+      "constitutionalFormula": "At least 8% of the total votes cast for candidates for Governor in the preceding gubernatorial election (Ill. Const. art. XIV, sec. 3)",
+      "constitutionalCount": 328371,
+      "distribution": null,
+      "source": "https://www.ilga.gov/commission/lrb/con14.htm"
+    },
+    "circulationDays": null,
+    "filingDeadline": "Petition must be filed with the Secretary of State at least six months before the general election, and every signature must have been signed not more than twenty-four months preceding that general election (Ill. Const. art. XIV, sec. 3). For the November 3, 2026 general election that put the filing deadline in early May 2026.",
+    "subjectLimits": [
+      "READ THIS FIRST: Illinois has NO citizen initiative for ordinary statutes. The only citizen-initiated statewide measure is a constitutional amendment, and only to Article IV — the Legislative Article.",
+      "'Amendments shall be limited to structural and procedural subjects contained in Article IV' (Ill. Const. art. XIV, sec. 3). Illinois courts read 'structural AND procedural' conjunctively: a proposal must be BOTH structural and procedural to qualify. Canonical qualifying examples are changing the legislature from bicameral to unicameral, or from multi-member to single-member districts.",
+      "This is the constraint that has killed most Illinois citizen amendment drives — several redistricting and term-limit petitions gathered enough signatures and were then struck from the ballot for falling outside 'structural and procedural subjects contained in Article IV'. A group must clear this legal question BEFORE spending money on signatures, not after.",
+      "No veto referendum: Illinois voters cannot petition to repeal an enacted state law.",
+      "Amendments proposed by the General Assembly (the other route) are limited to no more than three Articles at a time and require a 3/5 vote of each house (Ill. Const. art. XIV, sec. 2)."
+    ],
+    "preFilingReview": null,
+    "notes": "Approval threshold once on the ballot: the amendment takes effect if approved by either three-fifths of those voting on the amendment, or a majority of all those voting in the election (Ill. Const. art. XIV, sec. 3). The second prong means blank/undervotes effectively count against it. Illinois also allows advisory (non-binding) statewide public questions to be placed on the ballot by the General Assembly, but those are not citizen-initiated and are not law-making.",
+    "source": "https://www.ilga.gov/commission/lrb/con14.htm"
+  },
+
+  "localOrdinance": {
+    "citizenInitiative": true,
+    "notes": "Illinois local direct democracy is far more usable than its statewide version. Article 28 of the Illinois Election Code (10 ILCS 5/28-1 et seq.) governs petitions to submit public questions to voters of a municipality, county, township or other unit, covering both binding propositions authorized by statute or home-rule power and advisory questions. Petition thresholds, filing deadlines and the limit on the number of questions per ballot vary by the type of unit and the type of question and were not individually verified here.",
+    "source": "https://ballotpedia.org/Laws_governing_local_ballot_measures_in_Illinois"
+  },
+
+  "drafting": {
+    "manualUrl": "https://lrb.ilga.gov/Commission/lrb/Manual.pdf",
+    "manualName": "Illinois Bill Drafting Manual, December 2012 Edition (Illinois Legislative Reference Bureau)",
+    "requiredSections": [
+      "title — 'AN ACT concerning ...'",
+      "enacting clause (a document without one is not a bill and cannot become law; Ill. Const. art. IV, sec. 8(a))",
+      "body in numbered Sections",
+      "optional preamble, placed AFTER the title and BEFORE the enacting clause",
+      "effective date provision where a non-default date is wanted"
+    ],
+    "enactingClause": "Be it enacted by the People of the State of Illinois, represented in the General Assembly:",
+    "notes": "Verified: URL resolves to a 280-page PDF, 'ILLINOIS BILL DRAFTING MANUAL, Published By The Legislative Reference Bureau, 112 State Capitol, Springfield, IL 62706 — December 2012 Edition'. This is the tenth and most recent edition; no newer edition was found. The manual states directly: 'The necessary parts of a bill are a title, enacting clause, and body.' The same file is also served from https://www.ilga.gov/commission/lrb/Manual.pdf . Note that both hosts return HTTP 403 to plain command-line clients but serve the PDF normally to browsers.",
+    "source": "https://lrb.ilga.gov/"
+  },
+
+  "legislature": {
+    "chambers": ["House of Representatives", "Senate"],
+    "sessionType": "Two-year General Assembly (the 104th covers 2025-2026), convening in regular session each year",
+    "typicalConvene": "Second Wednesday in January (Ill. Const. art. IV, sec. 5(a))",
+    "typicalAdjourn": "May 31 is the practical deadline. A bill passed after May 31 does not take effect before June 1 of the NEXT calendar year unless three-fifths of the members elected to each house provide an earlier effective date (Ill. Const. art. IV, sec. 10). A fall veto session follows.",
+    "billIntroductionDeadline": "Not fixed in the constitution. Each chamber's presiding officer sets and journalizes deadlines each session — including the final day to request bills from the Legislative Reference Bureau and the final day for introduction of bills (Illinois Senate Rule 2-10).",
+    "carryover": null,
+    "notes": "Procedural requirements on any bill: confined to one subject (except appropriations and codification bills), and read by title on three different days in each house (Ill. Const. art. IV, sec. 8).",
+    "source": "https://www.ilga.gov/commission/lrb/con4.htm"
+  },
+
+  "data": {
+    "officialApi": null,
+    "officialApiNotes": "No documented public API or bulk-download service. Bill text, status, sponsors and the full Illinois Compiled Statutes are published as web pages and PDFs on ilga.gov.",
+    "bulkDownload": null,
+    "openStatesCoverage": "full",
+    "source": "https://www.ilga.gov/"
+  },
+
+  "citizenRoute": {
+    "canRequestDraft": false,
+    "notes": "The Legislative Reference Bureau drafts for the General Assembly. The Senate Rules treat bill requests to the LRB as a member action with a member deadline ('Final day to request bills from the Legislative Reference Bureau', Senate Rule 2-10). A citizen group needs a legislative sponsor to get a draft into the system.",
+    "source": "https://lrb.ilga.gov/"
+  },
+
+  "gaps": [
+    "The 328,371 signature figure is NOT published by the Illinois State Board of Elections as an official precomputed threshold. It is 8% of 4,104,636 total votes cast for Governor at the November 8, 2022 general election, as computed by Ballotpedia (https://ballotpedia.org/Signature_requirements_for_ballot_measures_in_Illinois). The Secretary of State's Blue Book election-results tables list the three named 2022 gubernatorial candidates summing to 4,104,555 (8% = 328,365), so the two figures differ by whether write-ins are included. 328,371 is the LARGER and therefore safer target, but any group must confirm the operative number with the State Board of Elections before filing. This number is recomputed after the November 3, 2026 gubernatorial election for petitions targeting 2028.",
+    "The Illinois State Board of Elections' own vote-total download pages return HTTP 403 to automated clients, so the official 2022 gubernatorial total including write-ins could not be read directly.",
+    "The 2026 Candidate's Guide issued by the State Board of Elections (July 2, 2025) was checked and does not address constitutional-amendment initiative petitions at all — it covers candidate filings only.",
+    "Could not confirm from an authoritative source whether Illinois bills carry over from the first to the second year of a General Assembly; carryover is recorded as null rather than guessed.",
+    "Could not confirm whether Illinois has any pre-filing review, official ballot title, or summary process for an initiative petition; preFilingReview is null.",
+    "Local (Article 28) petition signature thresholds and filing deadlines were not verified against the Election Code text — ilga.gov's ILCS browser returns an application shell to automated clients."
+  ]
+}

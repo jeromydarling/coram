@@ -1,0 +1,78 @@
+{
+  "code": "IA",
+  "name": "Iowa",
+  "asOf": "2026-07",
+
+  "initiative": {
+    "statute": "none",
+    "constitutional": "none",
+    "referendum": false,
+    "signatures": {
+      "statuteFormula": null,
+      "statuteCount": null,
+      "constitutionalFormula": null,
+      "constitutionalCount": null,
+      "distribution": null,
+      "source": "https://www.legis.iowa.gov/DOCS/Central/Guides/refer.pdf"
+    },
+    "circulationDays": null,
+    "filingDeadline": null,
+    "subjectLimits": [],
+    "preFilingReview": null,
+    "notes": "Iowa has NO statewide initiative and NO statewide referendum. The Legislative Services Agency's own Legislative Guide states it flatly: 'Iowa has no state constitutional provision which allows for the exercise of statewide initiative and referendum powers and the Legislature has no power to allow the statewide electorate to legislate directly by popular vote.' The Iowa Bill Drafting Guide repeats the rule of construction: 'Initiative and referendum. The legislature has no power to make the operation or repeal of a law dependent upon a vote of the people.' Statewide constitutional amendments require passage by two successive General Assemblies before going to voters. Iowa voters have never even voted on a measure to create an initiative process.",
+    "source": "https://www.legis.iowa.gov/DOCS/Central/Guides/refer.pdf"
+  },
+
+  "localOrdinance": {
+    "citizenInitiative": true,
+    "notes": "Available, but narrow and charter-dependent. Under City of Clinton v. Sheridan, 530 N.W.2d 690 (Iowa 1995), because the Iowa Constitution grants home rule to cities and no state statute forbids it, a city that has ADOPTED A CHARTER for its governance may extend initiative and referendum power to its electors. A city with no such charter provision has no citizen initiative. The LSA guide notes that City of Clinton did not decide the question for counties, but reasons that the parallel county home-rule amendment and county charter provisions make the same conclusion likely for a chartered county. Practical first step for an organizer: read the specific city's charter, since the petition threshold and procedure live there, not in state law.",
+    "source": "https://www.legis.iowa.gov/DOCS/Central/Guides/refer.pdf"
+  },
+
+  "drafting": {
+    "manualUrl": "https://publications.iowa.gov/28290/1/2018%20Iowa%20Bill%20Drafting%20Guide.pdf",
+    "manualName": "Iowa Bill Drafting Guide and Style Manual (Iowa Legislative Services Agency, in consultation with the Code Editor; internally marked 'Partially updated March 2017', posted 2018)",
+    "requiredSections": [
+      "title ('An Act relating to ...')",
+      "enacting clause (required by the Iowa Constitution; omission voids the law)",
+      "body in numbered sections, using 'NEW SECTION.' / 'Sec.' designations and amending clauses",
+      "explanation (attached to bills as introduced)",
+      "effective date or applicability section where a non-default date is wanted"
+    ],
+    "enactingClause": "Be It Enacted by the General Assembly of the State of Iowa:",
+    "notes": "Verified: URL resolves to a 148-page PDF, 'IOWA BILL DRAFTING GUIDE AND STYLE MANUAL ... Prepared and issued by the Iowa Legislative Services Agency, in consultation with the Code Editor, as proposed rules and instructions, for adoption by the Legislative Council, for the drafting and preparation of legislative bills and resolutions pursuant to Iowa Code sections 2.42(10) and 3.2'. The manual states: 'A bill consists of three major parts: (1) the title; (2) the enacting clause; and (3) a body' and 'The enacting clause in Iowa is: \"Be it Enacted by the General Assembly of the State of Iowa:\" and failure to include the enacting clause on a bill approved by the legislature voids the law.'",
+    "source": "https://publications.iowa.gov/28290/"
+  },
+
+  "legislature": {
+    "chambers": ["House of Representatives", "Senate"],
+    "sessionType": "Two-year General Assembly (the 91st covers 2025-2026) made up of two annual regular sessions. Senate has up to 50 members, House up to 100.",
+    "typicalConvene": "Second Monday in January",
+    "typicalAdjourn": "No hard limit. First (odd-year) session runs approximately 110 calendar days; second (even-year) session approximately 100 calendar days. These are the per diem reimbursement periods set by statute, not a constitutional cap — a session may run longer, without per diem.",
+    "billIntroductionDeadline": "Governed by the 'funnel' deadlines set by joint and chamber rules and adjusted each session. Typical pattern: Friday of the 5th week — final day for individual requests for bill drafts; Friday of the 8th week (first session) / 6th week (second session) — bills must be out of committee in the house of origin; Friday of the 12th week (first session) / 10th week (second session) — out of committee in the second house.",
+    "carryover": true,
+    "notes": "Carryover is explicit in Iowa Senate Rule 4 (91st General Assembly): 'All bills, study bills, and resolutions introduced in the first regular session of a general assembly, except those which have been withdrawn, indefinitely postponed, or have failed, shall carry over into the second regular session and to any extraordinary session of the same general assembly.' On adjournment of the first regular session, a bill is automatically referred back to the committee it was originally referred to. Committee assignments and officers carry over as well.",
+    "source": "https://www.legis.iowa.gov/docs/publications/SR/current.pdf"
+  },
+
+  "data": {
+    "officialApi": null,
+    "officialApiNotes": "No documented public API or bulk-download endpoint. The Legislature publishes rich web tools instead — BillBook (all bill versions, amendments, histories, fiscal notes, sponsors), Bill Version Tracking, Daily Legislation/Bill Packet, and Directory of Legislation — all under legis.iowa.gov/legislation. Documents are addressable as PDFs under legis.iowa.gov/docs/ .",
+    "bulkDownload": null,
+    "openStatesCoverage": "full",
+    "source": "https://www.legis.iowa.gov/legislation"
+  },
+
+  "citizenRoute": {
+    "canRequestDraft": false,
+    "notes": "The Legal Services Division of the Legislative Services Agency provides nonpartisan drafting and research to the committees and members of the General Assembly. The funnel calendar treats bill drafting requests as a member action with a member deadline ('final day for individual requests for bill drafts'). A citizen group needs a legislator or committee to carry the request. With no statewide initiative available, that is the only statewide path in Iowa.",
+    "source": "https://www.legis.iowa.gov/agencies/nonpartisan/lsa/legalServices"
+  },
+
+  "gaps": [
+    "The LSA 'Legislative Guide to Iowa Local Government Initiative and Referendum' relied on for the local-initiative analysis is dated December 2000 and cites the 2001 Iowa Code. The underlying authority (City of Clinton v. Sheridan, 1995) still stands, but no newer LSA guide on this topic was found and later statutory changes were not checked.",
+    "No signature thresholds are recorded for local initiatives because Iowa sets none by statute — they live in each city's charter, and no individual charter was verified.",
+    "The Iowa Bill Drafting Guide's most recent publicly posted version is the 2018 posting of a manual internally marked 'Partially updated March 2017'. legis.iowa.gov itself does not appear to host a newer public copy; the LSA Legal Services page links no drafting guide at all. Confirm with LSA that no newer internal edition supersedes it.",
+    "Funnel deadlines recorded here are the pattern used for the 2023 and 2024 sessions as published in the LSA Legislative Guide; they are re-set each General Assembly and were not verified for 2025-2026."
+  ]
+}

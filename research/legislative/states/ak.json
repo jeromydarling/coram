@@ -1,0 +1,88 @@
+{
+  "code": "AK",
+  "name": "Alaska",
+  "asOf": "2026-07",
+
+  "initiative": {
+    "statute": "indirect",
+    "constitutional": "none",
+    "referendum": true,
+    "statuteNote": "Classified indirect: a certified initiative is not placed on a ballot until a legislative session has convened and adjourned and 120 days have passed since that adjournment (AS 15.45.190), which gives the legislature an opportunity to act first. If the legislature enacts a substantially similar act before the election, the petition is void (AS 15.45.210). There is no citizen initiative to amend the Alaska Constitution.",
+    "signatures": {
+      "statuteFormula": "Signatures of qualified voters equal in number to 10 percent of those who voted in the preceding general election, resident in at least three-fourths (30) of the state's 40 house districts, and in each of those districts equal to at least 7 percent of those who voted in that district in the preceding general election (AS 15.45.140(a)).",
+      "statuteCount": 34098,
+      "statuteCountBasis": "Derived from the November 2024 general election (Alaska's formula keys to the preceding GENERAL election, not the gubernatorial election specifically; 2024 was a presidential general). The Office of the Lieutenant Governor stated in December 2025 that petition 24ESEG required '34,098 qualified signatures across 30 house districts.' This figure governs petitions filed while the 2024 general election remains the preceding general election; it will be recomputed after the November 2026 general election.",
+      "constitutionalFormula": null,
+      "constitutionalCount": null,
+      "distribution": "At least 30 of Alaska's 40 state house districts, with at least 7 percent of that district's preceding-general-election vote in each (AS 15.45.140(a)(2)-(3)).",
+      "source": "https://ltgov.alaska.gov/newsroom/2025/12/lt-governor-nancy-dahlstrom-certifies-proper-filing-of-ballot-initiative-petition-24eseg/"
+    },
+    "circulationDays": 365,
+    "circulationDaysNote": "AS 15.45.140(a): sponsors must file the petition within one year from the time they received notice from the lieutenant governor that the petition booklets were ready for delivery. AS 15.45.140(b): a petition not filed within that year has no force or effect.",
+    "filingDeadline": "No fixed calendar deadline. The petition must be filed within one year of booklet issuance (AS 15.45.140). The lieutenant governor then places the proposition on the ballot of the first statewide general, special, special primary, or primary election held after (1) the petition has been filed, (2) a legislative session has convened and adjourned, and (3) 120 days have expired since that adjournment (AS 15.45.190).",
+    "subjectLimits": [
+      "confined to one subject (AS 15.45.040(1))",
+      "subject expressed in the title (AS 15.45.040(2))",
+      "may not dedicate revenue (AS 15.45.010)",
+      "may not make or repeal appropriations (AS 15.45.010)",
+      "may not create courts, define the jurisdiction of courts, or prescribe their rules (AS 15.45.010)",
+      "may not enact local or special legislation (AS 15.45.010)"
+    ],
+    "preFilingReview": "File an application with the lieutenant governor with a $100 deposit (AS 15.45.020), including the proposed bill and at least 100 qualified-voter sponsors plus a three-member initiative committee (AS 15.45.030). Within 60 calendar days the lieutenant governor certifies the application or states grounds for denial (AS 15.45.070); denial grounds are non-compliance with the one-subject/form rules, a defective application, or too few sponsors (AS 15.45.080). If certified, the lieutenant governor prepares numbered petition booklets containing an impartial summary and a state cost estimate (AS 15.45.090).",
+    "otherRules": "Circulators must be U.S. citizens, 18 or older, and Alaska residents (AS 15.45.105). Petitions may be circulated only in person (AS 15.45.110(a)). Circulator pay is capped at $1 per signature (AS 15.45.110(c)). An adopted initiative takes effect 90 days after certification (AS 15.45.220).",
+    "referendumNote": "Referendum petition uses the same 10% / 30-district / 7% thresholds (AS 15.45.370) but must be filed within 90 days after adjournment of the session at which the act was passed. Referendum may not be applied to dedication of revenue, appropriations, local or special legislation, or laws necessary for immediate preservation of the public peace, health, or safety (AS 15.45.250).",
+    "source": "https://www.akleg.gov/basis/statutes.asp#15.45.140"
+  },
+
+  "localOrdinance": {
+    "citizenInitiative": true,
+    "notes": "AS 15.45.100 [AS 29.26.100]: initiative and referendum powers are reserved to residents of municipalities, subject to the same subject restrictions in Alaska Const. art. XI, § 7. Application is filed with the municipal clerk signed by at least 10 voters (AS 29.26.110); the clerk certifies it only if the matter is unrestricted, single-subject, legislative rather than administrative, and enforceable as a matter of law. Signatures must be gathered within 90 days of petition issuance (AS 29.26.130(a)). Threshold, based on votes cast at the last regular municipal election: 25 percent of votes cast in a municipality of fewer than 7,500 persons; 15 percent in a municipality of 7,500 or more (AS 29.26.130(b)).",
+    "source": "https://www.akleg.gov/basis/statutes.asp#29.26.130"
+  },
+
+  "drafting": {
+    "manualUrl": "https://akleg.gov/docs/pdf/DraftingManual.pdf",
+    "manualName": "Manual of Legislative Drafting (Alaska Legislative Affairs Agency, Division of Legal and Research Services)",
+    "manualVerified": "2026-07-29, HTTP 200, application/pdf, 1.3 MB",
+    "requiredSections": null,
+    "enactingClause": "Be it enacted by the People of the State of Alaska",
+    "enactingClauseNote": "Prescribed for initiative bills by AS 15.45.040(3). Legislature-introduced bills use the constitutional clause for legislative enactment.",
+    "source": "https://www.akleg.gov/basis/statutes.asp#15.45.040"
+  },
+
+  "legislature": {
+    "chambers": ["House of Representatives", "Senate"],
+    "sessionType": "Two-year legislature made up of a First Regular Session in odd-numbered years and a Second Regular Session in even-numbered years, plus any special sessions (AS 24.05.090). The 34th Alaska State Legislature covers 2025-2026.",
+    "typicalConvene": "Third Tuesday in January at 1:00 p.m. at the capital, each year (AS 24.05.090).",
+    "typicalAdjourn": null,
+    "billIntroductionDeadline": null,
+    "carryover": true,
+    "carryoverNote": "Implied by AS 24.05.090, which makes each legislature a single two-year body consisting of a first and second regular session. Exact carryover mechanics are set by the Uniform Rules of the Alaska State Legislature, which were not retrieved.",
+    "source": "https://www.akleg.gov/basis/statutes.asp#24.05.090"
+  },
+
+  "data": {
+    "officialApi": "https://www.akleg.gov/publicservice/basis/bills?session=34&json=true",
+    "officialApiNotes": "The BASIS public service endpoint returns bill lists as JSON or XML (verified 2026-07-29; the response includes a header-version warning: 'Current version is X-Alaska-Legislature-Basis-Version:1.4'). It is the same data behind the BASIS web interface at akleg.gov. Public documentation is thin — set the version header and expect the schema to be XML-shaped even in JSON mode.",
+    "bulkDownload": null,
+    "openStatesCoverage": "full",
+    "openStatesNotes": "Open States (Plural) lists bulk CSV archives for 5 Alaska legislatures covering 2017-2026.",
+    "source": "https://open.pluralpolicy.com/data/session-csv/"
+  },
+
+  "citizenRoute": {
+    "canRequestDraft": false,
+    "notes": "The Division of Legal and Research Services drafts bills for legislators; drafting requests come from members and committees under AS 24.08 and the Uniform Rules. For an initiative, AS 15.45.030(1) requires the sponsors themselves to submit the finished proposed bill with the application — the lieutenant governor reviews it for form and one-subject compliance but does not draft it. Sponsors should therefore arrive with a complete, drafted bill.",
+    "source": "https://www.akleg.gov/basis/statutes.asp#15.45.030"
+  },
+
+  "gaps": [
+    "The 34,098 signature figure comes from the Office of the Lieutenant Governor's December 2025 certification announcement for petition 24ESEG, not from a standing Division of Elections requirements page. www.elections.alaska.gov could not be retrieved on 2026-07-29 (TLS chain error via curl, HTTP 503 via fetch), so the Division of Elections' own current statement of the requirement was not read. Confirm the number with the Division of Elections before an organizer relies on it, and note it will be recomputed from the November 2026 general election turnout.",
+    "Alaska's formula keys to the preceding GENERAL election (AS 15.45.140), not the preceding gubernatorial election. Do not carry over the 'recomputed after each gubernatorial election' assumption used for AZ/AR/CA.",
+    "Alaska has no citizen initiative for constitutional amendments; the constitutional fields are null by fact.",
+    "Could not verify the per-district signature counts (7 percent of each of at least 30 house districts) — those are published district-by-district by the Division of Elections and vary per district.",
+    "Could not verify Alaska's regular session length limit from a primary source. Alaska Const. art. II, § 8 sets 121 days and AS 24.05.150(b) reflects a voter-approved 90-day limit; neither text was retrieved, so typicalAdjourn is null.",
+    "Could not verify bill introduction deadlines (set by the Uniform Rules, not retrieved).",
+    "Could not verify the Manual of Legislative Drafting's required bill sections; the PDF resolves but its contents were not extracted."
+  ]
+}

@@ -1,0 +1,81 @@
+{
+  "code": "OK",
+  "name": "Oklahoma",
+  "asOf": "2026-07",
+
+  "initiative": {
+    "statute": "direct",
+    "constitutional": "direct",
+    "referendum": true,
+    "signatures": {
+      "statuteFormula": "8% of the total number of votes cast at the last general election for the Office of Governor (Okla. Const. art. V, sec. 2). The current figures derive from the November 8, 2022 general election, at which 1,153,284 votes were cast for Governor. The Secretary of State states these numbers are valid from November 16, 2022 through November 10, 2026, after which they are recomputed from the November 3, 2026 gubernatorial election.",
+      "statuteCount": 92263,
+      "constitutionalFormula": "15% of the total number of votes cast for Governor at the last general election (Okla. Const. art. V, sec. 2). Same 2022 base; veto referendum is 5% (57,664) and a re-proposed rejected measure is 25% (288,321).",
+      "constitutionalCount": 172993,
+      "distribution": "DISPUTED / VERIFY BEFORE RELYING. SB 1027 (2025), sec. 3, added 34 O.S. sec. 8(H): signatures counted toward a statutory initiative or referendum from any single county may not exceed 11.5% of the votes cast in that county at the most recent statewide general election for Governor, and 20.8% for a constitutional petition, with the State Election Board determining county vote totals. SB 1027 sec. 6 makes these provisions applicable only to petitions for which the Secretary of State has not already set the circulation date. The Act carried an emergency clause and took effect on approval in May 2025. Two original-jurisdiction challenges were filed in the Oklahoma Supreme Court in June 2025; on September 15, 2025 the Chief Justice granted a stay barring enforcement of SB 1027 as to State Question 836 (filed before enactment), and the Court heard oral argument on the constitutionality of the Act on November 18, 2025. As of this research date the agent could not verify from an authoritative source that a final opinion has issued, so it could not be confirmed whether the county caps are enforceable against a petition filed in 2026. See gaps.",
+      "source": "https://sos.ok.gov/gov/signature.aspx"
+    },
+    "circulationDays": 90,
+    "filingDeadline": "There is no fixed calendar deadline. After protests, appeals and rehearings are resolved or expire, the Secretary of State sets the date circulation begins (not less than 15 nor more than 30 days out); signatures are then due within 90 days of that date and may not be accepted after 5:00 p.m. on the ninetieth day. 34 O.S. sec. 8, as amended by SB 1027 (2025).",
+    "subjectLimits": [
+      "The petition must include the full text of the measure proposed (Okla. Const. art. V, sec. 2)",
+      "A simple statement of the gist of the proposition must appear on the top margin of every signature sheet; under 34 O.S. sec. 3 as amended by SB 1027 it must explain the effect in basic dictionary words, avoid trade/professional jargon, avoid euphemisms and code words, and state whether the measure will have a fiscal impact; the Secretary of State may remove a non-compliant gist and direct proponents to resubmit",
+      "Circulators must be registered Oklahoma voters and must conspicuously disclose whether they are paid and by whom (34 O.S. secs. 6, 8, as amended by SB 1027)"
+    ],
+    "preFilingReview": "Proponents file a copy of the petition and the text of the measure with the Secretary of State and the Attorney General and file a proposed ballot title of 200 words or less; the Secretary of State assigns a State Question number and publishes notice; any citizen may file a protest to the petition's constitutionality with the Supreme Court within 90 days after publication, and the Supreme Court sets a hearing not less than 10 business days later. Only after protests, appeals and rehearings are resolved does the Secretary of State set the circulation start date. After signatures are filed and counted, the Secretary of State reports the count to the Supreme Court, which determines sufficiency; the Governor then issues a proclamation calling the election.",
+    "source": "https://www.sos.ok.gov/gov/petition_process.aspx"
+  },
+
+  "localOrdinance": {
+    "citizenInitiative": true,
+    "notes": "The initiative and referendum powers reserved by the Oklahoma Constitution are reserved to the people of every municipal corporation as to all legislative authority it may exercise and as to charter amendments (11 O.S. sec. 15-101). Where a municipality has not provided its own procedure by charter or ordinance, 11 O.S. secs. 15-101 to 15-110 apply and mirror the state process, with the mayor standing in for the Governor, the municipal clerk for the Secretary of State, and the city attorney for the Attorney General (sec. 15-102). A municipal petition must be signed by registered voters residing in the municipality equal to at least 25% of the total votes cast at the most recent preceding general municipal election (or biennial town meeting under the Oklahoma Town Meeting Act), and signed copies must be filed with the clerk within 90 days after the measure is initially filed (11 O.S. sec. 15-103).",
+    "source": "https://accessible.oksenate.gov/sites/default/files/2019-12/os11.pdf"
+  },
+
+  "drafting": {
+    "manualUrl": null,
+    "manualName": null,
+    "requiredSections": [
+      "title / enacting clause",
+      "SUBJECT line (used on Oklahoma bills)",
+      "numbered SECTIONs, with AMENDATORY / NEW LAW designations",
+      "codification or noncodification provision",
+      "severability provision",
+      "effective date or emergency clause"
+    ],
+    "enactingClause": "BE IT ENACTED BY THE PEOPLE OF THE STATE OF OKLAHOMA:",
+    "source": "https://www.oklegislature.gov/cf_pdf/2025-26%20ENR/SB/SB1027%20ENR.PDF"
+  },
+
+  "legislature": {
+    "chambers": ["House of Representatives", "Senate"],
+    "sessionType": "Two-year Legislature (the 60th Oklahoma Legislature runs 2025-2026) with a regular session each year; the odd-year session opens with a one-day organizational meeting in January before recessing to February.",
+    "typicalConvene": "12:00 noon on the first Monday in February each year (Okla. Const. art. V, sec. 26). The Second Regular Session of the 60th Legislature convened February 2, 2026.",
+    "typicalAdjourn": "Sine die not later than 5:00 p.m. on the last Friday in May (Okla. Const. art. V, sec. 26); May 29, 2026 for the 2026 session.",
+    "billIntroductionDeadline": "Set by chamber rule each session. For the 2026 (Second Regular) Session the Senate deadline to request drafting was December 5, 2025 and the deadline to introduce bills and joint resolutions was January 15, 2026 (Senate Rule 6-22). A Senator may nonetheless introduce legislation at any time without regard to deadlines (Senate Rule 6-20).",
+    "carryover": true,
+    "source": "https://oksenate.gov/senate-rules"
+  },
+
+  "data": {
+    "officialApi": null,
+    "officialApiNotes": "The Oklahoma Legislature publishes no documented public API. Bill status, bill text (cf_pdf PDFs), full-text search of measures, and the Statutes and Constitution are available only through the oklegislature.gov web interfaces (Basic/Advanced Bill Search, Text of Measures, LENS tracking). The Legislative Service Bureau's Information System Division runs these systems for both chambers.",
+    "bulkDownload": null,
+    "openStatesCoverage": "full",
+    "source": "https://www.oklegislature.gov/lsb.aspx"
+  },
+
+  "citizenRoute": {
+    "canRequestDraft": false,
+    "notes": "Bill drafting is done by Senate and House staff for members; Senate Rule 6-20 vests the right to propose legislation in Senators, and Senate Rule 6-22 sets a members-only drafting-request deadline. A member of the public must persuade a legislator to author a bill. The independent route for citizens is to draft the measure themselves and file it as an initiative petition with the Secretary of State under 34 O.S. sec. 8.",
+    "source": "https://oksenate.gov/senate-rules"
+  },
+
+  "gaps": [
+    "COULD NOT CONFIRM the current status of SB 1027 (2025). Verified: the Act took effect on approval in May 2025 with an emergency clause; two challenges were filed in the Oklahoma Supreme Court in June 2025; a stay issued September 15, 2025 barring enforcement as to State Question 836; oral argument was held November 18, 2025. The agent could not verify from the Oklahoma Supreme Court, the Secretary of State, or any authoritative source whether a final opinion has issued by July 2026 or whether the 11.5% / 20.8% county caps are enforceable against a petition filed today. Any Oklahoma campaign must confirm the caps directly with the Secretary of State's office before planning county-level signature allocation.",
+    "Oklahoma publishes no public bill-drafting or style manual from a legislative counsel office. The closest official public documents are the Oklahoma House's 'How an Idea Becomes a Law' flowchart (https://dgbf0g52sf9l0.cloudfront.net/How_an_idea_Becomes_a_Law_OKH_68cc314a47.pdf), 'Versions of Legislative Measures' (https://dgbf0g52sf9l0.cloudfront.net/Versions_of_Legislative_Measures_a2265538d8.pdf), and the archived Oklahoma House Legislative Manual, 15th rev. ed. 2013 (https://former.okhouse.gov/Documents/2013LegislativeManual.pdf). None of these is a drafting style guide, so drafting.manualUrl is null rather than a substitute link.",
+    "The enacting clause recorded here is the form used on Oklahoma legislative bills, verified from the enrolled text of SB 1027 (2025). A filed initiative petition (State Question 820, Initiative Petition 434) used the shorter form 'BE IT ENACTED BY THE PEOPLE OF OKLAHOMA:' (https://www.sos.ok.gov/documents/questions/820.pdf). The agent could not verify a statutory or constitutional provision fixing a single mandatory form for initiative measures.",
+    "The signature counts above expire November 10, 2026 per the Secretary of State. New figures based on the November 3, 2026 gubernatorial election were not available at the time of research.",
+    "Oklahoma county-level (as distinct from municipal) initiative procedure was not verified; only the municipal procedure at 11 O.S. secs. 15-101 to 15-110 was confirmed from the statute text."
+  ]
+}

@@ -1,0 +1,82 @@
+{
+  "code": "ID",
+  "name": "Idaho",
+  "asOf": "2026-07",
+
+  "initiative": {
+    "statute": "direct",
+    "constitutional": "none",
+    "referendum": true,
+    "signatures": {
+      "statuteFormula": "Signatures of 6% of the total registered voters at the time of the last general election, AND signatures equal to 6% of the registered voters in each of at least 18 of Idaho's 35 legislative districts (Idaho Code sec. 34-1805)",
+      "statuteCount": 70725,
+      "constitutionalFormula": null,
+      "constitutionalCount": null,
+      "distribution": "6% of registered voters in each of at least 18 of the 35 legislative districts. This 18-of-35 rule is the operative one: SB 1110 (2021) tried to raise it to all 35 districts and the Idaho Supreme Court struck that change down in Reclaim Idaho v. Denney (Aug. 2021).",
+      "source": "https://voteidaho.gov/initiatives-amendments/"
+    },
+    "circulationDays": null,
+    "filingDeadline": "Signed petitions must be delivered to the county clerks by May 1 of the election year; clerks then have 60 calendar days (through roughly June 30) to verify. A petition may circulate for up to 18 months from issuance of the Attorney General's Certificate of Review, or until April 30 of the election year, whichever comes first.",
+    "subjectLimits": [
+      "Statutes only — Idaho's initiative power does not extend to amending the Idaho Constitution; constitutional amendments must originate in the Legislature",
+      "Idaho Const. art. III, sec. 16 requires that an act embrace one subject expressed in its title"
+    ],
+    "preFilingReview": "File the proposed measure with the Secretary of State along with the signatures of 20 qualified electors. The Attorney General then has 20 working days to issue a Certificate of Review (advisory recommendations on form and matters of substantive import). The petitioner has 15 working days after the Certificate to file the final petition, after which the Attorney General has 10 working days to assign the short and long ballot titles. Each signature sheet may carry signatures from only one county.",
+    "notes": "Idaho has a DIRECT statutory initiative (qualifies straight to the ballot, no legislative stage) and a veto referendum on enacted laws, both under Idaho Const. art. III, sec. 1 and Idaho Code Title 34, ch. 18. It has NO constitutional initiative.",
+    "source": "https://voteidaho.gov/initiative-filing-requirements/"
+  },
+
+  "localOrdinance": {
+    "citizenInitiative": null,
+    "notes": "Not verified. Idaho's statewide initiative/referendum statutes (Idaho Code Title 34, ch. 18) address state measures. Whether, and on what terms, Idaho counties and cities must accept citizen-initiated ordinance petitions could not be confirmed from an authoritative state source within this research pass.",
+    "source": null
+  },
+
+  "drafting": {
+    "manualUrl": "https://legislature.idaho.gov/wp-content/uploads/research/draftingmanual.pdf",
+    "manualName": "Legislation Drafting Manual (Concise Version) — Research & Legislation, Legislative Services Office",
+    "requiredSections": [
+      "title beginning 'AN ACT RELATING TO ...' expressing the single subject (Idaho Code sec. 67-514; Idaho Const. art. III, sec. 16)",
+      "enacting clause (required — a bill without one is void)",
+      "body in numbered SECTIONs",
+      "effective date and/or emergency clause where applicable",
+      "Statement of Purpose and Fiscal Note attached on introduction (Joint Rule 18)"
+    ],
+    "enactingClause": "Be It Enacted by the Legislature of the State of Idaho:",
+    "notes": "Verified: URL resolves to a 60-page PDF titled 'LEGISLATION DRAFTING MANUAL, Concise Version, Research & Legislation, LSO'. It is the manual listed on the Legislature's own resources page. A companion 'SOP & Fiscal Note Drafting Guide' is at https://legislature.idaho.gov/resources/sopdraftingguide .",
+    "source": "https://legislature.idaho.gov/resources/"
+  },
+
+  "legislature": {
+    "chambers": ["House of Representatives", "Senate"],
+    "sessionType": "Annual regular sessions within a two-year legislature (the 68th Idaho Legislature covers 2025-2026)",
+    "typicalConvene": "January — the Second Regular Session of the 68th Legislature convened Monday, January 12, 2026",
+    "typicalAdjourn": null,
+    "billIntroductionDeadline": "Personal (individual-member) bills: 20th legislative day in the House, 12th legislative day in the Senate. After those days only committees may introduce. After the 36th legislative day in both houses, only privileged committees may introduce (House: State Affairs, Appropriations, Education, Revenue and Taxation, Ways and Means; Senate: State Affairs, Finance, Judiciary and Rules). All joint resolutions must be introduced by the 36th day.",
+    "carryover": null,
+    "notes": "A bill may be introduced by a member, a group of members, or a standing committee. The Legislature has no constitutional session-length limit; adjournment sine die date varies year to year.",
+    "source": "https://legislature.idaho.gov/wp-content/uploads/research/draftingmanual.pdf"
+  },
+
+  "data": {
+    "officialApi": null,
+    "officialApiNotes": "No documented public API or bulk-download service. Bill text, statements of purpose, fiscal notes and status are published as web pages and PDFs under legislature.idaho.gov/sessioninfo/<year>/legislation/ .",
+    "bulkDownload": null,
+    "openStatesCoverage": "full",
+    "source": "https://legislature.idaho.gov/"
+  },
+
+  "citizenRoute": {
+    "canRequestDraft": false,
+    "notes": "The LSO drafting manual is explicit: 'Legislation must have a legislator to sponsor it before we can begin processing.' Research & Legislation will help with research and drafting on request, but the request has to come through a legislator or committee. For a citizen group in Idaho the initiative is genuinely the alternative path, not just a fallback.",
+    "source": "https://legislature.idaho.gov/wp-content/uploads/research/draftingmanual.pdf"
+  },
+
+  "gaps": [
+    "The 70,725 statewide signature figure is the number the Secretary of State's office used for the 2026 cycle — it is 6% of registered voters as of the November 5, 2024 general election, and applies to petitions targeting the November 3, 2026 ballot. It was reported from the Secretary of State's July 13, 2026 press release (e.g. the certification of the Reproductive Freedom and Privacy Act, which submitted 75,478 valid signatures across 20 legislative districts). The Secretary of State's own public pages (voteidaho.gov/initiatives-amendments and /initiative-filing-requirements) state ONLY the 6% formula and the 18-of-35-district rule, not the computed total. Confirm the current-cycle number directly with the Secretary of State (208-334-2852) before budgeting a campaign — and note it will be recomputed from registration as of the November 2026 general election for the 2028 cycle.",
+    "Per-legislative-district signature counts (the 6% figure for each of the 35 districts) were not located as a published table; the Secretary of State's voter-registration-by-district data is the underlying source.",
+    "Could not confirm whether bills carry over between Idaho's annual sessions; carryover is recorded as null rather than guessed.",
+    "Could not confirm a typical sine die / adjournment date from an authoritative source; recorded as null.",
+    "Could not verify whether Idaho counties and cities are required to accept citizen-initiated ordinance petitions; localOrdinance.citizenInitiative is null."
+  ]
+}

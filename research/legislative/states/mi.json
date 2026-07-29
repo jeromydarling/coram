@@ -1,0 +1,75 @@
+{
+  "code": "MI",
+  "name": "Michigan",
+  "asOf": "2026-07",
+
+  "initiative": {
+    "statute": "indirect",
+    "constitutional": "direct",
+    "referendum": true,
+    "signatures": {
+      "statuteFormula": "8% of the total number of votes cast for ALL candidates for Governor at the most recent gubernatorial election. The 2026-cycle number derives from the NOVEMBER 2022 gubernatorial election (Whitmer/Dixon and others). Veto referendum uses 5% of the same base = 223,099.",
+      "statuteCount": 356958,
+      "constitutionalFormula": "10% of the total number of votes cast for all candidates for Governor at the most recent gubernatorial election. The 2026-cycle number derives from the November 2022 gubernatorial election.",
+      "constitutionalCount": 446198,
+      "distribution": null,
+      "source": "https://www.michigan.gov/sos/-/media/Project/Websites/sos/Elections/Ballot-Access/FDC-FC-MAN-1-Ballot-Proposal-Petition-Manual.pdf"
+    },
+    "circulationDays": 180,
+    "filingDeadline": "Initiated statute: filed with the Bureau of Elections at least 160 days before the general election — 5:00 p.m. May 27, 2026 for the November 3, 2026 election. Constitutional amendment: at least 120 days before — 5:00 p.m. July 6, 2026. Veto referendum: by 5:00 p.m. on the 90th day following final adjournment of the legislative session at which the law was enacted (referendum petitions are NOT subject to the 180-day signature-staleness rule; initiative and constitutional-amendment signatures older than 180 days at the time of filing are not counted, MCL 168.472a). All signatures must be submitted at once — supplemental filings are not permitted (MCL 168.475(2)).",
+    "subjectLimits": [
+      "The petition must carry the full text of the proposed law or amendment plus a summary of its purpose of not more than 100 words",
+      "A constitutional amendment petition must republish in full any existing constitutional provision that would be altered or abrogated, with new language in capital letters and deleted language struck through (Const 1963, art 12, s 2)",
+      "The power of REFERENDUM does not extend to acts making appropriations for state institutions or to meet deficiencies in state funds (Const 1963, art 2, s 9). No comparable subject exclusion applies to the initiative.",
+      "Strict petition-form rules: prescribed type sizes, countywide or city/township circulation form, circulator certificate, notarized printer's affidavit"
+    ],
+    "preFilingReview": "MANDATORY: before circulating, sponsors of an initiative or constitutional-amendment petition must file 15 printer's-proof copies of the petition (plus a PDF to File-Canvass@Michigan.gov) with the Secretary of State under MCL 168.483a; a ballot-question committee campaign statement is then due 35 days later. OPTIONAL: (1) 'approval of the content of the petition summary' — the Director of Elections drafts a summary of not more than 100 words and the Board of State Canvassers approves or rejects it within 30 days, which bars later challenges that the summary is misleading; (2) 'approval as to form' by the Board of State Canvassers.",
+    "source": "https://www.michigan.gov/sos/-/media/Project/Websites/sos/Elections/Ballot-Access/FDC-FC-MAN-1-Ballot-Proposal-Petition-Manual.pdf"
+  },
+
+  "localOrdinance": {
+    "citizenInitiative": true,
+    "notes": "Home Rule City Act (1909 PA 279): MCL 117.4i authorizes a city charter to provide for initiative and referendum on ordinances, and MCL 117.25 sets the mechanics of an initiatory petition — addressed to and filed with the city clerk, stating the body or person responsible for circulation, with clerk canvass, certification of sufficiency, and submission to the electors. Whether the power exists, and the signature threshold, is set by each city's charter; budget and appropriation ordinances are commonly excluded.",
+    "source": "https://www.legislature.mi.gov/Laws/MCL?objectName=MCL-117-25"
+  },
+
+  "drafting": {
+    "manualUrl": null,
+    "manualName": null,
+    "requiredSections": null,
+    "enactingClause": "The People of the State of Michigan enact.",
+    "source": "https://www.legislature.mi.gov/Laws/MCL?objectName=mcl-Article-IV-23"
+  },
+
+  "legislature": {
+    "chambers": ["House of Representatives", "Senate"],
+    "sessionType": "Two-year Legislature (2025-2026 is the 103rd), meeting in a regular session each year; effectively year-round",
+    "typicalConvene": "Second Wednesday in January at 12:00 noon (Const 1963, art 4, s 13)",
+    "typicalAdjourn": "Sine die at 12:00 noon on a day fixed by concurrent resolution (in practice late December)",
+    "billIntroductionDeadline": null,
+    "carryover": true,
+    "source": "https://www.legislature.mi.gov/Laws/MCL?objectName=mcl-Article-IV-13"
+  },
+
+  "data": {
+    "officialApi": null,
+    "officialApiNotes": "legislature.mi.gov (run by the Legislative Service Bureau) publishes bills, the Michigan Compiled Laws, and public acts as HTML and PDF, but no documented public API or bulk data feed was found. The site also applies bot/CAPTCHA challenges to automated requests.",
+    "bulkDownload": "https://open.pluralpolicy.com/data/session-csv/",
+    "openStatesCoverage": "full",
+    "source": "https://open.pluralpolicy.com/data/session-csv/"
+  },
+
+  "citizenRoute": {
+    "canRequestDraft": false,
+    "notes": "The Legislative Service Bureau's Legal Division drafts bills, joint resolutions, substitutes and amendments for the Legislature. It is not a public drafting service — members of the public go through a legislator. Note that an initiative petition sponsor drafts the measure's text themselves; the Bureau of Elections reviews only form and summary, not policy.",
+    "source": "https://council.legislature.mi.gov/Council/LSB"
+  },
+
+  "gaps": [
+    "distribution is null deliberately. Michigan's congressional-district signature distribution requirement (2018 PA 608) was held unconstitutional and unenforceable in League of Women Voters of Michigan v. Secretary of State, 508 Mich 520 (2022); sponsors may circulate on a countywide or city/township form and no geographic distribution minimum currently applies. If a future court or statute reinstates one, this field must change.",
+    "Could not verify from a primary source whether an initiated law ADOPTED by the Legislature within the 40 session days is subject to gubernatorial veto. The Bureau of Elections manual states only that the Legislature has 40 session days to adopt or reject an initiated law without change, that failure to enact sends it to the ballot, and that the Legislature may instead propose a different measure on the same subject so that BOTH go to the voters (Const 1963, art 2, s 9). The widely repeated claim that the Governor cannot veto an initiated law adopted by the Legislature is not confirmed by the cited authority.",
+    "No publicly published Michigan bill drafting manual or style guide was found. The Legislative Service Bureau's Legal Division drafts bills but does not appear to post a drafting manual; NCSL's drafting-manual index does not list Michigan. The closest public document is the LSB Legislative Briefing Book (http://www.legislature.mi.gov/publications/LegislativeBriefingBook.pdf, verified to resolve), which covers the legislative process but is not a drafting style guide. manualUrl is therefore null.",
+    "No bill introduction deadline is fixed by the Michigan Constitution or by MCL; chamber rules may impose one in a given session. Left null rather than guessed.",
+    "Signature counts were taken from the Michigan Bureau of Elections Ballot Proposal Petition Manual dated July 2025, which is the Secretary of State's own current publication. They will be recomputed after the November 2026 gubernatorial election for the 2027-2030 cycle."
+  ]
+}

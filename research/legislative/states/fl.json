@@ -1,0 +1,79 @@
+{
+  "code": "FL",
+  "name": "Florida",
+  "asOf": "2026-07",
+
+  "initiative": {
+    "statute": "none",
+    "constitutional": "direct",
+    "referendum": false,
+    "signatures": {
+      "statuteFormula": null,
+      "statuteCount": null,
+      "constitutionalFormula": "Eight percent of the votes cast in the last preceding presidential election, measured both statewide AND in each of one half of the state's congressional districts — i.e. 8% statewide plus 8% of the district vote in at least 14 of Florida's 28 congressional districts (Fla. Const. art. XI, sec. 3).",
+      "constitutionalCount": 880062,
+      "distribution": "8% of the 2024 votes cast in each of at least 14 of the 28 congressional districts. The per-district thresholds are NOT uniform — they range from 23,949 (CD 24) to 37,769 (CD 17). The Division of Elections publishes the full district table; the sum of all 28 district figures slightly exceeds the statewide total because of rounding. A separate, lower threshold of 220,016 (25% of the 8%, likewise distributed across 14 districts) triggers judicial and fiscal review before ballot position.",
+      "source": "https://files.floridados.gov/media/708909/congressional-district-signature-requirements-for-2026.pdf",
+      "basisElection": "The November 5, 2024 general election, in which 11,000,768 votes were cast statewide. 8% = 880,062. This governs the 2026 ballot; it will be recomputed after the November 2028 presidential election. NOTE: several widely-circulated aggregator figures for 2026 (e.g. 891,523) do not match the Division of Elections' own published table; 880,062 is the number on the state's document, last updated March 20, 2026."
+    },
+    "circulationDays": null,
+    "filingDeadline": "The initiative petition must be filed with the custodian of state records (Secretary of State) no later than February 1 of the year in which the general election is held (Fla. Const. art. XI, sec. 5(b); sec. 100.371(1), Fla. Stat.). Signatures remain valid only until the next February 1 occurring in an even-numbered year (sec. 100.371(14)(a)). County supervisors of elections have up to 30 days to verify submitted forms, so in practice signatures must reach supervisors around January 1 to be guaranteed verification by the February 1 deadline. A circulator must deliver a signed petition form to the supervisor of elections in the county where the voter resides within 10 days of the signature (sec. 100.371(7)(a)).",
+    "subjectLimits": [
+      "Single subject: any initiated revision or amendment 'shall embrace but one subject and matter directly connected therewith,' EXCEPT amendments limiting the power of government to raise revenue, which are exempt from the single-subject rule (Fla. Const. art. XI, sec. 3)",
+      "Constitutional amendments only — Florida reserves NO initiative power over ordinary statutes. A citizen-drafted statute cannot reach the Florida ballot; it must be enacted as a constitutional amendment or passed by the Legislature.",
+      "Passage requires at least 60% approval of electors voting on the measure (Fla. Const. art. XI, sec. 5(e))",
+      "A sponsor may sponsor only one statewide initiative petition per election cycle, and must register as a political committee before circulating any petition forms (sec. 100.371(2), Fla. Stat.)"
+    ],
+    "preFilingReview": "The sponsor must first register as a political committee with the Division of Elections and submit the proposed petition form for approval; if approved, the Division assigns a serial number and circulation may begin. Once 25% of the required signatures statewide and in the required districts (220,016 for 2026) are verified, the measure goes to the Financial Impact Estimating Conference for a financial impact statement and to the Attorney General, who petitions the Florida Supreme Court for an advisory opinion on the validity of the initiative and the ballot summary. Petition circulators who handle more than 25 signed forms per petition per cycle (excluding their own and immediate family members') must register and pass an online training program and test (sec. 100.371, Fla. Stat., as amended by HB 1205, 2025). Supervisors of elections must be paid the signature-verification cost in advance unless the sponsor files an Affidavit of Undue Burden.",
+    "recentChanges": "HB 1205 (2025) substantially rewrote sec. 100.371: it shortened the circulator return window to 10 days, added mandatory circulator registration and testing, capped possession of signed forms by unregistered persons at 25, added citizenship and residency requirements for circulators, and added referral of high-invalidity batches to the Office of Election Crimes and Security. As of the Division of Elections' March 20, 2026 page update, the citizenship and residency requirements for circulators are NOT in effect for certain petitions and certain persons because of federal preliminary injunctions; the Division directs affected non-resident/non-citizen circulators, and members of the League of Women Voters of Florida, LULAC and Poder Latinx, to email initiatives@dos.fl.gov to register. Anyone organizing in Florida must check the current injunction status before relying on any circulator rule.",
+    "source": "https://dos.fl.gov/elections/laws-rules/constitutional-amendmentsinitiatives/"
+  },
+
+  "localOrdinance": {
+    "citizenInitiative": true,
+    "notes": "Narrower than it looks. Florida statutes do not give municipal voters a general power to enact ordinances by petition; sec. 166.031(1), Fla. Stat. gives electors the power to petition for an amendment to the MUNICIPAL CHARTER, signed by at least 10% of the registered electors as of the last preceding municipal general election, which the governing body must then place on the ballot. A local-option alcohol-sales question requires signatures of at least 25% of the electors of the county. Charter counties and individual municipal charters may grant broader ordinance-initiative power, so the operative rule is charter-specific. Fla. Const. art. VIII requires voter approval for county charters, city-county consolidation, transfers of municipal powers, and (with sec. 100.201, Fla. Stat.) bond issues. There are no statewide deadlines for local initiatives — deadlines live in the local charter or ordinance.",
+    "source": "https://ballotpedia.org/Laws_governing_local_ballot_measures_in_Florida"
+  },
+
+  "drafting": {
+    "manualUrl": "https://www.leg.state.fl.us/data/publications/2001/house/administrative/BillDrafting/prt3.pdf",
+    "manualName": "Florida House of Representatives Bill Drafting Manual / Guidelines for Bill Drafting (House Bill Drafting Services, 2001) — published in three parts: prt1.pdf, prt2.pdf, prt3.pdf under the same directory",
+    "manualCaveat": "This is the most recent publicly posted Florida legislative drafting manual that could be located and verified as live (all three parts return HTTP 200), but it dates from 2001. Probes for 2004-2024 editions at the same path all returned 404. Treat it as a style reference of last resort, not as current authority, and verify against current House and Senate rules before relying on it.",
+    "requiredSections": null,
+    "enactingClause": "Be It Enacted by the Legislature of the State of Florida: — NOT independently verified in this research; confirm before publishing.",
+    "source": "https://www.leg.state.fl.us/data/publications/2001/house/administrative/BillDrafting/prt3.pdf"
+  },
+
+  "legislature": {
+    "chambers": ["House of Representatives", "Senate"],
+    "sessionType": "Annual regular session limited to 60 consecutive days, extendable only by a three-fifths vote of each house (Fla. Const. art. III, sec. 3(d)). 120 House members serving 2-year terms; 40 Senators serving 4-year terms.",
+    "typicalConvene": "Fla. Const. art. III, sec. 3(b): the first Tuesday after the first Monday in March of each odd-numbered year, and the second Tuesday after the first Monday in January of each even-numbered year. The 2026 regular session convened January 13, 2026.",
+    "typicalAdjourn": "60 days after convening. The 2026 regular session adjourned March 13, 2026. (Special sessions were held April 28, 2026 and May 12-29, 2026.)",
+    "billIntroductionDeadline": null,
+    "carryover": null,
+    "source": "https://www.leg.state.fl.us/Statutes/index.cfm?Mode=Constitution&Submenu=3&Tab=statutes"
+  },
+
+  "data": {
+    "officialApi": null,
+    "officialApiNotes": "No documented public REST API. Bill records, votes and text are published at flsenate.gov and myfloridahouse.gov; Online Sunshine (leg.state.fl.us) offers an 'Advanced Legislative Search & Browse Download' for statutes and laws. The Legislature's LegiStore (flalegistore.com) sells printed volumes and PDFs, not data feeds. Structured bill/vote data is available from Open States (Plural) and LegiScan. Initiative-specific data has its own public interfaces: the Initiatives/Amendments database and signature-count detail at dos.elections.myflorida.com, and the petition/circulator portal at initiativepetitions.dos.fl.gov.",
+    "bulkDownload": "https://open.pluralpolicy.com/data/",
+    "openStatesCoverage": "full",
+    "source": "https://open.pluralpolicy.com/data/"
+  },
+
+  "citizenRoute": {
+    "canRequestDraft": false,
+    "notes": "House Bill Drafting Services and the Senate's bill drafting staff draft legislation for members, not for the public. The Legislature's own civics material describes the pipeline as a 'LEGISLATOR, CITIZEN or group suggests legislation' which a legislator then has drafted — i.e. a citizen supplies the idea and a member requests the draft. For the initiative route there is no state drafting assistance at all: the sponsor drafts the amendment, registers a political committee, and submits the petition form to the Division of Elections for format approval. The only state review of substance comes late, via the Attorney General's mandatory Florida Supreme Court advisory-opinion petition once 25% of signatures are verified — by which point substantial money has already been spent, which is why Florida sponsors normally obtain private constitutional counsel before circulating.",
+    "source": "https://dos.fl.gov/elections/laws-rules/constitutional-amendmentsinitiatives/"
+  },
+
+  "gaps": [
+    "circulationDays is null: Florida sets no fixed circulation window. Signatures are valid until the next February 1 in an even-numbered year, which gives a variable window depending on when the petition is approved — not a fixed number of days.",
+    "The Florida enacting clause was not verified from a primary source and is flagged inline as unverified. Do not publish it without checking.",
+    "No current (post-2001) Florida legislative drafting manual could be located. If a product links organizers to a Florida drafting manual, it will be linking to a 2001 document; consider linking to the Florida Statutes style resources or contacting House Bill Drafting Services instead.",
+    "Could not verify whether Florida bills carry over between the two annual sessions of a biennium (carryover is null), nor any bill-introduction deadline.",
+    "HB 1205 (2025) is in active litigation and parts of it are preliminarily enjoined. The circulator citizenship/residency rules, and possibly other provisions, may be in a different posture by the time anyone acts on this file. Re-check https://dos.fl.gov/elections/laws-rules/constitutional-amendmentsinitiatives/ and the linked injunction orders.",
+    "Per-congressional-district signature thresholds are in the state's PDF table and are not reproduced in full here beyond the minimum (23,949) and maximum (37,769)."
+  ]
+}

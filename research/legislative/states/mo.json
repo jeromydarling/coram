@@ -1,0 +1,82 @@
+{
+  "code": "MO",
+  "name": "Missouri",
+  "asOf": "2026-07",
+
+  "initiative": {
+    "statute": "direct",
+    "constitutional": "direct",
+    "referendum": true,
+    "signatures": {
+      "statuteFormula": "5% of the legal voters in each of two-thirds of Missouri's congressional districts (6 of the 8 districts), where 'legal voters' is measured by the votes cast for Governor in that district at the last gubernatorial election. The 2026-cycle numbers derive from the NOVEMBER 2024 gubernatorial election. Because sponsors may pick their best six districts, the practical statewide minimum is the sum of the six lowest district thresholds = 106,384. A veto referendum uses the same 5% standard and the same 106,384 practical minimum.",
+      "statuteCount": 106384,
+      "constitutionalFormula": "8% of the legal voters in each of two-thirds of Missouri's congressional districts (6 of 8), measured by votes cast for Governor in that district at the last gubernatorial election (November 2024). Practical statewide minimum = sum of the six lowest district thresholds = 170,215.",
+      "constitutionalCount": 170215,
+      "distribution": "Thresholds must be met in at least 6 of the 8 congressional districts — a true distribution requirement, not a statewide total. Per-district minimums for the 2026 cycle, from the Secretary of State (2024 gubernatorial votes cast; 5% for statutory / 8% for constitutional): CD1 311,915 -> 15,596 / 24,954; CD2 431,395 -> 21,570 / 34,512; CD3 401,227 -> 20,062 / 32,099; CD4 370,875 -> 18,544 / 29,670; CD5 333,988 -> 16,700 / 26,720; CD6 378,080 -> 18,904 / 30,247; CD7 371,969 -> 18,599 / 29,758; CD8 360,817 -> 18,041 / 28,866.",
+      "source": "https://www.sos.mo.gov/CMSImages/Elections/Petitions/IPProcessOverviewFlyer-2026Cycle.pdf"
+    },
+    "circulationDays": null,
+    "filingDeadline": "Signatures must be filed with the Secretary of State not less than six months before the election (Mo. Const. art. III, s 50) — 5:00 p.m. May 3, 2026 for the November 3, 2026 general election. Signature pages must be boxed by county and submitted all at one time. The Secretary must certify sufficiency by 5:00 p.m. on the 13th Tuesday before the general election (August 4, 2026). Verification is by county election authorities, either by 5% random sample or full verification at the Secretary's option.",
+    "subjectLimits": [
+      "Statutory initiative: not more than one subject, which must be clearly expressed in the title (Mo. Const. art. III, s 50)",
+      "Constitutional initiative: not more than one amended and revised article of the constitution, or one new article which may not contain more than one subject and matters properly connected therewith (art. III, s 50)",
+      "The initiative may not be used to appropriate money other than new revenues created and provided for by the measure itself, or for any other purpose prohibited by the constitution (art. III, s 51)",
+      "The petition must contain the enacting clause and the full text of the measure; an enacting clause is mandatory, not directory (State ex rel. Scott v. Kirkpatrick, 484 S.W.2d 161 (Mo. 1972))",
+      "Text formatting is mandatory: matter to be deleted in brackets, new matter underlined, and every section of existing law or of the constitution that the measure would repeal must be included (RSMo 116.050)"
+    ],
+    "preFilingReview": "Sequential and time-limited: (1) sponsor writes the measure and submits a sample sheet to the Secretary of State; (2) Secretary forwards it to the Attorney General for approval as to FORM; (3) State Auditor prepares a fiscal note and fiscal note summary, with a mandatory 15-day public comment period; (4) Attorney General approves the fiscal note summary; (5) Secretary of State drafts the official ballot title; (6) Attorney General approves the ballot title as to legal content and form; (7) Secretary notifies the petitioner of approval (or rejection) to circulate. Only after approval to circulate may signature gathering begin.",
+    "source": "https://www.sos.mo.gov/CMSImages/Elections/Petitions/IPProcessOverviewFlyer-2026Cycle.pdf"
+  },
+
+  "localOrdinance": {
+    "citizenInitiative": true,
+    "notes": "Not universal. Missouri's four charter counties and its charter (constitutional home rule) cities have initiative for charter amendments, and the charters of the largest cities — Kansas City, St. Louis, Springfield, Independence, Columbia, Lee's Summit, St. Joseph, St. Charles — also permit initiative for ordinances. Signature thresholds and deadlines are set by each charter and vary widely (for example, Columbia requires signatures equal to at least 20% of the votes cast for council member-at-large at the last regular municipal election, and never fewer than 400). Non-charter cities and counties generally have no ordinance initiative.",
+    "source": "https://ballotpedia.org/Laws_governing_local_ballot_measures_in_Missouri"
+  },
+
+  "drafting": {
+    "manualUrl": null,
+    "manualName": null,
+    "requiredSections": [
+      "enacting clause (mandatory, and specific to the type of petition)",
+      "title expressing the single subject clearly (statutory initiative)",
+      "full text of the measure on or attached to every petition page",
+      "deleted matter in brackets and new matter underlined",
+      "all sections of existing law or of the constitution that the measure would repeal"
+    ],
+    "enactingClause": "For a citizen-initiated STATUTE: \"Be it enacted by the people of the state of Missouri:\". For a citizen-initiated CONSTITUTIONAL AMENDMENT: \"Be it resolved by the people of the state of Missouri that the Constitution be amended:\". (A bill passed by the General Assembly instead uses \"Be it enacted by the General Assembly of the State of Missouri, as follows.\" — Mo. Const. art. III, s 21.)",
+    "source": "https://revisor.mo.gov/main/OneSection.aspx?section=III++50&constit=y"
+  },
+
+  "legislature": {
+    "chambers": ["House of Representatives", "Senate"],
+    "sessionType": "Two-year General Assembly meeting in two annual regular sessions",
+    "typicalConvene": "First Wednesday after the first Monday in January (Mo. Const. art. III, s 20)",
+    "typicalAdjourn": "Adjourns at midnight on May 30. No bills may be considered after 6:00 p.m. on the first Friday following the second Monday in May; appropriation bills must be considered by 6:00 p.m. on the first Friday after the first Monday in May.",
+    "billIntroductionDeadline": "Bills may be prefiled beginning December 1 before the session opens; members may introduce bills through the 60th legislative day of the session",
+    "carryover": null,
+    "source": "https://revisor.mo.gov/main/OneSection.aspx?section=III++20&constit=y"
+  },
+
+  "data": {
+    "officialApi": null,
+    "officialApiNotes": "No documented public API. Bill text and status are published at house.mo.gov and senate.mo.gov; the Revised Statutes of Missouri are published by the Revisor of Statutes at revisor.mo.gov (individual sections addressable via OneSection.aspx?section=NNN.NNN). No official bulk bill download was found.",
+    "bulkDownload": "https://open.pluralpolicy.com/data/session-csv/",
+    "openStatesCoverage": "full",
+    "source": "https://open.pluralpolicy.com/data/session-csv/"
+  },
+
+  "citizenRoute": {
+    "canRequestDraft": false,
+    "notes": "The Joint Committee on Legislative Research (Research Division / Revisor of Statutes) provides bill drafting, but bills are drawn at the request of a MEMBER of the General Assembly; requests are confidential and drafted without comment on the subject matter. Members of the public must work through a legislator. For an initiative petition, by contrast, the sponsor drafts the text themselves and the state's role is the pre-circulation review chain (AG form approval, Auditor fiscal note, SoS ballot title).",
+    "source": "https://lr.mo.gov/"
+  },
+
+  "gaps": [
+    "circulationDays is null: Missouri sets no fixed number of circulation days. The window runs from the Secretary of State's certification of approval to circulate until the constitutional filing deadline six months before the election (May 3, 2026 for the 2026 ballot), so its length depends on how quickly the pre-circulation review chain completes.",
+    "The per-district signature numbers come from the Secretary of State's own 2026-cycle Initiative and Referendum Petition Process flyer and are computed from votes cast for Governor in the NOVEMBER 2024 election. Note that some aggregators (including Ballotpedia) report 106,384 / 170,215 as applying to both the 2024 and 2026 ballots; the Secretary of State's flyer shows the figures as derived from 2024 gubernatorial votes. These will be recomputed after the 2028 gubernatorial election.",
+    "Could not verify from an official Missouri source whether bills carry over from the first annual session to the second annual session of a General Assembly; the House 'Legislative Process' page does not address it. carryover is null rather than assumed.",
+    "No publicly hosted Missouri bill drafting manual was found. The Committee on Legislative Research is reported to publish 'The Essentials of Bill Drafting in the Missouri General Assembly' (editions referenced from 2002 and 2011, formerly on moga.mo.gov), but no live URL resolves and lr.mo.gov does not link it. manualUrl and manualName are null; requiredSections here are the initiative-petition drafting requirements from Mo. Const. art. III, s 50 and RSMo 116.050 rather than from a style manual. The Legislative Library (leg.library@lr.mo.gov, 573-751-4633) is the place to request a copy.",
+    "Local initiative varies entirely by municipal or county charter; only the Columbia example is quoted here, and it was not independently verified against the Columbia charter."
+  ]
+}

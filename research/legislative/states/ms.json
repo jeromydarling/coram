@@ -1,0 +1,72 @@
+{
+  "code": "MS",
+  "name": "Mississippi",
+  "asOf": "2026-07",
+
+  "initiative": {
+    "statute": "none",
+    "constitutional": "none",
+    "referendum": false,
+    "signatures": {
+      "statuteFormula": null,
+      "statuteCount": null,
+      "constitutionalFormula": null,
+      "constitutionalCount": null,
+      "distribution": null,
+      "source": "https://courts.ms.gov/Images/Opinions/CO154253.pdf"
+    },
+    "circulationDays": null,
+    "filingDeadline": null,
+    "subjectLimits": [],
+    "preFilingReview": null,
+    "source": "https://courts.ms.gov/Images/Opinions/CO154253.pdf"
+  },
+
+  "localOrdinance": {
+    "citizenInitiative": false,
+    "notes": "Mississippi law does not grant citizens a general power to initiate municipal or county ordinances by petition, and the Mississippi Constitution does not confer initiative or referendum power on local government units. The principal citizen-initiated local mechanism is a petition by qualified electors of a municipality to propose an amendment to the municipal charter; the commonly cited threshold is 20% of the municipality's qualified electors (see gaps — the statutory citation for that threshold was not independently verified).",
+    "source": "https://ballotpedia.org/Laws_governing_local_ballot_measures_in_Mississippi"
+  },
+
+  "drafting": {
+    "manualUrl": null,
+    "manualName": null,
+    "requiredSections": null,
+    "enactingClause": "Be it enacted by the Legislature of the state of Mississippi.",
+    "source": "https://www.sos.ms.gov/content/documents/ed_pubs/pubs/Mississippi_Constitution.pdf"
+  },
+
+  "legislature": {
+    "chambers": ["House of Representatives", "Senate"],
+    "sessionType": "Annual regular session. Miss. Const. s 36 limits a regular session to 90 calendar days, except that the session in 1972 and every fourth year thereafter (i.e. the first regular session after each quadrennial state election — 2024, 2028) is limited to 125 calendar days. Either limit may be extended by 30 days, any number of times, by resolution adopted by a two-thirds vote of those present and voting in each house.",
+    "typicalConvene": "Tuesday after the first Monday of January each year (unless the Governor convenes the Legislature sooner)",
+    "typicalAdjourn": "Roughly 90 calendar days after convening in ordinary years (the 2026 regular session ended April 3, 2026); roughly 125 days in the first session of each four-year term",
+    "billIntroductionDeadline": null,
+    "carryover": null,
+    "source": "https://www.sos.ms.gov/content/documents/ed_pubs/pubs/Mississippi_Constitution.pdf"
+  },
+
+  "data": {
+    "officialApi": null,
+    "officialApiNotes": "The Mississippi Legislature's bill status system is billstatus.ls.state.ms.us, which has historically exposed per-session XML files for measures, actions and authors. Neither legislature.ms.gov nor billstatus.ls.state.ms.us was reachable from this research environment (connection failures / HTTP 503), so no API endpoint or bulk feed could be verified; officialApi is null rather than asserted.",
+    "bulkDownload": "https://open.pluralpolicy.com/data/session-csv/",
+    "openStatesCoverage": "full",
+    "source": "https://open.pluralpolicy.com/data/session-csv/"
+  },
+
+  "citizenRoute": {
+    "canRequestDraft": null,
+    "notes": "Could not verify whether any Mississippi legislative office provides bill drafting on request, or to whom. Mississippi has no publicly documented legislative counsel drafting service comparable to Minnesota's Revisor or Michigan's Legislative Service Bureau, and the Legislature's own website was unreachable during this research. In practice a member of the public works through a legislator.",
+    "source": null
+  },
+
+  "gaps": [
+    "CURRENT STATUS, VERIFIED: Mississippi has NO functioning statewide initiative process as of July 2026. Mississippi never had a statutory initiative or a veto referendum — the only mechanism was the constitutional initiative created in 1992 under Miss. Const. art. 15, s 273(3)-(12). On May 14, 2021 the Mississippi Supreme Court held in In Re Initiative Measure No. 65: Mayor Mary Hawkins Butler and the City of Madison v. Michael Watson, No. 2020-IA-01199-SCT, that s 273's requirement that signatures be gathered in equal proportion from FIVE congressional districts became impossible to satisfy when Mississippi dropped to four districts after the 2000 census, rendering the initiative process 'unworkable and inoperable on its face' and invalidating the certification of Initiative 65. Justice Coleman wrote that the process 'cannot work in a world where Mississippi has fewer than five representatives in Congress' and 'will need amending — something that lies beyond the power of the Supreme Court.' Opinion: https://courts.ms.gov/Images/Opinions/CO154253.pdf (note: that URL returns HTTP 500 to some clients and 200 with a normal browser user-agent).",
+    "NOT RESTORED. The Legislature has failed to pass a restoration measure in each session from 2021 through 2026. In the 2026 regular session (which adjourned April 3, 2026), Sen. Jeremy England's restoration bill was tabled in the Senate and died before a floor vote — the fifth consecutive year a restoration effort failed. Any product must NOT present Mississippi as having an initiative process. Restoration requires a legislatively referred constitutional amendment, so the earliest a restored process could exist is after a future amendment is referred and ratified.",
+    "The Mississippi Secretary of State's own materials are STALE and dangerous to rely on. Its 'Constitutional Initiative in Mississippi: A Citizen's Guide' carries a revision date of 02/20/2020 and still describes the pre-2021 process (12% of votes for Governor, five congressional districts, submission to the Legislature). Its Initiatives page (https://www.sos.ms.gov/elections-voting/initiatives) likewise still describes how the process 'works' without noting that it was invalidated. Do not use either as evidence that the process exists.",
+    "The 20% threshold for a citizen petition to amend a municipal charter is reported by Ballotpedia; the underlying Mississippi Code section was not independently verified because Mississippi statutory sources (legislature.ms.gov, billstatus.ls.state.ms.us) were unreachable and Justia returned HTTP 403.",
+    "No Mississippi legislative bill drafting manual or style guide was found. manualUrl, manualName and requiredSections are null. The enacting clause is taken from Miss. Const. s 56 ('Style of laws') in the Secretary of State's published constitution.",
+    "Bill introduction deadlines (set by joint rules each session) and whether bills carry over between annual sessions could not be verified from an official source; both are null.",
+    "No official Mississippi bill-data API or bulk download could be verified from this environment."
+  ]
+}
