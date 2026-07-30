@@ -18,7 +18,8 @@
     "imagery:upload": "tsx scripts/upload-imagery.ts",
     "refdata:sync": "tsx scripts/sync-refdata.ts",
     "check:links": "tsx scripts/check-links.ts",
-    "demo:seed": "tsx scripts/seed-demo.ts"
+    "demo:seed": "tsx scripts/seed-demo.ts",
+    "test:e2e": "playwright test"
   },
   "dependencies": {
     "@radix-ui/react-accordion": "^1.2.11",
@@ -81,6 +82,7 @@
     "@cloudflare/workers-types": "^5.20260722.1",
     "@eslint/js": "^9.32.0",
     "@neondatabase/serverless": "^1.1.0",
+    "@playwright/test": "^1.62.0",
     "@tailwindcss/typography": "^0.5.16",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.2",
