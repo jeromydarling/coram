@@ -47,10 +47,9 @@ test.describe('the demo workspace', () => {
     await page.goto('/app/login');
     await page.getByRole('button', { name: /open the demo workspace/i }).click();
 
-    await page.waitForURL(/\/app\/?$/, { timeout: 30_000 });
-
-    // The workspace name proves the session resolved and the API answered.
-    await expect(page.getByText('Eastside Tenants Union')).toBeVisible();
+    // The workspace name proves the session resolved, the API answered, and
+    // React painted — a URL assertion proves only that the router moved.
+    await expect(page.getByText('Eastside Tenants Union')).toBeVisible({ timeout: 30_000 });
 
     // The sentence that used to be the entire product.
     await expect(page.getByText(/Membra is next/)).toHaveCount(0);
@@ -63,10 +62,16 @@ test.describe('the demo workspace', () => {
 
   test('the bill screen shows the draft and its caveats', async ({ page }) => {
     await signIn(page);
-    await page.getByRole('link', { name: 'Bills' }).click();
+    await nav(page, 'Bills');
 
     await expect(page.getByText(/The Eastside Repairs Ordinance/)).toBeVisible();
-    await expect(page.getByText(/Covered Landlord/)).toBeVisible();
+    /*
+     * .first(), because "Covered Landlord" appears three times — once defined,
+     * twice used. Playwright's strict mode failed this on the first run and it
+     * was right to: an assertion that would break the moment the bill gains
+     * another clause is not testing what it means to test.
+     */
+    await expect(page.getByText(/Covered Landlord/).first()).toBeVisible();
 
     /*
      * The sponsor list must never read as a ranked recommendation — subject to
@@ -80,7 +85,7 @@ test.describe('the demo workspace', () => {
 
   test('attendance counts are visible to an observer', async ({ page }) => {
     await signIn(page);
-    await page.getByRole('link', { name: 'Events' }).click();
+    await nav(page, 'Events');
 
     /*
      * This is the regression that migration 0015 fixed. rsvps_select requires
@@ -98,7 +103,7 @@ test.describe('the demo workspace', () => {
 
   test('an empty contact list explains itself as access control', async ({ page }) => {
     await signIn(page);
-    await page.getByRole('link', { name: 'People' }).click();
+    await nav(page, 'People');
 
     // An observer sees no individual records by design (§4.1). Rendered as a
     // bare "no results" this looks like a broken product, and a correct
@@ -109,7 +114,7 @@ test.describe('the demo workspace', () => {
 
   test('funds render as money, not raw cents', async ({ page }) => {
     await signIn(page);
-    await page.getByRole('link', { name: 'Funds' }).click();
+    await nav(page, 'Funds');
 
     await expect(page.getByText(/Eviction defence fund/)).toBeVisible();
     // 318400 cents. A regression in formatting shows up as the raw integer.
@@ -118,10 +123,30 @@ test.describe('the demo workspace', () => {
   });
 });
 
+/**
+ * Click a top-level nav item.
+ *
+ * Scoped to <nav>, because "Events" also appears as "All events" on the
+ * overview and Playwright's strict mode refuses an ambiguous locator — which is
+ * the correct behaviour and caught a genuinely brittle test.
+ */
+async function nav(page: import('@playwright/test').Page, label: string) {
+  await page.locator('nav').getByRole('link', { name: label, exact: true }).click();
+}
+
+/**
+ * Sign in and wait for the app to have actually rendered.
+ *
+ * Waiting on the URL was not enough: the first CI run timed out here even
+ * though navigation had happened, because a URL change says the router moved
+ * and says nothing about whether anything drew. Waiting for the workspace name
+ * waits for the session to resolve, the API to answer, and React to paint —
+ * which is the thing these tests exist to prove.
+ */
 async function signIn(page: import('@playwright/test').Page) {
   await page.goto('/app/login');
   await page.getByLabel('Email').fill(DEMO_EMAIL);
   await page.getByLabel('Password').fill(DEMO_PASSWORD);
   await page.getByRole('button', { name: /^sign in$/i }).click();
-  await page.waitForURL(/\/app\/?$/, { timeout: 30_000 });
+  await expect(page.getByText('Eastside Tenants Union')).toBeVisible({ timeout: 30_000 });
 }
