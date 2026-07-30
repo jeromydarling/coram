@@ -66,9 +66,19 @@ test.describe('the demo workspace', () => {
     await page.goto('/app/login');
     await page.getByRole('button', { name: /open the demo workspace/i }).click();
 
-    // The workspace name proves the session resolved, the API answered, and
-    // React painted — a URL assertion proves only that the router moved.
-    await expect(page.getByText('Eastside Tenants Union').first()).toBeVisible({ timeout: 30_000 });
+    /*
+     * The workspace name proves the session resolved, the API answered, and
+     * React painted — a URL assertion proves only that the router moved.
+     *
+     * The name renders twice: in the desktop rail and in the mobile header,
+     * and exactly one of them is displayed at any width. `.first()` took the
+     * rail in DOM order and failed on mobile against a `display:none` element,
+     * which looked like a broken sign-in and was a broken locator. Filtering to
+     * the visible one asserts what a person can actually see, at either width.
+     */
+    await expect(
+      page.getByText('Eastside Tenants Union').filter({ visible: true }).first(),
+    ).toBeVisible({ timeout: 30_000 });
 
     // The sentence that used to be the entire product.
     await expect(page.getByText(/Membra is next/)).toHaveCount(0);
@@ -238,6 +248,18 @@ test.describe('the demo workspace', () => {
     await page.getByRole('button', { name: /add someone/i }).click();
     await page.getByLabel('Name', { exact: true }).fill(name);
     await page.getByRole('button', { name: /^add$/i }).click();
+
+    /*
+     * This failed the first time it ran, and it was right to.
+     *
+     * contacts_insert admits an organizer only when the row lands in a turf
+     * they hold. The form had no turf field, so every insert an organizer
+     * attempted was refused and the only sign was a toast that vanished —
+     * adding a contact was impossible for the role most people have. The fix
+     * was a turfs endpoint and a picker; this is the assertion that would have
+     * caught it, and it stays.
+     */
+    await expect(page.getByText(/not added/i)).toHaveCount(0);
 
     await page.getByPlaceholder(/name, email or phone/i).fill(name);
     await expect(page.getByText(name)).toBeVisible({ timeout: 20_000 });

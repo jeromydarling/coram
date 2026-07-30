@@ -66,6 +66,43 @@ workspace.get('/members', async (c) => {
 });
 
 // ---------------------------------------------------------------------------
+// GET /api/workspace/turfs
+//
+// Added because of a bug the browser suite caught: an organizer could not add
+// a contact at all. contacts_insert admits an organizer only when the new row
+// lands in a turf they hold — "so they cannot create a row they would then be
+// unable to see", which is the right rule — and the form had no turf field
+// because nothing in the product listed turfs. The insert was refused every
+// time and the only sign was a toast.
+//
+// Names, ids and a count. Not `boundary`: the drawn polygon is a map of where
+// a group organizes, it is large, and no picker needs it.
+// ---------------------------------------------------------------------------
+
+workspace.get('/turfs', async (c) => {
+  const session = c.get('session')!;
+  const sql = db(c);
+
+  const turfs = await withTenant(
+    sql,
+    session,
+    (tx) => tx`
+      SELECT t.id, t.name,
+             -- Counted through the caller's own RLS, so an organizer sees the
+             -- size of their patch and not of everyone else's.
+             (SELECT count(*) FROM public.contacts c WHERE c.turf_id = t.id)::int AS contacts,
+             -- Whether this caller may file someone into it. A steward may use
+             -- any; an organizer only the ones they hold.
+             (coram.has_role('steward') OR t.id = ANY(coram.current_turf_ids())) AS mine
+      FROM public.turfs t
+      ORDER BY t.name
+    `,
+  );
+
+  return c.json(ok(turfs));
+});
+
+// ---------------------------------------------------------------------------
 // PATCH /api/workspace/members/:id — change a role
 //
 // Authorization is not checked here. The memberships_write policy admits only

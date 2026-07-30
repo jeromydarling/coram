@@ -15,7 +15,7 @@
  */
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { render, screen, waitFor } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
@@ -186,6 +186,10 @@ const ROUTES: Record<string, unknown> = {
       last_message_at: '2026-07-29T00:00:00Z',
     },
   ],
+  '/api/workspace/turfs': [
+    { id: 'tf1', name: 'North of the tracks', contacts: 80, mine: true },
+    { id: 'tf2', name: 'Hillcrest', contacts: 80, mine: false },
+  ],
   '/api/custos/jail-support': [],
   '/api/custos/rights-guides': [],
   '/api/custos/briefings': [],
@@ -334,6 +338,42 @@ describe('every module screen renders real content', () => {
     mockApi({ '/api/federatio/chapters': [] });
     mount(<Coalition />);
     await waitFor(() => expect(screen.getByText(/No chapters yet/)).toBeDefined());
+  });
+});
+
+describe('adding a contact', () => {
+  /*
+   * The bug the browser suite caught and nothing local would have.
+   *
+   * contacts_insert admits an organizer only when the new row lands in a turf
+   * they hold — "so they cannot create a row they would then be unable to see".
+   * The form had no turf field, so every insert an organizer attempted was
+   * refused, and adding a contact was impossible for the role most people have.
+   */
+  it('offers a turf, because an organizer cannot file someone without one', async () => {
+    mockApi({ '/api/workspace': { ...WORKSPACE, me: { ...WORKSPACE.me, role: 'organizer' } } });
+    mount(<People />);
+
+    await waitFor(() => expect(screen.getByRole('button', { name: /add someone/i })).toBeDefined());
+    fireEvent.click(screen.getByRole('button', { name: /add someone/i }));
+
+    // Twice over: Radix renders the selected value in the trigger as well as
+    // in the list, which is also proof it defaulted rather than sitting empty.
+    await waitFor(() =>
+      expect(screen.getAllByText('North of the tracks — 80 people').length).toBeGreaterThan(0),
+    );
+  });
+
+  /* Only the turfs this caller holds. `mine: false` is somebody else's patch. */
+  it('does not offer a turf the caller could not then see into', async () => {
+    mockApi({ '/api/workspace': { ...WORKSPACE, me: { ...WORKSPACE.me, role: 'organizer' } } });
+    mount(<People />);
+
+    await waitFor(() => expect(screen.getByRole('button', { name: /add someone/i })).toBeDefined());
+    fireEvent.click(screen.getByRole('button', { name: /add someone/i }));
+
+    await waitFor(() => expect(screen.getAllByText(/North of the tracks/).length).toBeGreaterThan(0));
+    expect(screen.queryByText(/Hillcrest/)).toBeNull();
   });
 });
 

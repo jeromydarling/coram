@@ -55,6 +55,14 @@ interface ConsentRow {
   occurred_at: string;
 }
 
+export interface TurfRow {
+  id: string;
+  name: string;
+  contacts: number;
+  /** Whether this caller may file someone into it. */
+  mine: boolean;
+}
+
 interface NoteRow {
   id: string;
   ciphertext: string;
@@ -224,6 +232,22 @@ function NewContact() {
   const [open, setOpen] = useState(false);
   const client = useQueryClient();
 
+  /*
+   * The turf picker is not a convenience.
+   *
+   * contacts_insert admits an organizer only when the new row lands in a turf
+   * they hold — "so they cannot create a row they would then be unable to see",
+   * which is exactly right. With no field for it the insert was refused every
+   * time, and adding a contact as an organizer was simply impossible. The
+   * browser suite caught it; nothing local could have.
+   */
+  const turfs = useQuery({
+    queryKey: ['turfs'],
+    queryFn: () => api<TurfRow[]>('/workspace/turfs'),
+    enabled: open,
+  });
+  const mine = (turfs.data ?? []).filter((t) => t.mine);
+
   const create = useMutation({
     mutationFn: (form: FormData) =>
       post('/contacts', {
@@ -231,10 +255,12 @@ function NewContact() {
         email: String(form.get('email') ?? '').trim() || undefined,
         phone: String(form.get('phone') ?? '').trim() || undefined,
         postalCode: String(form.get('postalCode') ?? '').trim() || undefined,
+        turfId: String(form.get('turfId') ?? '') || undefined,
       }),
     onSuccess: () => {
       void client.invalidateQueries({ queryKey: ['contacts'] });
       void client.invalidateQueries({ queryKey: ['workspace'] });
+      void client.invalidateQueries({ queryKey: ['turfs'] });
       setOpen(false);
       say('Added.');
     },
@@ -277,6 +303,28 @@ function NewContact() {
               <Input id="phone" name="phone" autoComplete="off" />
             </div>
           </div>
+          {mine.length > 0 && (
+            <div className="space-y-2">
+              <Label htmlFor="turfId">Turf</Label>
+              <Select name="turfId" defaultValue={mine[0].id}>
+                <SelectTrigger id="turfId">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  {mine.map((t) => (
+                    <SelectItem key={t.id} value={t.id}>
+                      {t.name} — {t.contacts} people
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              <p className="text-xs text-muted-foreground">
+                Only the turfs you hold. An organizer cannot file someone into a patch they
+                could not then see — that rule is in the database, not in this form.
+              </p>
+            </div>
+          )}
+
           <div className="space-y-2">
             <Label htmlFor="postalCode">Postal code</Label>
             <Input id="postalCode" name="postalCode" autoComplete="off" className="max-w-[10rem]" />
