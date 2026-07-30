@@ -40,6 +40,8 @@ import {
   PROHIBITED,
   PROTECTED,
 } from '../../shared/policy';
+import { ABSENT, CONTROLS, DISCLOSURE } from '../../shared/security';
+import { DEMO_EMAIL, DEMO_PASSWORD } from '../../shared/demo';
 
 export const marketing = new Hono<{ Bindings: Env; Variables: Vars }>();
 
@@ -317,16 +319,20 @@ function Page(props: {
             </a>
             <a href="/why">Why</a>
             <a href="/pricing">Pricing</a>
+            <a href="/security">Security</a>
             <a href="/trust">Trust</a>
           </nav>
         </header>
         {props.children}
         <footer class="col">
           <p>
+            <a href="/security">Security</a> ·{' '}
             <a href="/terms">Acceptable use</a> ·{' '}
+            <a href="/trust">Trust</a> ·{' '}
             <a href="/canary.txt">Warrant canary</a> ·{' '}
-            <a href="/.well-known/security.txt">security.txt</a> ·{' '}
-            <a href="/trust">Trust</a>
+            {/* Kept, but no longer the only thing standing in for a security
+                page. RFC 9116 wants it discoverable; a buyer wants prose. */}
+            <a href="/.well-known/security.txt">security.txt</a>
           </p>
           <p class="small">Coram is closed source. We publish audits instead of code.</p>
         </footer>
@@ -527,8 +533,11 @@ marketing.get('/', (c) =>
             <a class="cta" href="/app">
               Start free <span aria-hidden="true">→</span>
             </a>
-            <a class="cta-ghost" href="/why">
-              Why we built this
+            {/* Ahead of "why we built this": someone deciding whether to care
+                would rather click around a working workspace than read an
+                essay. */}
+            <a class="cta-ghost" href="/demo">
+              See a real workspace
             </a>
           </div>
         </div>
@@ -636,6 +645,11 @@ marketing.get('/', (c) =>
           ))}
         </div>
       </div>
+
+      <Band
+        id="phone-bank"
+        caption="Nobody's number leaves the room. The list does not follow anyone home."
+      />
 
       <Band
         id="union-hall"
@@ -781,6 +795,14 @@ marketing.get('/pricing', (c) =>
           Revenue comes from payment volume and coalitions, not seats. A volunteer group with a
           zero-dollar budget can run the entire product.
         </p>
+      </main>
+
+      <Band
+        id="coffee-urn"
+        caption="The budget for most of this is whatever was in the tin at the last meeting."
+      />
+
+      <main class="col">
 
         <table>
           <thead>
@@ -836,6 +858,11 @@ marketing.get('/pricing', (c) =>
           </li>
         </ul>
       </main>
+
+      <Band
+        id="folding-chairs"
+        caption="Forty chairs and a room booked for an hour is still how most of this starts."
+      />
     </Page>,
   ),
 );
@@ -890,6 +917,18 @@ marketing.get('/why', (c) =>
           None of that is a policy page. It is the schema. Every one of those decisions is
           something you could verify by reading a migration, which is why we publish audits
           instead of promises.
+        </p>
+      </main>
+
+      <Band
+        id="whiteboard"
+        caption="The plan, before anyone typed it up. This is the artefact the product is trying to keep."
+      />
+
+      <main class="col">
+        <p class="muted small">
+          Every photograph on this site is of people from behind. That is not a style choice — it
+          is the same argument the product makes, made in pictures.
         </p>
       </main>
     </Page>,
@@ -1078,6 +1117,14 @@ marketing.get('/trust', async (c) => {
           canary is only worth anything if that person is free to decline.
         </p>
 
+      </main>
+
+      <Band
+        id="sign-in-sheet"
+        caption="A sheet on a table is still the most common database in this movement. This is what we are asking you to trust us with instead."
+      />
+
+      <main class="col">
         <h2>What we do not do</h2>
         <ul>
           <li>
@@ -1102,6 +1149,172 @@ marketing.get('/trust', async (c) => {
     </Page>,
   );
 });
+
+// ---------------------------------------------------------------------------
+// /demo
+// ---------------------------------------------------------------------------
+
+/**
+ * A working workspace, seeded with a group that does not exist.
+ *
+ * Everyone in it is invented — names from a fixed word list, streets that are
+ * not real, phone numbers in the 555-01xx fictional block, and addresses at
+ * example.org, which RFC 2606 reserves and which cannot receive mail. That last
+ * one is load-bearing rather than fussy: Nuntius sends things, and a demo full
+ * of plausible addresses at real domains is one bad environment variable away
+ * from mailing strangers.
+ *
+ * The login is an `observer` (§4.1) — read-only, and it sees no individual
+ * contact records. That is the honest setting for a public demo: a steward
+ * login would hand every visitor an export button and a burn switch, and a
+ * product whose argument is data minimisation should not do that even when the
+ * data is fictional. The page says so rather than letting someone discover the
+ * empty contact list and assume it is broken.
+ */
+marketing.get('/demo', (c) =>
+  c.html(
+    <Page
+      title="Try it — Coram"
+      description="A working Coram workspace, seeded with a tenants' union that does not exist."
+    >
+      <main class="col">
+        <h1>See the whole thing</h1>
+        <p class="lead">
+          A real workspace, not a video. It belongs to the Eastside Tenants Union, who do not
+          exist, and it is signed in as a read-only visitor.
+        </p>
+
+        <div class="highlight">
+          <p style="margin:0">
+            <strong>{DEMO_EMAIL}</strong> · <strong>{DEMO_PASSWORD}</strong>
+          </p>
+          <p class="muted small" style="margin:.4rem 0 0">
+            Read-only. You cannot change or export anything, and neither can anyone else who
+            finds this page.
+          </p>
+        </div>
+
+        <p>
+          <a class="cta" href="/app">
+            Open the demo <span aria-hidden="true">→</span>
+          </a>
+        </p>
+
+        <h2>What is in there</h2>
+        <ul>
+          <li>240 contacts across three turfs, so you can see what turf scoping actually does.</li>
+          <li>Four events — two already held, two coming — with 180 RSVPs and carpool offers.</li>
+          <li>A proposal the union adopted, and the ballot that carried it.</li>
+          <li>An eviction defence fund, which on the real product is charged no fee at all.</li>
+          <li>A draft ordinance at the seeking-a-sponsor stage, with three endorsements.</li>
+        </ul>
+
+        <h2>What you will not see, and why</h2>
+        <ul>
+          <li>
+            <strong>Individual contact records.</strong> The demo signs in as an observer, which
+            §4.1 defines as seeing aggregates only. The empty contact list is the access control
+            working, not a bug.
+          </li>
+          <li>
+            <strong>Channel messages and organiser notes.</strong> Both are encrypted in your
+            browser with a passphrase we never hold, so there is no way for us to seed them —
+            which is the point. A demo showing readable &ldquo;encrypted&rdquo; messages would be
+            lying about the hardest thing to believe.
+          </li>
+        </ul>
+
+        <p class="muted small">
+          Everyone in the demo is fictional. If you want to see it with your own data, the free
+          tier is the whole product up to a contact limit — see <a href="/pricing">pricing</a>.
+        </p>
+      </main>
+    </Page>,
+  ),
+);
+
+// ---------------------------------------------------------------------------
+// /security
+// ---------------------------------------------------------------------------
+
+/**
+ * The security posture in prose a buyer can read.
+ *
+ * Before this the entire security surface was a footer link to security.txt —
+ * a file that tells a researcher where to send a report and tells a prospective
+ * customer nothing. Rendered from src/shared/security.ts so the page and the
+ * claims cannot drift apart.
+ *
+ * Every control carries how to verify it, and the second half is what we do not
+ * have. That ordering is deliberate: a reader who finds the gap themselves
+ * stops believing the first half.
+ */
+marketing.get('/security', (c) =>
+  c.html(
+    <Page
+      title="Security — Coram"
+      description="How Coram is built, what it can see, and what it does not have."
+    >
+      <main class="col">
+        <h1>Security</h1>
+        <p class="lead">
+          The argument for this product is that it holds less than the alternative. Here is what
+          that means concretely, how you could check it, and where it falls short.
+        </p>
+
+        <h2>What is actually in place</h2>
+        {CONTROLS.map((ctl) => (
+          <div class="card">
+            <h3 style="margin-top:0">{ctl.title}</h3>
+            <p style="margin-bottom:.5rem">{ctl.claim}</p>
+            <p class="muted small" style="margin:0">
+              <strong>How you would check:</strong> {ctl.verify}
+            </p>
+          </div>
+        ))}
+
+        <h2>What we can still see</h2>
+        <ul>
+          {LIMITS.map((line) => (
+            <li>{line}</li>
+          ))}
+        </ul>
+
+        <h2>What we do not have</h2>
+        <p>
+          This half is the point. Every security page lists controls; the ones worth trusting say
+          what is missing.
+        </p>
+        {ABSENT.map((gap) => (
+          <div class="card">
+            <h3 style="margin-top:0">{gap.title}</h3>
+            <p style="margin-bottom:.5rem">{gap.claim}</p>
+            <p class="muted small" style="margin:0">
+              {gap.verify}
+            </p>
+          </div>
+        ))}
+
+        <h2>Reporting a vulnerability</h2>
+        <p>
+          <a href={`mailto:${DISCLOSURE.contact}`}>{DISCLOSURE.contact}</a>, or the details in{' '}
+          <a href={DISCLOSURE.wellKnown}>security.txt</a>.
+        </p>
+        <ul>
+          {DISCLOSURE.commitments.map((line) => (
+            <li>{line}</li>
+          ))}
+        </ul>
+
+        <p class="muted small">
+          Published artifacts — audits, the transparency report, the warrant canary — are on{' '}
+          <a href="/trust">/trust</a>, which flags its own staleness rather than waiting to be
+          asked.
+        </p>
+      </main>
+    </Page>,
+  ),
+);
 
 // ---------------------------------------------------------------------------
 // Machine-readable

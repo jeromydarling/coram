@@ -100,6 +100,50 @@ export const EFFECT_CLAUSES = new Set<string>([
 const CROWD = /\b(crowd|crowded|packed|dozens|people|callers|everyone|others)\b/i;
 
 /**
+ * A room full of people all facing one way, with nothing named at that end.
+ *
+ * The third distinct way the face rule has bitten, after the chair circle and
+ * the blur clauses. Anyone standing at the front addressing a room faces the
+ * camera, so the rule silently forbids the one element that would give the shot
+ * a subject — and the model obliges by rendering sixty people staring at an
+ * empty trestle table. It is not a bad seed and no reroll fixes it: the prompt
+ * asked for an audience and no performance.
+ *
+ * The escape is the one the whiteboard frame found on its own. A person at the
+ * front turned toward a surface — an easel, a board, a map — has their back to
+ * the room and to the lens at the same time, which satisfies the rule and fills
+ * the frame.
+ *
+ * The first version of this check failed the hero, which was wrong and worth
+ * keeping the correction: that frame is a hall mid-vote, a forest of raised
+ * hands, and it is one of the best images we have. The fault is never "an
+ * audience facing forward" — it is an audience *doing nothing, facing nothing*.
+ * A room in the act of voting is its own subject and needs no lectern. So the
+ * escape is either something at the far end, or something the people in frame
+ * are visibly doing.
+ */
+const AUDIENCE = /\b(rows of|seated|audience|facing (the )?(front|forward)|all facing)\b/i;
+const FOCAL_POINT =
+  /\b(easel|whiteboard|flip ?chart|board|lectern|podium|screen|projector|map|banner|speaker|standing at the front)\b/i;
+/**
+ * The audience is the subject: hands up, hands on something.
+ *
+ * "leaning together" and "talking in pairs" were in this list and had to come
+ * out. They are the chair circle again in different words: people talking to
+ * each other are by definition facing each other, so some of them face the lens.
+ * The frame came back full of sharp faces, and it came back that way because the
+ * prompt asked for it — the escape hatch I added to fix one failure quietly
+ * licensed another.
+ *
+ * What survives here is action that points every body the same way. A raised
+ * hand does not turn a head around; a conversation does.
+ */
+const OWN_ACTION = /\b(raised hands|hands raised|mid-vote|voting|passing|signing|reaching up)\b/i;
+
+/** Framings that seat people face to face, which the face rule cannot survive. */
+const FACE_TO_FACE = /\b(leaning together|talking in pairs|facing each other|in conversation|around a circle|circle of)\b/i;
+
+/**
  * §8.2's "Never" list. Checked against our prompts, never sent to the model.
  * Written as word-boundary patterns so "flagship" does not trip "flag".
  */
@@ -218,11 +262,27 @@ export const IMAGES: ImageSpec[] = [
   },
   {
     id: 'union-hall',
+    /*
+     * There is somebody at the front, and there has to be.
+     *
+     * The first version described a hall of people facing forward and nothing
+     * else. It came back exactly as written: sixty people staring at a trestle
+     * table of coffee urns and three empty chairs, which reads as a room
+     * waiting for a speaker who never arrived. That is the face rule biting —
+     * anyone standing at the front addressing the room faces the camera, so
+     * the rule quietly forbids the only thing that would fill the focal point.
+     *
+     * The way out is the one the whiteboard frame already found: put the person
+     * at the front turned toward a surface. Writing on an easel, they have
+     * their back to the room and to the lens at once, the rule holds, and the
+     * audience is looking at something.
+     */
     subject:
-      'a bright union hall filling up before a meeting, photographed from behind a row of ' +
-      'people carrying chairs toward the front, backs of heads and shoulders, warm afternoon ' +
-      'light through tall windows, a long table with urns and stacked cups, colourful jackets ' +
-      'over chair backs',
+      'a bright union hall during a meeting, photographed from the back of the room low over the ' +
+      'backs of seated heads and shoulders which fill the lower half of the frame, one person ' +
+      'standing at the front writing on a large paper easel pad with their back to the room, ' +
+      'the seated rows squarely between the camera and the easel and none of them turned to the ' +
+      'side, warm afternoon light through tall windows, colourful jackets over chair backs',
     faceClause: 'seen entirely from behind, no faces visible',
     accent: true,
     width: 1600,
@@ -293,17 +353,27 @@ export const IMAGES: ImageSpec[] = [
      * with a sharp profile at the left edge. Rows all facing the same bright
      * doorway keep the "people arriving" feeling and point every head away.
      */
+    /*
+     * A detail, not a second crowd scene. union-hall already carries the full
+     * room, and the version of this that put people in conversation came back
+     * full of faces — see FACE_TO_FACE above. Bringing the camera down to the
+     * chairs keeps the colour and the sense of a room filling up, and there is
+     * almost nobody in frame to point the wrong way.
+     */
     subject:
-      'rows of mismatched folding chairs in a sunlit community room, all facing the same way ' +
-      'toward a wide doorway flooded with light, photographed from the back of the last row, ' +
-      'the backs of people settling into seats, bags and bright coats slung over the chair ' +
-      'backs in orange and yellow and teal',
+      'a low close view along a row of mismatched folding chairs in a sunlit community room, ' +
+      'bright coats and bags in orange and yellow and teal slung over the chair backs filling ' +
+      'the foreground, a few people further down the row seen from behind settling into seats ' +
+      'and facing away toward a doorway flooded with light',
     faceClause: 'seen entirely from behind, no faces visible',
     accent: true,
     width: 1600,
     height: 1000,
     widths: WIDE,
-    alt: 'A circle of folding chairs in a sunlit room as people arrive and sit down.',
+    // Was "A circle of folding chairs" — left behind when the circle became
+    // rows, so the alt text described a photograph that no longer existed.
+    // Alt text is the only version of this image a screen reader ever gets.
+    alt: 'A row of folding chairs draped with bright coats in a sunlit community room.',
   },
 ];
 
@@ -334,6 +404,26 @@ export function assertOnDirection(spec: ImageSpec): void {
   if (!FACE_CLAUSES.some((clause) => text.includes(clause))) {
     throw new DirectionError(
       `${spec.id}: §8.2 requires every image to obscure faces, and this prompt does not say how.`,
+    );
+  }
+
+  if (FACE_TO_FACE.test(spec.subject)) {
+    throw new DirectionError(
+      `${spec.id}: people described as facing each other will face the camera too — this is the ` +
+        `chair circle again. Point everyone the same way and give them something at the far end.`,
+    );
+  }
+
+  if (
+    AUDIENCE.test(spec.subject) &&
+    !FOCAL_POINT.test(spec.subject) &&
+    !OWN_ACTION.test(spec.subject)
+  ) {
+    throw new DirectionError(
+      `${spec.id}: this seats an audience but names nothing for them to be looking at, so the ` +
+        `frame will come back as a room staring at empty space. The face rule forbids a speaker ` +
+        `facing the room, so put someone at the front turned toward a surface — an easel or a ` +
+        `board — or give the people in frame each other to attend to.`,
     );
   }
 
