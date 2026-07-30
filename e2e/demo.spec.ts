@@ -12,9 +12,13 @@
 
 import { expect, test } from '@playwright/test';
 
-import { DEMO_EMAIL, DEMO_PASSWORD } from '../src/shared/demo';
+import { DEMO_EMAIL } from '../src/shared/demo';
 
 test.describe('the marketing site', () => {
+  // Signed out: the public site must work for someone who has never logged in,
+  // and the saved session would hide a nav that only renders for members.
+  test.use({ storageState: { cookies: [], origins: [] } });
+
   test('every page renders and carries its photography', async ({ page }) => {
     for (const path of ['/', '/pricing', '/why', '/security', '/demo', '/trust', '/terms']) {
       const res = await page.goto(path);
@@ -43,7 +47,14 @@ test.describe('the marketing site', () => {
 });
 
 test.describe('the demo workspace', () => {
+  /*
+   * The one test that still authenticates from scratch, using the demo button.
+   * Everything below replays the cookie saved by auth.setup.ts — but a suite
+   * that only ever replays a cookie would stop noticing that signing in had
+   * broken, which is the first thing a visitor does.
+   */
   test('signs in and shows a populated product', async ({ page }) => {
+    await page.context().clearCookies();
     await page.goto('/app/login');
     await page.getByRole('button', { name: /open the demo workspace/i }).click();
 
@@ -73,7 +84,7 @@ test.describe('the demo workspace', () => {
   });
 
   test('the bill screen shows the draft and its caveats', async ({ page }) => {
-    await signIn(page);
+    await page.goto('/app/');
     await nav(page, 'Bills');
 
     await expect(page.getByText(/The Eastside Repairs Ordinance/)).toBeVisible();
@@ -96,7 +107,7 @@ test.describe('the demo workspace', () => {
   });
 
   test('attendance counts are visible to an observer', async ({ page }) => {
-    await signIn(page);
+    await page.goto('/app/');
     await nav(page, 'Events');
 
     /*
@@ -114,7 +125,7 @@ test.describe('the demo workspace', () => {
   });
 
   test('an empty contact list explains itself as access control', async ({ page }) => {
-    await signIn(page);
+    await page.goto('/app/');
     await nav(page, 'People');
 
     // An observer sees no individual records by design (§4.1). Rendered as a
@@ -125,7 +136,7 @@ test.describe('the demo workspace', () => {
   });
 
   test('funds render as money, not raw cents', async ({ page }) => {
-    await signIn(page);
+    await page.goto('/app/');
     await nav(page, 'Funds');
 
     await expect(page.getByText(/Eviction defence fund/)).toBeVisible();
@@ -146,19 +157,3 @@ async function nav(page: import('@playwright/test').Page, label: string) {
   await page.locator('nav').getByRole('link', { name: label, exact: true }).click();
 }
 
-/**
- * Sign in and wait for the app to have actually rendered.
- *
- * Waiting on the URL was not enough: the first CI run timed out here even
- * though navigation had happened, because a URL change says the router moved
- * and says nothing about whether anything drew. Waiting for the workspace name
- * waits for the session to resolve, the API to answer, and React to paint —
- * which is the thing these tests exist to prove.
- */
-async function signIn(page: import('@playwright/test').Page) {
-  await page.goto('/app/login');
-  await page.getByLabel('Email').fill(DEMO_EMAIL);
-  await page.getByLabel('Password').fill(DEMO_PASSWORD);
-  await page.getByRole('button', { name: /^sign in$/i }).click();
-  await expect(page.getByText('Eastside Tenants Union')).toBeVisible({ timeout: 30_000 });
-}

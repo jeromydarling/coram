@@ -33,9 +33,26 @@ export default defineConfig({
     screenshot: 'only-on-failure',
   },
   projects: [
-    { name: 'desktop', use: { ...devices['Desktop Chrome'] } },
+    /*
+     * One sign-in for the whole run, saved and replayed.
+     *
+     * Login is rate limited to 8 attempts per 15 minutes per IP, and a runner
+     * is one IP. Signing in inside each test meant ten attempts in forty
+     * seconds and the last two got a 429 — the limiter doing its job while the
+     * suite looked like a product failure.
+     */
+    { name: 'setup', testMatch: /auth\.setup\.ts/ },
+    {
+      name: 'desktop',
+      use: { ...devices['Desktop Chrome'], storageState: 'e2e/.auth/demo.json' },
+      dependencies: ['setup'],
+    },
     // Organizers use this on a phone, in a hallway, between doors. If it only
     // works at 1440px it does not work.
-    { name: 'mobile', use: { ...devices['Pixel 7'] } },
+    {
+      name: 'mobile',
+      use: { ...devices['Pixel 7'], storageState: 'e2e/.auth/demo.json' },
+      dependencies: ['setup'],
+    },
   ],
 });

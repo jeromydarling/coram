@@ -42,3 +42,4 @@ media/derived/
 # Staging manifest. Promoted to src/shared/imagery-manifest.json by the upload.
 media/manifest.json
 media/keep/
+e2e/.auth/

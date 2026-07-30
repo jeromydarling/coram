@@ -125,6 +125,9 @@ describe('the app renders something', () => {
     await waitFor(() => expect(screen.getByText('240')).toBeDefined());
     expect(screen.getByText(/Rent board hearing/)).toBeDefined();
     expect(screen.getByText(/repairs ordinance/i)).toBeDefined();
+    // The stat that rendered as an em dash on the live site while the funds
+    // screen showed the same figure correctly.
+    expect(screen.getByText(/\$3,184/)).toBeDefined();
     // The sentence that used to be the entire product.
     expect(screen.queryByText(/Membra is next/)).toBeNull();
   });
