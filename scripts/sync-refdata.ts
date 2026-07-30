@@ -42,9 +42,15 @@
  * places and wrong in the fifth.
  */
 
+/*
+ * @neondatabase/serverless and ws are devDependencies, declared rather than
+ * assumed. They were absent from package.json for a while and the scripts
+ * worked anyway because the packages happened to be present in node_modules —
+ * which meant the scheduled workflow, which runs `npm ci` on a clean checkout,
+ * would have failed on its first run with a module-not-found. Caught locally
+ * only because an unrelated install pruned them.
+ */
 import { Pool, neonConfig } from '@neondatabase/serverless';
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore - ws ships no types and this script is the only consumer.
 import ws from 'ws';
 
 neonConfig.webSocketConstructor = ws;

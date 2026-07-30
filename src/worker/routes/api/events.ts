@@ -43,10 +43,21 @@ events.get('/', async (c) => {
     (tx) => tx`
       SELECT e.id, e.title, e.starts_at, e.ends_at, e.location_name,
              e.capacity, e.is_public, e.public_slug, e.cancelled_at,
-             (SELECT count(*) FROM public.rsvps r
-              WHERE r.event_id = e.id AND r.status = 'going')::int AS going,
-             (SELECT count(*) FROM public.rsvps r
-              WHERE r.event_id = e.id AND r.status = 'waitlist')::int AS waitlisted
+             /*
+              * coram.attendance rather than a subquery over rsvps.
+              *
+              * rsvps_select requires that you can see the underlying contact.
+              * An observer can see none, so a plain count returned 0 for every
+              * event — not denied, just silently false, in the direction that
+              * makes a busy group look dead. §4.1 gives that role "read-only
+              * aggregate reporting", and a headcount is the aggregate.
+              *
+              * The function returns a scalar and never a row, so an observer
+              * learns forty-one are coming without learning who. See
+              * migrations/0015_attendance_counts.sql.
+              */
+             coram.attendance(e.id, 'going') AS going,
+             coram.attendance(e.id, 'waitlist') AS waitlisted
       FROM public.events e
       WHERE e.parent_event_id IS NULL
         AND ${past ? tx`e.starts_at < now()` : tx`e.starts_at >= now()`}

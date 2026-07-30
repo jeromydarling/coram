@@ -80,6 +80,7 @@
     "@cloudflare/vite-plugin": "^1.0.0",
     "@cloudflare/workers-types": "^5.20260722.1",
     "@eslint/js": "^9.32.0",
+    "@neondatabase/serverless": "^1.1.0",
     "@tailwindcss/typography": "^0.5.16",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.2",
@@ -87,6 +88,7 @@
     "@types/papaparse": "^5.5.2",
     "@types/react": "^19.1.0",
     "@types/react-dom": "^19.1.0",
+    "@types/ws": "^8.18.1",
     "@vitejs/plugin-react-swc": "^3.11.0",
     "autoprefixer": "^10.4.21",
     "drizzle-kit": "^0.31.1",
@@ -96,6 +98,7 @@
     "globals": "^15.15.0",
     "jsdom": "^25.0.1",
     "postcss": "^8.5.6",
+    "sharp": "^0.34.4",
     "tailwindcss": "^3.4.17",
     "tsx": "^4.19.2",
     "typescript": "^5.8.3",
@@ -103,6 +106,6 @@
     "vite": "^6.0.0",
     "vitest": "^2.1.9",
     "wrangler": "^4.0.0",
-    "sharp": "^0.34.4"
+    "ws": "^8.21.1"
   }
 }

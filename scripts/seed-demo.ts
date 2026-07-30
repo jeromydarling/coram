@@ -40,8 +40,6 @@
  */
 
 import { Pool, neonConfig } from '@neondatabase/serverless';
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore - ws ships no types and this script is the only consumer.
 import ws from 'ws';
 
 import { hashPassword } from '../src/worker/lib/crypto';
