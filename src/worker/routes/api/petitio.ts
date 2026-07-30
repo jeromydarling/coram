@@ -57,6 +57,7 @@ import {
 } from '../../lib/bill';
 import { sponsorOptions } from '../../lib/sponsors';
 import { PATHWAYS, pathwayFor, routesFor, signatureTarget } from '../../../shared/legislative';
+import { RESEARCHED, RESET_AFTER, freshnessFor, freshnessSummary } from '../../../shared/legislative/freshness';
 
 export const petitio = new Hono<{ Bindings: Env; Variables: Vars }>();
 
@@ -143,10 +144,40 @@ petitio.get('/pathways/:code', (c) => {
       pathway,
       routes: routesFor(code),
       signatures: signatureTarget(code),
+      /*
+       * Whether the figure above can still be relied on, on this date.
+       *
+       * Returned with the number rather than published separately, because a
+       * threshold and its expiry are one fact. Most states recompute from the
+       * last qualifying election, so after the next general election every
+       * figure here needs confirming — including the ones that did not move.
+       */
+      freshness: freshnessFor(code),
       scaffold: SCAFFOLD,
     }),
   );
 });
+
+/**
+ * How current this field guide is, and what would make it stale.
+ *
+ * Its own endpoint because §7's discipline applies here as much as it does to
+ * /trust: a page that cannot flag its own staleness will be read as current
+ * forever. This is the machine-readable version of that flag.
+ */
+petitio.get('/freshness', (c) =>
+  c.json(
+    ok({
+      researched: RESEARCHED,
+      resetAfter: RESET_AFTER,
+      summary: freshnessSummary(),
+      byJurisdiction: PATHWAYS.map((p) => ({
+        code: p.code,
+        ...freshnessFor(p.code)!,
+      })),
+    }),
+  ),
+);
 
 /** Every jurisdiction, in brief, for a picker. */
 petitio.get('/pathways', (c) =>
