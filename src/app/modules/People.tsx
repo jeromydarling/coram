@@ -159,7 +159,16 @@ export function People() {
                     if (e.key === 'Enter') setOpen(row);
                   }}
                 >
-                  <TableCell className="font-medium">{row.display_name}</TableCell>
+                  <TableCell className="font-medium">
+                    {row.display_name}
+                    {/* Below sm the other columns are hidden, and a list of
+                        bare names is not much of a list. The way to reach
+                        someone belongs next to their name on a phone, which is
+                        where an organizer is most likely to be reading it. */}
+                    <span className="block text-sm font-normal text-muted-foreground sm:hidden">
+                      {row.email ?? row.phone ?? 'No way to reach them on file'}
+                    </span>
+                  </TableCell>
                   <TableCell className="hidden text-muted-foreground sm:table-cell">
                     {row.email ?? '—'}
                   </TableCell>

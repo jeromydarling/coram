@@ -286,6 +286,20 @@ test.describe('the demo workspace', () => {
 
     await page.getByPlaceholder(/name, email or phone/i).fill(name);
     await expect(page.getByText(name)).toBeVisible({ timeout: 20_000 });
+
+    /*
+     * Clean up after ourselves.
+     *
+     * This suite runs against the real demo workspace on every push and on a
+     * weekday schedule. Without this it deposits a "Test Person" in it forever,
+     * and a prospective customer opening the demo eventually finds a contact
+     * list padded with our test litter. Deleting also exercises the delete
+     * path, which nothing else covered.
+     */
+    page.once('dialog', (d) => void d.accept());
+    await page.getByText(name).click();
+    await page.getByRole('button', { name: /^delete$/i }).click();
+    await expect(page.getByText(name)).toHaveCount(0, { timeout: 20_000 });
   });
 });
 
