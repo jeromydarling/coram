@@ -80,20 +80,20 @@
     "id": "union-hall",
     "width": 1600,
     "height": 992,
-    "lqip": "data:image/webp;base64,UklGRmIAAABXRUJQVlA4IFYAAAAQBACdASoUAAwAPxFysFAsJqSisAgBgCIJbACdMoADTpBBRYx1E4mVeAD91aVc7kapI+zxueIdJmZvxy2nIZ2f+gKZQj27blNbfqR/GeAGCmtgjq0AAA==",
+    "lqip": "data:image/webp;base64,UklGRmQAAABXRUJQVlA4IFgAAAAQBACdASoUAAwAPxFysVCsJqSisAgBgCIJbACdMoR3JoACaeizAJsygAD+r43bCRh/GwqGtFGrYnNrsFA9rIGb0l5H87xsZh6LieaDtQ7g4AYuvshncAAA",
     "bytes": {
-      "union-hall-1920.avif": 146084,
-      "union-hall-1920.webp": 164254,
-      "union-hall-1920.jpg": 179556,
-      "union-hall-1440.avif": 100068,
-      "union-hall-1440.webp": 114364,
-      "union-hall-1440.jpg": 143726,
-      "union-hall-1024.avif": 51562,
-      "union-hall-1024.webp": 54852,
-      "union-hall-1024.jpg": 81430,
-      "union-hall-640.avif": 28809,
-      "union-hall-640.webp": 27804,
-      "union-hall-640.jpg": 40149
+      "union-hall-1920.avif": 99843,
+      "union-hall-1920.webp": 135502,
+      "union-hall-1920.jpg": 161680,
+      "union-hall-1440.avif": 68652,
+      "union-hall-1440.webp": 93074,
+      "union-hall-1440.jpg": 130438,
+      "union-hall-1024.avif": 37678,
+      "union-hall-1024.webp": 46852,
+      "union-hall-1024.jpg": 74659,
+      "union-hall-640.avif": 22876,
+      "union-hall-640.webp": 24636,
+      "union-hall-640.jpg": 37486
     }
   },
   "phone-bank": {
@@ -160,20 +160,20 @@
     "id": "folding-chairs",
     "width": 1600,
     "height": 992,
-    "lqip": "data:image/webp;base64,UklGRmwAAABXRUJQVlA4IGAAAABQBACdASoUAAwAPxFysFAsJqSisAgBgCIJbACdMoADNSpz1fzpW4kDPPkAAPeLGySc1+ZMBNZureIkjlRRkYdS7GlvxmbpxntD21TXlQlfBgw4jRwbs2/SJvPoTpMAAAA=",
+    "lqip": "data:image/webp;base64,UklGRmgAAABXRUJQVlA4IFwAAADQAwCdASoUAAwAPxFysFAsJqSisAgBgCIJbACdACLf6Gf3m84qnwAA/tHD37YXdU4aI87hXivL4cLshgf8lvI3a0I7DPnfpHv3jyEdxZuVjPLq0weEY/XJmRugAA==",
     "bytes": {
-      "folding-chairs-1920.avif": 58716,
-      "folding-chairs-1920.webp": 95822,
-      "folding-chairs-1920.jpg": 118613,
-      "folding-chairs-1440.avif": 38907,
-      "folding-chairs-1440.webp": 61546,
-      "folding-chairs-1440.jpg": 96047,
-      "folding-chairs-1024.avif": 23567,
-      "folding-chairs-1024.webp": 30528,
-      "folding-chairs-1024.jpg": 56175,
-      "folding-chairs-640.avif": 15233,
-      "folding-chairs-640.webp": 17620,
-      "folding-chairs-640.jpg": 29233
+      "folding-chairs-1920.avif": 51175,
+      "folding-chairs-1920.webp": 98624,
+      "folding-chairs-1920.jpg": 122325,
+      "folding-chairs-1440.avif": 34165,
+      "folding-chairs-1440.webp": 63186,
+      "folding-chairs-1440.jpg": 99097,
+      "folding-chairs-1024.avif": 23167,
+      "folding-chairs-1024.webp": 31434,
+      "folding-chairs-1024.jpg": 58287,
+      "folding-chairs-640.avif": 15453,
+      "folding-chairs-640.webp": 18298,
+      "folding-chairs-640.jpg": 30217
     }
   }
 }

@@ -166,3 +166,94 @@ describe('effect clauses versus crowds', () => {
     }
   });
 });
+
+describe('a room needs something to look at', () => {
+  /*
+   * The third distinct way the face rule has bitten, after the chair circle and
+   * the blur clauses. A speaker addressing a room faces the camera, so the rule
+   * silently forbids the one element that gives the shot a subject — and the
+   * model obliges with sixty people staring at a table of coffee urns. No
+   * reroll fixes it: the prompt asked for an audience and no performance.
+   */
+  it('refuses an audience with nothing at the far end', () => {
+    expect(() =>
+      assertOnDirection({
+        id: 'folding-chairs',
+        subject: 'rows of chairs in a hall, everyone facing the front, backs of heads',
+        faceClause: 'seen entirely from behind, no faces visible',
+        accent: true,
+        width: 1600,
+        height: 1000,
+        widths: [1024],
+        alt: 'test',
+      }),
+    ).toThrow(/staring at empty space/i);
+  });
+
+  it('accepts an audience that has a speaker or a board to face', () => {
+    expect(() =>
+      assertOnDirection({
+        id: 'folding-chairs',
+        subject:
+          'rows of seated people from behind, one person at the front writing on a paper easel ' +
+          'with their back to the room',
+        faceClause: 'seen entirely from behind, no faces visible',
+        accent: true,
+        width: 1600,
+        height: 1000,
+        widths: [1024],
+        alt: 'Rows of seated people watching someone write on an easel at the front.',
+      }),
+    ).not.toThrow();
+  });
+
+  /*
+   * The correction that matters. The first version of this rule failed the
+   * hero — a hall mid-vote, a forest of raised hands — which is one of the best
+   * frames we have. The fault is never "an audience facing forward"; it is an
+   * audience doing nothing, facing nothing. A room in the act of voting is its
+   * own subject.
+   */
+  it('accepts a room that is itself doing something', () => {
+    expect(() =>
+      assertOnDirection({
+        id: 'hero-hall',
+        subject: 'a packed hall mid-vote, a forest of raised hands, rows of the backs of heads',
+        faceClause: 'seen entirely from behind, no faces visible',
+        accent: true,
+        width: 1600,
+        height: 1000,
+        widths: [1024],
+        alt: 'A packed hall mid-vote with a forest of raised hands.',
+      }),
+    ).not.toThrow();
+  });
+
+  it('keeps the hero on direction, since it is the case that caught the bug', () => {
+    const hero = IMAGES.find((i) => i.id === 'hero-hall')!;
+    expect(() => assertOnDirection(hero)).not.toThrow();
+  });
+});
+
+describe('alt text describes the photograph that exists', () => {
+  /*
+   * folding-chairs kept "A circle of folding chairs" in its alt text after the
+   * circle became rows — the geometry was fixed and the description was not.
+   * Alt text is the only version of an image a screen reader user ever gets, so
+   * a stale one is not a cosmetic problem.
+   */
+  it('does not describe a circle where the subject says rows', () => {
+    for (const spec of IMAGES) {
+      if (/\brows of\b/i.test(spec.subject)) {
+        expect(spec.alt).not.toMatch(/\bcircle\b/i);
+      }
+    }
+  });
+
+  it('gives every image alt text that is a sentence, not a label', () => {
+    for (const spec of IMAGES) {
+      expect(spec.alt.length).toBeGreaterThan(25);
+      expect(spec.alt.endsWith('.')).toBe(true);
+    }
+  });
+});

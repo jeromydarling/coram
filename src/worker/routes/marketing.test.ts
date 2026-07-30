@@ -1,5 +1,9 @@
 import { describe, expect, it } from 'vitest';
 
+import { IMAGES } from '../../shared/imagery';
+import { DEMO_EMAIL, DEMO_PASSWORD } from '../../shared/demo';
+import { ABSENT, CONTROLS } from '../../shared/security';
+
 import type { Env } from '../env';
 import { marketing } from './marketing';
 
@@ -200,5 +204,116 @@ describe('/terms', () => {
       const html = await (await get(path, fakeEnv())).text();
       expect(html).toContain('href="/terms"');
     }
+  });
+});
+
+describe('the photography actually reaches a page', () => {
+  /*
+   * Nine frames were generated, uploaded to R2, and served correctly — and only
+   * four of them appeared anywhere on the site. Everything downstream was
+   * working, so nothing failed and nothing warned; the images simply were not
+   * referenced. Generating a photograph nobody sees is the most expensive kind
+   * of dead code in this repo.
+   */
+  it('renders every image in the shot list somewhere', async () => {
+    const pages = ['/', '/pricing', '/why', '/trust', '/terms'];
+    const html = (await Promise.all(pages.map(async (p) => (await get(p, fakeEnv())).text()))).join(
+      '\n',
+    );
+
+    const missing = IMAGES.filter((spec) => !html.includes(`/media/${spec.id}-`)).map((s) => s.id);
+    expect(missing).toEqual([]);
+  });
+
+  it('gives every rendered image its alt text', async () => {
+    const html = await (await get('/', fakeEnv())).text();
+    for (const spec of IMAGES) {
+      if (!html.includes(`/media/${spec.id}-`)) continue;
+      expect(html).toContain(spec.alt);
+    }
+  });
+});
+
+describe('/security', () => {
+  /*
+   * The whole security surface used to be a footer link to security.txt — a
+   * file that tells a researcher where to send a report and tells a prospective
+   * customer nothing at all.
+   */
+  it('is reachable from the nav on every page, not just the footer', async () => {
+    for (const path of ['/', '/pricing', '/why', '/trust']) {
+      const html = await (await get(path, fakeEnv())).text();
+      expect(html).toContain('href="/security"');
+    }
+  });
+
+  it('gives every control a way to check it, not just a claim', async () => {
+    const html = await (await get('/security', fakeEnv())).text();
+    for (const ctl of CONTROLS) {
+      expect(html).toContain(ctl.title);
+      expect(html).toContain('How you would check');
+    }
+  });
+
+  /*
+   * The half that makes the rest credible. A page listing only strengths is
+   * marketing; a reader who finds a gap themselves stops believing everything
+   * above it.
+   */
+  it('says what we do not have, including the awkward ones', async () => {
+    const html = await (await get('/security', fakeEnv())).text();
+    for (const gap of ABSENT) expect(html).toContain(gap.title);
+    expect(html).toMatch(/No SOC 2/);
+    expect(html).toMatch(/No independent penetration test/i);
+    expect(html).toMatch(/closed source/i);
+  });
+
+  it('does not claim an audit it has not had', async () => {
+    const html = await (await get('/security', fakeEnv())).text();
+    expect(html).not.toMatch(/\b(SOC ?2 (certified|compliant)|ISO ?27001|pen[- ]?tested)\b/i);
+  });
+
+  it('promises not to threaten a researcher', async () => {
+    const html = await (await get('/security', fakeEnv())).text();
+    expect(html).toMatch(/will not threaten a researcher/i);
+  });
+});
+
+describe('/demo', () => {
+  it('publishes the credentials it actually seeds', async () => {
+    const html = await (await get('/demo', fakeEnv())).text();
+    expect(html).toContain(DEMO_EMAIL);
+    expect(html).toContain(DEMO_PASSWORD);
+  });
+
+  /*
+   * The demo signs in as an observer, so the contact list is empty. Without
+   * saying so, the most likely reading of an empty list is that the product is
+   * broken — which is the opposite of what the demo is for.
+   */
+  it('explains the empty contact list as access control, not a fault', async () => {
+    const html = await (await get('/demo', fakeEnv())).text();
+    expect(html).toMatch(/observer/i);
+    expect(html).toMatch(/access control working, not a bug/i);
+  });
+
+  it('says plainly that everyone in it is invented', async () => {
+    const html = await (await get('/demo', fakeEnv())).text();
+    expect(html).toMatch(/do not exist|fictional/i);
+  });
+
+  /*
+   * The demo cannot show sealed content, and the reason is the strongest thing
+   * about the product. Saying "coming soon" here would waste it.
+   */
+  it('explains why there are no messages rather than hiding it', async () => {
+    const html = await (await get('/demo', fakeEnv())).text();
+    expect(html).toMatch(/encrypted in your browser/i);
+    expect(html).not.toMatch(/coming soon/i);
+  });
+
+  it('is reachable from the front page', async () => {
+    const html = await (await get('/', fakeEnv())).text();
+    expect(html).toContain('href="/demo"');
   });
 });
