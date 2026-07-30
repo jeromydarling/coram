@@ -1,0 +1,98 @@
+####################################################################
+# Keeping the legislative data honest.
+#
+# Two jobs on two clocks, because the two kinds of staleness behave
+# differently and only one of them is fixable by a machine.
+#
+#   roster  — who holds office and who sits on which committee. Fully
+#             automatable and genuinely perishable: a special election
+#             or a committee reshuffle changes it with no warning.
+#             Weekly, and it self-heals — a failed source keeps its
+#             previous rows and records why.
+#
+#   links   — every URL the field guide would send an organizer to.
+#             Pennsylvania's drafting manual was deleted in May 2026
+#             and reads "{Reserved}"; nothing in the product would have
+#             noticed. Monthly is enough: link rot is not urgent, it is
+#             only embarrassing, and it is the one form of staleness
+#             that is fully detectable.
+#
+# What NEITHER job can do is notice that a signature threshold changed.
+# There is no feed for that. It is handled by declaring an expiry date
+# in src/shared/legislative/freshness.ts and downgrading every figure
+# after it — see the note there on why that is one global date rather
+# than a per-state model.
+####################################################################
+
+name: Legislative data
+
+on:
+  schedule:
+    # Mondays 06:00 UTC. Rosters, weekly.
+    - cron: '0 6 * * 1'
+    # 1st of the month, 07:00 UTC. Link rot.
+    - cron: '0 7 1 * *'
+  workflow_dispatch:
+    inputs:
+      job:
+        description: Which to run
+        type: choice
+        options: [both, roster, links]
+        default: both
+
+jobs:
+  roster:
+    # Skipped on the monthly link-rot cron.
+    if: github.event.schedule != '0 7 1 * *' && inputs.job != 'links'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+
+      # PGURI must be an owner-role connection string: coram_app holds SELECT
+      # and nothing else on the ref_* tables, deliberately, so that a workspace
+      # can never alter what every other workspace sees.
+      #
+      # OPENSTATES_API_KEY is optional. Without it the state-committee source
+      # records why it is unavailable, and the API tells the user rather than
+      # returning an empty list that would read as "this state has no
+      # committees". Federal committees and all 51 legislator rosters need no
+      # credential at all.
+      - name: Sync rosters
+        env:
+          PGURI: ${{ secrets.REFDATA_PGURI }}
+          OPENSTATES_API_KEY: ${{ secrets.OPENSTATES_API_KEY }}
+        run: npm run refdata:sync
+
+  links:
+    if: github.event.schedule != '0 6 * * 1' && inputs.job != 'roster'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+
+      # Fails only on a link that is definitively gone (404/410). A great many
+      # state government hosts refuse automated clients — 22 of 286 answered 403
+      # or 503 on the first real run — and a check that failed on those would be
+      # switched off within a fortnight, which is worse than no check at all.
+      - name: Check field guide links
+        run: npm run check:links
+
+      - name: Keep the report
+        if: always()
+        run: npm run check:links -- --json > link-report.json || true
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: link-report
+          path: link-report.json
+          retention-days: 90

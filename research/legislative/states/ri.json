@@ -57,12 +57,12 @@
   "citizenRoute": {
     "canRequestDraft": false,
     "notes": "The Legislative Council is the principal research and legal arm of the General Assembly, and its principal activity is 'the drafting of legislation for individual members.' A member of the public cannot request a draft and must find a legislator to introduce a bill. With no statewide initiative, the only other citizen-driven route is the art. XIII, sec. 6 charter petition at the municipal level.",
-    "source": "http://rilegislature.gov/pressrelease/PDF_Docs/HowABillEnglish.pdf"
+    "source": "https://rilegislature.gov/pressrelease/PDF_Docs/HowABillEnglish.pdf"
   },
 
   "gaps": [
     "RHODE ISLAND HAS NO STATEWIDE INITIATIVE OR VETO REFERENDUM. This is settled law, not an unverified field: initiative.statute and initiative.constitutional are 'none' and initiative.referendum is false. Statewide questions reach the ballot only when the General Assembly refers a constitutional amendment, statute or bond issue.",
-    "Could not locate any published Rhode Island legislative drafting manual or style guide from the Legislative Council, the Law Revision Office, or the Joint Committee on Legislative Services. drafting.manualUrl and manualName are null. The closest public document is the Legislative Press and Public Information Bureau's 'How a Bill Becomes a Law' guide and glossary at http://rilegislature.gov/pressrelease/PDF_Docs/HowABillEnglish.pdf (verified to resolve), which describes the process and defines terms but gives no drafting form or style rules.",
+    "Could not locate any published Rhode Island legislative drafting manual or style guide from the Legislative Council, the Law Revision Office, or the Joint Committee on Legislative Services. drafting.manualUrl and manualName are null. The closest public document is the Legislative Press and Public Information Bureau's 'How a Bill Becomes a Law' guide and glossary at https://rilegislature.gov/pressrelease/PDF_Docs/HowABillEnglish.pdf (verified to resolve), which describes the process and defines terms but gives no drafting form or style rules.",
     "drafting.requiredSections is null: no authoritative Rhode Island source specifying the required formal parts of a bill was located.",
     "Could not verify from an official source the typical adjournment date, any bill introduction deadline, or whether bills carry over between annual sessions; those fields are null. The enacting clause is fixed by R.I. Const. art. VI, sec. 2 ('The style of their laws shall be, It is enacted by the general assembly as follows:') and is recorded verbatim from that section.",
     "localOrdinance.citizenInitiative is null by design: municipal ordinance initiative depends entirely on the individual home rule charter, and no statewide rule could be verified either way."

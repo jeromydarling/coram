@@ -84,7 +84,7 @@
 
   "data": {
     "officialApi": "https://wslwebservices.leg.wa.gov/legislationservice.asmx",
-    "officialApiNotes": "The Washington State Legislature runs a public set of SOAP/ASMX web services at wslwebservices.leg.wa.gov (LegislationService, CommitteeService, CommitteeMeetingService, SponsorService, AmendmentService, RollCallService, LegislativeDocumentService). Verified 200 on 2026-07-29. No key required. The service root (http://wslwebservices.leg.wa.gov/) returned 503 at the time of checking, but the individual .asmx endpoints resolve. Bill documents and session law files are also served as static files under lawfilesext.leg.wa.gov.",
+    "officialApiNotes": "The Washington State Legislature runs a public set of SOAP/ASMX web services at wslwebservices.leg.wa.gov (LegislationService, CommitteeService, CommitteeMeetingService, SponsorService, AmendmentService, RollCallService, LegislativeDocumentService). Verified 200 on 2026-07-29. No key required. The service root (https://wslwebservices.leg.wa.gov/) returned 503 at the time of checking, but the individual .asmx endpoints resolve. Bill documents and session law files are also served as static files under lawfilesext.leg.wa.gov.",
     "bulkDownload": "https://leg.wa.gov/bills-meetings-and-session/bills/data-and-statistics/",
     "openStatesCoverage": "full",
     "source": "https://leg.wa.gov/bills-meetings-and-session/bills/"

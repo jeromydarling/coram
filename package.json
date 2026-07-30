@@ -16,7 +16,8 @@
     "typecheck": "tsc --noEmit",
     "imagery:generate": "tsx scripts/generate-imagery.ts",
     "imagery:upload": "tsx scripts/upload-imagery.ts",
-    "refdata:sync": "tsx scripts/sync-refdata.ts"
+    "refdata:sync": "tsx scripts/sync-refdata.ts",
+    "check:links": "tsx scripts/check-links.ts"
   },
   "dependencies": {
     "@radix-ui/react-accordion": "^1.2.11",
