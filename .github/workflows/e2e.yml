@@ -17,7 +17,10 @@ name: Browser
 
 on:
   push:
-    branches: [main]
+    # Not only main. The work happens on a branch and the deploy happens
+    # from it, so a browser check that waited for the merge would be a
+    # browser check that ran after the thing it was meant to catch.
+    branches: [main, 'claude/**']
   pull_request:
   schedule:
     # Weekday mornings. A deployment can break without a deploy —
