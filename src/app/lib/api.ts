@@ -53,9 +53,59 @@ export async function api<T>(path: string, init: RequestInit = {}): Promise<T> {
   return body.data as T;
 }
 
-/** POST helper, because every mutation in this app is a POST with a JSON body. */
-export const post = <T,>(path: string, payload: unknown) =>
+export const post = <T,>(path: string, payload: unknown = {}) =>
   api<T>(path, { method: 'POST', body: JSON.stringify(payload) });
+
+export const patch = <T,>(path: string, payload: unknown) =>
+  api<T>(path, { method: 'PATCH', body: JSON.stringify(payload) });
+
+export const put = <T,>(path: string, payload: unknown) =>
+  api<T>(path, { method: 'PUT', body: JSON.stringify(payload) });
+
+export const del = <T,>(path: string) => api<T>(path, { method: 'DELETE' });
+
+/**
+ * The same envelope, but keeping the `notice` beside the data.
+ *
+ * Several routes answer with something the person needs to read — "closed, and
+ * everything on this case is deleted in thirty days", "snoozed three times, it
+ * may be worth handing this to someone else". Dropping that on the floor is
+ * how a product ends up doing irreversible things quietly.
+ */
+export async function apiWithNotice<T, M = Record<string, unknown>>(
+  path: string,
+  init: RequestInit = {},
+): Promise<{ data: T; notice?: string; meta: M }> {
+  const res = await fetch(`/api${path}`, {
+    ...init,
+    credentials: 'same-origin',
+    headers: {
+      ...(init.body ? { 'Content-Type': 'application/json' } : {}),
+      ...init.headers,
+    },
+  });
+
+  let body: Envelope<T>;
+  try {
+    body = (await res.json()) as Envelope<T>;
+  } catch {
+    throw new ApiError('The server sent something we could not read.', res.status);
+  }
+  if (!res.ok || !body.ok) {
+    throw new ApiError(body.error ?? `Request failed (${res.status}).`, res.status, body.code);
+  }
+  // Routes attach their extras at the top level (`ok(rows, { overdue })`), so
+  // meta is whatever is left once the envelope's own two keys are removed.
+  const rest = { ...(body as unknown as Record<string, unknown>) };
+  delete rest.ok;
+  delete rest.data;
+  return { data: body.data as T, notice: body.notice ?? body.message, meta: rest as M };
+}
+
+export const postWithNotice = <T, M = Record<string, unknown>>(
+  path: string,
+  payload: unknown = {},
+) => apiWithNotice<T, M>(path, { method: 'POST', body: JSON.stringify(payload) });
 
 // ---------------------------------------------------------------------------
 // Shapes. Only the fields the UI reads — a mirror of the whole row would go
@@ -116,12 +166,46 @@ export interface ContactRow {
   email: string | null;
   phone: string | null;
   postal_code: string | null;
+  turf_id: string | null;
+  last_interaction_at: string | null;
 }
 
 export const money = (cents: string | number, currency = 'USD') =>
   new Intl.NumberFormat('en-US', { style: 'currency', currency, maximumFractionDigits: 0 }).format(
     Number(cents) / 100,
   );
+
+/** `seeking_sponsor` → `seeking sponsor`. Enum values are for the database. */
+export const words = (value: string) => value.replace(/_/g, ' ');
+
+export const day = (iso: string) =>
+  new Date(iso).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+
+/**
+ * "in 3 days", "6 days ago". Used on queues, where the absolute date is less
+ * useful than whether the thing is late.
+ */
+export function fromNow(iso: string) {
+  const ms = new Date(iso).getTime() - Date.now();
+  const rtf = new Intl.RelativeTimeFormat('en-US', { numeric: 'auto' });
+  const table: [Intl.RelativeTimeFormatUnit, number][] = [
+    ['minute', 60_000],
+    ['hour', 3_600_000],
+    ['day', 86_400_000],
+    ['week', 604_800_000],
+    ['month', 2_629_800_000],
+    ['year', 31_557_600_000],
+  ];
+  let unit: Intl.RelativeTimeFormatUnit = 'minute';
+  let size = 60_000;
+  for (const [u, s] of table) {
+    if (Math.abs(ms) >= s) {
+      unit = u;
+      size = s;
+    }
+  }
+  return rtf.format(Math.round(ms / size), unit);
+}
 
 export const when = (iso: string) =>
   new Date(iso).toLocaleDateString('en-US', {

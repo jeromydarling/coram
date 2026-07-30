@@ -5,7 +5,9 @@
  *   §10  no analytics, no session recording, no third-party trackers. Ever.
  *   §8.4 no motion at all inside /app. The product is calm; the site moves.
  *
- * Modules mount under /app/<module> as they land, in the §9 order.
+ * Every one of §5's eleven modules has a route below, and modules.test.ts
+ * asserts it — a module in the spec with nowhere to go is a failing test rather
+ * than something a person notices three weeks later.
  */
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
@@ -13,14 +15,22 @@ import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 
 import { Toaster } from '@/components/ui/sonner';
 import { TooltipProvider } from '@/components/ui/tooltip';
-import { Bills } from '@/modules/Bills';
-import { Contacts } from '@/modules/Contacts';
-import { Decisions } from '@/modules/Decisions';
+import { Advocacy } from '@/modules/Advocacy';
+import { Coalition } from '@/modules/Coalition';
+import { Drafting } from '@/modules/Drafting';
 import { Events } from '@/modules/Events';
-import { Funds } from '@/modules/Funds';
+import { Governance } from '@/modules/Governance';
 import { Login } from '@/modules/Login';
+import { Messages } from '@/modules/Messages';
+import { Money } from '@/modules/Money';
+import { Outreach } from '@/modules/Outreach';
 import { Overview } from '@/modules/Overview';
+import { People } from '@/modules/People';
+import { PeopleImport } from '@/modules/PeopleImport';
+import { Relationships } from '@/modules/Relationships';
 import { RequireSession } from '@/modules/RequireSession';
+import { Safety } from '@/modules/Safety';
+import { Settings } from '@/modules/Settings';
 import { Shell } from '@/modules/Shell';
 
 const queryClient = new QueryClient({
@@ -47,11 +57,22 @@ export function App() {
             <Route element={<RequireSession />}>
               <Route element={<Shell />}>
                 <Route path="/" element={<Overview />} />
-                <Route path="/contacts" element={<Contacts />} />
+
+                {/* §5.1–5.11, in the order the sidebar groups them. */}
+                <Route path="/people" element={<People />} />
+                <Route path="/people/import" element={<PeopleImport />} />
+                <Route path="/relationships" element={<Relationships />} />
                 <Route path="/events" element={<Events />} />
-                <Route path="/decisions" element={<Decisions />} />
-                <Route path="/funds" element={<Funds />} />
-                <Route path="/bills" element={<Bills />} />
+                <Route path="/outreach" element={<Outreach />} />
+                <Route path="/advocacy" element={<Advocacy />} />
+                <Route path="/money" element={<Money />} />
+                <Route path="/messages" element={<Messages />} />
+                <Route path="/governance" element={<Governance />} />
+                <Route path="/safety" element={<Safety />} />
+                <Route path="/drafting" element={<Drafting />} />
+                <Route path="/coalition" element={<Coalition />} />
+
+                <Route path="/settings" element={<Settings />} />
               </Route>
             </Route>
             <Route path="*" element={<Navigate to="/" replace />} />

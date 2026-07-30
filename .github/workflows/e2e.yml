@@ -59,3 +59,13 @@ jobs:
           name: playwright-report
           path: playwright-report/
           retention-days: 14
+
+      # Separate from the report, because these are not failure evidence —
+      # they are the deliverable. Two rounds of this work shipped a UI nobody
+      # had looked at, so the run now produces pictures somebody can open.
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: screenshots
+          path: shots/
+          retention-days: 14

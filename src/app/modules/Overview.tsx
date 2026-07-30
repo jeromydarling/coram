@@ -1,82 +1,223 @@
 /**
- * What is happening, in the order someone would ask.
+ * What is happening, in the order someone would actually ask.
  *
- * Deliberately not a dashboard of charts. A group's next meeting and whether
- * their bill has a sponsor are the two questions that actually get asked, and
- * a page of sparklines answers neither.
+ * Not a wall of charts. The two questions a group asks on a Tuesday are "when
+ * is the next thing" and "what am I late on", so those lead. The module grid
+ * below them exists because a person signing in for the first time should be
+ * able to see the whole product from one screen rather than discover a third of
+ * it by accident three weeks later.
  */
 
 import { useQuery } from '@tanstack/react-query';
 import { Link } from 'react-router-dom';
+import { ArrowRight } from 'lucide-react';
 
-import { api, money, when, type BillRow, type EventRow, type FundRow, type Workspace } from '@/lib/api';
-import { Failed, Loading, Panel } from './Shell';
+import { Badge } from '@/components/ui/badge';
+import { Figure, PageHeader, Section } from '@/components/coram/Page';
+import { Failed, Loading } from '@/components/coram/State';
+import {
+  api,
+  apiWithNotice,
+  fromNow,
+  money,
+  when,
+  words,
+  type BillRow,
+  type EventRow,
+  type FundRow,
+  type Workspace,
+} from '@/lib/api';
+import { MODULES, TONE_TEXT, TONE_WASH, toneVar } from '@/lib/modules';
+import { cn } from '@/lib/utils';
+
+interface QueueRow {
+  id: string;
+  reason: string;
+  display_name: string;
+  contact_id: string;
+  effective_due_at: string;
+  overdue: boolean;
+}
 
 export function Overview() {
   const workspace = useQuery({ queryKey: ['workspace'], queryFn: () => api<Workspace>('/workspace') });
   const events = useQuery({ queryKey: ['events'], queryFn: () => api<EventRow[]>('/events') });
   const funds = useQuery({ queryKey: ['funds'], queryFn: () => api<FundRow[]>('/funds') });
   const bills = useQuery({ queryKey: ['bills'], queryFn: () => api<BillRow[]>('/petitio/bills') });
+  const queue = useQuery({
+    queryKey: ['queue', 'mine'],
+    queryFn: () => apiWithNotice<QueueRow[], { overdue?: number }>('/vinculum/queue'),
+    // An observer and a member both get an empty or forbidden queue. Neither is
+    // an error worth shouting about on the front page.
+    retry: false,
+  });
 
-  if (workspace.isError) return <Failed error={workspace.error} />;
-  if (workspace.isLoading) return <Loading />;
+  if (workspace.isError) return <Failed error={workspace.error} what="We could not load this workspace" />;
+  if (workspace.isLoading) return <Loading rows={4} label="Loading the workspace" />;
 
-  const next = events.data?.[0];
-  const fund = funds.data?.[0];
+  const live = (events.data ?? []).filter((e) => !e.cancelled_at);
+  const next = live[0];
+  const aid = (funds.data ?? []).find((f) => f.kind === 'mutual_aid') ?? funds.data?.[0];
   const bill = bills.data?.[0];
+  const due = queue.data?.data ?? [];
+  const name = workspace.data?.me.display_name?.split(' ')[0];
 
   return (
     <>
-      <Panel title="Overview" hint={`${workspace.data?.tenant.contact_count} people on the list.`}>
-        <div className="grid gap-4 sm:grid-cols-3">
-          <Stat label="People" value={workspace.data?.tenant.contact_count ?? '—'} />
-          <Stat label="Upcoming events" value={String(events.data?.length ?? '—')} />
-          <Stat
-            label="Raised, mutual aid"
-            value={fund ? money(fund.raised_cents, fund.currency) : '—'}
+      <PageHeader
+        title={name ? `Good to see you, ${name}.` : (workspace.data?.tenant.name ?? 'Overview')}
+        description={
+          <>
+            {workspace.data?.tenant.name} · {workspace.data?.tenant.contact_count} people on the list
+            {workspace.data?.tenant.tier === 'local' ? ' · free tier, all eleven modules' : ''}
+          </>
+        }
+      />
+
+      <div className="mb-10 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+        <div style={toneVar('flame')}>
+          <Figure value={workspace.data?.tenant.contact_count ?? '—'} label="People" />
+        </div>
+        <div style={toneVar('gold')}>
+          <Figure
+            value={live.length}
+            label="Events ahead"
+            note={next ? when(next.starts_at) : 'Nothing scheduled'}
           />
         </div>
-      </Panel>
+        <div style={toneVar('teal')}>
+          <Figure
+            value={aid ? money(aid.raised_cents, aid.currency) : '—'}
+            label={aid?.kind === 'mutual_aid' ? 'Mutual aid raised' : 'Raised'}
+            note={aid ? `${money(aid.available_cents, aid.currency)} unspent` : undefined}
+          />
+        </div>
+        <div style={toneVar('rose')}>
+          <Figure
+            value={queue.isError ? '—' : due.length}
+            label="Follow-ups owed"
+            note={
+              queue.isError
+                ? 'Not visible to your role'
+                : due.filter((f) => f.overdue).length
+                  ? `${due.filter((f) => f.overdue).length} already late`
+                  : 'All current'
+            }
+          />
+        </div>
+      </div>
 
       {next && (
-        <Panel title="Next up">
-          <div className="rounded border p-4">
-            <p className="font-medium">{next.title}</p>
+        <Section title="Next up" actions={<More to="/events">All events</More>}>
+          <div className="paper px-5 py-4" style={toneVar('gold')}>
+            <p className="font-display text-xl">{next.title}</p>
             <p className="mt-1 text-sm text-muted-foreground">
               {when(next.starts_at)}
               {next.location_name ? ` · ${next.location_name}` : ''}
             </p>
-            <Link to="/events" className="mt-3 inline-block text-sm underline">
-              All events
-            </Link>
+            <p className="mt-3 text-sm">
+              <span className="font-medium tabular-nums">{next.going} going</span>
+              {next.capacity ? (
+                <span className="text-muted-foreground"> of {next.capacity} places</span>
+              ) : null}
+              {next.waitlisted ? (
+                <span className="text-muted-foreground"> · {next.waitlisted} waiting</span>
+              ) : null}
+            </p>
           </div>
-        </Panel>
+        </Section>
+      )}
+
+      {due.length > 0 && (
+        <Section
+          title="Owed to people"
+          hint="Conversations you said you would have."
+          actions={<More to="/relationships">The whole queue</More>}
+        >
+          <ul className="paper divide-y" style={toneVar('rose')}>
+            {due.slice(0, 4).map((f) => (
+              <li key={f.id} className="flex flex-wrap items-baseline gap-x-3 gap-y-1 px-5 py-3">
+                <span className="font-medium">{f.display_name}</span>
+                <span className="min-w-0 flex-1 truncate text-sm text-muted-foreground">
+                  {f.reason}
+                </span>
+                <span
+                  className={cn(
+                    'text-sm tabular-nums',
+                    f.overdue ? 'font-medium text-flame' : 'text-muted-foreground',
+                  )}
+                >
+                  {fromNow(f.effective_due_at)}
+                </span>
+              </li>
+            ))}
+          </ul>
+        </Section>
       )}
 
       {bill && (
-        <Panel title="The bill">
-          <div className="rounded border p-4">
-            <p className="font-medium">{bill.working_name}</p>
+        <Section title="The bill you are writing" actions={<More to="/advocacy">Open it</More>}>
+          <div className="paper px-5 py-4" style={toneVar('deep')}>
+            <p className="font-display text-xl">{bill.working_name}</p>
             <p className="mt-1 text-sm text-muted-foreground">
               {bill.jurisdiction}
-              {bill.locality ? ` · ${bill.locality}` : ''} · {bill.stage.replace(/_/g, ' ')} ·{' '}
-              {bill.sections} sections · {bill.endorsements} endorsements
+              {bill.locality ? ` · ${bill.locality}` : ''} · {bill.sections} sections ·{' '}
+              {bill.endorsements} endorsements
             </p>
-            <Link to="/bills" className="mt-3 inline-block text-sm underline">
-              Open it
-            </Link>
+            <Badge variant="outline" className="mt-3 border-deep/40 text-deep">
+              {words(bill.stage)}
+            </Badge>
           </div>
-        </Panel>
+        </Section>
       )}
+
+      <Section
+        title="Everything Coram does"
+        hint="Eleven modules. All of them on every tier, including the free one."
+      >
+        <div className="grid gap-3 sm:grid-cols-2">
+          {MODULES.map((m) => (
+            <Link
+              key={m.path}
+              to={m.path}
+              className="paper group flex gap-3.5 px-5 py-4 hover:border-tone/50"
+              style={toneVar(m.tone)}
+            >
+              <span
+                className={cn(
+                  'flex h-9 w-9 shrink-0 items-center justify-center rounded-md',
+                  TONE_WASH[m.tone],
+                )}
+              >
+                <m.icon aria-hidden className={cn('h-[1.05rem] w-[1.05rem]', TONE_TEXT[m.tone])} />
+              </span>
+              <span className="min-w-0">
+                <span className="flex items-baseline gap-2">
+                  <span className="font-display text-[1.05rem]">{m.name}</span>
+                  <span className="font-display text-xs italic text-muted-foreground">
+                    {m.latin}
+                  </span>
+                </span>
+                <span className="mt-1 block text-sm leading-relaxed text-muted-foreground">
+                  {m.blurb}
+                </span>
+              </span>
+            </Link>
+          ))}
+        </div>
+      </Section>
     </>
   );
 }
 
-function Stat({ label, value }: { label: string; value: string }) {
+function More({ to, children }: { to: string; children: React.ReactNode }) {
   return (
-    <div className="rounded border p-4">
-      <div className="text-2xl font-semibold tabular-nums">{value}</div>
-      <div className="mt-1 text-xs uppercase tracking-wide text-muted-foreground">{label}</div>
-    </div>
+    <Link
+      to={to}
+      className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground"
+    >
+      {children}
+      <ArrowRight aria-hidden className="h-3.5 w-3.5" />
+    </Link>
   );
 }

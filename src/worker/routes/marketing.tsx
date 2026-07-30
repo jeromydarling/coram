@@ -1164,12 +1164,17 @@ marketing.get('/trust', async (c) => {
  * of plausible addresses at real domains is one bad environment variable away
  * from mailing strangers.
  *
- * The login is an `observer` (§4.1) — read-only, and it sees no individual
- * contact records. That is the honest setting for a public demo: a steward
- * login would hand every visitor an export button and a burn switch, and a
- * product whose argument is data minimisation should not do that even when the
- * data is fictional. The page says so rather than letting someone discover the
- * empty contact list and assume it is broken.
+ * The login is an `organizer` (§4.1). It was an observer, which sees no
+ * individual contact records at all — technically the most cautious choice and
+ * in practice a demo that rendered a correct permission boundary on nearly
+ * every screen, so a visitor came away thinking the product did nothing.
+ *
+ * An organizer is also the role most people evaluating Coram would hold. It
+ * reaches the turf-scoped list, the follow-up queue, events, shifts, drafts and
+ * channels, and it does not reach the steward's ground: destroying the
+ * workspace, changing roles, approving money, or the legal role's jail-support
+ * cases. A stranger cannot burn this, and the screens that are out of reach
+ * explain the access model instead of erroring — which is worth seeing.
  */
 marketing.get('/demo', (c) =>
   c.html(
@@ -1181,7 +1186,7 @@ marketing.get('/demo', (c) =>
         <h1>See the whole thing</h1>
         <p class="lead">
           A real workspace, not a video. It belongs to the Eastside Tenants Union, who do not
-          exist, and it is signed in as a read-only visitor.
+          exist, and you sign in as one of their organizers.
         </p>
 
         <div class="highlight">
@@ -1189,8 +1194,9 @@ marketing.get('/demo', (c) =>
             <strong>{DEMO_EMAIL}</strong> · <strong>{DEMO_PASSWORD}</strong>
           </p>
           <p class="muted small" style="margin:.4rem 0 0">
-            Read-only. You cannot change or export anything, and neither can anyone else who
-            finds this page.
+            An organizer's account. You can add people, log a conversation, draft a bill and open
+            a channel — and you cannot destroy the workspace, change anyone's role, or approve a
+            payment, because organizers cannot.
           </p>
         </div>
 
@@ -1206,15 +1212,23 @@ marketing.get('/demo', (c) =>
           <li>Four events — two already held, two coming — with 180 RSVPs and carpool offers.</li>
           <li>A proposal the union adopted, and the ballot that carried it.</li>
           <li>An eviction defence fund, which on the real product is charged no fee at all.</li>
-          <li>A draft ordinance at the seeking-a-sponsor stage, with three endorsements.</li>
+          <li>A draft ordinance at the seeking-a-sponsor stage, with three endorsements, and a
+            log of what three council offices said back.</li>
+          <li>Five follow-ups owed to real-feeling people, one of them snoozed four times.</li>
+          <li>Shifts on the hearing with the door still unstaffed, and a message in the drafts.</li>
         </ul>
 
         <h2>What you will not see, and why</h2>
         <ul>
           <li>
-            <strong>Individual contact records.</strong> The demo signs in as an observer, which
-            §4.1 defines as seeing aggregates only. The empty contact list is the access control
-            working, not a bug.
+            <strong>Jail support cases.</strong> §5.9 gives those to the legal role and to nobody
+            else — not stewards by default, not organizers. The panel explains the boundary rather
+            than showing an error, and that explanation is the feature.
+          </li>
+          <li>
+            <strong>Contacts outside the demo account's turfs, and the steward's screens.</strong>
+            Turf and role scoping happen in the database, so what you can reach here is genuinely
+            what an organizer can reach — not a UI that hides buttons.
           </li>
           <li>
             <strong>Channel messages and organiser notes.</strong> Both are encrypted in your

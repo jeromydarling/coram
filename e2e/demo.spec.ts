@@ -1,18 +1,26 @@
 /**
  * Does the product actually render in a browser?
  *
- * The test this file exists to prevent repeating: /app served a single
+ * The failure this file exists to prevent repeating: /app served a single
  * paragraph reading "Foundation is in place. Membra is next." for weeks. The
  * API returned real rows, the schema was right, six hundred unit tests passed,
  * and the demo link went nowhere. Every check that could pass did pass.
  *
- * So these assert on what a person sees, and they log it, so a green run is
+ * The second failure it now also covers: the app came back as six unstyled
+ * read-only lists against a spec naming eleven modules. Nothing was broken;
+ * most of the product simply had no interface. So there is a test below that
+ * walks every entry in the sidebar and asserts each one renders its own
+ * heading, and one that asserts the app is painted in the brand rather than in
+ * hairline grey.
+ *
+ * These assert on what a person sees, and they log it, so a green run is
  * evidence rather than a claim.
  */
 
-import { expect, test } from '@playwright/test';
+import { expect, test, type Page } from '@playwright/test';
 
 import { DEMO_EMAIL } from '../src/shared/demo';
+import { MODULES } from '../src/app/lib/modules';
 
 test.describe('the marketing site', () => {
   // Signed out: the public site must work for someone who has never logged in,
@@ -60,7 +68,7 @@ test.describe('the demo workspace', () => {
 
     // The workspace name proves the session resolved, the API answered, and
     // React painted — a URL assertion proves only that the router moved.
-    await expect(page.getByText('Eastside Tenants Union')).toBeVisible({ timeout: 30_000 });
+    await expect(page.getByText('Eastside Tenants Union').first()).toBeVisible({ timeout: 30_000 });
 
     // The sentence that used to be the entire product.
     await expect(page.getByText(/Membra is next/)).toHaveCount(0);
@@ -69,91 +77,199 @@ test.describe('the demo workspace', () => {
     await expect(page.getByText('240', { exact: true })).toBeVisible();
 
     /*
-     * Every stat has to resolve, not just the first one.
-     *
-     * The first green run logged "— RAISED, MUTUAL AID" on the overview while
-     * the funds page rendered $3,184 correctly, which could be a stat that
-     * never resolves or a snapshot taken mid-load. Asserting it settles is the
-     * only way to tell the difference, and a permanent em dash on the first
-     * screen anyone sees would be worth knowing about.
+     * Every stat has to resolve, not just the first one. A permanent em dash on
+     * the first screen anyone sees would be worth knowing about, and a snapshot
+     * taken mid-load looks identical to one.
      */
-    await expect(page.getByText(/\$3,184/)).toBeVisible();
-    await expect(page.getByText(/^\d+$/).first()).toBeVisible();
+    await expect(page.getByText(/\$3,184/).first()).toBeVisible();
 
     console.log('OVERVIEW:', (await page.locator('main').innerText()).replace(/\n+/g, ' | '));
   });
 
-  test('the bill screen shows the draft and its caveats', async ({ page }) => {
+  /*
+   * The regression that this whole rewrite answers.
+   *
+   * Driven off MODULES, so a twelfth module added to the registry without a
+   * screen fails here rather than shipping as a dead sidebar entry — and so
+   * does a module quietly dropped.
+   */
+  for (const m of MODULES) {
+    test(`${m.name} (${m.latin}, §${m.section}) is a real screen`, async ({ page }) => {
+      await page.goto(`/app${m.path}`);
+
+      // Its own <h1>, not the overview's. A route that falls through to the
+      // catch-all redirect lands on the overview and would otherwise pass.
+      await expect(page.getByRole('heading', { level: 1, name: m.name })).toBeVisible({
+        timeout: 30_000,
+      });
+
+      // The Latin name in the eyebrow, which only that module's header renders.
+      await expect(page.getByText(`${m.latin} · §${m.section}`)).toBeVisible();
+
+      // Nothing on the page may be an unhandled error state.
+      await expect(page.getByText(/Something went wrong and we do not know what/)).toHaveCount(0);
+
+      console.log(
+        `${m.latin.toUpperCase()}:`,
+        (await page.locator('main').innerText()).slice(0, 500).replace(/\n+/g, ' | '),
+      );
+    });
+  }
+
+  test('every module is reachable from the sidebar, not only by URL', async ({ page, isMobile }) => {
     await page.goto('/app/');
-    await nav(page, 'Bills');
+    if (isMobile) await page.getByRole('button', { name: /open navigation/i }).click();
+
+    for (const m of MODULES) {
+      await expect(
+        page.getByRole('link', { name: new RegExp(`${m.name}\\s+${m.latin}`) }).first(),
+      ).toBeVisible();
+    }
+  });
+
+  /*
+   * "Black and white wire frames instead of real UI designs" was the complaint,
+   * and it was accurate: /app used no brand colour at all while the marketing
+   * site ran on vermillion, gold, teal and ultramarine. This asserts the paint
+   * is on, in a way a stylesheet regression cannot pass.
+   */
+  test('the app is painted in the brand, not in hairline grey', async ({ page }) => {
+    await page.goto('/app/');
+    await expect(page.getByText('240', { exact: true })).toBeVisible({ timeout: 30_000 });
+
+    const flame = await page.evaluate(() =>
+      getComputedStyle(document.documentElement).getPropertyValue('--flame').trim(),
+    );
+    expect(flame, '--flame is defined').toBe('9 76% 53%');
+
+    // A figure renders in its module's tone. Grey would mean --tone never got
+    // set, which is exactly how the previous version looked.
+    const colour = await page.locator('.figure').first().evaluate((el) => getComputedStyle(el).color);
+    expect(colour, 'the lead figure is not grey').toMatch(/^rgba?\(/);
+    const [r, g, b] = colour.match(/\d+/g)!.map(Number);
+    expect(Math.max(r, g, b) - Math.min(r, g, b), 'the figure is a colour, not a grey').toBeGreaterThan(30);
+
+    // The display serif, which the marketing wordmark also uses.
+    const family = await page
+      .getByRole('heading', { level: 1 })
+      .first()
+      .evaluate((el) => getComputedStyle(el).fontFamily);
+    expect(family).toMatch(/serif/i);
+  });
+
+  test('the bill screen shows the draft and its caveats', async ({ page }) => {
+    await page.goto('/app/advocacy');
+    await page.getByText('The repairs ordinance').click();
 
     await expect(page.getByText(/The Eastside Repairs Ordinance/)).toBeVisible();
     /*
      * .first(), because "Covered Landlord" appears three times — once defined,
-     * twice used. Playwright's strict mode failed this on the first run and it
-     * was right to: an assertion that would break the moment the bill gains
-     * another clause is not testing what it means to test.
+     * twice used. Playwright's strict mode failed this on an early run and it
+     * was right to: an assertion that breaks the moment the bill gains another
+     * clause is not testing what it means to test.
      */
     await expect(page.getByText(/Covered Landlord/).first()).toBeVisible();
 
     /*
-     * The sponsor list must never read as a ranked recommendation — subject to
-     * committee matching is not built. The API says so in `limitations`; this
-     * asserts the screen shows those words rather than dropping them.
+     * The sponsor list must never read as a ranked recommendation — committee
+     * matching is not built. The API says so in `limitations`; this asserts the
+     * screen shows those words rather than dropping them.
      */
+    await page.getByRole('tab', { name: /who can file it/i }).click();
     await expect(page.getByText(/committee rosters for CA/i)).toBeVisible();
 
-    console.log('BILLS:', (await page.locator('main').innerText()).slice(0, 900).replace(/\n+/g, ' | '));
+    console.log('BILL:', (await page.locator('main').innerText()).slice(0, 900).replace(/\n+/g, ' | '));
   });
 
-  test('attendance counts are visible to an observer', async ({ page }) => {
-    await page.goto('/app/');
-    await nav(page, 'Events');
+  test('attendance counts are real, not silently zero', async ({ page }) => {
+    await page.goto('/app/events');
 
     /*
-     * This is the regression that migration 0015 fixed. rsvps_select requires
-     * seeing the underlying contact; an observer sees none, so a plain count
-     * returned 0 for every event — not denied, just false, in the direction
-     * that makes a busy group look dead. A literal "0 going" here means the
-     * SECURITY DEFINER counter has been reverted or bypassed.
+     * The regression migration 0015 fixed. rsvps_select requires seeing the
+     * underlying contact, so a plain count returned 0 for every event — not
+     * denied, just false, in the direction that makes a busy group look dead.
+     * A literal "0 going" means the SECURITY DEFINER counter has been reverted.
      */
     await expect(page.getByText(/\d+ going/).first()).toBeVisible();
     const text = await page.locator('main').innerText();
     expect(text, 'no event should report zero attendance in the demo').not.toMatch(/\b0 going\b/);
-
-    console.log('EVENTS:', text.replace(/\n+/g, ' | '));
   });
 
-  test('an empty contact list explains itself as access control', async ({ page }) => {
-    await page.goto('/app/');
-    await nav(page, 'People');
-
-    // An observer sees no individual records by design (§4.1). Rendered as a
-    // bare "no results" this looks like a broken product, and a correct
-    // permission boundary gets reported as a bug and then "fixed".
-    await expect(page.getByText(/none of them are shown here/i)).toBeVisible();
-    await expect(page.getByText(/denied at the database/i)).toBeVisible();
+  test('the follow-up queue shows what is owed, including what is stuck', async ({ page }) => {
+    await page.goto('/app/relationships');
+    await expect(page.getByText(/Open follow-ups/)).toBeVisible({ timeout: 30_000 });
+    // Seeded at four snoozes. §5.2: a thrice-snoozed queue is not a queue, and
+    // hiding the count would make the screen calmer and less true.
+    await expect(page.getByText(/snoozed 4×/)).toBeVisible();
   });
 
   test('funds render as money, not raw cents', async ({ page }) => {
-    await page.goto('/app/');
-    await nav(page, 'Funds');
+    await page.goto('/app/money');
 
-    await expect(page.getByText(/Eviction defence fund/)).toBeVisible();
+    await expect(page.getByText(/Eviction defence fund/).first()).toBeVisible();
     // 318400 cents. A regression in formatting shows up as the raw integer.
-    await expect(page.getByText(/\$3,184/)).toBeVisible();
+    await expect(page.getByText(/\$3,184/).first()).toBeVisible();
     await expect(page.getByText(/318400/)).toHaveCount(0);
+    // §5.6's permanent commitment, on the screen rather than in a policy page.
+    await expect(page.getByText(/no platform take/i)).toBeVisible();
+  });
+
+  /*
+   * §5.9 gives jail support to the legal role only. The demo signs in as an
+   * organizer, so this must read as the boundary it is rather than as an error
+   * — that distinction is the product's whole argument about itself.
+   */
+  test('a denied screen explains the access model rather than erroring', async ({ page }) => {
+    await page.goto('/app/safety');
+    await expect(page.getByText(/Jail support is the legal role only/)).toBeVisible({
+      timeout: 30_000,
+    });
+    await expect(page.getByText(/Something went wrong/)).toHaveCount(0);
+  });
+
+  /*
+   * A write path, end to end, because every screen being readable was the last
+   * version's problem. This one adds a person and finds them again.
+   */
+  test('an organizer can actually add someone', async ({ page }) => {
+    const name = `Test Person ${Date.now()}`;
+
+    await page.goto('/app/people');
+    await page.getByRole('button', { name: /add someone/i }).click();
+    await page.getByLabel('Name', { exact: true }).fill(name);
+    await page.getByRole('button', { name: /^add$/i }).click();
+
+    await page.getByPlaceholder(/name, email or phone/i).fill(name);
+    await expect(page.getByText(name)).toBeVisible({ timeout: 20_000 });
   });
 });
 
 /**
- * Click a top-level nav item.
+ * Full-page captures of every screen.
  *
- * Scoped to <nav>, because "Events" also appears as "All events" on the
- * overview and Playwright's strict mode refuses an ambiguous locator — which is
- * the correct behaviour and caught a genuinely brittle test.
+ * Written to disk and uploaded as their own artifact rather than attached to
+ * the report, because the point is that a person opens them and looks. The
+ * previous two rounds of this work shipped things I had verified with curl and
+ * never once seen, and both times the complaint was about how it looked.
  */
-async function nav(page: import('@playwright/test').Page, label: string) {
+test.describe('screenshots', () => {
+  test('capture every module', async ({ page }, testInfo) => {
+    const dir = 'shots';
+    for (const [i, path] of ['/app/', ...MODULES.map((m) => `/app${m.path}`), '/app/settings'].entries()) {
+      await page.goto(path);
+      // Long enough for the queries to settle. A skeleton screenshot proves
+      // nothing about the design, which is what these are for.
+      await page.waitForTimeout(3_000);
+      const name = path.replace(/^\/app\/?/, '') || 'overview';
+      await page.screenshot({
+        path: `${dir}/${testInfo.project.name}-${String(i).padStart(2, '0')}-${name}.png`,
+        fullPage: true,
+      });
+    }
+  });
+});
+
+/** Click a top-level nav item, scoped to the sidebar. */
+export async function nav(page: Page, label: string) {
   await page.locator('nav').getByRole('link', { name: label, exact: true }).click();
 }
-

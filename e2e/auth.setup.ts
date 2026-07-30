@@ -32,7 +32,9 @@ setup('sign in once', async ({ page }) => {
 
   // Wait for the workspace to render, not just for the URL to change: a URL
   // says the router moved, and says nothing about whether the session resolved.
-  await expect(page.getByText('Eastside Tenants Union')).toBeVisible({ timeout: 30_000 });
+  // .first(): the workspace name renders in the sidebar and again in the
+  // overview's subheading, and strict mode refuses an ambiguous locator.
+  await expect(page.getByText('Eastside Tenants Union').first()).toBeVisible({ timeout: 30_000 });
 
   await page.context().storageState({ path: STATE });
 });

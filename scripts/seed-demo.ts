@@ -295,17 +295,36 @@ async function main() {
       );
     }
 
+    for (const [office, outcome, daysAgo, note] of [
+      ['Councilmember Alvarez, district 4', 'met', 24, 'Wants a fiscal note before committing.'],
+      ['Housing committee staff', 'scheduled', 11, 'Briefing on the 12th.'],
+      ['Councilmember Petrakis, district 7', 'no_response', 30, null],
+    ] as const) {
+      await c.query(
+        `INSERT INTO public.bill_outreach (tenant_id, bill_id, office_ref, office_name, outcome, occurred_on, note)
+         VALUES ($1,$2,$3,$3,$4::coram.outreach_outcome, current_date - $5::int, $6)`,
+        [tenantId, bill.id, office, outcome, daysAgo, note],
+      );
+    }
+
     /*
      * A login, so the demo is something you use rather than something you read
-     * about. The role is `observer` — §4.1's read-only aggregate role, which
-     * sees no individual contact records.
+     * about.
      *
-     * That is the honest choice for a public demo. A steward login would let
-     * any visitor burn the workspace or export 240 contacts, and even though
-     * every one of them is invented, a product arguing for data minimisation
-     * should not hand out an export button to strangers. The trade-off is that
-     * the demo shows the shape of the thing rather than every field in it, and
-     * the sign-in page says so.
+     * The role is `organizer`, and it used to be `observer`. That was the
+     * cautious choice and it made the product look empty: an observer sees no
+     * individual contact records by design, so the demo rendered a correct
+     * permission boundary on nearly every screen and a visitor came away
+     * thinking the software did nothing.
+     *
+     * `organizer` is also the role most people evaluating Coram would actually
+     * hold. It shows the turf-scoped list, the follow-up queue, events and
+     * shifts, campaign drafts, channels, the bill — the day-to-day of the
+     * thing. What it deliberately does not reach is the steward's ground:
+     * destroying the workspace, changing roles, approving money, or the legal
+     * role's jail-support cases. A stranger cannot burn this, and the screens
+     * that are out of reach explain the access model rather than erroring,
+     * which is itself worth seeing.
      *
      * The password is hashed with exactly the same function the app uses, so
      * this is a real account and not a special case in the auth path — there is
@@ -326,19 +345,231 @@ async function main() {
       ((await c.query(`SELECT id FROM public.users WHERE email = $1`, [DEMO_EMAIL])).rows[0]
         .id as string);
 
-    await c.query(
-      `INSERT INTO public.memberships (tenant_id, user_id, role, display_name)
-       VALUES ($1, $2, 'observer', 'Demo visitor')`,
-      [tenantId, userId],
-    );
+    const [membership] = (
+      await c.query(
+        `INSERT INTO public.memberships (tenant_id, user_id, role, display_name, turf_ids)
+         VALUES ($1, $2, 'organizer', 'Demo visitor', $3::uuid[]) RETURNING id`,
+        [tenantId, userId, turfIds],
+      )
+    ).rows;
+    const membershipId = membership.id as string;
+
+    await seedOrganizerDay(c, tenantId, membershipId, contactIds, eventIds);
 
     console.log(`Demo workspace ready: ${TENANT_NAME} (${tenantId})`);
-    console.log(`Sign in as ${DEMO_EMAIL} / ${DEMO_PASSWORD} — observer, read-only.`);
+    console.log(`Sign in as ${DEMO_EMAIL} / ${DEMO_PASSWORD} — organizer, all three turfs.`);
     console.log('A bill in seeking_sponsor, a decided proposal, a mutual aid fund, four events.');
   } finally {
     c.release();
     await pool.end();
   }
+}
+
+/**
+ * The parts of a week that are not a headline.
+ *
+ * A demo made only of finished things — a bill, an adopted proposal, a fund
+ * with money in it — reads like a brochure. What an organizer actually opens
+ * Coram for is the unglamorous half: four conversations they said they would
+ * have, a shift with nobody on the door, a draft nobody has sent. Every screen
+ * needs one of those or a visitor concludes the module is unbuilt.
+ *
+ * Runs after the membership exists, because a follow-up belongs to a person.
+ */
+async function seedOrganizerDay(
+  c: Client,
+  tenantId: string,
+  membershipId: string,
+  contactIds: string[],
+  eventIds: string[],
+) {
+  // --- Vinculum's vocabulary. A workspace configures its own; these are a
+  // starting set that reads like the ones groups actually write.
+  const outcomeIds: Record<string, string> = {};
+  const outcomes: Array<[string, string, boolean, number]> = [
+    ['committed', 'Committed to something', true, 0],
+    ['interested', 'Interested, not ready', true, 1],
+    ['listened', 'Heard them out', true, 2],
+    ['no_answer', 'No answer', false, 3],
+    ['declined', 'Not interested', false, 4],
+  ];
+  for (const [code, label, positive, order] of outcomes) {
+    const [row] = (
+      await c.query(
+        `INSERT INTO public.outcome_codes (tenant_id, code, label, is_positive, sort_order)
+         VALUES ($1,$2,$3,$4,$5) RETURNING id`,
+        [tenantId, code, label, positive, order],
+      )
+    ).rows;
+    outcomeIds[code] = row.id as string;
+  }
+
+  const [ladder] = (
+    await c.query(
+      `INSERT INTO public.ladders (tenant_id, name) VALUES ($1, 'Building ladder') RETURNING id`,
+      [tenantId],
+    )
+  ).rows;
+  const rungIds: string[] = [];
+  for (const [i, name] of ['On the list', 'Comes to things', 'Brings someone', 'Building captain'].entries()) {
+    const [row] = (
+      await c.query(
+        `INSERT INTO public.ladder_rungs (tenant_id, ladder_id, name, position)
+         VALUES ($1,$2,$3,$4) RETURNING id`,
+        [tenantId, ladder.id, name, i],
+      )
+    ).rows;
+    rungIds.push(row.id as string);
+  }
+
+  // --- Conversations that happened, and the ones they created.
+  const conversations: Array<[number, string, string, string]> = [
+    [0, 'committed', 'Bringing two neighbours to the hearing.', ''],
+    [1, 'interested', 'Wants to see the ordinance text first.', ''],
+    [2, 'listened', 'Worried about retaliation. Sending the rights guide.', ''],
+    [3, 'committed', 'Will be a building captain for Perram Row.', ''],
+    [4, 'no_answer', '', ''],
+  ];
+  for (const [i, outcome, nextStep] of conversations) {
+    await c.query(
+      `INSERT INTO public.one_to_ones
+         (tenant_id, contact_id, occurred_at, outcome_code_id, next_step, moved_to_rung_id)
+       VALUES ($1,$2, now() - ($3 || ' days')::interval, $4, $5, $6)`,
+      [
+        tenantId,
+        contactIds[i],
+        String(3 + i * 4),
+        outcomeIds[outcome],
+        nextStep || null,
+        outcome === 'committed' ? rungIds[2] : null,
+      ],
+    );
+  }
+
+  const owed: Array<[number, string, number, number]> = [
+    [0, 'Said she would bring two neighbours — check she has a ride', -4, 0],
+    [1, 'Send the ordinance text and ask what she thinks', -1, 0],
+    [2, 'Follow up on the retaliation worry', 2, 0],
+    [3, 'Confirm the captain role and hand over a sheet', 6, 0],
+    [7, 'Ask about childcare for the general meeting', 9, 4],
+  ];
+  for (const [i, reason, dueInDays, snoozes] of owed) {
+    await c.query(
+      `INSERT INTO public.follow_ups (tenant_id, contact_id, membership_id, reason, due_at, snooze_count)
+       VALUES ($1,$2,$3,$4, now() + ($5 || ' days')::interval, $6)`,
+      [tenantId, contactIds[i], membershipId, reason, String(dueInDays), snoozes],
+    );
+  }
+
+  // --- Consent, on the people the demo panel opens first. §5.1's ledger is the
+  // answer to "where did you get my number", and an empty one teaches nothing.
+  for (const [i, channel, granted, acquisition] of [
+    [0, 'email', true, 'Signed the clipboard at the March 4 meeting'],
+    [0, 'sms', true, 'Asked at the door, said texts were fine'],
+    [1, 'email', true, 'Petition on the repairs ordinance'],
+    [2, 'sms', false, 'Asked to be taken off texts after the November action'],
+  ] as const) {
+    await c.query(
+      `INSERT INTO public.consent_records (tenant_id, contact_id, channel, granted, acquisition, occurred_at)
+       VALUES ($1,$2,$3,$4,$5, now() - interval '60 days')`,
+      [tenantId, contactIds[i], channel, granted, acquisition],
+    );
+  }
+
+  // --- Shifts on the hearing, one of them deliberately unfilled.
+  const hearing = eventIds[2];
+  for (const [name, from, to, slots] of [
+    ['Door and sign-in', 17.5, 19, 2],
+    ['Speaker wrangling', 18, 20, 1],
+    ['Childcare', 18, 20.5, 2],
+  ] as const) {
+    await c.query(
+      `INSERT INTO public.event_shifts (tenant_id, event_id, name, starts_at, ends_at, slots)
+       SELECT $1, $2, $3, e.starts_at + ($4 || ' hours')::interval, e.starts_at + ($5 || ' hours')::interval, $6
+       FROM public.events e WHERE e.id = $2`,
+      [tenantId, hearing, name, String(from - 18), String(to - 18), slots],
+    );
+  }
+
+  // --- A campaign that has been sent and one still in draft, so Nuntius shows
+  // both the composer and the deliverability side.
+  await c.query(
+    `INSERT INTO public.campaigns (tenant_id, name, channel, subject, body, status)
+     VALUES ($1,$2,'email',$3,$4,'draft')`,
+    [
+      tenantId,
+      'Hearing turnout push',
+      'Tuesday, 6.30pm, City Hall',
+      'The rent board hearing is Tuesday. Public comment opens at 6.30 and we want forty of us in ' +
+        'the room. Wear red. Reply if you need a ride and we will sort one.',
+    ],
+  );
+
+  // --- Channels. The demo account is in one of them and not in the other,
+  // which is the clearest way to show that membership is the only key.
+  for (const [name, ttl, join] of [
+    ['hearing-prep', 14, true],
+    ['stewards', 7, false],
+  ] as const) {
+    const [ch] = (
+      await c.query(
+        `INSERT INTO public.channels (tenant_id, name, kind, ttl_days, created_by)
+         VALUES ($1,$2,'channel',$3,$4) RETURNING id`,
+        [tenantId, name, ttl, membershipId],
+      )
+    ).rows;
+    if (join) {
+      await c.query(
+        `INSERT INTO public.channel_members (channel_id, membership_id, tenant_id) VALUES ($1,$2,$3)`,
+        [ch.id, membershipId, tenantId],
+      );
+    }
+  }
+
+  // --- Custos. No jail-support case: most weeks there is not one, and a demo
+  // that invents an arrest to fill a screen is in poor taste. The rights guide
+  // and the briefing are what a group has on file all the time.
+  await c.query(
+    `INSERT INTO public.rights_guides (tenant_id, state_code, title, body)
+     VALUES ($1,'CA',$2,$3)`,
+    [
+      tenantId,
+      'If a landlord or an officer comes to your door',
+      'You do not have to open the door. Ask them to slide any paperwork underneath it.\n\n' +
+        'You do not have to say anything beyond identifying yourself where the law requires it. ' +
+        '"I am not answering questions and I would like to speak to a lawyer" is a complete answer ' +
+        'and repeating it is not obstruction.\n\n' +
+        'Write down the time, the names, and what was said, as soon as you can. Memory degrades ' +
+        'fast and a contemporaneous note is worth more than a careful one written next week.\n\n' +
+        'Call the union line before you sign anything. Nothing they are asking for is so urgent ' +
+        'that it cannot wait twenty minutes.',
+    ],
+  );
+
+  await c.query(
+    `INSERT INTO public.risk_briefings (tenant_id, event_id, title, body)
+     VALUES ($1,$2,$3,$4)`,
+    [
+      tenantId,
+      hearing,
+      'Rent board hearing — what to expect',
+      'Public building, public meeting. Security at the door will ask you to sign in; you can use ' +
+        'your first name.\n\nThere will be a landlord association turnout. Do not engage with them ' +
+        'in the corridor — it is the one clip that ends up online.\n\nTwo legal observers will be ' +
+        'in the room in green hats. If anything happens, find one before you leave the building.',
+    ],
+  );
+
+  // --- Money moving, so Thesaurus shows the dual-approval path rather than a
+  // static thermometer. Left at 'proposed' — the second signature is the demo.
+  await c.query(
+    `INSERT INTO public.disbursements (tenant_id, fund_id, amount_cents, currency, purpose, status)
+     SELECT $1, f.id, 42_500, 'USD', $2, 'proposed'
+     FROM public.funds f WHERE f.tenant_id = $1 LIMIT 1`,
+    [tenantId, 'Filing fees and transport, four households, Perram Row lockout'],
+  );
+
+  console.log('Follow-ups, conversations, consent, shifts, a draft, two channels, a briefing.');
 }
 
 await main();

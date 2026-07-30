@@ -7,8 +7,11 @@ import animate from 'tailwindcss-animate';
  * palette is not — that one was another product's brand, and the `ignatian`
  * scale it carried is exactly the ecclesial vocabulary §2 keeps out of Coram.
  *
- * §8.2 sets the direction: muted, desaturated, one warm accent used sparingly.
- * Concrete values live in src/app/index.css.
+ * The palette is the marketing site's — vermillion, gold, teal and ultramarine
+ * over warm paper — because the site and the product are one company. §8.2's
+ * "muted, desaturated, one warm accent" is the *photography* direction; reading
+ * it as UI guidance is how /app ended up as grey boxes. Concrete values live in
+ * src/app/index.css.
  *
  * Fonts are a system stack. §10 forbids fonts from Google or any CDN, and
  * self-hosting a webfont from R2 is a step to take when there is a designed
@@ -28,8 +31,31 @@ export default {
       fontFamily: {
         sans: ['ui-sans-serif', 'system-ui', '-apple-system', 'Segoe UI', 'sans-serif'],
         serif: ['ui-serif', 'Georgia', 'serif'],
+        /* The same stack the marketing site's --display carries, so a heading
+           in the product and a heading on the site are the same letterform. */
+        display: [
+          'ui-serif',
+          'Iowan Old Style',
+          'Palatino Linotype',
+          'Palatino',
+          'Georgia',
+          'serif',
+        ],
       },
       colors: {
+        /*
+         * The brand four (plus two extenders, because eleven modules need
+         * eleven distinguishable tones). Assigned per module in
+         * src/app/lib/modules.ts — no screen picks its own.
+         */
+        flame: 'hsl(var(--flame) / <alpha-value>)',
+        gold: 'hsl(var(--gold) / <alpha-value>)',
+        teal: 'hsl(var(--teal) / <alpha-value>)',
+        deep: 'hsl(var(--deep) / <alpha-value>)',
+        plum: 'hsl(var(--plum) / <alpha-value>)',
+        rose: 'hsl(var(--rose) / <alpha-value>)',
+        /* Whichever of the above the current screen is. Set by the Shell. */
+        tone: 'hsl(var(--tone) / <alpha-value>)',
         border: 'hsl(var(--border))',
         input: 'hsl(var(--input))',
         ring: 'hsl(var(--ring))',

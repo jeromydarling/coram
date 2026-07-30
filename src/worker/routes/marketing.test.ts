@@ -287,14 +287,23 @@ describe('/demo', () => {
   });
 
   /*
-   * The demo signs in as an observer, so the contact list is empty. Without
-   * saying so, the most likely reading of an empty list is that the product is
-   * broken — which is the opposite of what the demo is for.
+   * The demo used to sign in as an observer, which sees no contact records at
+   * all, and the page had to spend a paragraph explaining that the empty list
+   * was the access control working. It is an organizer now — the role most
+   * people evaluating this would hold — so the page's job changed: say what
+   * this account can do, and name the two things it deliberately cannot reach
+   * so nobody reads a boundary as a missing feature.
    */
-  it('explains the empty contact list as access control, not a fault', async () => {
+  it('names the role the demo actually signs in as', async () => {
     const html = await (await get('/demo', fakeEnv())).text();
-    expect(html).toMatch(/observer/i);
-    expect(html).toMatch(/access control working, not a bug/i);
+    expect(html).toMatch(/organizer/i);
+    expect(html).not.toMatch(/signs in as an observer/i);
+  });
+
+  it('says which screens the demo account cannot reach, and why', async () => {
+    const html = await (await get('/demo', fakeEnv())).text();
+    expect(html).toMatch(/legal role/i);
+    expect(html).toMatch(/Turf and role scoping happen in the database/i);
   });
 
   it('says plainly that everyone in it is invented', async () => {
