@@ -16,7 +16,7 @@
  *     facts and this screen says which one it is.
  */
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { Link } from 'react-router-dom';
 import { Download, Plus, Search, Upload } from 'lucide-react';
@@ -230,6 +230,7 @@ function EmptyList({ role, searching }: { role?: string; searching: boolean }) {
 
 function NewContact() {
   const [open, setOpen] = useState(false);
+  const [turfId, setTurfId] = useState<string>();
   const client = useQueryClient();
 
   /*
@@ -248,6 +249,23 @@ function NewContact() {
   });
   const mine = (turfs.data ?? []).filter((t) => t.mine);
 
+  /*
+   * Held in state rather than read out of FormData on submit.
+   *
+   * The list arrives asynchronously, so for the first moment the dialog is open
+   * there is no turf field at all — and a submit in that window sends no turf,
+   * which the database refuses. The browser suite hit exactly that race: the
+   * form was filled and submitted before the query resolved, the insert was
+   * denied, and the only trace was a toast that had faded by the time anyone
+   * looked. State plus a disabled button closes the window rather than making
+   * it narrower.
+   */
+  useEffect(() => {
+    if (!turfId && mine.length) setTurfId(mine[0].id);
+  }, [mine, turfId]);
+
+  const waiting = turfs.isLoading;
+
   const create = useMutation({
     mutationFn: (form: FormData) =>
       post('/contacts', {
@@ -255,13 +273,14 @@ function NewContact() {
         email: String(form.get('email') ?? '').trim() || undefined,
         phone: String(form.get('phone') ?? '').trim() || undefined,
         postalCode: String(form.get('postalCode') ?? '').trim() || undefined,
-        turfId: String(form.get('turfId') ?? '') || undefined,
+        turfId,
       }),
     onSuccess: () => {
       void client.invalidateQueries({ queryKey: ['contacts'] });
       void client.invalidateQueries({ queryKey: ['workspace'] });
       void client.invalidateQueries({ queryKey: ['turfs'] });
       setOpen(false);
+      setTurfId(undefined);
       say('Added.');
     },
     onError: (e: Error) => failed('Not added', e),
@@ -306,7 +325,7 @@ function NewContact() {
           {mine.length > 0 && (
             <div className="space-y-2">
               <Label htmlFor="turfId">Turf</Label>
-              <Select name="turfId" defaultValue={mine[0].id}>
+              <Select value={turfId} onValueChange={setTurfId}>
                 <SelectTrigger id="turfId">
                   <SelectValue />
                 </SelectTrigger>
@@ -335,9 +354,23 @@ function NewContact() {
               employer or an immigration status, and will not be getting one.
             </p>
           </div>
+          {/*
+            The API writes a better message than we would guess — "give at
+            least a name, an email, or a phone number" — and a toast that has
+            faded is not an error report. It stays on screen here.
+          */}
+          {create.isError && (
+            <p
+              role="alert"
+              className="rounded-lg border border-destructive/30 bg-destructive/[0.06] px-4 py-2.5 text-sm"
+            >
+              {create.error instanceof Error ? create.error.message : 'That did not work.'}
+            </p>
+          )}
+
           <DialogFooter>
-            <Button type="submit" disabled={create.isPending}>
-              {create.isPending ? 'Adding…' : 'Add'}
+            <Button type="submit" disabled={create.isPending || waiting}>
+              {create.isPending ? 'Adding…' : waiting ? 'Loading turfs…' : 'Add'}
             </Button>
           </DialogFooter>
         </form>

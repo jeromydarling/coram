@@ -141,9 +141,22 @@ test.describe('the demo workspace', () => {
     if (isMobile) await page.getByRole('button', { name: /open navigation/i }).click();
 
     for (const m of MODULES) {
-      await expect(
-        page.getByRole('link', { name: new RegExp(`${m.name}\\s+${m.latin}`) }).first(),
-      ).toBeVisible();
+      const link = page.getByRole('link', { name: new RegExp(`${m.name}\\s+${m.latin}`) }).first();
+      await expect(link).toBeVisible();
+
+      /*
+       * Visible is not the same as on screen.
+       *
+       * Playwright counts an element clipped by a scroll container as visible,
+       * so this passed while the rail's last group — Drafting and Coalition —
+       * sat below the fold at 720px with nothing to suggest it scrolled. Two of
+       * the eleven were invisible to a person and present to the test. The
+       * viewport check is the one that matches what someone can actually see.
+       */
+      const box = await link.boundingBox();
+      const height = page.viewportSize()?.height ?? 0;
+      expect(box, `${m.name} has a box`).not.toBeNull();
+      expect(box!.y, `${m.name} is not below the fold of the rail`).toBeLessThan(height);
     }
   });
 

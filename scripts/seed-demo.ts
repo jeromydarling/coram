@@ -348,8 +348,14 @@ async function main() {
     const [membership] = (
       await c.query(
         `INSERT INTO public.memberships (tenant_id, user_id, role, display_name, turf_ids)
-         VALUES ($1, $2, 'organizer', 'Demo visitor', $3::uuid[]) RETURNING id`,
-        [tenantId, userId, turfIds],
+         VALUES ($1, $2, 'organizer', $4, $3::uuid[]) RETURNING id`,
+        /*
+         * A person's name, not "Demo visitor". The overview greets you by your
+         * first name, and "Good to see you, Demo." reads like a placeholder —
+         * which on a page meant to show a real workspace is exactly the wrong
+         * impression. She is as fictional as the rest of them.
+         */
+        [tenantId, userId, turfIds, 'Rosa Ibarra'],
       )
     ).rows;
     const membershipId = membership.id as string;

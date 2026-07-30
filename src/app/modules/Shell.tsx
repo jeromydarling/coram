@@ -28,7 +28,7 @@ import { api, post, type Workspace } from '@/lib/api';
 import { GROUPS, MODULES, TONE_BG, moduleAt, toneVar } from '@/lib/modules';
 import { cn } from '@/lib/utils';
 
-/** Plain-language gloss on each role, shown in the sidebar under the badge. */
+/** Plain-language gloss on each role, carried as the role badge's tooltip. */
 const ROLE_MEANS: Record<string, string> = {
   steward: 'Full access, including billing and the burn switch.',
   organizer: 'Your turf: the people assigned to you, and everything you can do for them.',
@@ -46,8 +46,20 @@ export function Shell() {
   return (
     <div className="min-h-screen bg-background text-foreground lg:grid lg:grid-cols-[16rem_1fr]">
       {/* Desktop rail. */}
+      {/*
+        The rail is one scroll region, not two.
+
+        It used to pin a footer and let only the <nav> scroll, and at a 720px
+        viewport that quietly cut off the last group — Drafting and Coalition,
+        two of the eleven, invisible with nothing to suggest the rail moved.
+        The reachability test passed, because Playwright counts an element
+        clipped by a scroll container as visible; a person does not.
+
+        Everything below is also tighter than it was, so at ordinary laptop
+        heights all eleven fit without scrolling at all.
+      */}
       <aside className="hidden border-r border-sidebar-border bg-sidebar text-sidebar-foreground lg:block">
-        <div className="sticky top-0 flex h-screen flex-col">
+        <div className="sticky top-0 flex h-screen flex-col overflow-y-auto">
           <Nav workspace={data} onNavigate={() => undefined} />
         </div>
       </aside>
@@ -124,6 +136,10 @@ function Nav({
           {role && (
             <Badge
               variant="outline"
+              // The gloss used to be a paragraph pinned above Sign out. It was
+              // worth two lines of rail and it was the reason the last group
+              // fell off the bottom, so it lives on the badge instead.
+              title={ROLE_MEANS[role] ?? 'Your access is scoped by role and by turf.'}
               className="border-sidebar-border text-[0.65rem] uppercase tracking-wider text-sidebar-foreground"
             >
               {role}
@@ -140,9 +156,9 @@ function Nav({
         </div>
       </div>
 
-      <nav className="min-h-0 flex-1 overflow-y-auto px-2 py-3">
+      <nav className="flex-1 px-2 py-2.5">
         {GROUPS.map((group) => (
-          <div key={group} className="mb-4">
+          <div key={group} className="mb-2.5">
             <p className="px-3 pb-1.5 text-[0.62rem] font-bold uppercase tracking-[0.16em] text-sidebar-foreground/45">
               {group}
             </p>
@@ -155,7 +171,7 @@ function Nav({
                     onClick={onNavigate}
                     className={({ isActive }) =>
                       cn(
-                        'flex items-center gap-2.5 rounded-md px-3 py-[0.4rem] text-[0.9rem]',
+                        'flex items-center gap-2.5 rounded-md px-3 py-[0.3rem] text-[0.9rem]',
                         isActive
                           ? 'bg-sidebar-accent font-medium text-sidebar-accent-foreground'
                           : 'text-sidebar-foreground/80 hover:bg-sidebar-accent/60 hover:text-sidebar-accent-foreground',
@@ -179,12 +195,7 @@ function Nav({
         ))}
       </nav>
 
-      <div className="border-t border-sidebar-border px-3 py-3">
-        {role && (
-          <p className="mb-2 px-1 text-[0.72rem] leading-snug text-sidebar-foreground/55">
-            {ROLE_MEANS[role] ?? 'Your access is scoped by role and by turf.'}
-          </p>
-        )}
+      <div className="border-t border-sidebar-border px-3 py-2">
         <NavLink
           to="/settings"
           onClick={onNavigate}
@@ -210,7 +221,7 @@ function Nav({
               window.location.href = '/app/login';
             });
           }}
-          className="flex w-full items-center gap-2.5 rounded-md px-3 py-[0.4rem] text-left text-[0.9rem] text-sidebar-foreground/80 hover:bg-sidebar-accent/60"
+          className="flex w-full items-center gap-2.5 rounded-md px-3 py-[0.3rem] text-left text-[0.9rem] text-sidebar-foreground/80 hover:bg-sidebar-accent/60"
         >
           <LogOut aria-hidden className="h-4 w-4 opacity-70" />
           Sign out
