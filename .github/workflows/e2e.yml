@@ -1,0 +1,61 @@
+####################################################################
+# Browser tests against the deployed site.
+#
+# Separate from ci.yml because this one needs a browser, needs the
+# network, and tests a deployment rather than a commit — a green run
+# here says "the thing people can reach is working", which is a
+# different claim from "this diff typechecks".
+#
+# It exists because that difference cost weeks: /app served a
+# placeholder paragraph while the API, the schema and six hundred unit
+# tests were all green, and the demo link went nowhere. Nothing local
+# could have caught it. Only opening the deployed product would, and
+# nothing opened it.
+####################################################################
+
+name: Browser
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  schedule:
+    # Weekday mornings. A deployment can break without a deploy —
+    # an expired credential, a bucket permission, an upstream 500.
+    - cron: '0 7 * * 1-5'
+  workflow_dispatch:
+    inputs:
+      base_url:
+        description: Site to test
+        default: https://coram.jer-f84.workers.dev
+
+jobs:
+  browser:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      # Chromium only. The point here is "does the product render and work",
+      # not cross-engine compatibility, and three browsers would triple the
+      # runtime for a signal we are not yet acting on.
+      - run: npx playwright install --with-deps chromium
+
+      - name: Run browser tests
+        env:
+          E2E_BASE_URL: ${{ inputs.base_url || 'https://coram.jer-f84.workers.dev' }}
+        run: npx playwright test
+
+      # The report carries traces and screenshots for anything that failed,
+      # which is the difference between "a test went red" and knowing why.
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 14
