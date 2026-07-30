@@ -53,9 +53,21 @@ jobs:
           cache: npm
       - run: npm ci
 
-      # PGURI must be an owner-role connection string: coram_app holds SELECT
-      # and nothing else on the ref_* tables, deliberately, so that a workspace
-      # can never alter what every other workspace sees.
+      # REFDATA_PGURI is a connection string for `coram_refdata` — a role whose
+      # entire authority is the four ref_* tables (migration 0014). Not the
+      # database owner: that role has BYPASSRLS and owns every table, so putting
+      # it here would let any workflow read every workspace's contacts with
+      # row-level security bypassed. Verified: coram_refdata is denied on
+      # contacts, tenants, bills, memberships and audit_log, and cannot create a
+      # table.
+      #
+      # If this secret leaks, what leaks is a published roster of who holds
+      # public office — downloadable from Open States and the Library of Congress
+      # without asking us.
+      #
+      # See docs/deploy.md for how to set its password. Applying 0014 alone
+      # grants nobody anything: the role is created with no password and cannot
+      # authenticate until an operator sets one.
       #
       # OPENSTATES_API_KEY is optional. Without it the state-committee source
       # records why it is unavailable, and the API tells the user rather than

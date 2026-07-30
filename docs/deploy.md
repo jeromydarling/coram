@@ -198,3 +198,59 @@ record on purpose, so the alert and the public page cannot disagree.
 quietly breaks the burn switch's promise — the rows would still exist in a
 snapshot after a steward was told they were destroyed. Set this explicitly when
 provisioning the database, and check it again after any provider migration.
+
+## The reference-data sync
+
+`ref_legislators`, `ref_committees`, `ref_committee_members` and `ref_sync` hold
+published facts — who currently holds public office — identical for every
+workspace. They are refreshed by `npm run refdata:sync`, which the
+`Legislative data` workflow runs weekly.
+
+That job needs write access to those four tables and to nothing else. Do **not**
+give it the database owner: `neondb_owner` has `BYPASSRLS` and owns every table,
+so an owner credential in a GitHub Actions secret means any workflow — and
+anyone who can push a workflow file — can read every workspace's contacts with
+row-level security bypassed. Migration 0014 exists to make that unnecessary.
+
+### Set the role's password
+
+Migration 0014 creates `coram_refdata` with no password, so applying it grants
+nobody anything. Generate a password, set it, and put the connection string in
+the repository secret `REFDATA_PGURI`:
+
+```sh
+# Somewhere that is not a shell history file.
+PW="$(openssl rand -base64 32 | tr -d '/+=' | head -c 32)"
+
+psql "$OWNER_DATABASE_URL" -c "ALTER ROLE coram_refdata PASSWORD '$PW'"
+
+# The value for the REFDATA_PGURI secret. Same host and database as the app,
+# different user.
+echo "postgresql://coram_refdata:$PW@<host>/neondb?sslmode=require"
+```
+
+`OPENSTATES_API_KEY` is the second secret and is optional. Without it the
+state-committee source records why it is unavailable and the API says so to the
+user; federal committees and all 51 legislator rosters need no credential.
+Note the free Open States tier is 250 requests/day, which is not enough for 51
+jurisdictions in one run — ask them for a higher tier before relying on it.
+
+### Check the isolation held
+
+After applying 0014, this should return exactly four rows, all `ref_*`:
+
+```sql
+SELECT DISTINCT table_name
+FROM information_schema.role_table_grants
+WHERE grantee = 'coram_refdata'
+ORDER BY table_name;
+```
+
+And this should return `f` for both:
+
+```sql
+SELECT rolbypassrls, rolsuper FROM pg_roles WHERE rolname = 'coram_refdata';
+```
+
+If either check disagrees, the sync credential is more powerful than the job it
+does, and the secret is worth more to an attacker than the data it protects.
