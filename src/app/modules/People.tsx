@@ -285,7 +285,20 @@ function NewContact() {
         turfId,
       }),
     onSuccess: () => {
-      void client.invalidateQueries({ queryKey: ['contacts'] });
+      /*
+       * refetchType: 'all', and it is load-bearing.
+       *
+       * By default invalidation refetches only *active, idle* queries. A list
+       * request that was already in flight when the create landed is marked
+       * stale and left alone — so its pre-create result is what stays on
+       * screen, and with refetchOnWindowFocus off nothing ever comes back to
+       * correct it. Add somebody while the list happens to be loading and they
+       * simply are not there, until you type something else.
+       *
+       * The browser trace caught this: a search started 37ms after the POST and
+       * no second request followed it. 'all' includes the in-flight one.
+       */
+      void client.invalidateQueries({ queryKey: ['contacts'], refetchType: 'all' });
       void client.invalidateQueries({ queryKey: ['workspace'] });
       void client.invalidateQueries({ queryKey: ['turfs'] });
       setOpen(false);

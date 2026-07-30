@@ -273,16 +273,16 @@ test.describe('the demo workspace', () => {
     await page.getByRole('button', { name: /^add$/i }).click();
 
     /*
-     * This failed the first time it ran, and it was right to.
+     * Wait for the dialog to close, which only happens on success.
      *
-     * contacts_insert admits an organizer only when the row lands in a turf
-     * they hold. The form had no turf field, so every insert an organizer
-     * attempted was refused and the only sign was a toast that vanished —
-     * adding a contact was impossible for the role most people have. The fix
-     * was a turfs endpoint and a picker; this is the assertion that would have
-     * caught it, and it stays.
+     * The previous version searched immediately, which raced the POST — and
+     * the race was worth having, because it exposed a real defect: the list
+     * refetch skipped the in-flight query and left the new contact invisible.
+     * That is fixed in People.tsx. This now does what a person does, and
+     * closing is a better success signal than a toast that fades: an insert the
+     * database refuses leaves the dialog open with the reason in it.
      */
-    await expect(page.getByText(/not added/i)).toHaveCount(0);
+    await expect(page.getByRole('dialog')).toHaveCount(0, { timeout: 20_000 });
 
     await page.getByPlaceholder(/name, email or phone/i).fill(name);
     await expect(page.getByText(name)).toBeVisible({ timeout: 20_000 });
