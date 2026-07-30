@@ -32,6 +32,18 @@ on:
         description: Site to test
         default: https://coram.jer-f84.workers.dev
 
+# One run at a time, and the newest wins.
+#
+# Login is rate limited to 8 attempts per 15 minutes per IP and a runner is one
+# IP, so two overlapping runs spend each other's budget. That is exactly what
+# happened when two commits landed a minute apart: the second run's sign-in was
+# refused by the limiter, and twenty-two tests reported that the product had no
+# screens when the product was fine. Superseding rather than queueing, because a
+# run against a commit that is already two deploys stale tells nobody anything.
+concurrency:
+  group: browser-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   browser:
     runs-on: ubuntu-latest

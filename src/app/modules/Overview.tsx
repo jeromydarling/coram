@@ -78,18 +78,39 @@ export function Overview() {
         <div style={toneVar('flame')}>
           <Figure value={workspace.data?.tenant.contact_count ?? '—'} label="People" />
         </div>
+        {/*
+          A failed query must not render as a confident zero.
+
+          This is the same mistake migration 0015 fixed at the database: an
+          events count that silently returned 0 made a busy group look dead. A
+          fetch that 500s here would do it again, in the same direction, on the
+          first screen anyone sees — so an error says so rather than being
+          rounded down to "Nothing scheduled".
+        */}
         <div style={toneVar('gold')}>
           <Figure
-            value={live.length}
+            value={events.isError ? '—' : live.length}
             label="Events ahead"
-            note={next ? when(next.starts_at) : 'Nothing scheduled'}
+            note={
+              events.isError
+                ? 'We could not load the calendar'
+                : next
+                  ? when(next.starts_at)
+                  : 'Nothing scheduled'
+            }
           />
         </div>
         <div style={toneVar('teal')}>
           <Figure
             value={aid ? money(aid.raised_cents, aid.currency) : '—'}
             label={aid?.kind === 'mutual_aid' ? 'Mutual aid raised' : 'Raised'}
-            note={aid ? `${money(aid.available_cents, aid.currency)} unspent` : undefined}
+            note={
+              funds.isError
+                ? 'We could not load the funds'
+                : aid
+                  ? `${money(aid.available_cents, aid.currency)} unspent`
+                  : 'No funds open'
+            }
           />
         </div>
         <div style={toneVar('rose')}>
@@ -101,7 +122,9 @@ export function Overview() {
                 ? 'Not visible to your role'
                 : due.filter((f) => f.overdue).length
                   ? `${due.filter((f) => f.overdue).length} already late`
-                  : 'All current'
+                  : due.length
+                    ? 'All current'
+                    : 'Nothing owed'
             }
           />
         </div>

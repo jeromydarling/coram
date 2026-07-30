@@ -107,6 +107,16 @@ test.describe('the demo workspace', () => {
     test(`${m.name} (${m.latin}, §${m.section}) is a real screen`, async ({ page }) => {
       await page.goto(`/app${m.path}`);
 
+      /*
+       * Say which failure this is.
+       *
+       * A dead session bounces every module route to /login, and these tests
+       * then all fail reporting "no heading" — which reads as "the product has
+       * no screens" and cost an hour of looking in the wrong place. If the
+       * session is gone, fail on that instead.
+       */
+      await expect(page, 'session should still be valid').not.toHaveURL(/\/login/);
+
       // Its own <h1>, not the overview's. A route that falls through to the
       // catch-all redirect lands on the overview and would otherwise pass.
       await expect(page.getByRole('heading', { level: 1, name: m.name })).toBeVisible({
