@@ -57,6 +57,18 @@ test.describe('the demo workspace', () => {
     // A real number from a real row, not a skeleton.
     await expect(page.getByText('240', { exact: true })).toBeVisible();
 
+    /*
+     * Every stat has to resolve, not just the first one.
+     *
+     * The first green run logged "— RAISED, MUTUAL AID" on the overview while
+     * the funds page rendered $3,184 correctly, which could be a stat that
+     * never resolves or a snapshot taken mid-load. Asserting it settles is the
+     * only way to tell the difference, and a permanent em dash on the first
+     * screen anyone sees would be worth knowing about.
+     */
+    await expect(page.getByText(/\$3,184/)).toBeVisible();
+    await expect(page.getByText(/^\d+$/).first()).toBeVisible();
+
     console.log('OVERVIEW:', (await page.locator('main').innerText()).replace(/\n+/g, ' | '));
   });
 
