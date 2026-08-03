@@ -25,7 +25,17 @@ on:
   push:
     branches: [main, 'claude/**']
     paths:
+      # The app itself.
       - 'src/app/**'
+      # And everything the app renders. The composer that draws a flyer and a
+      # social card lives in the Worker, so a fix to how a card wraps its text
+      # changes the studio screenshot while touching nothing under src/app —
+      # which is exactly what happened, and the capture silently did not run.
+      # A paths filter narrower than the thing it guards is worse than none.
+      - 'src/worker/lib/social.ts'
+      - 'src/worker/lib/flyer.ts'
+      - 'src/worker/routes/api/brand.ts'
+      - 'src/shared/brand.ts'
       - 'src/shared/shots.ts'
       - 'scripts/capture-shots.ts'
   workflow_dispatch:

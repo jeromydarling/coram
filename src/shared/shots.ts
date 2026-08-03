@@ -114,7 +114,7 @@ export const SHOTS: ShotSpec[] = [
     // After the compose, not before — 'Studio' is the heading and matches
     // instantly, which is how the first capture came back as an empty form.
     settled: 'Preview',
-    alt: 'The design studio: a headline, date and place on the left, and a composed flyer previewed on the right in the group’s own colours.',
+    alt: 'The design studio: a headline, date and place on the left, and on the right a finished square social card in the group’s own colours, with its name across a coloured band.',
     caption:
       'A flyer for a pole or a card for a feed, in your colours. We make the file; you post it — Coram holds no account of yours.',
   },
