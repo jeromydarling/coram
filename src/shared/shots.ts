@@ -77,7 +77,11 @@ export interface ShotSpec {
   prepare?: 'studio-compose' | 'advocacy-open';
 }
 
-/** Desktop shots share a viewport so the set looks like one product, not seven. */
+/**
+ * The default desktop crop. Most shots take it, so the set reads as one
+ * product rather than seven; the ones that deviate say why at the point of
+ * deviation, and never by more than the screen actually needs.
+ */
 const DESK = { width: 1280, height: 860 };
 const DESK_W = [1280, 960, 640];
 
@@ -108,7 +112,11 @@ export const SHOTS: ShotSpec[] = [
   {
     id: 'shot-studio',
     route: '/app/studio',
-    viewport: DESK,
+    // Taller than the rest of the set, and the exception is the point: the
+    // caption promises a file you can take away, so the row that produces it —
+    // PNG, SVG, share — has to be whole in the picture. At the shared 860 it
+    // was sliced through the middle of the buttons.
+    viewport: { width: 1280, height: 940 },
     widths: DESK_W,
     prepare: 'studio-compose',
     // After the compose, not before — 'Studio' is the heading and matches
@@ -131,7 +139,11 @@ export const SHOTS: ShotSpec[] = [
   {
     id: 'shot-money',
     route: '/app/money',
-    viewport: { width: 1280, height: 700 },
+    // 800 rather than the 700 the content needs. The rail is about 780 tall,
+    // and a shorter crop cuts it through the middle of the word "Workspace" —
+    // a hundred pixels of cream costs less than a sliced word on a page whose
+    // argument is that the thing is carefully made.
+    viewport: { width: 1280, height: 800 },
     widths: DESK_W,
     settled: 'no platform take',
     alt: 'A mutual aid fund at $3,184 of a $5,000 goal, marked as taking no platform fee, above a disbursement waiting for a second approval.',
@@ -151,8 +163,9 @@ export const SHOTS: ShotSpec[] = [
   {
     id: 'shot-mobile',
     route: '/app/events',
-    // A Pixel 7. Organizers use this in a hallway, between doors.
-    viewport: { width: 412, height: 780 },
+    // A Pixel 7, cropped short of the full 780 because the two event cards end
+    // well above the fold and the rest was dead cream.
+    viewport: { width: 412, height: 640 },
     widths: [412, 320],
     settled: 'going',
     alt: 'The events list on a phone, showing a rent board hearing with the number of people going and how many places are left.',
