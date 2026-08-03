@@ -19,8 +19,9 @@
  */
 
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { ArrowLeft, FilePlus2, Info } from 'lucide-react';
+import { ArrowLeft, FilePlus2, Info, Printer } from 'lucide-react';
 
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -252,6 +253,16 @@ function Bill({ id, canEdit, onBack }: { id: string; canEdit: boolean; onBack: (
       {detail.isError && <Failed error={detail.error} />}
 
       {d && (
+        <>
+        <div className="mb-6 flex justify-end">
+          <Button variant="outline" size="sm" asChild>
+            <Link to={`/advocacy/one-pager/${id}`}>
+              <Printer className="mr-2 h-4 w-4" />
+              The leave-behind
+            </Link>
+          </Button>
+        </div>
+
         <Tabs defaultValue="text">
           <TabsList className="mb-6">
             <TabsTrigger value="text">The bill</TabsTrigger>
@@ -395,6 +406,7 @@ function Bill({ id, canEdit, onBack }: { id: string; canEdit: boolean; onBack: (
             <Endorsements id={id} rows={d.endorsements} canEdit={canEdit} />
           </TabsContent>
         </Tabs>
+        </>
       )}
     </>
   );

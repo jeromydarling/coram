@@ -28,6 +28,7 @@ import { Overview } from '@/modules/Overview';
 import { People } from '@/modules/People';
 import { PeopleImport } from '@/modules/PeopleImport';
 import { Sheet } from '@/modules/Sheet';
+import { OnePager } from '@/modules/OnePager';
 import { Relationships } from '@/modules/Relationships';
 import { RequireSession } from '@/modules/RequireSession';
 import { Safety } from '@/modules/Safety';
@@ -70,6 +71,9 @@ export function App() {
                 <Route path="/events" element={<Events />} />
                 <Route path="/outreach" element={<Outreach />} />
                 <Route path="/advocacy" element={<Advocacy />} />
+                {/* Its own route for the same reason the turf sheet has one:
+                    a document printed from inside the shell brings the rail. */}
+                <Route path="/advocacy/one-pager/:id" element={<OnePager />} />
                 <Route path="/money" element={<Money />} />
                 <Route path="/messages" element={<Messages />} />
                 <Route path="/governance" element={<Governance />} />
