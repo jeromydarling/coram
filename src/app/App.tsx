@@ -31,6 +31,7 @@ import { Relationships } from '@/modules/Relationships';
 import { RequireSession } from '@/modules/RequireSession';
 import { Safety } from '@/modules/Safety';
 import { Settings } from '@/modules/Settings';
+import { Studio } from '@/modules/Studio';
 import { Shell } from '@/modules/Shell';
 
 const queryClient = new QueryClient({
@@ -72,6 +73,10 @@ export function App() {
                 <Route path="/drafting" element={<Drafting />} />
                 <Route path="/coalition" element={<Coalition />} />
 
+                {/* Not a module — §5 is closed at eleven. Studio is a Brand
+                    surface built from Convocare data, and Workspace is
+                    configuration. Both live below the nav's module groups. */}
+                <Route path="/studio" element={<Studio />} />
                 <Route path="/settings" element={<Settings />} />
               </Route>
             </Route>

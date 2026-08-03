@@ -18,7 +18,7 @@
 import { useState } from 'react';
 import { Link, NavLink, Outlet, useLocation } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
-import { LogOut, Menu, Settings } from 'lucide-react';
+import { LogOut, Menu, Palette, Settings } from 'lucide-react';
 
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -196,6 +196,24 @@ function Nav({
       </nav>
 
       <div className="border-t border-sidebar-border px-3 py-2">
+        {/* Below the module groups on purpose. Neither of these is one of §5's
+            eleven, and putting them in a group would make the closed list look
+            like it had grown. */}
+        <NavLink
+          to="/studio"
+          onClick={onNavigate}
+          className={({ isActive }) =>
+            cn(
+              'flex items-center gap-2.5 rounded-md px-3 py-[0.3rem] text-[0.9rem]',
+              isActive
+                ? 'bg-sidebar-accent text-sidebar-accent-foreground'
+                : 'text-sidebar-foreground/80 hover:bg-sidebar-accent/60',
+            )
+          }
+        >
+          <Palette aria-hidden className="h-4 w-4 opacity-70" />
+          Studio
+        </NavLink>
         <NavLink
           to="/settings"
           onClick={onNavigate}

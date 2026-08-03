@@ -323,6 +323,118 @@ export const CHANNELS: Channel[] = [
   { id: 'facebook', name: 'Facebook', limit: 63206, linkCostsCharacters: true },
 ];
 
+/**
+ * Pixel sizes for a social card, per shape rather than per platform.
+ *
+ * Platforms rename and re-crop their formats constantly, and a list keyed to
+ * "Instagram feed" goes stale the week after it is written. These are the three
+ * shapes that have been stable for a decade, and the studio names them by what
+ * they look like.
+ */
+export interface SocialSize {
+  id: 'square' | 'landscape' | 'story';
+  name: string;
+  width: number;
+  height: number;
+  /** What it is for, in the studio's own words. */
+  blurb: string;
+}
+
+export const SOCIAL_SIZES: SocialSize[] = [
+  { id: 'square', name: 'Square', width: 1080, height: 1080, blurb: 'Feeds, and the safest default.' },
+  {
+    id: 'landscape',
+    name: 'Wide',
+    width: 1200,
+    height: 630,
+    blurb: 'Link previews, and anything that will be seen on a desktop.',
+  },
+  {
+    id: 'story',
+    name: 'Story',
+    width: 1080,
+    height: 1920,
+    blurb: 'Full-screen and vertical. Read at arm’s length, so very little text.',
+  },
+];
+
+/**
+ * What a generated backdrop is allowed to be.
+ *
+ * No people, and this is a rule rather than a default. A flyer for a real
+ * tenants union carrying an invented photorealistic "member" is a claim the
+ * group has to defend on a doorstep, and it is the kind of thing that gets
+ * used against them once somebody notices. §8.2 already forbids stock-smiley
+ * imagery on our own site for the same reason; a group's own material deserves
+ * the same discipline, and they have real photographs of real people.
+ *
+ * So: texture, paper, light, and empty rooms. The prompt builder below refuses
+ * to describe a person and the model is told so explicitly.
+ */
+export interface BackdropStyle {
+  id: string;
+  name: string;
+  blurb: string;
+  prompt: string;
+}
+
+export const BACKDROP_STYLES: BackdropStyle[] = [
+  {
+    id: 'paper',
+    name: 'Paper and ink',
+    blurb: 'Risograph grain, like something run off on a copier.',
+    prompt:
+      'abstract risograph texture, coarse halftone grain, overprinted flat inks, misregistered ' +
+      'layers, photocopied paper fibre, no text, no letters, no symbols',
+  },
+  {
+    id: 'room',
+    name: 'An empty room',
+    blurb: 'A hall before anyone arrives. Available light, no people.',
+    prompt:
+      'empty community hall interior, stacked folding chairs, worn linoleum, available light ' +
+      'through high windows, 35mm photograph, muted and desaturated, completely empty of people, ' +
+      'no figures, no silhouettes, no text',
+  },
+  {
+    id: 'street',
+    name: 'The street',
+    blurb: 'Brick, shutters and pavement. Somewhere a flyer would actually go up.',
+    prompt:
+      'weathered brick wall and shopfront shutters at dusk, peeling paste-up posters with ' +
+      'illegible torn paper, wet pavement, 35mm photograph, muted palette, no people, no text, ' +
+      'no readable letters',
+  },
+  {
+    id: 'wash',
+    name: 'A colour wash',
+    blurb: 'Soft gradient and nothing else. Safest under a lot of type.',
+    prompt:
+      'soft abstract gradient wash, gentle paper grain, subtle vignette, no objects, no people, ' +
+      'no text, no shapes that read as letters',
+  },
+];
+
+/**
+ * The negative half of every backdrop prompt.
+ *
+ * Sent on every generation regardless of style. Faces are the first item and
+ * the reason the list exists; the rest keep the model from drawing text, which
+ * it renders as convincing gibberish and which would sit next to the group's
+ * real words.
+ */
+export const BACKDROP_NEGATIVE =
+  'people, person, face, faces, portrait, crowd, hands, human figure, silhouette, ' +
+  'text, letters, words, watermark, signature, logo, brand mark, ' +
+  'raised fists, riot police, tear gas, flags, megaphones';
+
+export function backdropPrompt(style: BackdropStyle, extra?: string): string {
+  // The group's own words are appended, never substituted, so the no-people
+  // clause cannot be prompted away by whatever is typed in the box.
+  const own = extra?.trim().slice(0, 200);
+  return [style.prompt, own, 'no people, no text'].filter(Boolean).join(', ');
+}
+
 /** X shortens every link to a fixed 23 characters regardless of length. */
 const X_LINK_COST = 23;
 

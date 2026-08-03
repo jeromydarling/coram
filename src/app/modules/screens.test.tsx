@@ -30,6 +30,7 @@ import { Overview } from './Overview';
 import { People } from './People';
 import { Relationships } from './Relationships';
 import { Safety } from './Safety';
+import { Studio } from './Studio';
 
 /** Shapes taken from real responses off the deployed API, trimmed to what is read. */
 const WORKSPACE = {
@@ -186,6 +187,13 @@ const ROUTES: Record<string, unknown> = {
       last_message_at: '2026-07-29T00:00:00Z',
     },
   ],
+  '/api/brand/studio': {
+    templates: [{ id: 'meeting', name: 'Meeting', blurb: 'The one people put on a fridge.' }],
+    sizes: [{ id: 'square', name: 'Square', width: 1080, height: 1080, blurb: 'Feeds.' }],
+    channels: [{ id: 'x', name: 'X', limit: 280 }],
+    backdrops: [{ id: 'paper', name: 'Paper and ink', blurb: 'Risograph grain.' }],
+    canGenerate: true,
+  },
   '/api/workspace/turfs': [
     { id: 'tf1', name: 'North of the tracks', contacts: 80, mine: true },
     { id: 'tf2', name: 'Hillcrest', contacts: 80, mine: false },
@@ -374,6 +382,56 @@ describe('adding a contact', () => {
 
     await waitFor(() => expect(screen.getAllByText(/North of the tracks/).length).toBeGreaterThan(0));
     expect(screen.queryByText(/Hillcrest/)).toBeNull();
+  });
+});
+
+describe('the studio', () => {
+  it('offers a flyer and a social card without a twelfth module', async () => {
+    mockApi();
+    mount(<Studio />);
+
+    await waitFor(() => expect(screen.getByRole('heading', { level: 1, name: 'Studio' })).toBeDefined());
+    expect(screen.getByRole('tab', { name: 'Flyer' })).toBeDefined();
+    expect(screen.getByRole('tab', { name: 'Social' })).toBeDefined();
+  });
+
+  /*
+   * §5.6 and §7 in one sentence, at the point where somebody would look for a
+   * "connect your accounts" button. If this line ever disappears it will be
+   * because someone added the button.
+   */
+  it('says plainly that Coram will not post for you', async () => {
+    mockApi();
+    mount(<Studio />);
+
+    await waitFor(() =>
+      expect(screen.getByText(/does not hold your social accounts/i)).toBeDefined(),
+    );
+    expect(screen.getByText(/subpoena target/i)).toBeDefined();
+  });
+
+  /*
+   * The rule is enforced in the prompt and in the negative prompt, but a person
+   * choosing a style should be told before they press it — not discover it by
+   * getting something they did not ask for.
+   */
+  it('tells you a generated background will never contain a person', async () => {
+    mockApi();
+    mount(<Studio />);
+
+    await waitFor(() => expect(screen.getByText(/Generate a background/i)).toBeDefined());
+    expect(screen.getByText(/Never a person/i)).toBeDefined();
+  });
+
+  it('hides generation entirely where the binding is absent', async () => {
+    mockApi({
+      '/api/brand/studio': { ...(ROUTES['/api/brand/studio'] as object), canGenerate: false },
+    });
+    mount(<Studio />);
+
+    await waitFor(() => expect(screen.getByRole('heading', { level: 1, name: 'Studio' })).toBeDefined());
+    // A button that answers 501 is worse than no button.
+    expect(screen.queryByText(/Generate a background/i)).toBeNull();
   });
 });
 

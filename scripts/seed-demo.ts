@@ -532,6 +532,26 @@ async function seedOrganizerDay(
     }
   }
 
+  /*
+   * The group's own colours.
+   *
+   * Without a row here the studio falls back to DEFAULT_BRAND and every flyer
+   * is signed "Your group" in somebody else's green — which makes the one
+   * screen meant to show a group's identity look like a stock template. The
+   * ink and surface are chosen to clear the WCAG gate in brand.ts, which
+   * refuses to save a palette that would not read on a noticeboard.
+   */
+  await c.query(
+    `INSERT INTO public.brand_profiles
+       (tenant_id, name, primary_hex, accent_hex, surface_hex, ink_hex)
+     VALUES ($1, $2, '#1f4d3d', '#c2410c', '#fbf7f0', '#161310')
+     ON CONFLICT (tenant_id) DO UPDATE SET
+       name = EXCLUDED.name, primary_hex = EXCLUDED.primary_hex,
+       accent_hex = EXCLUDED.accent_hex, surface_hex = EXCLUDED.surface_hex,
+       ink_hex = EXCLUDED.ink_hex`,
+    [tenantId, 'Eastside Tenants Union'],
+  );
+
   // --- Custos. No jail-support case: most weeks there is not one, and a demo
   // that invents an arrest to fill a screen is in poor taste. The rights guide
   // and the briefing are what a group has on file all the time.

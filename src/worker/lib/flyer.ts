@@ -95,6 +95,21 @@ export interface FlyerOptions {
   template: TemplateId;
   /** Rendered small, bottom-right. Omitted when absent. */
   qrHref?: string;
+  /**
+   * An optional full-bleed backdrop, as a `data:` URI.
+   *
+   * A URI rather than a URL on purpose: an SVG that references a remote image
+   * is a file that stops working the moment it is emailed, printed from
+   * another machine, or opened after the link expires. Everything the group
+   * downloads has to be one self-contained file.
+   *
+   * It sits *behind* the surface, which is redrawn over it at `backdropScrim`
+   * opacity so the contrast the brand gate already checked still holds. A
+   * generated image is not allowed to make the type unreadable.
+   */
+  backdrop?: string;
+  /** How much surface to keep over the backdrop. 0 is none, 1 hides it. */
+  backdropScrim?: number;
 }
 
 /**
@@ -104,8 +119,26 @@ export interface FlyerOptions {
  * studio shows contrast while colours are being chosen, so reaching this point
  * with a failing palette means something bypassed the editor.
  */
-export function renderFlyer({ brand, content, template }: FlyerOptions): string {
+export function renderFlyer({
+  brand,
+  content,
+  template,
+  backdrop,
+  backdropScrim,
+}: FlyerOptions): string {
   assertLegible(brand);
+
+  /*
+   * A floor on the scrim, not just a default.
+   *
+   * The contrast gate in brand.ts checks ink against surface. Put a photograph
+   * behind that surface and the ratio it verified is no longer the ratio on the
+   * page — a dark patch under dark type is unreadable no matter what the brand
+   * profile says. Holding 62% of the surface keeps the checked pair close
+   * enough to true, and a group that wants a bolder image can go to 0.45 and no
+   * further.
+   */
+  const scrim = backdrop ? Math.min(1, Math.max(0.45, backdropScrim ?? 0.72)) : 1;
 
   const M = 64; // page margin
   const inner = FLYER_W - M * 2;
@@ -142,7 +175,20 @@ export function renderFlyer({ brand, content, template }: FlyerOptions): string 
 
   const parts: string[] = [];
 
-  parts.push(`<rect width="${FLYER_W}" height="${FLYER_H}" fill="${brand.surface}"/>`);
+  if (backdrop) {
+    // preserveAspectRatio slice: fill the page and crop, never letterbox with
+    // a band of the wrong colour down one side.
+    parts.push(
+      `<image href="${esc(backdrop)}" x="0" y="0" width="${FLYER_W}" height="${FLYER_H}" ` +
+        `preserveAspectRatio="xMidYMid slice"/>`,
+    );
+    parts.push(
+      `<rect width="${FLYER_W}" height="${FLYER_H}" fill="${brand.surface}" ` +
+        `opacity="${scrim}"/>`,
+    );
+  } else {
+    parts.push(`<rect width="${FLYER_W}" height="${FLYER_H}" fill="${brand.surface}"/>`);
+  }
   parts.push(`<rect width="${FLYER_W}" height="${band}" fill="${brand.primary}"/>`);
 
   // Headline, baseline-stacked inside the band.

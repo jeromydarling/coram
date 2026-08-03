@@ -1,10 +1,10 @@
 /**
  * /api/scriba/* — private AI (§5.10).
  *
- * Three tasks and no more: draft a message, summarise a segment, turn a meeting
- * into minutes. Not a chat box. The scope guard refuses anything else, and the
- * narrow surface is the reason redaction is tractable — we know what the prompt
- * contains because we assembled it.
+ * Four tasks and no more: draft a message, summarise a segment, turn a meeting
+ * into minutes, translate something already written. Not a chat box. The scope
+ * guard refuses anything else, and the narrow surface is the reason redaction is
+ * tractable — we know what the prompt contains because we assembled it.
  *
  * The order of operations here is the whole module, and it does not vary:
  *
@@ -33,6 +33,7 @@ import {withTenant, type Tx} from '../../lib/rls';
 import { db } from '../../lib/db';
 
 import { checkScope } from '../../lib/scope';
+import { LANGUAGE_CODES, TRANSLATION_CAVEAT, languageFor } from '../../../shared/languages';
 
 export const scriba = new Hono<{ Bindings: Env; Variables: Vars }>();
 
@@ -354,3 +355,117 @@ async function rosterFor(tx: Tx): Promise<KnownValues> {
     postalCodes: rows.map((r) => r.postal_code as string).filter(Boolean),
   };
 }
+
+// ---------------------------------------------------------------------------
+// POST /api/scriba/translate
+//
+// The highest-value thing a model does for a neighbourhood group, and the
+// least glamorous. A tenants union whose block speaks Spanish, Cantonese and
+// Vietnamese currently picks one, or pays for three translations it cannot
+// afford, or — most often — sends the notice in English and wonders why half
+// the building did not come.
+//
+// Two rules make it safe to ship:
+//
+//   Redaction still applies. A flyer usually carries no personal detail, but
+//   "usually" is not a security property, and a campaign body pasted in here
+//   routinely contains an organizer's phone number. Same pipeline as every
+//   other route in this file.
+//
+//   The caveat is not dismissible and travels with the payload. A machine
+//   translation of "you do not have to open the door" that lands slightly
+//   wrong is not a typo. The product's job is to get a group most of the way
+//   in seconds so a bilingual member spends two minutes instead of an hour.
+// ---------------------------------------------------------------------------
+
+const translateSchema = z.object({
+  text: z.string().trim().min(1, 'Nothing to translate.').max(8_000),
+  /** Closed list — see shared/languages.ts for why this is not free text. */
+  languages: z
+    .array(z.enum(LANGUAGE_CODES as [string, ...string[]]))
+    .min(1, 'Pick at least one language.')
+    .max(6, 'Six at a time. More than that and nobody checks any of them.'),
+});
+
+scriba.post('/translate', async (c) => {
+  const rid = c.get('requestId');
+  const session = c.get('session')!;
+
+  const parsed = translateSchema.safeParse(await c.req.json().catch(() => null));
+  if (!parsed.success) {
+    return c.json(err(parsed.error.issues[0].message, ERROR.VALIDATION, rid), 400);
+  }
+  const input = parsed.data;
+
+  // Step 1, as everywhere else in this file: refuse before anything happens.
+  const scope = checkScope(input.text);
+  if (!scope.allowed) {
+    return c.json(ok({ refused: true, reason: scope.reason, response: scope.response }));
+  }
+
+  const sql = db(c);
+  const known = await withTenant(sql, session, (tx) => rosterFor(tx));
+  const source = redact(input.text, known);
+
+  /*
+   * One dispatch per language rather than one asking for all of them.
+   *
+   * A single call returning six blocks has to be parsed back apart, and the
+   * failure mode is a model that merges two languages or drops one silently —
+   * which nobody notices until a Vietnamese-speaking tenant gets a Korean
+   * notice. Separate calls cost more and fail visibly, one language at a time.
+   */
+  const results = await Promise.all(
+    input.languages.map(async (code) => {
+      const language = languageFor(code)!;
+
+      const messages: Message[] = [
+        {
+          role: 'system',
+          content:
+            `Translate the user's text into ${language.name}. ` +
+            'Return only the translation, with no preamble, no notes, and no explanation. ' +
+            'Keep the line breaks and the order of the original. ' +
+            // The placeholders redaction inserted must survive the round trip,
+            // or reinsertion in the browser puts the wrong name back — or none.
+            'Any token in square brackets such as [PERSON_1] or [PHONE_2] is a placeholder: ' +
+            'copy it through exactly as it appears and never translate or reword it. ' +
+            'Do not invent placeholders that are not in the text. ' +
+            'Use the register a neighbourhood organization would use writing to its members: ' +
+            'plain, direct, and not formal officialese.',
+        },
+        { role: 'user', content: source.text },
+      ];
+
+      const result = await dispatch(c.env, messages);
+      if (!result.ok) return { code, ok: false as const, error: explain(result.kind) };
+
+      const cleaned = scrubInvented(result.content, source.map);
+      return {
+        code,
+        ok: true as const,
+        name: language.name,
+        endonym: language.endonym,
+        rtl: language.rtl ?? false,
+        text: cleaned.text,
+        invented: cleaned.invented,
+      };
+    }),
+  );
+
+  await withTenant(sql, session, (tx) =>
+    record(tx, { action: 'record.read', recordType: 'scriba_translate' }),
+  );
+
+  return c.json(
+    ok(
+      {
+        translations: results,
+        redactions: source.map,
+        removed: Object.values(source.removed).reduce((a, b) => a + b, 0),
+        unverified: residualRisk(input.text),
+      },
+      { notice: NOTICE, caveat: TRANSLATION_CAVEAT },
+    ),
+  );
+});

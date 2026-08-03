@@ -248,6 +248,29 @@ test.describe('the demo workspace', () => {
   });
 
   /*
+   * The studio is not one of §5's eleven and has no module header, so the
+   * loop above does not cover it. It is also the one screen that can spend
+   * money, which is worth a look of its own.
+   */
+  test('the studio offers both shapes and refuses to post for you', async ({ page }) => {
+    await page.goto('/app/studio');
+
+    await expect(page.getByRole('heading', { level: 1, name: 'Studio' })).toBeVisible({
+      timeout: 30_000,
+    });
+    await expect(page.getByRole('tab', { name: 'Flyer' })).toBeVisible();
+    await expect(page.getByRole('tab', { name: 'Social' })).toBeVisible();
+
+    // The commitment, at the place someone would look for "connect accounts".
+    await expect(page.getByText(/does not hold your social accounts/i)).toBeVisible();
+
+    // Composing is the expensive-looking path; drawing is free and local.
+    await page.getByLabel('Headline').fill('The rent board meets Tuesday');
+    await page.getByRole('button', { name: /draw it/i }).click();
+    await expect(page.locator('svg[role="img"]').first()).toBeVisible({ timeout: 30_000 });
+  });
+
+  /*
    * §5.9 gives jail support to the legal role only. The demo signs in as an
    * organizer, so this must read as the boundary it is rather than as an error
    * — that distinction is the product's whole argument about itself.
@@ -314,7 +337,8 @@ test.describe('the demo workspace', () => {
 test.describe('screenshots', () => {
   test('capture every module', async ({ page }, testInfo) => {
     const dir = 'shots';
-    for (const [i, path] of ['/app/', ...MODULES.map((m) => `/app${m.path}`), '/app/settings'].entries()) {
+    const paths = ['/app/', ...MODULES.map((m) => `/app${m.path}`), '/app/studio', '/app/settings'];
+    for (const [i, path] of paths.entries()) {
       await page.goto(path);
       // Long enough for the queries to settle. A skeleton screenshot proves
       // nothing about the design, which is what these are for.
