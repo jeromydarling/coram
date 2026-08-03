@@ -172,40 +172,50 @@ export function renderSocial({
     y += lineHeight;
   }
 
+  /*
+   * The bottom block is laid out upward from the floor, not downward from the
+   * headline.
+   *
+   * Placing the detail after the headline and the call to action at a fixed
+   * offset from the bottom worked only while the detail was one line. The
+   * moment it wrapped to two — which it does for any ordinary "date · venue" —
+   * the second line landed on top of the call to action. Two independently
+   * positioned things in the same region will eventually collide; anchoring
+   * both to the same edge means they cannot.
+   */
   const detail = [when, where].filter(Boolean).join(' · ');
-  if (detail) {
-    /*
-     * Wrapped and shrunk to fit, not drawn at a fixed size and hoped for.
-     *
-     * "Tuesday 5 August, 6.30pm · City Hall, chamber B" is an ordinary line for
-     * a meeting and it is 46 characters. Drawn as one <text> at 0.4 of the
-     * headline it ran off the right edge of the card — clipped in the preview
-     * and clipped in the file somebody downloads and posts, which is worse.
-     * SVG does not wrap text, so the fitting has to happen here.
-     */
-    y += Math.round(fontSize * 0.5);
-    parts.push(
-      `<rect x="${margin}" y="${y - Math.round(fontSize * 0.55)}" width="${Math.round(inner * 0.18)}" ` +
-        `height="${Math.max(3, Math.round(width * 0.005))}" fill="${brand.accent}"/>`,
-    );
-
-    const detailLayout = layout(detail, inner, 2, Math.round(fontSize * 0.4));
-    let dy = y + Math.round(detailLayout.size * 1.25);
-    for (const line of detailLayout.lines) {
-      parts.push(
-        `<text x="${margin}" y="${dy}" font-family="system-ui, sans-serif" ` +
-          `font-size="${detailLayout.size}" font-weight="500" fill="${brand.ink}">${esc(line)}</text>`,
-      );
-      dy += Math.round(detailLayout.size * 1.25);
-    }
-  }
+  const ctaSize = Math.round(fontSize * 0.36);
+  const floor = height - margin;
 
   if (callToAction) {
     parts.push(
-      `<text x="${margin}" y="${height - margin}" font-family="system-ui, sans-serif" ` +
-        `font-size="${Math.round(fontSize * 0.36)}" font-weight="600" ` +
+      `<text x="${margin}" y="${floor}" font-family="system-ui, sans-serif" ` +
+        `font-size="${ctaSize}" font-weight="600" ` +
         `fill="${brand.primary}">${esc(callToAction)}</text>`,
     );
+  }
+
+  if (detail) {
+    const detailLayout = layout(detail, inner, 2, Math.round(fontSize * 0.4));
+    const step = Math.round(detailLayout.size * 1.25);
+
+    // Last baseline sits clear of the call to action, and each earlier line
+    // stacks above it.
+    const lastBaseline = floor - (callToAction ? Math.round(ctaSize * 1.6) : 0);
+    const firstBaseline = lastBaseline - (detailLayout.lines.length - 1) * step;
+
+    parts.push(
+      `<rect x="${margin}" y="${firstBaseline - Math.round(detailLayout.size * 1.9)}" ` +
+        `width="${Math.round(inner * 0.18)}" ` +
+        `height="${Math.max(3, Math.round(width * 0.005))}" fill="${brand.accent}"/>`,
+    );
+
+    detailLayout.lines.forEach((line, i) => {
+      parts.push(
+        `<text x="${margin}" y="${firstBaseline + i * step}" font-family="system-ui, sans-serif" ` +
+          `font-size="${detailLayout.size}" font-weight="500" fill="${brand.ink}">${esc(line)}</text>`,
+      );
+    });
   }
 
   return (

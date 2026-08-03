@@ -117,6 +117,53 @@ describe('renderSocial', () => {
     expect(longest).toBeLessThan(400);
   });
 
+  /*
+   * The second half of the wrap bug.
+   *
+   * Fixing the overflow made the detail wrap to two lines, and the second line
+   * landed on top of the call to action — because the two were positioned
+   * independently, one from the headline downward and one from the bottom up.
+   * Two things laid out from opposite ends of the same region will eventually
+   * meet in the middle.
+   */
+  it('never lets the detail collide with the call to action', () => {
+    const svg = renderSocial({
+      ...base,
+      when: 'Tuesday 5 August, 6.30pm',
+      where: 'City Hall, chamber B',
+      callToAction: 'eastsidetenants.org',
+    });
+
+    const drawn = [...svg.matchAll(/<text[^>]*y="(\d+)"[^>]*font-size="(\d+)"[^>]*>([^<]+)</g)].map(
+      (m) => ({ y: Number(m[1]), size: Number(m[2]), text: m[3] }),
+    );
+
+    const cta = drawn.find((d) => d.text.includes('eastsidetenants.org'))!;
+    const detailLines = drawn.filter((d) => /City Hall|chamber|August/.test(d.text));
+
+    expect(cta, 'the call to action is drawn').toBeDefined();
+    expect(detailLines.length, 'the detail wrapped').toBeGreaterThan(1);
+
+    // Every detail baseline must clear the call to action's ascender.
+    for (const line of detailLines) {
+      expect(line.y, `"${line.text}" sits above the call to action`).toBeLessThan(cta.y - cta.size);
+    }
+  });
+
+  it('keeps everything inside the card, top and bottom', () => {
+    const svg = renderSocial({
+      ...base,
+      when: 'Tuesday 5 August, 6.30pm',
+      where: 'City Hall, chamber B',
+      callToAction: 'eastsidetenants.org',
+    });
+
+    for (const m of svg.matchAll(/<text[^>]*y="(\d+)"/g)) {
+      expect(Number(m[1])).toBeGreaterThan(0);
+      expect(Number(m[1])).toBeLessThanOrEqual(size.height);
+    }
+  });
+
   it('renders every shape without throwing', () => {
     for (const s of SOCIAL_SIZES) {
       expect(() => renderSocial({ ...base, size: s })).not.toThrow();
