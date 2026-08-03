@@ -16,22 +16,35 @@
 import { Hono } from 'hono';
 
 import type { Env, Vars } from '../env';
-import { IMAGES, type ImageId } from '../../shared/imagery';
+import { IMAGES } from '../../shared/imagery';
+import { SHOTS } from '../../shared/shots';
 
 export const media = new Hono<{ Bindings: Env; Variables: Vars }>();
 
-const EXTENSIONS = new Set(['avif', 'webp', 'jpg']);
+const EXTENSIONS = new Set(['avif', 'webp', 'jpg', 'png']);
 
 const CONTENT_TYPE: Record<string, string> = {
   avif: 'image/avif',
   webp: 'image/webp',
   jpg: 'image/jpeg',
+  png: 'image/png',
 };
 
-/** Only widths the direction actually declares. */
-const ALLOWED = new Map<ImageId, Set<number>>(
-  IMAGES.map((spec) => [spec.id, new Set(spec.widths)]),
-);
+/**
+ * Only widths a spec actually declares.
+ *
+ * Two registries feed this: the AI photography in imagery.ts and the product
+ * screenshots in shots.ts. They stay separate files — the photography carries a
+ * face rule and an accent budget that mean nothing for a screenshot — but they
+ * share one bucket and one route, so the allow-list is their union.
+ *
+ * The list is what keeps this from being a way to probe the bucket: an id and a
+ * width that nothing declares are a 404 before R2 is touched.
+ */
+const ALLOWED = new Map<string, Set<number>>([
+  ...IMAGES.map((spec) => [spec.id, new Set(spec.widths)] as const),
+  ...SHOTS.map((spec) => [spec.id, new Set(spec.widths)] as const),
+]);
 
 media.get('/media/:file', async (c) => {
   const file = c.req.param('file');
@@ -48,7 +61,7 @@ media.get('/media/:file', async (c) => {
   const width = Number(widthText);
 
   if (!EXTENSIONS.has(ext)) return c.notFound();
-  if (!ALLOWED.get(id as ImageId)?.has(width)) return c.notFound();
+  if (!ALLOWED.get(id)?.has(width)) return c.notFound();
 
   const object = await c.env.R2_MEDIA.get(`${id}-${width}.${ext}`);
   if (!object) return c.notFound();

@@ -1,0 +1,64 @@
+####################################################################
+# Product screenshots for the marketing site.
+#
+# Separate from the browser suite because it is a different job with a
+# different cadence: e2e answers "does the deployed product work",
+# this answers "what does it currently look like", and the second only
+# needs running when the UI has actually changed.
+#
+# Capture only. Deriving the AVIF and WebP and putting them in R2 is a
+# second, human step — somebody should look at seven pictures before
+# they become the front page, and a bad screenshot is not obviously bad
+# at thumbnail size.
+#
+# Every shot comes from the demo workspace, which is fictional down to
+# the street names. There is no input here that could point it at a
+# real one, and that is deliberate.
+####################################################################
+
+name: Screenshots
+
+on:
+  # Also on a branch push that touched the app, because the pictures go stale
+  # silently: nothing fails when the UI changes and the marketing site keeps
+  # showing last month's product.
+  push:
+    branches: [main, 'claude/**']
+    paths:
+      - 'src/app/**'
+      - 'src/shared/shots.ts'
+      - 'scripts/capture-shots.ts'
+  workflow_dispatch:
+    inputs:
+      base_url:
+        description: Site to photograph
+        default: https://coram.jer-f84.workers.dev
+
+concurrency:
+  group: screenshots-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  capture:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+
+      - name: Capture
+        env:
+          E2E_BASE_URL: ${{ inputs.base_url || 'https://coram.jer-f84.workers.dev' }}
+        run: npx tsx scripts/capture-shots.ts
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: marketing-shots
+          path: shots/marketing/
+          retention-days: 14
