@@ -37,6 +37,7 @@ import { exports } from './routes/api/exports';
 import { federatio } from './routes/api/federatio';
 import { petitio } from './routes/api/petitio';
 import { watch } from './routes/api/watch';
+import { organizing } from './routes/api/organizing';
 import { funds } from './routes/api/funds';
 import { scriba } from './routes/api/scriba';
 import { vinculum } from './routes/api/vinculum';
@@ -45,6 +46,7 @@ import { imports } from './routes/api/imports';
 import { marketing } from './routes/marketing';
 import { media } from './routes/media';
 import { publicEvents } from './routes/public-events';
+import { publicGroup } from './routes/public-group';
 import { publicUnsubscribe } from './routes/public-unsubscribe';
 import { stripeWebhook } from './routes/webhooks/stripe';
 import { workspace } from './routes/api/workspace';
@@ -113,6 +115,9 @@ app.route('/api/petitio', petitio);
 // The watch list, which is part of Petitio rather than a twelfth module: it
 // renders as a tab under /app/advocacy. See migrations/0017_watch.sql.
 app.route('/api/watch', watch);
+// The public page and the printable sheet — paper and a front door, not a
+// module. See migrations/0018_organizing.sql.
+app.route('/api/organizing', organizing);
 
 // Signature-verified, no session (§1.1). Mounted before the SPA and marketing
 // so nothing else can shadow it.
@@ -207,6 +212,7 @@ app.get('/app/*', async (c) => {
 // SECURITY DEFINER functions in 0003, so RLS is not bypassed, just not
 // applicable to a caller who has no tenant.
 app.route('/', publicEvents);
+app.route('/', publicGroup);
 app.route('/', publicUnsubscribe);
 
 // Marketing last: its '/' would otherwise shadow the prefixes above.

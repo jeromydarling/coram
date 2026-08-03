@@ -19,7 +19,7 @@
 import { useEffect, useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { Link } from 'react-router-dom';
-import { Download, Plus, Search, Upload } from 'lucide-react';
+import { Download, Plus, Printer, Search, Upload } from 'lucide-react';
 
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -93,6 +93,12 @@ export function People() {
                 <Link to="/people/import">
                   <Upload className="mr-2 h-4 w-4" />
                   Import
+                </Link>
+              </Button>
+              <Button variant="outline" size="sm" asChild>
+                <Link to="/people/sheet">
+                  <Printer className="mr-2 h-4 w-4" />
+                  Print a turf
                 </Link>
               </Button>
               <Button variant="outline" size="sm" asChild>

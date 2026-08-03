@@ -181,9 +181,33 @@ async function main() {
     for (const [title, description, offsetDays, location] of events) {
       const [row] = (
         await c.query(
-          `INSERT INTO public.events (tenant_id, title, description, starts_at, location_name, capacity)
-           VALUES ($1,$2,$3, now() + ($4 || ' days')::interval, $5, $6) RETURNING id`,
-          [tenantId, title, description, String(offsetDays), location, 120],
+          /*
+           * The two upcoming ones are public; the two behind us are not.
+           *
+           * Picked by date rather than by position, which the first attempt got
+           * wrong: the list is ordered oldest first, so "the first two" made
+           * the two *past* events public and the group page correctly showed an
+           * empty diary. A demo of a public page needs something still to come.
+           */
+          `INSERT INTO public.events
+             (tenant_id, title, description, starts_at, location_name, capacity,
+              is_public, public_slug)
+           VALUES (
+             $1,$2,$3,
+             -- Snapped to 6.30pm rather than left at whatever minute the seed
+             -- happened to run. "Rent board hearing, 3:42 PM" is the sort of
+             -- detail that reads as a bug in every screenshot of the product,
+             -- and no group has ever scheduled a meeting for 3:42.
+             date_trunc('day', now() + ($4 || ' days')::interval) + interval '18 hours 30 minutes',
+             $5, $6, $7, $8
+           ) RETURNING id`,
+          [
+            tenantId, title, description, String(offsetDays), location, 120,
+            offsetDays > 0,
+            offsetDays > 0
+              ? `${title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')}-demo`
+              : null,
+          ],
         )
       ).rows;
       eventIds.push(row.id as string);
@@ -709,8 +733,33 @@ async function seedOrganizerDay(
     );
   }
 
+  /*
+   * The public page, published — because the demo exists to be looked at, and
+   * an unpublished page is a 404 by design. Every real workspace starts with
+   * this off and has to write something before it can be turned on.
+   */
+  await c.query(
+    `INSERT INTO public.public_pages
+       (tenant_id, published, tagline, about, contact, get_involved)
+     VALUES ($1, true, $2, $3, $4, $5)
+     ON CONFLICT (tenant_id) DO NOTHING`,
+    [
+      tenantId,
+      'Tenants organising for repairs in Eastside.',
+      'We are tenants in the same few blocks, and we were each fighting the same landlord ' +
+        'alone. Now we are not.\n\nWe won a 30-day repair standard in two buildings last year ' +
+        'by turning up to the rent board together, every time, for eight months. We are asking ' +
+        'the council to make it the rule everywhere.\n\nThere are no dues. Nobody is asked for ' +
+        'anything at a first meeting.',
+      'hello@example.org',
+      'Come to the general meeting on the third Tuesday, 6.30pm, at the union hall on Dunmore ' +
+        'Street. You do not need to tell us first and you do not need to speak.',
+    ],
+  );
+
   console.log(
-    'Follow-ups, conversations, consent, shifts, a draft, two channels, a briefing, a watch list.',
+    'Follow-ups, conversations, consent, shifts, a draft, two channels, a briefing, a watch list, ' +
+      'a public page.',
   );
 }
 

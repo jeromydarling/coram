@@ -27,6 +27,7 @@ import { Outreach } from '@/modules/Outreach';
 import { Overview } from '@/modules/Overview';
 import { People } from '@/modules/People';
 import { PeopleImport } from '@/modules/PeopleImport';
+import { Sheet } from '@/modules/Sheet';
 import { Relationships } from '@/modules/Relationships';
 import { RequireSession } from '@/modules/RequireSession';
 import { Safety } from '@/modules/Safety';
@@ -62,6 +63,9 @@ export function App() {
                 {/* §5.1–5.11, in the order the sidebar groups them. */}
                 <Route path="/people" element={<People />} />
                 <Route path="/people/import" element={<PeopleImport />} />
+                {/* Its own route rather than a dialog: a sheet printed from
+                    inside a dialog brings the navigation rail into the ink. */}
+                <Route path="/people/sheet" element={<Sheet />} />
                 <Route path="/relationships" element={<Relationships />} />
                 <Route path="/events" element={<Events />} />
                 <Route path="/outreach" element={<Outreach />} />

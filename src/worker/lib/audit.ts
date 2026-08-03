@@ -26,7 +26,25 @@ export type AuditAction =
   | 'record.read'
   | 'record.export'
   | 'workspace.update'
-  | 'workspace.burn';
+  | 'workspace.burn'
+  /*
+   * Printing a turf sheet is a bulk read of contact data and would fit
+   * `record.export`, but it is worth its own two entries. A sheet is paper: it
+   * leaves the building, it cannot be revoked, and it is the most ordinary way
+   * a group loses a list. When somebody asks "how did forty numbers end up in a
+   * car", the answer needs to be findable without reading every export row —
+   * and whether the numbers were on it at all is the first question.
+   */
+  | 'sheet.print'
+  | 'sheet.print_with_phones'
+  /*
+   * Publishing is the only action in the product that makes something visible
+   * to people outside the workspace, so it is not folded into
+   * `workspace.update`. The question it answers — who turned this on, and when
+   * — is the one a group asks if a page appears that nobody expected.
+   */
+  | 'page.publish'
+  | 'page.unpublish';
 
 export interface AuditEntry {
   action: AuditAction;

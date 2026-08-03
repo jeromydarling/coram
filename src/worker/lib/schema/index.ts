@@ -21,6 +21,7 @@ export * from './custos';
 export * from './federatio';
 export * from './petitio';
 export * from './watch';
+export * from './organizing';
 // Published reference data, not a workspace's own — see migrations/0013_refdata.sql.
 export * from './refdata';
 // Workspace settings rather than a module — see migrations/0011_brand.sql.
