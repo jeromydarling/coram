@@ -293,11 +293,21 @@ export function Studio() {
             <Section title="Preview">
               {svg ? (
                 <div
-                  className="paper overflow-hidden p-3"
-                  // The SVG is composed by our own Worker from validated input
-                  // and contains no script; the backdrop is a data URI we
+                  /*
+                   * [&>svg] scales the composed image down to the column.
+                   *
+                   * The SVG carries its true size — 1080 square, or 816×1056
+                   * for a flyer — because that is what makes the downloaded
+                   * file correct. Injected as markup it honours that width and
+                   * runs off the right edge of the panel on any laptop, which
+                   * is what a screenshot of this screen caught. Constraining it
+                   * here keeps the file at full size and the preview in its box.
+                   */
+                  className="paper overflow-hidden p-3 [&>svg]:h-auto [&>svg]:w-full"
+                  // Composed by our own Worker from validated input and
+                  // contains no script; the backdrop is a data URI we
                   // generated. Rendering it as markup is what makes the preview
-                  // live rather than a screenshot of one.
+                  // live rather than a picture of one.
                   dangerouslySetInnerHTML={{ __html: svg }}
                 />
               ) : (

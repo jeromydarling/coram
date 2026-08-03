@@ -124,9 +124,9 @@ export const SHOTS: ShotSpec[] = [
     viewport: { width: 1280, height: 800 },
     widths: DESK_W,
     settled: 'Open follow-ups',
-    alt: 'The follow-up queue, showing conversations that are owed, one of them snoozed four times.',
+    alt: 'The follow-up queue: five open follow-ups, three already late, one snoozed three or more times, above the conversations themselves with buttons to log, snooze, escalate or drop each one.',
     caption:
-      'The queue an organizer lives in. It shows you what has been snoozed four times, because that is not a queue any more.',
+      'The queue an organizer lives in. It counts what has been snoozed three times or more, because that is not a queue any more — it is a list of things nobody is going to do.',
   },
   {
     id: 'shot-money',
