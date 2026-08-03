@@ -52,13 +52,35 @@ const OUT = 'shots/marketing';
  */
 const RECIPES: Record<string, (page: Page) => Promise<void>> = {
   'studio-compose': async (page) => {
+    /*
+     * The square card rather than the flyer.
+     *
+     * A US Letter flyer previewed in a 900px column is about 1160px tall, so
+     * in any frame that also shows the form it is cropped top and bottom —
+     * which is a picture of a broken layout, not of a design tool. A square
+     * card fits whole, and it is the newer half of the feature anyway.
+     */
+    await page.getByRole('tab', { name: 'Social' }).click();
+
     await page.getByLabel('Headline').fill('Our building is going to the rent board');
     await page.getByLabel('When', { exact: true }).fill('Tuesday 5 August, 6.30pm');
     await page.getByLabel('Where', { exact: true }).fill('City Hall, chamber B');
-    await page.getByLabel('One more line').fill('Public comment opens at 6.30. Wear red.');
+    await page.getByLabel('Where to go next').fill('eastsidetenants.org');
+
     await page.getByRole('button', { name: /draw it/i }).click();
     // The composed SVG, not the empty-state paragraph that preceded it.
     await page.locator('svg[role="img"]').first().waitFor({ timeout: 45_000 });
+
+    /*
+     * Back to the top before the shutter.
+     *
+     * Filling a field scrolls it into view, so the first capture of this screen
+     * started halfway down the form with the page heading off-frame. A
+     * screenshot that begins mid-page looks like a mistake even when everything
+     * in it is correct.
+     */
+    await page.evaluate(() => window.scrollTo(0, 0));
+    await page.waitForTimeout(300);
   },
 };
 
