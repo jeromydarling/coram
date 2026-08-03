@@ -31,7 +31,7 @@ workspace.get('/', async (c) => {
       SELECT id, name, slug, tier, contact_count, created_at FROM public.tenants
     `;
     const [me] = await tx`
-      SELECT role, turf_ids, display_name FROM public.memberships
+      SELECT role, to_jsonb(turf_ids) AS turf_ids, display_name FROM public.memberships
       WHERE user_id = coram.current_user_id()
     `;
     return { tenant, me };
@@ -56,7 +56,7 @@ workspace.get('/members', async (c) => {
     sql,
     session,
     (tx) => tx`
-      SELECT m.id, m.user_id, m.role, m.display_name, m.turf_ids, m.created_at
+      SELECT m.id, m.user_id, m.role, m.display_name, to_jsonb(m.turf_ids) AS turf_ids, m.created_at
       FROM public.memberships m
       ORDER BY m.created_at
     `,

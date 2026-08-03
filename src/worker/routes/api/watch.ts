@@ -37,7 +37,7 @@ import { requireWorkspace } from '../../lib/auth';
 import { db } from '../../lib/db';
 import { ERROR, detailFor, err, logFailure, ok } from '../../lib/http';
 import { consume } from '../../lib/ratelimit';
-import { withTenant, type Tx } from '../../lib/rls';
+import { pgArray, withTenant, type Tx } from '../../lib/rls';
 import { fetchBills, fetchFeed, matchCandidates, read, type Candidate } from '../../lib/watch';
 import { PATHWAYS } from '../../../shared/legislative';
 import {
@@ -94,7 +94,12 @@ watch.get('/topics', async (c) => {
   const rid = c.get('requestId');
   try {
     const rows = await withTenant(db(c), c.get('session')!, (tx) => tx`
-      SELECT id, label, terms, active, created_at
+      -- to_jsonb rather than the bare column. The pool runs with
+      -- fetch_types: false (see lib/rls.ts), which drops postgres.js's array
+      -- parsers, so a text[] arrives as the literal string
+      -- '{eviction,"unlawful detainer"}' and the screen's .map() throws. jsonb
+      -- is parsed regardless of type introspection.
+      SELECT id, label, to_jsonb(terms) AS terms, active, created_at
       FROM public.watch_topics
       ORDER BY active DESC, label
     `);
@@ -134,8 +139,14 @@ watch.post('/topics', async (c) => {
 
       const [row] = await tx`
         INSERT INTO public.watch_topics (tenant_id, label, terms, created_by)
-        VALUES (coram.current_tenant_id(), ${parsed.data.label}, ${terms}, ${tx.unsafe(ME)})
-        RETURNING id, label, terms, active, created_at
+        VALUES (
+          coram.current_tenant_id(), ${parsed.data.label},
+          -- See lib/rls.ts: a bare JS array is sent comma-joined and unbraced,
+          -- and Postgres rejects it. pgArray builds the literal itself.
+          ${pgArray(terms)}::text[],
+          ${tx.unsafe(ME)}
+        )
+        RETURNING id, label, to_jsonb(terms) AS terms, active, created_at
       `;
       return row;
     });
@@ -176,10 +187,11 @@ watch.patch('/topics/:id', async (c) => {
       const [updated] = await tx`
         UPDATE public.watch_topics SET
           label  = COALESCE(${parsed.data.label ?? null}, label),
-          terms  = COALESCE(${terms ?? null}::text[], terms),
+          terms  = CASE WHEN ${terms !== undefined}
+                     THEN ${pgArray(terms ?? [])}::text[] ELSE terms END,
           active = COALESCE(${parsed.data.active ?? null}, active)
         WHERE id = ${id}::uuid
-        RETURNING id, label, terms, active
+        RETURNING id, label, to_jsonb(terms) AS terms, active
       `;
       return updated ?? null;
     });
@@ -310,7 +322,7 @@ watch.get('/items', async (c) => {
   try {
     const rows = await withTenant(db(c), c.get('session')!, (tx) => tx`
       SELECT i.id, i.source_id, s.label AS source_label, i.title, i.url, i.published_at,
-             i.summary, i.relevance, i.matched_terms, i.state,
+             i.summary, i.relevance, to_jsonb(i.matched_terms) AS matched_terms, i.state,
              i.converted_kind, i.converted_id, i.first_seen_at
       FROM public.watch_items i
       JOIN public.watch_sources s ON s.id = i.source_id
@@ -499,6 +511,15 @@ export interface PollReport {
   polled: number;
   found: number;
   failures: { source: string; error: string }[];
+  /**
+   * Items stored without a summary because the model could not answer.
+   *
+   * Reported rather than swallowed: the row is still useful — title, link,
+   * date, matched words — but a list of unsummarised items looks exactly like a
+   * list of documents too thin to summarise, and the user should be able to
+   * tell those apart.
+   */
+  unsummarised: number;
 }
 
 /**
@@ -518,7 +539,10 @@ export interface PollReport {
  */
 export async function pollTenant(env: Env, tx: Tx, tenantId: string): Promise<PollReport> {
   const topics = await tx<{ label: string; terms: string[] }[]>`
-    SELECT label, terms FROM public.watch_topics WHERE active
+    -- to_jsonb for the same reason as the read routes: with fetch_types off a
+    -- text[] arrives as a string, and matches() would then iterate one topic
+    -- shaped like '{eviction,lockout}' and match nothing at all.
+    SELECT label, to_jsonb(terms) AS terms FROM public.watch_topics WHERE active
   `;
 
   const terms = [...new Set(topics.flatMap((t) => t.terms))];
@@ -540,7 +564,7 @@ export async function pollTenant(env: Env, tx: Tx, tenantId: string): Promise<Po
     FROM public.watch_sources WHERE active
   `;
 
-  const report: PollReport = { polled: 0, found: 0, failures: [] };
+  const report: PollReport = { polled: 0, found: 0, failures: [], unsummarised: 0 };
 
   // No topics means nothing can match, and polling anyway would mean fetching
   // somebody's agenda to throw all of it away.
@@ -586,7 +610,7 @@ export async function pollTenant(env: Env, tx: Tx, tenantId: string): Promise<Po
         VALUES (
           ${tenantId}::uuid, ${source.id}::uuid, ${candidate.externalId},
           ${candidate.title}, ${candidate.url},
-          ${candidate.publishedAt}::timestamptz, ${candidate.matchedTerms}
+          ${candidate.publishedAt}::timestamptz, ${pgArray(candidate.matchedTerms)}::text[]
         )
         ON CONFLICT (source_id, external_id) DO NOTHING
         RETURNING id
@@ -596,6 +620,7 @@ export async function pollTenant(env: Env, tx: Tx, tenantId: string): Promise<Po
       stored += 1;
 
       const reading = await read(env, { title: candidate.title, abstract: candidate.abstract }, labels);
+      if (reading.failure) report.unsummarised += 1;
       if (reading.summary !== null || reading.relevance !== null) {
         await tx`
           UPDATE public.watch_items

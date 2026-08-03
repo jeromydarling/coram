@@ -13,7 +13,7 @@ import { record } from '../../lib/audit';
 import { requireWorkspace } from '../../lib/auth';
 import { mintOneTimeToken, sha256Hex } from '../../lib/crypto';
 import { ERROR, err, ok, logFailure } from '../../lib/http';
-import {withTenant} from '../../lib/rls';
+import { pgArray, withTenant } from '../../lib/rls';
 import { db } from '../../lib/db';
 
 import {
@@ -134,7 +134,8 @@ events.get('/:id', async (c) => {
     if (!event) return null;
 
     const shifts = await tx`
-      SELECT s.id, s.name, s.starts_at, s.ends_at, s.slots, s.required_skills,
+      SELECT s.id, s.name, s.starts_at, s.ends_at, s.slots,
+             to_jsonb(s.required_skills) AS required_skills,
              (SELECT count(*) FROM public.shift_signups g WHERE g.shift_id = s.id)::int AS filled
       FROM public.event_shifts s WHERE s.event_id = ${id}::uuid ORDER BY s.starts_at
     `;
@@ -267,7 +268,9 @@ events.post('/:id/shifts', async (c) => {
       VALUES (
         coram.current_tenant_id(), ${eventId}::uuid, ${input.name},
         ${input.startsAt}::timestamptz, ${input.endsAt}::timestamptz,
-        ${input.slots}, ${input.requiredSkills}
+        ${input.slots},
+        -- See lib/rls.ts: a JS array cannot be bound to a text[] column here.
+        ${pgArray(input.requiredSkills ?? [])}::text[]
       )
       RETURNING id, name, starts_at, ends_at, slots
     `;

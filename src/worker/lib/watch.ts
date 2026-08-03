@@ -280,6 +280,8 @@ export function matchCandidates(candidates: Candidate[], terms: string[]): Match
 export interface Reading {
   summary: string | null;
   relevance: number | null;
+  /** Set when a model was asked and could not answer. See `read`. */
+  failure?: string;
 }
 
 /*
@@ -332,9 +334,25 @@ export async function read(
     { temperature: 0.1, maxAttempts: 2, timeoutMs: 20_000 },
   );
 
-  if (!result.ok) return { summary: null, relevance: null };
+  if (!result.ok) {
+    /*
+     * Logged, and counted by the caller.
+     *
+     * A summary that quietly never appears is indistinguishable from a document
+     * too thin to summarise, so a silent null here would hide a model outage
+     * behind a plausible-looking list for as long as it lasted. The reason goes
+     * to the log and the count goes back to the user.
+     */
+    console.warn('watch: no reading (%s) %s', result.kind, result.detail ?? '');
+    return { summary: null, relevance: null, failure: result.kind };
+  }
 
-  return parseReading(result.content);
+  const reading = parseReading(result.content);
+  if (reading.summary === null && reading.relevance === null) {
+    console.warn('watch: unreadable completion: %s', result.content.slice(0, 200));
+    return { ...reading, failure: 'bad_response' };
+  }
+  return reading;
 }
 
 /**

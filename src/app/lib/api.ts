@@ -115,7 +115,7 @@ export const postWithNotice = <T, M = Record<string, unknown>>(
 
 export interface Workspace {
   tenant: { id: string; name: string; slug: string; tier: string; contact_count: string };
-  me: { role: string; display_name: string | null; turf_ids: string };
+  me: { role: string; display_name: string | null; turf_ids: string[] };
 }
 
 export interface EventRow {

@@ -170,6 +170,26 @@ export async function dispatch(
   return { ok: false, kind: lastKind, detail: lastDetail, attempts };
 }
 
+/**
+ * Normalise what Workers AI put in `response`.
+ *
+ * It is a string for ordinary prose — and an already-parsed **object** when the
+ * completion happened to be valid JSON. So a prompt that asks for JSON and gets
+ * exactly what it asked for arrived here as an object, failed a
+ * `typeof === 'string'` check, and was reported as "Empty completion": the
+ * better the model did, the more certainly the call failed. The watch list's
+ * summaries were silently absent for this reason and nothing else.
+ *
+ * Re-serialising keeps `dispatch`'s contract — callers are promised a string
+ * and parse it themselves — rather than widening the return type and making
+ * every caller handle two shapes.
+ */
+function asContent(response: unknown): string | null {
+  if (typeof response === 'string') return response.trim() ? response : null;
+  if (response && typeof response === 'object') return JSON.stringify(response);
+  return null;
+}
+
 /** Wording for a failure, for a UI that should not say "error 429". */
 export function explain(kind: FailureKind): string {
   switch (kind) {
@@ -220,10 +240,10 @@ async function runWorkersAi(
         messages,
         temperature: options.temperature ?? 0.3,
         max_tokens: 1024,
-      })) as { response?: string };
+      })) as { response?: unknown };
 
-      const content = output?.response;
-      if (typeof content !== 'string' || !content.trim()) {
+      const content = asContent(output?.response);
+      if (content === null) {
         return { ok: false, kind: 'bad_response', detail: 'Empty completion.', attempts };
       }
       return { ok: true, content, attempts };

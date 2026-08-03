@@ -126,6 +126,35 @@ describe('routing', () => {
     expect(ai.calls[0].input).toMatchObject({ messages: HELLO });
   });
 
+  /*
+   * The bug that made every JSON prompt look like an outage.
+   *
+   * Workers AI hands back `response` as a string for prose and as an
+   * already-parsed object when the completion is valid JSON. The wrapper
+   * checked `typeof === 'string'` and reported "Empty completion" for the
+   * second case — so a prompt that asked for JSON and got exactly what it asked
+   * for was recorded as a failure. The watch list's summaries were missing for
+   * this reason and no other, and it looked like documents too thin to
+   * summarise rather than like a bug.
+   */
+  it('re-serialises a JSON completion Workers AI already parsed', async () => {
+    const ai = fakeAi(async () => ({ response: { summary: 'Four petitions.', relevance: 88 } }));
+
+    const result = await dispatch(envWith({ AI: ai.binding }), HELLO);
+
+    expect(result.ok).toBe(true);
+    if (!result.ok) throw new Error('unreachable');
+    expect(JSON.parse(result.content)).toEqual({ summary: 'Four petitions.', relevance: 88 });
+  });
+
+  it('still treats a genuinely empty answer as a failure', async () => {
+    for (const response of ['', '   ', null, undefined]) {
+      const ai = fakeAi(async () => ({ response }));
+      const result = await dispatch(envWith({ AI: ai.binding }), HELLO);
+      expect(result.ok, JSON.stringify(response)).toBe(false);
+    }
+  });
+
   it('reports not_configured when there is no model at all', async () => {
     const result = await dispatch(envWith(), HELLO);
 
