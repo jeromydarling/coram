@@ -118,7 +118,8 @@ contacts.post('/', async (c) => {
           ${input.phone ?? null},
           ${input.postalCode ?? null},
           ${input.turfId ?? null},
-          ${JSON.stringify(input.customFields)}::jsonb,
+          -- ::text::jsonb — see lib/rls.ts. A bare ::jsonb arrives double-encoded.
+          ${JSON.stringify(input.customFields)}::text::jsonb,
           ${emailHash}, ${phoneHash}
         )
         RETURNING id, display_name, email, phone, postal_code, turf_id, created_at
@@ -165,7 +166,7 @@ contacts.patch('/:id', async (c) => {
           phone        = coalesce(${input.phone ?? null}, phone),
           postal_code  = coalesce(${input.postalCode ?? null}, postal_code),
           turf_id      = coalesce(${input.turfId ?? null}::uuid, turf_id),
-          custom_fields = coalesce(${input.customFields ? JSON.stringify(input.customFields) : null}::jsonb, custom_fields),
+          custom_fields = coalesce(${input.customFields ? JSON.stringify(input.customFields) : null}::text::jsonb, custom_fields),
           email_hash   = coalesce(${emailHash}, email_hash),
           phone_hash   = coalesce(${phoneHash}, phone_hash)
         WHERE id = ${id}::uuid

@@ -802,6 +802,62 @@ marketing.get('/', (c) =>
         </div>
       </div>
 
+      {/*
+        5b-iii. The paper and the front door.
+
+        Three things that are not modules and are the reason a group can
+        actually use the eleven: a page strangers can read, a sheet a canvasser
+        can carry, and a document an aide will read in four minutes. Sold on
+        the refusals, because the refusals are what is unusual: the page is off
+        until you write it, the walk list does not exist, and the stack is
+        never sent anywhere.
+      */}
+      <div class="wide section">
+        <h2>And the paper, and the front door</h2>
+        <p class="lead" style="max-width:var(--measure)">
+          Most of organizing happens away from a screen — in a hallway with a clipboard, in a
+          committee room with four minutes of somebody's attention, in a church hall with thirty
+          people and a facilitator trying to get through the agenda.
+        </p>
+
+        <div class="tools" style="margin-top:2.5rem">
+          <div class="tool">
+            <h3>A page anyone can read</h3>
+            <p>
+              Who you are and what is coming up, at an address of your own. Off until a steward
+              writes it — publishing that a political group exists is a disclosure only that group
+              can make, so nothing is generated on your behalf and nothing defaults to on.
+            </p>
+          </div>
+          <div class="tool">
+            <h3>A 404 that gives nothing away</h3>
+            <p>
+              An unpublished workspace and a name nobody has taken return the identical page.
+              Somebody guessing at likely addresses learns whether a page is published and nothing
+              whatever about who is here and chose not to publish.
+            </p>
+          </div>
+          <div class="tool">
+            <h3>There is no walk list</h3>
+            <p>
+              We hold no street addresses — a postal code is the finest location on any record, and
+              that is permanent. So there is no door-order list, and the screen says so rather than
+              letting you hunt for it. What prints is our half: who is on your list and what is
+              owed to them. Phone numbers are a checkbox, not a default.
+            </p>
+          </div>
+          <div class="tool">
+            <h3>The stack never leaves the room</h3>
+            <p>
+              Run a meeting with a time against each item and a speaking stack. The agenda is
+              saved; the stack is not, and no route in this product would accept it — a record of
+              who was in a room and how much each of them said is the most damaging document a
+              group could make about itself.
+            </p>
+          </div>
+        </div>
+      </div>
+
       <Band
         id="phone-bank"
         caption="Nobody's number leaves the room. The list does not follow anyone home."

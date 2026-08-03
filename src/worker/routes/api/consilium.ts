@@ -250,7 +250,8 @@ consilium.post('/ballots', async (c) => {
           ${input.method}::coram.voting_method, ${input.isSecret},
           ${input.quorum.numerator}, ${input.quorum.denominator},
           ${input.threshold.numerator}, ${input.threshold.denominator},
-          ${JSON.stringify(input.options)}::jsonb, ${input.closesAt}::timestamptz
+          -- ::text::jsonb — see lib/rls.ts. A bare ::jsonb arrives double-encoded.
+          ${JSON.stringify(input.options)}::text::jsonb, ${input.closesAt}::timestamptz
         )
         RETURNING id
       `;
@@ -366,7 +367,7 @@ consilium.post('/ballots/:id/cast', async (c) => {
             ${ballotId}::uuid,
             ${await sha256Hex(input.token)},
             ${input.choice ?? null}::coram.vote_choice,
-            ${input.rankings ? JSON.stringify(input.rankings) : null}::jsonb
+            ${input.rankings ? JSON.stringify(input.rankings) : null}::text::jsonb
           )
         `;
         return 'cast' as const;
@@ -379,7 +380,7 @@ consilium.post('/ballots/:id/cast', async (c) => {
           (SELECT m.id FROM public.memberships m
            WHERE m.user_id = coram.current_user_id() AND m.tenant_id = coram.current_tenant_id()),
           ${input.choice ?? null}::coram.vote_choice,
-          ${input.rankings ? JSON.stringify(input.rankings) : null}::jsonb
+          ${input.rankings ? JSON.stringify(input.rankings) : null}::text::jsonb
         )
       `;
       return 'cast' as const;

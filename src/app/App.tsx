@@ -29,6 +29,7 @@ import { People } from '@/modules/People';
 import { PeopleImport } from '@/modules/PeopleImport';
 import { Sheet } from '@/modules/Sheet';
 import { OnePager } from '@/modules/OnePager';
+import { Facilitate } from '@/modules/Facilitate';
 import { Relationships } from '@/modules/Relationships';
 import { RequireSession } from '@/modules/RequireSession';
 import { Safety } from '@/modules/Safety';
@@ -77,6 +78,7 @@ export function App() {
                 <Route path="/money" element={<Money />} />
                 <Route path="/messages" element={<Messages />} />
                 <Route path="/governance" element={<Governance />} />
+                <Route path="/governance/facilitate" element={<Facilitate />} />
                 <Route path="/safety" element={<Safety />} />
                 <Route path="/drafting" element={<Drafting />} />
                 <Route path="/coalition" element={<Coalition />} />

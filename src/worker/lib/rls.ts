@@ -90,6 +90,18 @@ export function connectAsCron(env: Env): Sql {
  * scalar"), so it trades one silent encoding assumption for another. A literal
  * we write ourselves has no assumptions in it at all.
  *
+ * jsonb has the same shape of problem and a different fix. A string bound for a
+ * `::jsonb` cast is inferred as json and encoded *again*, so
+ *
+ *     ${JSON.stringify(items)}::jsonb
+ *
+ * arrives as a JSON string spelling an array rather than as the array — which
+ * fails a `jsonb_typeof(...) = 'array'` CHECK, and silently stores a scalar
+ * where there is no CHECK. Casting through text first is what makes the value
+ * be parsed rather than re-encoded:
+ *
+ *     ${JSON.stringify(items)}::text::jsonb
+ *
  * Neither direction is caught by a unit test, because a test that mocks the API
  * never speaks to Postgres — which is why `pgArray` is a plain function with
  * its own tests rather than an incantation repeated at six call sites.
@@ -173,4 +185,21 @@ export function withoutTenant<T>(sql: Sql, fn: (tx: Tx) => Promise<T>): Promise<
 
 function isInsufficientPrivilege(err: unknown): boolean {
   return typeof err === 'object' && err !== null && (err as { code?: string }).code === '42501';
+}
+
+/**
+ * Whether Postgres refused a statement because a policy said no.
+ *
+ * Worth exporting, because the two halves of RLS fail differently and only one
+ * of them is obvious. A denied SELECT, UPDATE or DELETE simply matches no rows,
+ * so a route sees an empty result and says "no such thing" — which is usually
+ * the right answer anyway. A denied INSERT *raises*, because WITH CHECK has
+ * nothing to filter, and a route that only handles the first case reports a
+ * permission refusal as an internal error.
+ *
+ * That is not a cosmetic difference. "Could not save your page" sends somebody
+ * to look for a bug; "only a steward can publish this" tells them who to ask.
+ */
+export function isDenied(error: unknown): boolean {
+  return isInsufficientPrivilege(error);
 }

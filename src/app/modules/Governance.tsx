@@ -13,8 +13,9 @@
  */
 
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { ArrowLeft, ScrollText, Vote } from 'lucide-react';
+import { ArrowLeft, ListOrdered, ScrollText, Vote } from 'lucide-react';
 
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -106,7 +107,17 @@ export function Governance() {
         module={MODULE}
         title="Governance"
         description="Proposals, quorum, and votes the server cannot trace back to a person. The bylaws vault keeps every version, so “that is not what we agreed” has an answer."
-        actions={canPropose && <NewProposal />}
+        actions={
+          <>
+            <Button variant="outline" size="sm" asChild>
+              <Link to="/governance/facilitate">
+                <ListOrdered className="mr-2 h-4 w-4" />
+                Run a meeting
+              </Link>
+            </Button>
+            {canPropose && <NewProposal />}
+          </>
+        }
       />
 
       {proposals.isLoading ? (

@@ -757,9 +757,28 @@ async function seedOrganizerDay(
     ],
   );
 
+  // An agenda that has been run, so the facilitator screen and the minutes it
+  // produces both have something in them.
+  await c.query(
+    `INSERT INTO public.agendas (tenant_id, title, met_on, items, started_at, finished_at, created_by)
+     VALUES ($1,$2, current_date - 7, $3::jsonb, now() - interval '7 days', now() - interval '7 days', $4)`,
+    [
+      tenantId,
+      'Monthly general meeting',
+      JSON.stringify([
+        { title: 'Welcome and introductions', minutes: 5, note: 'Nine people here for the first time.' },
+        { title: 'Repairs campaign report', minutes: 15, note: 'Two buildings have signed. Perram Row is close — the holdout is the ground floor.' },
+        { title: 'Vote on the ordinance text', minutes: 20, note: 'Adopted as our position: 41 for, 3 against, 2 abstaining.' },
+        { title: 'Rent board turnout', minutes: 10, note: 'Twenty-one going so far. Rides needed from the north end.' },
+        { title: 'Food', minutes: 20 },
+      ]),
+      membershipId,
+    ],
+  );
+
   console.log(
     'Follow-ups, conversations, consent, shifts, a draft, two channels, a briefing, a watch list, ' +
-      'a public page.',
+      'a public page, a meeting that was run.',
   );
 }
 

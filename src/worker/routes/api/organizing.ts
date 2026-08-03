@@ -42,7 +42,7 @@ import { record } from '../../lib/audit';
 import { requireWorkspace } from '../../lib/auth';
 import { db } from '../../lib/db';
 import { ERROR, detailFor, err, logFailure, ok } from '../../lib/http';
-import { withTenant } from '../../lib/rls';
+import { isDenied, withTenant } from '../../lib/rls';
 
 export const organizing = new Hono<{ Bindings: Env; Variables: Vars }>();
 
@@ -149,6 +149,22 @@ organizing.put('/page', async (c) => {
     });
     return c.json(ok(saved));
   } catch (error) {
+    /*
+     * A denied INSERT raises where a denied SELECT would just match nothing —
+     * see isDenied. Without this, an organizer pressing Publish was told the
+     * save had failed rather than that it was not theirs to make.
+     */
+    if (isDenied(error)) {
+      return c.json(
+        err(
+          'Only a steward can publish or change this page. Publishing that your group exists is ' +
+            'not a decision the product lets an organizer make on everyone’s behalf.',
+          ERROR.FORBIDDEN,
+          rid,
+        ),
+        403,
+      );
+    }
     logFailure('organizing.page.put', rid, error);
     return c.json(err('Could not save your page.', ERROR.INTERNAL, rid, detailFor(c.env, error)), 500);
   }
@@ -219,5 +235,188 @@ organizing.get('/sheet', async (c) => {
   } catch (error) {
     logFailure('organizing.sheet', rid, error);
     return c.json(err('Could not build that sheet.', ERROR.INTERNAL, rid, detailFor(c.env, error)), 500);
+  }
+});
+
+// ---------------------------------------------------------------------------
+// Agendas
+// ---------------------------------------------------------------------------
+
+/*
+ * The plan, and what happened on each item. Never who spoke.
+ *
+ * The facilitator's stack is client-side and stays there — see the header of
+ * migration 0019. There is no route here to write one, and adding one later
+ * would mean first arguing with that note, which is exactly the friction it is
+ * there to create.
+ */
+const itemSchema = z.object({
+  title: z.string().trim().min(1).max(200),
+  minutes: z.number().int().min(0).max(480),
+  note: z.string().trim().max(4_000).optional(),
+});
+
+const agendaSchema = z.object({
+  title: z.string().trim().min(1, 'Give the meeting a name.').max(160),
+  metOn: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, 'Give a date.').optional(),
+  items: z.array(itemSchema).max(60).default([]),
+});
+
+organizing.get('/agendas', async (c) => {
+  const rid = c.get('requestId');
+  try {
+    const rows = await withTenant(db(c), c.get('session')!, (tx) => tx`
+      SELECT id, title, met_on, items, started_at, finished_at, updated_at
+      FROM public.agendas
+      ORDER BY met_on DESC, created_at DESC
+      LIMIT 100
+    `);
+    return c.json(ok(rows));
+  } catch (error) {
+    logFailure('organizing.agendas.list', rid, error);
+    return c.json(err('Could not load your agendas.', ERROR.INTERNAL, rid, detailFor(c.env, error)), 500);
+  }
+});
+
+organizing.post('/agendas', async (c) => {
+  const rid = c.get('requestId');
+  const parsed = agendaSchema.safeParse(await c.req.json().catch(() => null));
+  if (!parsed.success) {
+    return c.json(err(parsed.error.issues[0].message, ERROR.VALIDATION, rid), 400);
+  }
+  const input = parsed.data;
+
+  try {
+    const row = await withTenant(db(c), c.get('session')!, async (tx) => {
+      const [created] = await tx`
+        INSERT INTO public.agendas (tenant_id, title, met_on, items, created_by)
+        VALUES (
+          coram.current_tenant_id(), ${input.title},
+          -- COALESCE rather than the bare parameter: binding NULL overrides
+          -- the column DEFAULT rather than falling back to it, so an agenda
+          -- created without a date failed the NOT NULL instead of landing on
+          -- today. A DEFAULT only applies when the column is left out entirely.
+          COALESCE(${input.metOn ?? null}::date, current_date),
+          -- ::text::jsonb, not ::jsonb. See lib/rls.ts: with fetch_types off,
+          -- postgres.js infers a jsonb-cast parameter as json and encodes the
+          -- string again, so the value arrives as a JSON *string* rather than
+          -- the array it spells, and the jsonb_typeof CHECK refuses it.
+          ${JSON.stringify(input.items)}::text::jsonb,
+          (SELECT m.id FROM public.memberships m
+            WHERE m.user_id = coram.current_user_id()
+              AND m.tenant_id = coram.current_tenant_id())
+        )
+        RETURNING id, title, met_on, items, started_at, finished_at
+      `;
+      return created;
+    });
+    return c.json(ok(row), 201);
+  } catch (error) {
+    if (isDenied(error)) {
+      return c.json(err('Only a steward or organizer can write an agenda.', ERROR.FORBIDDEN, rid), 403);
+    }
+    logFailure('organizing.agendas.create', rid, error);
+    return c.json(err('Could not save that agenda.', ERROR.INTERNAL, rid, detailFor(c.env, error)), 500);
+  }
+});
+
+const agendaPatchSchema = agendaSchema.partial().extend({
+  /** Stamped when a facilitator starts and finishes, so a half-run meeting
+   *  can be picked up on somebody else's laptop. */
+  started: z.boolean().optional(),
+  finished: z.boolean().optional(),
+});
+
+organizing.patch('/agendas/:id', async (c) => {
+  const rid = c.get('requestId');
+  const id = c.req.param('id');
+  const parsed = agendaPatchSchema.safeParse(await c.req.json().catch(() => null));
+  if (!parsed.success) {
+    return c.json(err(parsed.error.issues[0].message, ERROR.VALIDATION, rid), 400);
+  }
+  const input = parsed.data;
+
+  try {
+    const row = await withTenant(db(c), c.get('session')!, async (tx) => {
+      const [updated] = await tx`
+        UPDATE public.agendas SET
+          title  = COALESCE(${input.title ?? null}, title),
+          met_on = COALESCE(${input.metOn ?? null}::date, met_on),
+          items  = COALESCE(${input.items ? JSON.stringify(input.items) : null}::text::jsonb, items),
+          started_at  = CASE WHEN ${input.started === true} THEN COALESCE(started_at, now())
+                             ELSE started_at END,
+          finished_at = CASE WHEN ${input.finished === true} THEN COALESCE(finished_at, now())
+                             WHEN ${input.finished === false} THEN NULL
+                             ELSE finished_at END
+        WHERE id = ${id}::uuid
+        RETURNING id, title, met_on, items, started_at, finished_at
+      `;
+      return updated ?? null;
+    });
+    if (!row) return c.json(err('No such agenda.', ERROR.NOT_FOUND, rid), 404);
+    return c.json(ok(row));
+  } catch (error) {
+    logFailure('organizing.agendas.update', rid, error);
+    return c.json(err('Could not save that change.', ERROR.INTERNAL, rid, detailFor(c.env, error)), 500);
+  }
+});
+
+/**
+ * Turn a finished agenda into a minutes draft.
+ *
+ * A draft, never an adopted record — 0007's note is that §5.8 asks for
+ * automatic generation and not automatic authority, and a meeting record the
+ * group did not adopt is a claim about what the group decided that nobody
+ * agreed to.
+ *
+ * The body is assembled here rather than by a model. It is the agenda's own
+ * items and the facilitator's own notes; there is nothing to summarise and
+ * nothing a model could add that would not be an invention about what a group
+ * decided.
+ */
+organizing.post('/agendas/:id/minutes', async (c) => {
+  const rid = c.get('requestId');
+  const id = c.req.param('id');
+
+  try {
+    const result = await withTenant(db(c), c.get('session')!, async (tx) => {
+      const [agenda] = await tx<
+        { title: string; met_on: string; items: { title: string; minutes: number; note?: string }[] }[]
+      >`
+        SELECT title, met_on, items FROM public.agendas WHERE id = ${id}::uuid
+      `;
+      if (!agenda) return null;
+
+      const items = Array.isArray(agenda.items) ? agenda.items : [];
+      const body = items
+        .map((item, i) => {
+          const note = item.note?.trim();
+          return `${i + 1}. ${item.title}\n${note || 'No note was taken on this item.'}`;
+        })
+        .join('\n\n');
+
+      const [minutes] = await tx<{ id: string }[]>`
+        INSERT INTO public.minutes (tenant_id, title, body, met_on)
+        VALUES (
+          coram.current_tenant_id(), ${agenda.title},
+          ${body || 'The agenda had no items.'}, ${agenda.met_on}::date
+        )
+        RETURNING id
+      `;
+      return minutes;
+    });
+
+    if (!result) return c.json(err('No such agenda.', ERROR.NOT_FOUND, rid), 404);
+    return c.json(
+      ok(result, {
+        notice:
+          'Written up as a draft. Somebody still has to adopt it — a meeting record the group ' +
+          'never agreed to is a claim about what you decided.',
+      }),
+      201,
+    );
+  } catch (error) {
+    logFailure('organizing.agendas.minutes', rid, error);
+    return c.json(err('Could not write that up.', ERROR.INTERNAL, rid, detailFor(c.env, error)), 500);
   }
 });
