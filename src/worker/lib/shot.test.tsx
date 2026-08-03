@@ -12,7 +12,7 @@
 import { describe, expect, it } from 'vitest';
 
 import { SHOTS } from '../../shared/shots';
-import { Shot, ShotFigure } from './shot';
+import { PUBLISHED, Shot, ShotFigure } from './shot';
 
 const render = (node: unknown) => String(node);
 
@@ -57,13 +57,30 @@ describe('<Shot>', () => {
     expect(html).not.toMatch(/url-bar|browser-frame|traffic-light|address-bar/i);
   });
 
-  it('renders a deliberate placeholder for an unpublished shot', () => {
-    // Every current shot is published, so this exercises the branch by proving
-    // the published ones do not take it.
+  /*
+   * Both branches, and which one a shot takes is decided by PUBLISHED rather
+   * than by this test.
+   *
+   * The earlier version asserted every spec was published, which was true when
+   * it was written and is wrong as a rule: a spec has to exist before CI will
+   * photograph it, and the upload happens after that. Asserting the invariant
+   * that cannot hold turned the interim into a broken build instead of a
+   * labelled placeholder.
+   */
+  it('renders an image for a published shot and a placeholder for one that is not', () => {
     for (const shot of SHOTS) {
       const html = render(<Shot id={shot.id} sizes="100vw" />);
-      expect(html, shot.id).not.toContain('Screenshot pending');
-      expect(html, shot.id).toContain('<img');
+
+      if (PUBLISHED.has(shot.id)) {
+        expect(html, shot.id).toContain('<img');
+        expect(html, shot.id).not.toContain('Screenshot pending');
+      } else {
+        expect(html, shot.id).toContain('Screenshot pending');
+        // Still reserves its space, and still carries the alt text — a pending
+        // shot must not reflow the page or go silent to a screen reader.
+        expect(html, shot.id).toContain(`aspect-ratio:${shot.viewport.width}/${shot.viewport.height}`);
+        expect(html, shot.id).toContain('role="img"');
+      }
     }
   });
 

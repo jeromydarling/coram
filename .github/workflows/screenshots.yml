@@ -37,6 +37,12 @@ on:
       - 'src/worker/routes/api/brand.ts'
       - 'src/shared/brand.ts'
       - 'src/shared/shots.ts'
+      # The watch list is a tab of Advocacy and its screen reads through these,
+      # so a change to the poller or the feed parser changes the picture.
+      - 'src/worker/routes/api/watch.ts'
+      - 'src/worker/lib/watch.ts'
+      - 'src/shared/watch.ts'
+      - 'scripts/seed-demo.ts'
       - 'scripts/capture-shots.ts'
   workflow_dispatch:
     inputs:

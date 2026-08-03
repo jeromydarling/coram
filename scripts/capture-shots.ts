@@ -65,6 +65,19 @@ const RECIPES: Record<string, (page: Page) => Promise<void>> = {
     await page.waitForTimeout(300);
   },
 
+  /*
+   * The watch list is the second tab of Advocacy, so the module's own screen is
+   * the drafts list and this has to click through. Waiting on an item's title
+   * rather than the tab: the tab is present the moment it is clicked, and a
+   * screenshot taken then is a picture of three skeletons.
+   */
+  'watch-tab': async (page) => {
+    await page.getByRole('tab', { name: 'What is moving' }).click();
+    await page.getByText('Rent Board', { exact: false }).first().waitFor({ timeout: 45_000 });
+    await page.evaluate(() => window.scrollTo(0, 0));
+    await page.waitForTimeout(400);
+  },
+
   'studio-compose': async (page) => {
     /*
      * The square card rather than the flyer.

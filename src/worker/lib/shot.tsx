@@ -30,10 +30,16 @@ import { SHOTS, shotKey, type ShotId } from '../../shared/shots';
  * this is the record of that decision. Adding an id here without running
  * scripts/upload-shots.ts publishes a 404.
  */
-const PUBLISHED = new Set<ShotId>([
+export const PUBLISHED = new Set<ShotId>([
   'shot-overview',
   'shot-advocacy',
   'shot-studio',
+  /*
+   * 'shot-watch' is captured in CI but not yet uploaded, so it renders the
+   * placeholder. That interim state is the reason the placeholder exists: a
+   * spec has to be in the registry before CI will photograph it, and the upload
+   * is a deliberate human step afterwards.
+   */
   'shot-relationships',
   'shot-money',
   'shot-safety',

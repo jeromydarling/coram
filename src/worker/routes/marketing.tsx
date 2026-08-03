@@ -745,6 +745,63 @@ marketing.get('/', (c) =>
         </div>
       </div>
 
+      {/*
+        5b-ii. The watch list.
+
+        Sold on the failure it prevents rather than on the word "AI". The
+        interesting claim here is not that a model writes two sentences — it is
+        that the model is not allowed to decide what you are shown, and that a
+        broken feed says so instead of going quiet. Both are on the page because
+        both are what separates this from a newsletter.
+      */}
+      <div class="wide section">
+        <h2>And tells you what moved</h2>
+        <p class="lead" style="max-width:var(--measure)">
+          The rent board meets on a Tuesday, the agenda goes up eleven days before, and nobody in
+          your group is refreshing a municipal website at 4pm. That is how a hearing passes
+          unopposed — not because anybody decided to skip it.
+        </p>
+
+        <div class="shots">
+          <ShotFigure id="shot-watch" sizes="(min-width: 72rem) 68rem, 94vw" />
+        </div>
+
+        <div class="tools" style="margin-top:2.5rem">
+          <div class="tool">
+            <h3>Your words, not our guess</h3>
+            <p>
+              You give it "eviction", "rent board", a bill number. Anything containing them appears
+              — every one, in full. A word has to appear as a word, so "rent" does not match
+              "current".
+            </p>
+          </div>
+          <div class="tool">
+            <h3>The model sorts. It never filters.</h3>
+            <p>
+              Two sentences of plain English and a relevance score, to help you triage a long
+              morning. Nothing is ever hidden because a machine scored it low — the one it would
+              drop is the hearing with the boring title.
+            </p>
+          </div>
+          <div class="tool">
+            <h3>A broken feed says so</h3>
+            <p>
+              A council that changes its agenda URL looks exactly like a quiet month. Every source
+              shows when it last worked and what went wrong, because being quietly wrong about this
+              is worse than not offering it.
+            </p>
+          </div>
+          <div class="tool">
+            <h3>One click to a room full of people</h3>
+            <p>
+              A hearing becomes an event with an RSVP list; a bill becomes a draft of your own. The
+              watch item is deleted after ninety days — a feed is not an archive, and what you keep
+              is what you made from it.
+            </p>
+          </div>
+        </div>
+      </div>
+
       <Band
         id="phone-bank"
         caption="Nobody's number leaves the room. The list does not follow anyone home."

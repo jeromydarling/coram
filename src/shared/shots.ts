@@ -38,6 +38,7 @@ export type ShotId =
   | 'shot-overview'
   | 'shot-advocacy'
   | 'shot-studio'
+  | 'shot-watch'
   | 'shot-relationships'
   | 'shot-money'
   | 'shot-safety'
@@ -74,7 +75,7 @@ export interface ShotSpec {
    * rather than a function, because this file is imported by the Worker for the
    * media allow-list and must not drag Playwright in with it.
    */
-  prepare?: 'studio-compose' | 'advocacy-open';
+  prepare?: 'studio-compose' | 'advocacy-open' | 'watch-tab';
 }
 
 /**
@@ -125,6 +126,18 @@ export const SHOTS: ShotSpec[] = [
     alt: 'The design studio: a headline, date and place on the left, and on the right a finished square social card in the group’s own colours, with its name across a coloured band.',
     caption:
       'A flyer for a pole or a card for a feed, in your colours. We make the file; you post it — Coram holds no account of yours.',
+  },
+  {
+    id: 'shot-watch',
+    route: '/app/advocacy',
+    viewport: { width: 1280, height: 900 },
+    widths: DESK_W,
+    // The tab, not the drafts list the module opens on.
+    prepare: 'watch-tab',
+    settled: 'Matched',
+    alt: 'The watch list: a rent board agenda item and a state bill, each with a two-sentence summary and the group’s own words shown as the reason it is on the list, above a source whose last check failed.',
+    caption:
+      'The hearing you would otherwise have missed. Your words, matched against what your council and your legislature actually published — and when a feed stops working, it says so rather than going quiet.',
   },
   {
     id: 'shot-relationships',
