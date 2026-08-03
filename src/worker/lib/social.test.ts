@@ -80,6 +80,43 @@ describe('renderSocial', () => {
     expect(Math.max(...sizes)).toBeLessThan(size.width * 0.105);
   });
 
+  /*
+   * The bug a screenshot found and no assertion had.
+   *
+   * "Tuesday 5 August, 6.30pm · City Hall, chamber B" is an ordinary line for a
+   * meeting, and drawn as one <text> it ran off the right edge — clipped in the
+   * preview and, worse, clipped in the file somebody downloads and posts. SVG
+   * does not wrap, so the renderer has to.
+   */
+  it('wraps a long detail line instead of running it off the card', () => {
+    const svg = renderSocial({
+      ...base,
+      when: 'Tuesday 5 August, 6.30pm',
+      where: 'City Hall, chamber B',
+    });
+
+    // Every drawn string must fit the inner width at the size it is drawn at,
+    // using the same 0.54em estimate the layout does.
+    const margin = Math.round(size.width * 0.075);
+    const inner = size.width - margin * 2;
+
+    for (const [, fontSize, text] of svg.matchAll(
+      /font-size="(\d+)"[^>]*>([^<]+)</g,
+    ) as unknown as Iterable<[string, string, string]>) {
+      const estimated = text.length * Number(fontSize) * 0.54;
+      expect(estimated, `"${text}" at ${fontSize}px`).toBeLessThanOrEqual(inner * 1.02);
+    }
+  });
+
+  it('hard-wraps a single word too long for the card rather than overflowing', () => {
+    const svg = renderSocial({ ...base, headline: 'A'.repeat(400) });
+    const longest = Math.max(
+      ...[...svg.matchAll(/>([^<]+)</g)].map((m) => m[1].length),
+    );
+    // 400 unbroken characters cannot fit on one line at any legible size.
+    expect(longest).toBeLessThan(400);
+  });
+
   it('renders every shape without throwing', () => {
     for (const s of SOCIAL_SIZES) {
       expect(() => renderSocial({ ...base, size: s })).not.toThrow();

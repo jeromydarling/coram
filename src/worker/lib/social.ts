@@ -63,7 +63,12 @@ function esc(text: string): string {
 function layout(headline: string, width: number, maxLines: number, start: number) {
   const words = headline.split(/\s+/).filter(Boolean);
 
-  for (let size = start; size >= 20; size -= 2) {
+  // Floor at a quarter of the requested size rather than a fixed 20px: a
+  // detail line starts around 43px and must be allowed to shrink below the
+  // floor a headline needs, or it goes back to overflowing.
+  const floor = Math.max(12, Math.round(start * 0.55));
+
+  for (let size = start; size >= floor; size -= 2) {
     const perLine = Math.max(1, Math.floor(width / (size * 0.54)));
     const lines: string[] = [];
     let line = '';
@@ -84,9 +89,17 @@ function layout(headline: string, width: number, maxLines: number, start: number
     }
   }
 
-  // Nothing fit. Give back the smallest attempt rather than throwing — a
-  // cramped card is recoverable by editing the words, a 500 is not.
-  return { lines: headline.split(/\s+/).slice(0, maxLines), size: 20 };
+  /*
+   * Nothing fit even at the floor. Break on characters rather than words and
+   * accept a hard wrap — a cramped card is recoverable by editing the words,
+   * and a line running off the edge of a file somebody prints is not.
+   */
+  const perLine = Math.max(8, Math.floor(width / (floor * 0.54)));
+  const hard: string[] = [];
+  for (let i = 0; i < headline.length && hard.length < maxLines; i += perLine) {
+    hard.push(headline.slice(i, i + perLine));
+  }
+  return { lines: hard, size: floor };
 }
 
 export function renderSocial({
@@ -161,14 +174,30 @@ export function renderSocial({
 
   const detail = [when, where].filter(Boolean).join(' · ');
   if (detail) {
+    /*
+     * Wrapped and shrunk to fit, not drawn at a fixed size and hoped for.
+     *
+     * "Tuesday 5 August, 6.30pm · City Hall, chamber B" is an ordinary line for
+     * a meeting and it is 46 characters. Drawn as one <text> at 0.4 of the
+     * headline it ran off the right edge of the card — clipped in the preview
+     * and clipped in the file somebody downloads and posts, which is worse.
+     * SVG does not wrap text, so the fitting has to happen here.
+     */
     y += Math.round(fontSize * 0.5);
     parts.push(
       `<rect x="${margin}" y="${y - Math.round(fontSize * 0.55)}" width="${Math.round(inner * 0.18)}" ` +
         `height="${Math.max(3, Math.round(width * 0.005))}" fill="${brand.accent}"/>`,
-      `<text x="${margin}" y="${y + Math.round(fontSize * 0.5)}" ` +
-        `font-family="system-ui, sans-serif" font-size="${Math.round(fontSize * 0.4)}" ` +
-        `font-weight="500" fill="${brand.ink}">${esc(detail)}</text>`,
     );
+
+    const detailLayout = layout(detail, inner, 2, Math.round(fontSize * 0.4));
+    let dy = y + Math.round(detailLayout.size * 1.25);
+    for (const line of detailLayout.lines) {
+      parts.push(
+        `<text x="${margin}" y="${dy}" font-family="system-ui, sans-serif" ` +
+          `font-size="${detailLayout.size}" font-weight="500" fill="${brand.ink}">${esc(line)}</text>`,
+      );
+      dy += Math.round(detailLayout.size * 1.25);
+    }
   }
 
   if (callToAction) {
