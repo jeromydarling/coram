@@ -51,6 +51,20 @@ const OUT = 'shots/marketing';
  * run — a screenshot that changes every capture is impossible to review.
  */
 const RECIPES: Record<string, (page: Page) => Promise<void>> = {
+  /*
+   * Open the bill rather than photographing the list.
+   *
+   * The advocacy list is a header and one card, which photographs as an empty
+   * screen — and the caption beside it talks about drafted sections and which
+   * route exists in your state, none of which is visible until you go in.
+   */
+  'advocacy-open': async (page) => {
+    await page.getByText('The repairs ordinance').click();
+    await page.getByText('The Eastside Repairs Ordinance').waitFor({ timeout: 45_000 });
+    await page.evaluate(() => window.scrollTo(0, 0));
+    await page.waitForTimeout(300);
+  },
+
   'studio-compose': async (page) => {
     /*
      * The square card rather than the flyer.

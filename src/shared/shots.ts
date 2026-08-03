@@ -74,7 +74,7 @@ export interface ShotSpec {
    * rather than a function, because this file is imported by the Worker for the
    * media allow-list and must not drag Playwright in with it.
    */
-  prepare?: 'studio-compose';
+  prepare?: 'studio-compose' | 'advocacy-open';
 }
 
 /** Desktop shots share a viewport so the set looks like one product, not seven. */
@@ -95,12 +95,13 @@ export const SHOTS: ShotSpec[] = [
   {
     id: 'shot-advocacy',
     route: '/app/advocacy',
-    // Shorter than the rest: this screen is a header and one card, and a
-    // capture at the full height is two thirds empty paper.
-    viewport: { width: 1280, height: 520 },
+    viewport: DESK,
     widths: DESK_W,
-    settled: 'seeking sponsor',
-    alt: 'The advocacy screen showing a draft ordinance at the seeking-a-sponsor stage with seven sections and three endorsements.',
+    // The list is one card and photographs as an empty screen; the caption
+    // promises drafted sections and a route, so the picture has to show them.
+    prepare: 'advocacy-open',
+    settled: 'Short title',
+    alt: 'A draft ordinance open in Coram, showing its short title, enacting clause and definitions as numbered sections, with a note that the draft is structurally complete.',
     caption:
       'Write the law you want. Coram lays out the sections a bill needs, fills in what your state prescribes, and tells you which route actually exists where you live.',
   },
