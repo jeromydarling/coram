@@ -143,10 +143,14 @@ dead_letter_queue = "coram-send-dlq"
 # Scheduled
 #   03:00 UTC daily — retention sweep across every registered table
 #   04:00 UTC daily — canary staleness check (warn 100d, overdue 120d)
+#   every six hours — watch-list poll: bills, hearings and agendas that moved.
+#     Six hours rather than hourly because a council agenda is published days
+#     before the meeting and a bill moves at most daily — polling faster would
+#     knock on other people's servers for nothing.
 ####################################################################
 
 [triggers]
-crons = ["0 3 * * *", "0 4 * * *"]
+crons = ["0 3 * * *", "0 4 * * *", "0 */6 * * *"]
 
 ####################################################################
 # Non-secret vars. Secrets go in via `wrangler secret put`:

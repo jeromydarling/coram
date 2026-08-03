@@ -43,6 +43,7 @@ import { Empty, Failed, Loading } from '@/components/coram/State';
 import { api, day, patch, post, put, words, type BillRow, type Workspace } from '@/lib/api';
 import { failed, say } from '@/lib/notify';
 import { MODULES } from '@/lib/modules';
+import { Watch } from './Watch';
 
 const MODULE = MODULES.find((m) => m.path === '/advocacy')!;
 
@@ -114,9 +115,31 @@ export function Advocacy() {
       <PageHeader
         module={MODULE}
         title="Advocacy"
-        description="Most groups never write the law they want because nobody tells them how. This walks the whole route: draft it, check it reads like statute, find who can file it, and record what each office said."
-        actions={canEdit && <NewBill />}
+        description="Most groups never write the law they want because nobody tells them how. This walks the whole route: notice what is moving, draft the thing you want, check it reads like statute, find who can file it, and record what each office said."
       />
+
+      {/*
+        Two tabs rather than two modules. §5 is a closed list of eleven and the
+        watch list is advocacy: the step before lobbying a committee is knowing
+        the committee is meeting. Drafts first because that is the module's
+        name on the rail and the thing somebody arrived to do.
+      */}
+      <Tabs defaultValue="drafts">
+        <TabsList className="mb-6">
+          <TabsTrigger value="drafts">Drafts</TabsTrigger>
+          <TabsTrigger value="watch">What is moving</TabsTrigger>
+        </TabsList>
+
+        <TabsContent value="watch">
+          <Watch canEdit={canEdit} />
+        </TabsContent>
+
+        <TabsContent value="drafts">
+      {canEdit && (
+        <div className="mb-6 flex justify-end">
+          <NewBill />
+        </div>
+      )}
 
       {bills.isLoading ? (
         <Loading rows={3} label="Loading bills" />
@@ -154,6 +177,8 @@ export function Advocacy() {
           ))}
         </ul>
       )}
+        </TabsContent>
+      </Tabs>
     </>
   );
 }

@@ -20,6 +20,7 @@ export * from './colloquium';
 export * from './custos';
 export * from './federatio';
 export * from './petitio';
+export * from './watch';
 // Published reference data, not a workspace's own — see migrations/0013_refdata.sql.
 export * from './refdata';
 // Workspace settings rather than a module — see migrations/0011_brand.sql.

@@ -72,6 +72,16 @@ export interface Env {
   FEDERATION_STRIPE_SECRET?: string;
   STRIPE_WEBHOOK_SECRET?: string;
   INFERENCE_KEY?: string;
+  /**
+   * Open States v3, for the watch list's bill sources.
+   *
+   * Ours rather than each workspace's, deliberately. Asking a tenants' union to
+   * register for a legislative-data API key before they can be told that a bill
+   * moved is the step at which nobody uses the feature. Absent, bill sources
+   * report themselves unconfigured — which reads differently to the user than a
+   * broken feed, and should.
+   */
+  OPENSTATES_API_KEY?: string;
 }
 
 /**

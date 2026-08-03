@@ -595,7 +595,123 @@ async function seedOrganizerDay(
     [tenantId, 'Filing fees and transport, four households, Perram Row lockout'],
   );
 
-  console.log('Follow-ups, conversations, consent, shifts, a draft, two channels, a briefing.');
+  /*
+   * The watch list, with a source that has already failed.
+   *
+   * A demo where every feed is green teaches the wrong thing. Half the value of
+   * this screen is that it tells you when it has stopped working — a council
+   * that changed its agenda URL looks exactly like a quiet month otherwise —
+   * so the demo shows one working source and one that is down, with the reason
+   * in words.
+   */
+  const topics: Array<[string, string[]]> = [
+    ['Evictions', ['eviction', 'unlawful detainer', 'lockout']],
+    ['The rent board', ['rent board', 'rent stabilization', 'rent increase']],
+    ['Habitability', ['habitability', 'code enforcement', 'repairs']],
+  ];
+  for (const [label, terms] of topics) {
+    await c.query(
+      `INSERT INTO public.watch_topics (tenant_id, label, terms, created_by)
+       VALUES ($1,$2,$3,$4)`,
+      [tenantId, label, terms, membershipId],
+    );
+  }
+
+  const [agendas] = (
+    await c.query(
+      `INSERT INTO public.watch_sources
+         (tenant_id, kind, label, url, created_by, last_polled_at, last_status, last_found)
+       VALUES ($1,'feed',$2,$3,$4, now() - interval '3 hours', 'ok', 2)
+       RETURNING id`,
+      [tenantId, 'City council agendas', 'https://example.gov/agendas/rss', membershipId],
+    )
+  ).rows as { id: string }[];
+
+  await c.query(
+    `INSERT INTO public.watch_sources
+       (tenant_id, kind, label, url, created_by, last_polled_at, last_status, last_error)
+     VALUES ($1,'feed',$2,$3,$4, now() - interval '19 days', 'failed', $5)`,
+    [
+      tenantId,
+      'Superior court calendar',
+      'https://example.gov/courts/calendar.atom',
+      membershipId,
+      'The feed answered 404.',
+    ],
+  );
+
+  const [bills] = (
+    await c.query(
+      `INSERT INTO public.watch_sources
+         (tenant_id, kind, label, jurisdiction, created_by, last_polled_at, last_status, last_found)
+       VALUES ($1,'bills',$2,'CA',$3, now() - interval '3 hours', 'ok', 1)
+       RETURNING id`,
+      [tenantId, 'California bills', membershipId],
+    )
+  ).rows as { id: string }[];
+
+  const items: Array<[string, string, string, string, string | null, number | null, string[], string]> = [
+    [
+      agendas.id,
+      'urn:example:agenda:551',
+      'Rent Board — regular meeting, item 7(b): rent increase petitions',
+      'https://example.gov/agendas/2026-08-05',
+      'The board will hear four petitions for rent increases above the annual allowance, and a ' +
+        'staff report on the backlog of habitability complaints.',
+      94,
+      ['rent board', 'rent increase', 'habitability'],
+      '2 days',
+    ],
+    [
+      agendas.id,
+      'urn:example:agenda:549',
+      'Housing Committee — code enforcement staffing report',
+      'https://example.gov/agendas/2026-08-03',
+      'A report on inspector vacancies in the code enforcement division and the resulting time to ' +
+        'first inspection.',
+      71,
+      ['code enforcement'],
+      '4 days',
+    ],
+    [
+      bills.id,
+      'ocd-bill/ca-sb-442',
+      'SB 442 — Tenancy: termination: unlawful detainer',
+      'https://openstates.org/ca/bills/2025-2026/SB442/',
+      'Would extend the notice period before an unlawful detainer action may be filed, and require ' +
+        'the notice to state the reason relied on.',
+      88,
+      ['unlawful detainer', 'eviction'],
+      '6 days',
+    ],
+    [
+      agendas.id,
+      'urn:example:agenda:544',
+      'Public Works — Perram Row resurfacing, notice of lockout of parking',
+      'https://example.gov/agendas/2026-07-28',
+      // No summary on purpose: a model was unavailable when this one arrived,
+      // and the row still has to be useful. It also shows what a coincidental
+      // word match looks like, which is the thing a low score is for.
+      null,
+      12,
+      ['lockout'],
+      '9 days',
+    ],
+  ];
+
+  for (const [sourceId, ext, title, url, summary, relevance, terms, ago] of items) {
+    await c.query(
+      `INSERT INTO public.watch_items
+         (tenant_id, source_id, external_id, title, url, published_at, summary, relevance,
+          matched_terms, first_seen_at)
+       VALUES ($1,$2,$3,$4,$5, now() - $6::interval, $7, $8, $9, now() - $6::interval)`,
+      [tenantId, sourceId, ext, title, url, ago, summary, relevance, terms],
+    );
+  }
+
+  console.log(
+    'Follow-ups, conversations, consent, shifts, a draft, two channels, a briefing, a watch list.',
+  );
 }
 
 await main();

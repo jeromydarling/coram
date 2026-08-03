@@ -22,6 +22,7 @@ import { hashPassword } from './lib/crypto';
 import { TenancyError, close, connect, withoutTenant } from './lib/rls';
 import { closeRequestDb } from './lib/db';
 import { checkCanaryAge } from './cron/canary';
+import { runWatchPoll } from './cron/watch';
 import { runRetentionSweep } from './cron/purge';
 import { handlePurge } from './jobs/purge';
 import { handleSend } from './jobs/send';
@@ -35,6 +36,7 @@ import { custos } from './routes/api/custos';
 import { exports } from './routes/api/exports';
 import { federatio } from './routes/api/federatio';
 import { petitio } from './routes/api/petitio';
+import { watch } from './routes/api/watch';
 import { funds } from './routes/api/funds';
 import { scriba } from './routes/api/scriba';
 import { vinculum } from './routes/api/vinculum';
@@ -108,6 +110,9 @@ app.route('/api/federatio', federatio);
 
 // Advocacy and the bill a group writes (§5.5) — see migrations/0012_petitio.sql.
 app.route('/api/petitio', petitio);
+// The watch list, which is part of Petitio rather than a twelfth module: it
+// renders as a tab under /app/advocacy. See migrations/0017_watch.sql.
+app.route('/api/watch', watch);
 
 // Signature-verified, no session (§1.1). Mounted before the SPA and marketing
 // so nothing else can shadow it.
@@ -241,8 +246,9 @@ export default {
   fetch: app.fetch,
 
   /**
-   * 03:00 UTC — retention sweep (§3.4)
-   * 04:00 UTC — canary staleness check (§7)
+   * 03:00 UTC       — retention sweep (§3.4)
+   * 04:00 UTC       — canary staleness check (§7)
+   * every six hours — watch-list poll (§5.5)
    */
   async scheduled(event: ScheduledController, env: Env, ctx: ExecutionContext): Promise<void> {
     switch (event.cron) {
@@ -251,6 +257,9 @@ export default {
         break;
       case '0 4 * * *':
         ctx.waitUntil(checkCanaryAge(env).then(() => undefined));
+        break;
+      case '0 */6 * * *':
+        ctx.waitUntil(runWatchPoll(env).then(() => undefined));
         break;
       default:
         console.warn('scheduled: no handler for cron %s', event.cron);
