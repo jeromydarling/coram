@@ -135,9 +135,9 @@ export const SHOTS: ShotSpec[] = [
     // The tab, not the drafts list the module opens on.
     prepare: 'watch-tab',
     settled: 'Matched',
-    alt: 'The watch list: a rent board agenda item and a state bill, each with a two-sentence summary and the group’s own words shown as the reason it is on the list, above a source whose last check failed.',
+    alt: 'The watch list: a rent board agenda item scored 94 and a California bill scored 88, each with a two-sentence summary and the group’s own matched words listed underneath, with buttons to turn one into an event or keep it.',
     caption:
-      'The hearing you would otherwise have missed. Your words, matched against what your council and your legislature actually published — and when a feed stops working, it says so rather than going quiet.',
+      'The hearing you would otherwise have missed. Every item shows the words of yours that put it there, so you can tell at a glance whether the list is telling you the truth.',
   },
   {
     id: 'shot-relationships',

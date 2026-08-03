@@ -124,27 +124,15 @@ export function Watch({ canEdit }: { canEdit: boolean }) {
 
   return (
     <div className="space-y-10">
-      <Section
-        title="What is moving"
-        hint={
-          <>
-            Bills, hearings and agendas that matched words you chose. The list keeps{' '}
-            {ITEM_RETENTION_DAYS} days; what you turn an item into does not expire.
-          </>
-        }
-        actions={
-          canEdit && (
-            <Button
-              variant="outline"
-              onClick={() => poll.mutate()}
-              disabled={poll.isPending || !hasTopics || !hasSources}
-            >
-              <RefreshCw className="mr-2 h-4 w-4" />
-              {poll.isPending ? 'Checking…' : 'Check now'}
-            </Button>
-          )
-        }
-      >
+      {/*
+        No section heading here, and that is a layout decision the screenshot
+        made for me. The tab above already says "What is moving"; repeating it
+        as a heading with a paragraph under it read as two stacked headers and
+        pushed the first actual item to sixty percent of the way down the page.
+        The retention sentence it carried is in the guarantee at the foot, which
+        is where every other promise of that kind lives.
+      */}
+      <div>
         {!hasTopics || !hasSources ? (
           <Empty
             title="Nothing is being watched yet"
@@ -159,11 +147,25 @@ export function Watch({ canEdit }: { canEdit: boolean }) {
         ) : (
           <>
             <Tabs value={shown} onValueChange={(v) => setShown(v as typeof shown)}>
-              <TabsList className="mb-5">
-                <TabsTrigger value="new">New</TabsTrigger>
-                <TabsTrigger value="kept">Kept</TabsTrigger>
-                <TabsTrigger value="dismissed">Dismissed</TabsTrigger>
-              </TabsList>
+              {/* One row: what you are looking at, and the button that refills it. */}
+              <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
+                <TabsList>
+                  <TabsTrigger value="new">New</TabsTrigger>
+                  <TabsTrigger value="kept">Kept</TabsTrigger>
+                  <TabsTrigger value="dismissed">Dismissed</TabsTrigger>
+                </TabsList>
+                {canEdit && (
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => poll.mutate()}
+                    disabled={poll.isPending}
+                  >
+                    <RefreshCw className="mr-2 h-4 w-4" />
+                    {poll.isPending ? 'Checking…' : 'Check now'}
+                  </Button>
+                )}
+              </div>
 
               <TabsContent value={shown}>
                 {items.isLoading ? (
@@ -190,7 +192,7 @@ export function Watch({ canEdit }: { canEdit: boolean }) {
             </Tabs>
           </>
         )}
-      </Section>
+      </div>
 
       <Topics topics={topics} canEdit={canEdit} />
       <Sources sources={sources} canEdit={canEdit} />

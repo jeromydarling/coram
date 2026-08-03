@@ -115,7 +115,7 @@ export function Advocacy() {
       <PageHeader
         module={MODULE}
         title="Advocacy"
-        description="Most groups never write the law they want because nobody tells them how. This walks the whole route: notice what is moving, draft the thing you want, check it reads like statute, find who can file it, and record what each office said."
+        description="Notice what is moving where you live, then write the law you want: the sections a bill needs, who can file it, and what each office said back."
       />
 
       {/*
