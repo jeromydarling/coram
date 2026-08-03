@@ -64,6 +64,17 @@ export interface ShotSpec {
   alt: string;
   /** The line printed under it. One sentence, no exclamation points. */
   caption: string;
+  /**
+   * A named interaction to run before the shutter.
+   *
+   * Most screens are worth photographing as they load. The studio is not: it
+   * opens as an empty form beside an empty preview, which is the least
+   * flattering possible picture of the one feature that is entirely about how
+   * things look. The recipes live in scripts/capture-shots.ts — a name here
+   * rather than a function, because this file is imported by the Worker for the
+   * media allow-list and must not drag Playwright in with it.
+   */
+  prepare?: 'studio-compose';
 }
 
 /** Desktop shots share a viewport so the set looks like one product, not seven. */
@@ -84,7 +95,9 @@ export const SHOTS: ShotSpec[] = [
   {
     id: 'shot-advocacy',
     route: '/app/advocacy',
-    viewport: DESK,
+    // Shorter than the rest: this screen is a header and one card, and a
+    // capture at the full height is two thirds empty paper.
+    viewport: { width: 1280, height: 520 },
     widths: DESK_W,
     settled: 'seeking sponsor',
     alt: 'The advocacy screen showing a draft ordinance at the seeking-a-sponsor stage with seven sections and three endorsements.',
@@ -96,15 +109,18 @@ export const SHOTS: ShotSpec[] = [
     route: '/app/studio',
     viewport: DESK,
     widths: DESK_W,
-    settled: 'Studio',
-    alt: 'The design studio, with fields for a headline, date and place, a template picker and background styles.',
+    prepare: 'studio-compose',
+    // After the compose, not before — 'Studio' is the heading and matches
+    // instantly, which is how the first capture came back as an empty form.
+    settled: 'Preview',
+    alt: 'The design studio: a headline, date and place on the left, and a composed flyer previewed on the right in the group’s own colours.',
     caption:
       'A flyer for a pole or a card for a feed, in your colours. We make the file; you post it — Coram holds no account of yours.',
   },
   {
     id: 'shot-relationships',
     route: '/app/relationships',
-    viewport: DESK,
+    viewport: { width: 1280, height: 800 },
     widths: DESK_W,
     settled: 'Open follow-ups',
     alt: 'The follow-up queue, showing conversations that are owed, one of them snoozed four times.',
@@ -114,7 +130,7 @@ export const SHOTS: ShotSpec[] = [
   {
     id: 'shot-money',
     route: '/app/money',
-    viewport: DESK,
+    viewport: { width: 1280, height: 700 },
     widths: DESK_W,
     settled: 'no platform take',
     alt: 'A mutual aid fund at $3,184 of a $5,000 goal, marked as taking no platform fee, above a disbursement waiting for a second approval.',
@@ -124,7 +140,7 @@ export const SHOTS: ShotSpec[] = [
   {
     id: 'shot-safety',
     route: '/app/safety',
-    viewport: { width: 1280, height: 620 },
+    viewport: { width: 1280, height: 560 },
     widths: DESK_W,
     settled: 'legal role only',
     alt: 'The safety screen explaining that jail support is visible to the legal role only, with a note that closed cases are deleted after thirty days.',

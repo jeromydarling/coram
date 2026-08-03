@@ -32,6 +32,7 @@ import { Hono } from 'hono';
 
 import type { Env, Vars } from '../env';
 import { Picture } from '../lib/picture';
+import { ShotFigure } from '../lib/shot';
 import { anyOverdue, describe, loadArtifacts, staleness } from '../lib/trust';
 import {
   ABUSE_CONTACT,
@@ -141,6 +142,27 @@ const STYLE = `
                margin-left: 1.1rem; border-bottom: 1px solid rgba(255,250,244,.45); }
 
   /* ---- full-bleed photographic bands ---- */
+  /* ---- product screenshots ---- */
+  /* Chromeless: a hairline and a warm shadow, which is what the app's own
+     .paper is. No drawn browser frame — the product is the picture. */
+  .shot { width: 100%; height: auto; display: block; border-radius: 10px;
+          border: 1px solid var(--line); background: var(--bg);
+          box-shadow: 0 1px 2px rgba(27,20,16,.05), 0 18px 40px -24px rgba(27,20,16,.28); }
+  .shot-figure { margin: 0; }
+  .shot-figure figcaption { color: var(--muted); font-size: .9rem; line-height: 1.5;
+                            margin-top: .85rem; max-width: 46ch; }
+
+  /* One wide shot leading, two beneath it. Collapses to a stack on a phone,
+     where a two-up grid would render both at postage-stamp size. */
+  .shots { display: grid; gap: 2.5rem; margin-top: 2.5rem; }
+  .shots-pair { display: grid; gap: 2.5rem; }
+  @media (min-width: 60rem) { .shots-pair { grid-template-columns: 1fr 1fr; } }
+
+  /* The phone shot sits beside prose rather than filling the column. */
+  .shot-phone { display: grid; gap: 2rem; align-items: center; }
+  @media (min-width: 52rem) { .shot-phone { grid-template-columns: 20rem 1fr; } }
+  .shot-phone .shot { border-radius: 18px; }
+
   .band { position: relative; width: 100%; margin: 5rem 0; overflow: hidden; background: var(--ink); }
   .band img, .band > div { width: 100%; display: block; max-height: 64vh; object-fit: cover; }
   .band figcaption { color: var(--muted); font-size: .85rem; padding: .75rem 1.5rem 0;
@@ -495,12 +517,12 @@ const MODULES: Array<{ name: string; line: string; demo: Parameters<typeof Demo>
   { name: 'Vinculum', line: 'One-to-ones, ladders of engagement, turf, follow-up queues.', demo: 'graph' },
   { name: 'Convocare', line: 'Events with RSVP, shifts, waitlists, and check-in.', demo: 'grid' },
   { name: 'Nuntius', line: 'Email, peer-to-peer texting, and a phone bank.', demo: 'send' },
-  { name: 'Petitio', line: 'Petitions and legislator lookup.', demo: 'rows' },
+  { name: 'Petitio', line: 'Write the bill, find who can file it, log what each office said.', demo: 'rows' },
   { name: 'Thesaurus', line: 'Fundraising, dues, and escrowed mutual aid and bail funds.', demo: 'bars' },
   { name: 'Colloquium', line: 'Encrypted internal channels that expire on their own.', demo: 'send' },
   { name: 'Consilium', line: 'Proposals, quorum, and five ways to vote.', demo: 'bars' },
   { name: 'Custos', line: 'Legal observer intake and jail support.', demo: 'shield' },
-  { name: 'Scriba', line: 'Drafting help from a private model, with names stripped first.', demo: 'text' },
+  { name: 'Scriba', line: 'Drafting and translation from a private model, with names stripped first.', demo: 'text' },
   { name: 'Federatio', line: 'Coalitions, where a parent sees totals and nothing more.', demo: 'graph' },
 ];
 
@@ -646,10 +668,108 @@ marketing.get('/', (c) =>
         </div>
       </div>
 
+      {/*
+        5a. The product, photographed.
+
+        Everything above this point is an argument. These are the thing itself,
+        captured from the demo workspace at 2x with no browser frame — a drawn
+        window around a screenshot is decoration that dates immediately.
+      */}
+      <div class="wide section">
+        <h2>This is the whole of it</h2>
+        <p class="lead" style="max-width:var(--measure)">
+          Screenshots of the real product, not a mockup. Everyone in them is invented — you can
+          sign in to the same workspace from <a href="/demo">the demo</a> and press every button.
+        </p>
+
+        <div class="shots">
+          <ShotFigure id="shot-overview" sizes="(min-width: 72rem) 68rem, 94vw" />
+
+          <div class="shots-pair">
+            <ShotFigure id="shot-advocacy" sizes="(min-width: 60rem) 33rem, 94vw" />
+            <ShotFigure id="shot-relationships" sizes="(min-width: 60rem) 33rem, 94vw" />
+          </div>
+
+          <div class="shots-pair">
+            <ShotFigure id="shot-money" sizes="(min-width: 60rem) 33rem, 94vw" />
+            <ShotFigure id="shot-safety" sizes="(min-width: 60rem) 33rem, 94vw" />
+          </div>
+        </div>
+      </div>
+
+      {/*
+        5b. The studio, which is the newest thing and the easiest to explain by
+        showing rather than describing.
+      */}
+      <div class="wide section">
+        <h2>It also makes the flyer</h2>
+        <p class="lead" style="max-width:var(--measure)">
+          A group with no designer either makes something in Word that looks like it was made in
+          Word, or makes nothing. That is the difference between twelve people at a meeting and
+          forty, so it is in the product rather than on a list of things you should also buy.
+        </p>
+
+        <div class="shots">
+          <ShotFigure id="shot-studio" sizes="(min-width: 72rem) 68rem, 94vw" />
+        </div>
+
+        <div class="tools" style="margin-top:2.5rem">
+          <div class="tool">
+            <h3>Your colours, checked</h3>
+            <p>
+              A palette that fails contrast is not a style choice, it is a flyer nobody reads in a
+              badly lit corridor. Coram refuses to save one and names the pair that failed.
+            </p>
+          </div>
+          <div class="tool">
+            <h3>Backgrounds, never people</h3>
+            <p>
+              Texture, an empty hall, a street at dusk. Never an invented face — a made-up member
+              on a real group's flyer is a claim somebody has to defend on a doorstep.
+            </p>
+          </div>
+          <div class="tool">
+            <h3>Said in the languages on the block</h3>
+            <p>
+              Twelve languages, drafted in seconds so a bilingual member spends two minutes rather
+              than an hour. It says plainly that those two minutes are not optional.
+            </p>
+          </div>
+          <div class="tool">
+            <h3>We do not post for you</h3>
+            <p>
+              A token that can post as your union is a subpoena target and something a platform can
+              revoke. You get the file and the words; you press send.
+            </p>
+          </div>
+        </div>
+      </div>
+
       <Band
         id="phone-bank"
         caption="Nobody's number leaves the room. The list does not follow anyone home."
       />
+
+      {/* 5c. It has to work on a phone, because that is where organizing happens. */}
+      <div class="wide section">
+        <div class="shot-phone">
+          <ShotFigure id="shot-mobile" sizes="(min-width: 52rem) 20rem, 70vw" />
+          <div>
+            <h2>Built for a corridor</h2>
+            <p>
+              Every screen works on the phone somebody already has, because that is where a
+              check-in happens, where a follow-up gets logged, and where somebody looks up what to
+              say when an officer is at the door. Nothing here is a desktop tool with a mobile
+              apology bolted on.
+            </p>
+            <p class="muted small">
+              No app to install, nothing to update, and nothing that keeps running in the
+              background. It is a website, which is also the only version that cannot be pulled
+              from a store.
+            </p>
+          </div>
+        </div>
+      </div>
 
       <Band
         id="union-hall"
@@ -755,6 +875,11 @@ function ComparisonTable() {
     ['Encrypted internal comms', 'Yes', 'No', 'No', 'In-app chat only', 'No'],
     ['Governance and voting', 'Yes', 'No', 'No', 'No', 'No'],
     ['Legal and jail support', 'Yes', 'No', 'No', 'No', 'No'],
+    // Added when the studio shipped. §8.3's table is the spec's, and these two
+    // rows are honest additions rather than a thumb on the scale: the named
+    // competitors do have some templating, which is why the cells say Partial.
+    ['Flyer and social design', 'Yes', 'Partial', 'No', 'Partial', 'Partial'],
+    ['Translation into your neighbourhood', 'Yes', 'No', 'No', 'No', 'No'],
     ['Published audit + canary', 'Yes', 'No', 'No', 'No', 'No'],
     ['Free tier', 'Full product', 'No', 'No', 'No', 'Partial'],
   ];
@@ -1214,6 +1339,10 @@ marketing.get('/demo', (c) =>
           <li>An eviction defence fund, which on the real product is charged no fee at all.</li>
           <li>A draft ordinance at the seeking-a-sponsor stage, with three endorsements, and a
             log of what three council offices said back.</li>
+          <li>
+            The studio: make a flyer or a social card in the union's colours, generate a
+            background, and translate the whole thing into a dozen languages.
+          </li>
           <li>Five follow-ups owed to real-feeling people, one of them snoozed four times.</li>
           <li>Shifts on the hearing with the door still unstaffed, and a message in the drafts.</li>
         </ul>

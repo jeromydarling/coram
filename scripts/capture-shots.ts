@@ -32,12 +32,35 @@
  */
 
 import { mkdir, writeFile } from 'node:fs/promises';
-import { chromium, type Browser } from '@playwright/test';
+import { chromium, type Browser, type Page } from '@playwright/test';
 
 import { DEMO_EMAIL, DEMO_PASSWORD } from '../src/shared/demo';
 import { SHOTS } from '../src/shared/shots';
 
 const OUT = 'shots/marketing';
+
+/**
+ * Interactions to run before the shutter, keyed by the name in the shot spec.
+ *
+ * The studio is the only one that needs it, and it needs it badly: it opens as
+ * an empty form beside an empty preview, and a marketing picture of that sells
+ * nothing. Composing first shows what the screen is actually for.
+ *
+ * Deliberately not generating a background here. That call costs money, counts
+ * against the workspace's daily ceiling, and returns something different every
+ * run — a screenshot that changes every capture is impossible to review.
+ */
+const RECIPES: Record<string, (page: Page) => Promise<void>> = {
+  'studio-compose': async (page) => {
+    await page.getByLabel('Headline').fill('Our building is going to the rent board');
+    await page.getByLabel('When', { exact: true }).fill('Tuesday 5 August, 6.30pm');
+    await page.getByLabel('Where', { exact: true }).fill('City Hall, chamber B');
+    await page.getByLabel('One more line').fill('Public comment opens at 6.30. Wear red.');
+    await page.getByRole('button', { name: /draw it/i }).click();
+    // The composed SVG, not the empty-state paragraph that preceded it.
+    await page.locator('svg[role="img"]').first().waitFor({ timeout: 45_000 });
+  },
+};
 
 function arg(name: string, fallback: string): string {
   const i = process.argv.indexOf(`--${name}`);
@@ -99,6 +122,12 @@ async function main() {
 
       if (new URL(page.url()).pathname.includes('/login')) {
         throw new Error('bounced to the sign-in page — the session did not survive');
+      }
+
+      if (shot.prepare) {
+        const recipe = RECIPES[shot.prepare];
+        if (!recipe) throw new Error(`no recipe named ${shot.prepare}`);
+        await recipe(page);
       }
 
       await page.getByText(shot.settled, { exact: false }).first().waitFor({ timeout: 45_000 });
