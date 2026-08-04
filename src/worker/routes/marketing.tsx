@@ -90,22 +90,123 @@ const STYLE = `
   .col { max-width: 46rem; margin: 0 auto; padding: 0 1.5rem; }
   .wide { max-width: 72rem; margin: 0 auto; padding: 0 1.5rem; }
 
-  header { padding: 1.5rem 0 .4rem; position: relative; z-index: 3; }
-  nav { display: flex; align-items: center; gap: 1.4rem; }
-  nav .wordmark { font-family: var(--display); font-size: 1.2rem; color: var(--fg);
+  /*
+   * ---- the masthead ----
+   *
+   * It sat in a 46rem container while every section below it was 72rem, so the
+   * wordmark was indented past the content it was meant to sit above and the
+   * whole bar read as something bolted on afterwards. Same container, a
+   * hairline to sit on, and a destination on the right so the row has somewhere
+   * to end.
+   */
+  header { position: sticky; top: 0; z-index: 20;
+           background: color-mix(in srgb, var(--bg) 86%, transparent);
+           backdrop-filter: saturate(1.6) blur(12px);
+           /* A permanent hairline rather than one a scroll handler adds: the
+              bar is translucent, so it needs an edge at every scroll position
+              and this way it needs no JavaScript to get one. */
+           border-bottom: 1px solid var(--line); }
+  nav { display: flex; align-items: center; gap: 1.75rem; height: 4.25rem; }
+  nav .wordmark { font-family: var(--display); font-size: 1.25rem; color: var(--fg);
                   text-decoration: none; margin-right: auto; display: flex;
-                  align-items: center; gap: .55rem; }
+                  align-items: center; gap: .55rem; letter-spacing: -.01em; }
   nav .wordmark svg { display: block; }
-  nav a { color: var(--muted); text-decoration: none; font-size: .93rem; }
-  nav a:hover { color: var(--flame); }
+  nav a { color: var(--muted); text-decoration: none; font-size: .94rem;
+          transition: color .15s ease; }
+  nav a:hover { color: var(--fg); }
+  nav a[aria-current="page"] { color: var(--fg); }
+  /* The one thing on the bar that is not a link to more reading. */
+  nav .cta { color: var(--bg); background: var(--fg); padding: .5rem 1.05rem;
+             border-radius: 999px; font-weight: 600; font-size: .9rem; }
+  nav .cta:hover { background: var(--flame); color: #fff; }
+  @media (max-width: 46rem) {
+    /* Four section links do not fit beside a wordmark on a phone. The demo is
+       the one that has to survive, because it is the only one that is a door
+       rather than a footnote. */
+    nav .drop { display: none; }
+    nav { gap: 1rem; height: 3.75rem; }
+  }
 
   h1, h2, h3 { font-family: var(--display); font-weight: 500; letter-spacing: -.018em; }
   h1 { font-size: clamp(2.6rem, 7vw, 4.4rem); line-height: 1.0; margin: 0 0 1.1rem; }
   h2 { font-size: clamp(1.7rem, 4vw, 2.6rem); line-height: 1.1; margin: 0 0 1rem; }
   h3 { font-size: 1.05rem; margin: 0 0 .2rem; letter-spacing: -.005em; }
-  .section { margin: 6rem 0; }
+  /*
+   * margin-block, not the margin shorthand this was.
+   *
+   * .wide and .col centre themselves with auto inline margins. Every section
+   * carries both classes, and the shorthand here has the same specificity and
+   * comes later in the sheet — so it reset the inline margins to zero and
+   * pinned every section on every page to the left edge, with the whole right
+   * half of a large screen empty. The headings looked centred because they
+   * were: centred inside a container that was itself flush left.
+   */
+  .section { margin-block: 7rem; }
   p { margin: 0 0 1.15rem; max-width: var(--measure); }
   .lead { font-size: 1.25rem; line-height: 1.5; color: var(--muted); max-width: 32ch; }
+
+  /*
+   * ---- the centred spine ----
+   *
+   * Sections are 72rem wide and their type is set to a 34rem measure, so
+   * left-aligning both put every heading and paragraph against the left edge
+   * of a container twice their width, with the right half of a large screen
+   * empty. The measure is right; where it sat was not.
+   *
+   * A section's own heading and lead are therefore centred as a block and the
+   * text inside them is centred too — a title and a standfirst are display
+   * type and read that way. Body prose is never centred: the editorial column
+   * and the essay pages keep their ragged right, because centred paragraphs
+   * make every line start in a different place and are harder to read.
+   */
+  .wide.section > h2,
+  .wide.section > p,
+  .wide.section > .eyebrow,
+  /*
+   * The narrow columns get their heading and standfirst centred too, but not
+   * their body copy: a 46rem column is already the measure, and centring prose
+   * inside it would start every line in a different place.
+   */
+  .col.section > h2,
+  .col.section > .lead,
+  .col.section > .eyebrow { text-align: center; margin-inline: auto; }
+  .wide.section > h2,
+  .col.section > h2 { max-width: 22ch; }
+  .wide.section > .lead,
+  .col.section > .lead { max-width: 46ch; }
+  .wide.section > p { max-width: 54ch; }
+  .wide.section > .shots,
+  .wide.section > .claims,
+  .wide.section > .grid,
+  .wide.section > .merge { margin-inline: auto; }
+
+  /* ---- claim cards ----
+   *
+   * What the sections below the fold say about a feature: four short blocks in
+   * a row that wraps. Named for what they are rather than reusing the orbit's
+   * class, which was quietly stealing them.
+   */
+  /*
+   * Two by two, not auto-fit.
+   *
+   * auto-fit with a 15rem minimum fitted three of the four across and dropped
+   * the fourth onto a row of its own, which reads as a card that failed to
+   * load rather than as a fourth point. Four items have one honest
+   * arrangement at this width and it is a square.
+   */
+  .claims { display: grid; gap: 2.4rem 3rem; margin: 3.5rem auto 0; max-width: 56rem;
+            grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  @media (max-width: 46rem) { .claims { grid-template-columns: 1fr; gap: 1.8rem; } }
+  .claim { text-align: left; }
+  .claim h3 { font-family: var(--body); font-weight: 650; font-size: .95rem;
+              letter-spacing: 0; margin: 0 0 .35rem; padding-top: .7rem;
+              border-top: 2px solid var(--line); }
+  .claim:nth-child(4n+1) h3 { border-top-color: var(--flame); }
+  .claim:nth-child(4n+2) h3 { border-top-color: var(--gold); }
+  .claim:nth-child(4n+3) h3 { border-top-color: var(--teal); }
+  .claim:nth-child(4n+4) h3 { border-top-color: var(--deep); }
+  .claim p { margin: 0; font-size: .93rem; line-height: 1.6; color: var(--muted);
+             max-width: none; }
   .muted { color: var(--muted); }
   .small { font-size: .87rem; }
   a { color: inherit; text-underline-offset: .18em; }
@@ -155,8 +256,19 @@ const STYLE = `
   /* One wide shot leading, two beneath it. Collapses to a stack on a phone,
      where a two-up grid would render both at postage-stamp size. */
   .shots { display: grid; gap: 2.5rem; margin-top: 2.5rem; }
-  .shots-pair { display: grid; gap: 2.5rem; }
+  .shots-pair { display: grid; gap: 2.5rem; align-items: start; }
   @media (min-width: 60rem) { .shots-pair { grid-template-columns: 1fr 1fr; } }
+  /*
+   * A pair whose two shots are not the same shape.
+   *
+   * Equal columns made the public page — a document crop, nearly square —
+   * tower over the facilitator beside it, and the captions landed a hundred
+   * points apart. The fractions are the two aspect ratios, so both images
+   * render at the same height and the row reads as one thing.
+   */
+  @media (min-width: 60rem) {
+    .shots-pair.duo { grid-template-columns: 0.96fr 1.42fr; }
+  }
 
   /* The phone shot sits beside prose rather than filling the column. */
   .shot-phone { display: grid; gap: 2rem; align-items: center; }
@@ -176,11 +288,16 @@ const STYLE = `
                                radial-gradient(45% 55% at 80% 10%, rgba(18,133,122,.20), transparent 70%);
                    pointer-events: none; }
   .creed .col { position: relative; }
-  .creed h2 { color: var(--ink-fg); margin-bottom: 2.5rem; }
+  .creed h2 { color: var(--ink-fg); margin-bottom: 2.5rem; text-align: center; }
   .creed li { font-family: var(--display); font-size: clamp(1.4rem, 3.4vw, 2.1rem);
               line-height: 1.35; max-width: 22ch; margin: 0 0 2.2rem; list-style: none;
               padding-left: 1.6rem; position: relative; }
-  .creed ul { padding: 0; margin: 0; }
+  /*
+   * The list is centred as a block and left-ragged inside it. Centring the
+   * lines themselves would put each bullet in a different place and turn four
+   * promises into a poem.
+   */
+  .creed ul { padding: 0; margin: 0 auto; width: fit-content; }
   .creed li::before { content: ''; position: absolute; left: 0; top: .55em;
                       width: .7rem; height: .7rem; border-radius: 999px; }
   .creed li:nth-child(1)::before { background: var(--flame); }
@@ -192,20 +309,30 @@ const STYLE = `
   .merge { position: relative; height: 400px; margin: 2.5rem 0 1rem; overflow: hidden;
            border-radius: 14px;
            background: radial-gradient(75% 70% at 50% 50%, rgba(240,165,44,.14), transparent 72%); }
-  .tool { position: absolute; transform-origin: center; width: 8.6rem; margin-left: -4.3rem;
+  /*
+   * Scoped to .merge, and the scoping is a bug fix rather than tidiness.
+   *
+   * It was a bare selector, so every element with that class anywhere on the
+   * page was absolutely positioned, 8.6rem wide and painted vermillion —
+   * including a dozen feature cards in three later sections, which piled up as
+   * coloured pills half off the left edge. A decorative selector that reads
+   * like a generic name will be reused; scoping it means it cannot be.
+   */
+  .merge .tool { position: absolute; transform-origin: center; width: 8.6rem;
+          margin-left: -4.3rem;
           margin-top: -1.05rem; border-radius: 999px; padding: .42rem .7rem; font-size: .78rem;
           text-align: center; font-weight: 600; color: #fff; will-change: transform; }
-  .tool:nth-child(1) { background: var(--flame); }
-  .tool:nth-child(2) { background: var(--gold); color: #3a2a06; }
-  .tool:nth-child(3) { background: var(--teal); }
-  .tool:nth-child(4) { background: var(--deep); }
-  .tool:nth-child(5) { background: #8b3fb5; }
-  .tool:nth-child(6) { background: #d4356f; }
+  .merge .tool:nth-child(1) { background: var(--flame); }
+  .merge .tool:nth-child(2) { background: var(--gold); color: #3a2a06; }
+  .merge .tool:nth-child(3) { background: var(--teal); }
+  .merge .tool:nth-child(4) { background: var(--deep); }
+  .merge .tool:nth-child(5) { background: #8b3fb5; }
+  .merge .tool:nth-child(6) { background: #d4356f; }
   .merge-mark { position: absolute; left: 50%; top: 50%; width: 124px; height: 124px;
                 margin: -62px 0 0 -62px; will-change: transform, opacity; }
   @media (max-width: 34rem) {
     .merge { height: 330px; }
-    .tool { width: 6.6rem; margin-left: -3.3rem; font-size: .7rem; }
+    .merge .tool { width: 6.6rem; margin-left: -3.3rem; font-size: .7rem; }
   }
 
   /* ---- module grid ---- */
@@ -333,16 +460,17 @@ function Page(props: {
         {props.motion ? <script type="module" src="/marketing/motion.js" defer /> : null}
       </head>
       <body>
-        <header class="col">
+        <header class="wide">
           <nav>
             <a class="wordmark" href="/">
               <Mark size={22} />
               Coram
             </a>
-            <a href="/why">Why</a>
-            <a href="/pricing">Pricing</a>
-            <a href="/security">Security</a>
-            <a href="/trust">Trust</a>
+            <a class="drop" href="/why">Why</a>
+            <a class="drop" href="/pricing">Pricing</a>
+            <a class="drop" href="/security">Security</a>
+            <a class="drop" href="/trust">Trust</a>
+            <a class="cta" href="/demo">See the demo</a>
           </nav>
         </header>
         {props.children}
@@ -677,7 +805,7 @@ marketing.get('/', (c) =>
       */}
       <div class="wide section">
         <h2>This is the whole of it</h2>
-        <p class="lead" style="max-width:var(--measure)">
+        <p class="lead">
           Screenshots of the real product, not a mockup. Everyone in them is invented — you can
           sign in to the same workspace from <a href="/demo">the demo</a> and press every button.
         </p>
@@ -703,7 +831,7 @@ marketing.get('/', (c) =>
       */}
       <div class="wide section">
         <h2>It also makes the flyer</h2>
-        <p class="lead" style="max-width:var(--measure)">
+        <p class="lead">
           A group with no designer either makes something in Word that looks like it was made in
           Word, or makes nothing. That is the difference between twelve people at a meeting and
           forty, so it is in the product rather than on a list of things you should also buy.
@@ -713,29 +841,29 @@ marketing.get('/', (c) =>
           <ShotFigure id="shot-studio" sizes="(min-width: 72rem) 68rem, 94vw" />
         </div>
 
-        <div class="tools" style="margin-top:2.5rem">
-          <div class="tool">
+        <div class="claims">
+          <div class="claim">
             <h3>Your colours, checked</h3>
             <p>
               A palette that fails contrast is not a style choice, it is a flyer nobody reads in a
               badly lit corridor. Coram refuses to save one and names the pair that failed.
             </p>
           </div>
-          <div class="tool">
+          <div class="claim">
             <h3>Backgrounds, never people</h3>
             <p>
               Texture, an empty hall, a street at dusk. Never an invented face — a made-up member
               on a real group's flyer is a claim somebody has to defend on a doorstep.
             </p>
           </div>
-          <div class="tool">
+          <div class="claim">
             <h3>Said in the languages on the block</h3>
             <p>
               Twelve languages, drafted in seconds so a bilingual member spends two minutes rather
               than an hour. It says plainly that those two minutes are not optional.
             </p>
           </div>
-          <div class="tool">
+          <div class="claim">
             <h3>We do not post for you</h3>
             <p>
               A token that can post as your union is a subpoena target and something a platform can
@@ -756,7 +884,7 @@ marketing.get('/', (c) =>
       */}
       <div class="wide section">
         <h2>And tells you what moved</h2>
-        <p class="lead" style="max-width:var(--measure)">
+        <p class="lead">
           The rent board meets on a Tuesday, the agenda goes up eleven days before, and nobody in
           your group is refreshing a municipal website at 4pm. That is how a hearing passes
           unopposed — not because anybody decided to skip it.
@@ -766,8 +894,8 @@ marketing.get('/', (c) =>
           <ShotFigure id="shot-watch" sizes="(min-width: 72rem) 68rem, 94vw" />
         </div>
 
-        <div class="tools" style="margin-top:2.5rem">
-          <div class="tool">
+        <div class="claims">
+          <div class="claim">
             <h3>Your words, not our guess</h3>
             <p>
               You give it "eviction", "rent board", a bill number. Anything containing them appears
@@ -775,7 +903,7 @@ marketing.get('/', (c) =>
               "current".
             </p>
           </div>
-          <div class="tool">
+          <div class="claim">
             <h3>The model sorts. It never filters.</h3>
             <p>
               Two sentences of plain English and a relevance score, to help you triage a long
@@ -783,7 +911,7 @@ marketing.get('/', (c) =>
               drop is the hearing with the boring title.
             </p>
           </div>
-          <div class="tool">
+          <div class="claim">
             <h3>A broken feed says so</h3>
             <p>
               A council that changes its agenda URL looks exactly like a quiet month. Every source
@@ -791,7 +919,7 @@ marketing.get('/', (c) =>
               is worse than not offering it.
             </p>
           </div>
-          <div class="tool">
+          <div class="claim">
             <h3>One click to a room full of people</h3>
             <p>
               A hearing becomes an event with an RSVP list; a bill becomes a draft of your own. The
@@ -814,21 +942,21 @@ marketing.get('/', (c) =>
       */}
       <div class="wide section">
         <h2>And the paper, and the front door</h2>
-        <p class="lead" style="max-width:var(--measure)">
+        <p class="lead">
           Most of organizing happens away from a screen — in a hallway with a clipboard, in a
           committee room with four minutes of somebody's attention, in a church hall with thirty
           people and a facilitator trying to get through the agenda.
         </p>
 
         <div class="shots" style="margin-top:2.5rem">
-          <div class="shots-pair">
-            <ShotFigure id="shot-public" sizes="(min-width: 60rem) 33rem, 94vw" />
-            <ShotFigure id="shot-facilitate" sizes="(min-width: 60rem) 33rem, 94vw" />
+          <div class="shots-pair duo">
+            <ShotFigure id="shot-public" sizes="(min-width: 60rem) 27rem, 94vw" />
+            <ShotFigure id="shot-facilitate" sizes="(min-width: 60rem) 40rem, 94vw" />
           </div>
         </div>
 
-        <div class="tools" style="margin-top:2.5rem">
-          <div class="tool">
+        <div class="claims">
+          <div class="claim">
             <h3>A page anyone can read</h3>
             <p>
               Who you are and what is coming up, at an address of your own. Off until a steward
@@ -836,7 +964,7 @@ marketing.get('/', (c) =>
               can make, so nothing is generated on your behalf and nothing defaults to on.
             </p>
           </div>
-          <div class="tool">
+          <div class="claim">
             <h3>A 404 that gives nothing away</h3>
             <p>
               An unpublished workspace and a name nobody has taken return the identical page.
@@ -844,7 +972,7 @@ marketing.get('/', (c) =>
               whatever about who is here and chose not to publish.
             </p>
           </div>
-          <div class="tool">
+          <div class="claim">
             <h3>There is no walk list</h3>
             <p>
               We hold no street addresses — a postal code is the finest location on any record, and
@@ -853,7 +981,7 @@ marketing.get('/', (c) =>
               owed to them. Phone numbers are a checkbox, not a default.
             </p>
           </div>
-          <div class="tool">
+          <div class="claim">
             <h3>The stack never leaves the room</h3>
             <p>
               Run a meeting with a time against each item and a speaking stack. The agenda is
