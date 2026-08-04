@@ -35,12 +35,8 @@ export const PUBLISHED = new Set<ShotId>([
   'shot-advocacy',
   'shot-studio',
   'shot-watch',
-  /*
-   * 'shot-public' and 'shot-facilitate' are captured in CI but not uploaded
-   * yet, so they render the labelled placeholder. That interim is the reason
-   * the placeholder exists: a spec has to be in the registry before CI will
-   * photograph it, and the upload is a deliberate step afterwards.
-   */
+  'shot-public',
+  'shot-facilitate',
   'shot-relationships',
   'shot-money',
   'shot-safety',
