@@ -21,8 +21,10 @@
  * organizers' names on a public marketing page to sell a product whose entire
  * argument is that we hold as little about them as possible. It is the single
  * most embarrassing thing this site could do, and it is one careless capture
- * away, so shots.test.ts asserts every route below is under /app and the
- * capture script signs in as nobody but the demo account.
+ * away, so shots.test.ts pins every route below to the demo workspace — either
+ * under /app, where the capture script signs in as nobody but the demo
+ * account, or at /g/<the demo's own slug>, which names the workspace in the URL
+ * — and the capture script signs in as nobody else.
  *
  * ---------------------------------------------------------------------------
  * Chromeless
@@ -34,11 +36,15 @@
  * container with a hairline, which is also what the app's own `.paper` is.
  */
 
+import { DEMO_SLUG } from './demo';
+
 export type ShotId =
   | 'shot-overview'
   | 'shot-advocacy'
   | 'shot-studio'
   | 'shot-watch'
+  | 'shot-public'
+  | 'shot-facilitate'
   | 'shot-relationships'
   | 'shot-money'
   | 'shot-safety'
@@ -46,7 +52,10 @@ export type ShotId =
 
 export interface ShotSpec {
   id: ShotId;
-  /** Route under the deployed app. Must begin /app — see shots.test.ts. */
+  /**
+   * Route on the deployed Worker. Either under /app, or the demo workspace's
+   * own public page. Anything else fails shots.test.ts.
+   */
   route: string;
   /** Capture viewport. The screenshot is the viewport, so this is the crop. */
   viewport: { width: number; height: number };
@@ -75,7 +84,7 @@ export interface ShotSpec {
    * rather than a function, because this file is imported by the Worker for the
    * media allow-list and must not drag Playwright in with it.
    */
-  prepare?: 'studio-compose' | 'advocacy-open' | 'watch-tab';
+  prepare?: 'studio-compose' | 'advocacy-open' | 'watch-tab' | 'facilitate-open';
 }
 
 /**
@@ -138,6 +147,36 @@ export const SHOTS: ShotSpec[] = [
     alt: 'The watch list: a rent board agenda item scored 94 and a California bill scored 88, each with a two-sentence summary and the group’s own matched words listed underneath, with buttons to turn one into an event or keep it.',
     caption:
       'The hearing you would otherwise have missed. Every item shows the words of yours that put it there, so you can tell at a glance whether the list is telling you the truth.',
+  },
+  {
+    id: 'shot-facilitate',
+    route: '/app/governance/facilitate',
+    viewport: { width: 1280, height: 900 },
+    widths: DESK_W,
+    // The list is one card; the screen worth showing is the one being run.
+    prepare: 'facilitate-open',
+    settled: 'Stack',
+    alt: 'A meeting being run in Coram: the current agenda item with a clock showing time used against the minutes allotted, a box for what happened, the rest of the agenda beneath, and a speaking stack down the right with a note that it is never saved.',
+    caption:
+      'Run the meeting. A clock that nags without cutting anyone off, a note per item that becomes the minutes, and a stack that never leaves the browser it is typed into.',
+  },
+  {
+    /*
+     * The one shot that is not of the signed-in product.
+     *
+     * It is the demo workspace's own published page, which is what a stranger
+     * following a link would see — and showing it as a browser-width crop
+     * rather than a desktop one is the honest framing: it is a document, and it
+     * is read on a phone more often than not.
+     */
+    id: 'shot-public',
+    route: `/g/${DEMO_SLUG}`,
+    viewport: { width: 860, height: 900 },
+    widths: [860, 640, 412],
+    settled: 'What is coming up',
+    alt: 'A tenants union’s public page: the group’s name and one-line description, three paragraphs about who they are, then two upcoming public events with dates and how many people are going.',
+    caption:
+      'A page anyone can read, at an address of your own. Off until a steward writes it — and until then the address is a 404 that looks exactly like a name nobody has taken.',
   },
   {
     id: 'shot-relationships',

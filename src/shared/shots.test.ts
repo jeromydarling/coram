@@ -13,22 +13,41 @@
 
 import { describe, expect, it } from 'vitest';
 
+import { DEMO_SLUG } from './demo';
 import { SHOTS, shotById, shotKey } from './shots';
 
 describe('screenshot specs', () => {
-  it('only ever photograph the signed-in app, never a customer-facing page', () => {
+  /*
+   * Two shapes are allowed and no others.
+   *
+   * `/app/**` is the signed-in product, and the capture script signs in as the
+   * demo account and nothing else. `/g/<demo slug>` is the demo workspace's own
+   * published page — which satisfies the rule this file exists for more tightly
+   * than /app does, because the workspace is named in the URL rather than
+   * implied by whoever happens to be signed in.
+   *
+   * The relaxation is written as an exact slug rather than a `/g/` prefix on
+   * purpose. `/g/` in general belongs to a real group the moment one publishes.
+   */
+  it('only ever photograph the demo workspace', () => {
     for (const shot of SHOTS) {
-      expect(shot.route, shot.id).toMatch(/^\/app(\/|$)/);
+      expect(shot.route, shot.id).toMatch(
+        new RegExp(`^(/app(/|$)|/g/${DEMO_SLUG}(/|$|\\?))`),
+      );
     }
   });
 
   /*
    * A public event page or a giving page belongs to a real group the moment
-   * one exists. Those routes are deliberately out of bounds here.
+   * one exists. Those routes are deliberately out of bounds here, and so is
+   * any /g/ that is not the demo's.
    */
   it('never point at a public tenant route', () => {
     for (const shot of SHOTS) {
       expect(shot.route, shot.id).not.toMatch(/^\/(e|f)\//);
+      if (shot.route.startsWith('/g/')) {
+        expect(shot.route, shot.id).toMatch(new RegExp(`^/g/${DEMO_SLUG}(/|$|\\?)`));
+      }
     }
   });
 

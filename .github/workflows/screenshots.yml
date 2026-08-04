@@ -42,6 +42,10 @@ on:
       - 'src/worker/routes/api/watch.ts'
       - 'src/worker/lib/watch.ts'
       - 'src/shared/watch.ts'
+      # The public page is server-rendered, so its screenshot changes when the
+      # route does rather than when anything under src/app does.
+      - 'src/worker/routes/public-group.tsx'
+      - 'src/worker/routes/api/organizing.ts'
       - 'scripts/seed-demo.ts'
       - 'scripts/capture-shots.ts'
   workflow_dispatch:

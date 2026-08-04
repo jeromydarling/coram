@@ -78,6 +78,35 @@ const RECIPES: Record<string, (page: Page) => Promise<void>> = {
     await page.waitForTimeout(400);
   },
 
+  /*
+   * Open the meeting rather than photographing the list of agendas.
+   *
+   * The list is one card and the caption is about a clock, a stack and a note
+   * box — none of which exist until you are inside. Waiting on the item
+   * heading rather than the agenda title, because the title is on the card
+   * that was just clicked and would match before the run view has rendered.
+   */
+  'facilitate-open': async (page) => {
+    await page.getByText('Monthly general meeting').first().click();
+    await page.getByText('Item 1 of', { exact: false }).waitFor({ timeout: 45_000 });
+
+    /*
+     * Three names on the stack, typed in.
+     *
+     * The stack is React state with nothing behind it, so an untouched capture
+     * shows an empty panel saying "Nobody is waiting" — a picture of the one
+     * part of the screen the caption is about, doing nothing. These are demo
+     * names from the same fixed word list as every other name in these shots.
+     */
+    for (const name of ['Solveig I.', 'Kenji B.', 'Odalys P.']) {
+      await page.getByLabel('Add to the stack').first().fill(name);
+      await page.getByRole('button', { name: 'Add to the stack' }).click();
+    }
+
+    await page.evaluate(() => window.scrollTo(0, 0));
+    await page.waitForTimeout(400);
+  },
+
   'studio-compose': async (page) => {
     /*
      * The square card rather than the flyer.

@@ -820,6 +820,13 @@ marketing.get('/', (c) =>
           people and a facilitator trying to get through the agenda.
         </p>
 
+        <div class="shots" style="margin-top:2.5rem">
+          <div class="shots-pair">
+            <ShotFigure id="shot-public" sizes="(min-width: 60rem) 33rem, 94vw" />
+            <ShotFigure id="shot-facilitate" sizes="(min-width: 60rem) 33rem, 94vw" />
+          </div>
+        </div>
+
         <div class="tools" style="margin-top:2.5rem">
           <div class="tool">
             <h3>A page anyone can read</h3>
