@@ -40,20 +40,20 @@
     "id": "shared-table",
     "width": 1600,
     "height": 992,
-    "lqip": "data:image/webp;base64,UklGRlwAAABXRUJQVlA4IFAAAAAwBACdASoUAAwAPxFysFAsJqSisAgBgCIJaACdMoACs6ttgwaBMJRFHgAA/BpTcOD4AnpYWZ3ZRpi/YrliUHIUsNaeXXKtAxXfJ1Fh9AAAAA==",
+    "lqip": "data:image/webp;base64,UklGRmYAAABXRUJQVlA4IFoAAABQBACdASoUAAwAPxFysFAsJqSisAgBgCIJbACdMoR3ACKpRKFLTr70UeHwAP6s7n8HnfexrCkCiPGEJuXaDZ9V6MG29nw84YKV7G417N91d7bED0cOLrx/CAA=",
     "bytes": {
-      "shared-table-1920.avif": 64578,
-      "shared-table-1920.webp": 108414,
-      "shared-table-1920.jpg": 122136,
-      "shared-table-1440.avif": 41592,
-      "shared-table-1440.webp": 68088,
-      "shared-table-1440.jpg": 99681,
-      "shared-table-1024.avif": 29028,
-      "shared-table-1024.webp": 35402,
-      "shared-table-1024.jpg": 59741,
-      "shared-table-640.avif": 19248,
-      "shared-table-640.webp": 20554,
-      "shared-table-640.jpg": 31480
+      "shared-table-1920.avif": 68136,
+      "shared-table-1920.webp": 102666,
+      "shared-table-1920.jpg": 134119,
+      "shared-table-1440.avif": 54317,
+      "shared-table-1440.webp": 74230,
+      "shared-table-1440.jpg": 111363,
+      "shared-table-1024.avif": 37077,
+      "shared-table-1024.webp": 43636,
+      "shared-table-1024.jpg": 66392,
+      "shared-table-640.avif": 22064,
+      "shared-table-640.webp": 23400,
+      "shared-table-640.jpg": 33390
     }
   },
   "sign-in-sheet": {

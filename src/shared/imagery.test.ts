@@ -7,6 +7,7 @@ import {
   FACE_CLAUSES,
   IMAGES,
   MAX_ACCENT_SHARE,
+  asksForManyHands,
   assertOnDirection,
   objectKey,
   prompt,
@@ -70,6 +71,67 @@ describe('§8.2 direction', () => {
 
   it('has no duplicate ids', () => {
     expect(new Set(IMAGES.map((i) => i.id)).size).toBe(IMAGES.length);
+  });
+});
+
+/**
+ * The hand rule, which exists because it was learned the hard way.
+ *
+ * The shared-table prompt asked for six pairs of hands plus one reaching
+ * across, and the render that shipped to the front page was a tangle of
+ * fingers. Hands at arm's length are the thing these models are worst at, and
+ * a prompt that asks for a dozen of them is asking for the failure.
+ */
+describe('hands', () => {
+  it('flags a prompt that asks for a quantity of hands', () => {
+    for (const subject of [
+      'six pairs of hands over a table covered in paper',
+      'many hands on a shared table',
+      'dozens of hands reaching in',
+      'several hands holding markers',
+    ]) {
+      expect(asksForManyHands(subject), subject).toBe(true);
+    }
+  });
+
+  it('allows one pair, and does not see hands that are not there', () => {
+    for (const subject of [
+      'one pair of hands resting at the near corner',
+      'a hand reaching across to point',
+      'a table of markers and sticky notes in low sun',
+      'a clipboard and a jar of coloured pens',
+    ]) {
+      expect(asksForManyHands(subject), subject).toBe(false);
+    }
+  });
+
+  /*
+   * The first version of this was a counter that totalled the hands in a
+   * sentence. It scored "one pair of hands resting" as three and "no hands
+   * here" as one. These two cases are kept because they are the ones that
+   * proved the counter wrong.
+   */
+  it('does not miscount the phrasings that broke the first attempt', () => {
+    expect(asksForManyHands('one pair of hands resting')).toBe(false);
+    expect(asksForManyHands('no hands here at all')).toBe(false);
+  });
+
+  it('refuses a spec that asks for a crowd of hands without saying why', () => {
+    const spec = IMAGES.find((i) => i.id === 'shared-table')!;
+    expect(() =>
+      assertOnDirection({ ...spec, subject: 'six pairs of hands over a bright table' }),
+    ).toThrow(/hands/i);
+  });
+
+  /*
+   * The hero is the exception and it has to be a deliberate one: every hand in
+   * it is thirty feet from the lens in a 1920-wide frame, which is the scale at
+   * which the difficulty stops being visible.
+   */
+  it('lets a spec opt out only by saying so on the spec', () => {
+    const hero = IMAGES.find((i) => i.id === 'hero-hall')!;
+    expect(hero.manyHandsOk).toBe(true);
+    expect(() => assertOnDirection({ ...hero, manyHandsOk: undefined })).toThrow(/hands/i);
   });
 });
 
@@ -220,6 +282,10 @@ describe('a room needs something to look at', () => {
         id: 'hero-hall',
         subject: 'a packed hall mid-vote, a forest of raised hands, rows of the backs of heads',
         faceClause: 'seen entirely from behind, no faces visible',
+        // This fixture is the hero, so it carries the hero's exemption from the
+        // one-pair-of-hands rule. Without it the spec is refused for a reason
+        // that has nothing to do with what this test is checking.
+        manyHandsOk: true,
         accent: true,
         width: 1600,
         height: 1000,

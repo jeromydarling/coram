@@ -96,6 +96,30 @@ export const EFFECT_CLAUSES = new Set<string>([
   'faces fully out of focus and unrecognizable',
 ]);
 
+/**
+ * A scene may name at most one pair of hands.
+ *
+ * The same shape of lesson as FACE_CLAUSES, learned the same way and only
+ * after it shipped. The shared-table prompt asked for "six pairs of hands ...
+ * a hand reaching across to point" — thirteen hands, of the one thing these
+ * models are least reliable at — and what came back was a tangle of fingers
+ * that does not survive being looked at, on the front page of a site whose
+ * argument is that we make things carefully.
+ *
+ * Two hands is a person at the edge of a still life. Past that, describe the
+ * surface, the light and the objects and let their absence be the composition.
+ *
+ * The first version of this was a counter that tried to total the hands in a
+ * sentence. It scored "one pair of hands resting" as three and "no hands here"
+ * as one, which is a good argument for a rule simple enough to be obviously
+ * correct: look for a quantity word close in front of the word.
+ */
+export function asksForManyHands(subject: string): boolean {
+  return /\b(two|three|four|five|six|seven|eight|nine|ten|dozens?|many|several|multiple|countless|forest)\b[^.]{0,40}?\bhands\b/i.test(
+    subject,
+  );
+}
+
 /** Words that mean "more people than an effect can be trusted to cover". */
 const CROWD = /\b(crowd|crowded|packed|dozens|people|callers|everyone|others)\b/i;
 
@@ -193,6 +217,14 @@ export interface ImageSpec {
   widths: number[];
   /** Real alt text. Describes the photograph, not the marketing point. */
   alt: string;
+  /**
+   * Opt out of the one-pair-of-hands rule, with the reason written inline.
+   *
+   * There is exactly one scene where a crowd of hands is the subject and the
+   * risk does not apply, and it has to say so rather than the rule quietly
+   * making an allowance for it.
+   */
+  manyHandsOk?: true;
 }
 
 const WIDE = [1920, 1440, 1024, 640];
@@ -215,6 +247,17 @@ export const IMAGES: ImageSpec[] = [
       'windows with sun pouring through, ordinary mismatched everyday clothes in many ' +
       'different colours — work jackets, hoodies, cardigans, a headscarf, a hi-vis vest',
     faceClause: 'seen entirely from behind, no faces visible',
+    /*
+     * The one scene where a crowd of hands is the point rather than a hazard.
+     *
+     * Every hand here is thirty feet from the lens in a 1920-wide frame, so no
+     * one of them is more than a few dozen pixels — the scale at which the
+     * model's difficulty with fingers stops being visible. The shared-table
+     * failure was hands at arm's length filling half the frame. Distance is
+     * what makes the difference, and it is why this is an exemption with a
+     * reason rather than a hole in the rule.
+     */
+    manyHandsOk: true,
     accent: true,
     width: 1920,
     height: 1080,
@@ -236,16 +279,31 @@ export const IMAGES: ImageSpec[] = [
   },
   {
     id: 'shared-table',
+    /*
+     * The table, not the hands over it.
+     *
+     * This asked for "six pairs of hands ... a hand reaching across to point",
+     * which is a request for thirteen hands — and hands are the single thing
+     * these models are worst at. What came back was a tangle of fingers that
+     * does not survive being looked at, on a page whose argument is that we
+     * make things carefully. See HAND_LIMIT below.
+     *
+     * The meaning does not need them. "One table, one set of papers, and no
+     * argument about who is on the list" is a still life: the shared surface
+     * after everyone has leaned over it. One pair of hands at the edge keeps it
+     * from reading as an empty room.
+     */
     subject:
-      'six pairs of hands over a table covered in bright paper, coloured markers, sticky notes ' +
-      'in pink and yellow and green, a hand reaching across to point, mugs and a plate of food ' +
-      'pushed to the edge, strong sunlight across the table',
+      'a long table photographed from above at a slight angle, covered in butcher paper marked ' +
+      'up in coloured pen, sticky notes in pink and yellow and green, a scatter of markers with ' +
+      'their caps off, two mugs and a plate of food pushed to the edge, one pair of hands ' +
+      'resting at the near corner, low sunlight raking across the paper',
     faceClause: 'framed below the shoulders, no faces in frame',
     accent: true,
     width: 1600,
     height: 1000,
     widths: WIDE,
-    alt: 'Many hands over a table of coloured paper, markers and sticky notes in strong sunlight.',
+    alt: 'A long table seen from above, covered in marked-up paper, sticky notes and markers, with low sunlight across it.',
   },
   {
     id: 'sign-in-sheet',
@@ -404,6 +462,15 @@ export function assertOnDirection(spec: ImageSpec): void {
   if (!FACE_CLAUSES.some((clause) => text.includes(clause))) {
     throw new DirectionError(
       `${spec.id}: §8.2 requires every image to obscure faces, and this prompt does not say how.`,
+    );
+  }
+
+  if (!spec.manyHandsOk && asksForManyHands(spec.subject)) {
+    throw new DirectionError(
+      `${spec.id}: a prompt that asks for a quantity of hands gets a tangle of fingers back — ` +
+        `hands are what these models are worst at. Name at most one pair, or describe the ` +
+        `surface and the light instead. Set manyHandsOk with a reason if the hands are far ` +
+        `enough from the lens for it not to matter.`,
     );
   }
 

@@ -275,10 +275,32 @@ const STYLE = `
   @media (min-width: 52rem) { .shot-phone { grid-template-columns: 20rem 1fr; } }
   .shot-phone .shot { border-radius: 18px; }
 
-  .band { position: relative; width: 100%; margin: 5rem 0; overflow: hidden; background: var(--ink); }
+  /*
+   * ---- full-bleed photograph with its caption on it ----
+   *
+   * The caption used to be a line of --muted (a mid-brown) at 13.6px sitting on
+   * the strip of --ink below the photograph: barely legible, left-aligned to
+   * nothing, and unmistakably a piece of markup nobody had styled. A caption
+   * belongs on the picture, in the picture's own light, aligned to the same
+   * container as every other line on the page.
+   */
+  .band { position: relative; width: 100%; margin: 5rem 0; overflow: hidden;
+          background: var(--ink); }
   .band img, .band > div { width: 100%; display: block; max-height: 64vh; object-fit: cover; }
-  .band figcaption { color: var(--muted); font-size: .85rem; padding: .75rem 1.5rem 0;
-                     max-width: 72rem; margin: 0 auto; }
+
+  /* The scrim is a gradient rather than a flat bar so the photograph runs to
+     the edge of the frame and the type still has something to sit on. */
+  .band figcaption { position: absolute; left: 0; right: 0; bottom: 0;
+                     padding: 6rem 1.5rem 1.75rem;
+                     background: linear-gradient(to top, rgba(12,9,8,.82) 0%,
+                                 rgba(12,9,8,.55) 45%, transparent 100%);
+                     color: rgba(255,246,236,.94); pointer-events: none; }
+  .band figcaption span { display: block; max-width: 72rem; margin: 0 auto;
+                          font-family: var(--display); font-size: clamp(1.05rem, 1.9vw, 1.5rem);
+                          line-height: 1.25; letter-spacing: -.012em; text-wrap: balance; }
+  @media (max-width: 40rem) {
+    .band figcaption { padding: 4rem 1.25rem 1.25rem; }
+  }
 
   /* ---- the commitments ---- */
   .creed { background: var(--ink); color: var(--ink-fg); padding: 6rem 0; margin: 6rem 0;
@@ -1281,7 +1303,11 @@ function Band({ id, caption }: { id: Parameters<typeof Picture>[0]['id']; captio
   return (
     <figure class="band" style="margin-left:0;margin-right:0">
       <Picture id={id} sizes="100vw" />
-      <figcaption>{caption}</figcaption>
+      {/* The span carries the measure and the centring; the figcaption is the
+          scrim and has to span the full bleed for the gradient to work. */}
+      <figcaption>
+        <span>{caption}</span>
+      </figcaption>
     </figure>
   );
 }
