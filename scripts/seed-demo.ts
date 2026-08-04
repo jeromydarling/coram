@@ -170,15 +170,27 @@ async function main() {
     }
     console.log(`${contactIds.length} contacts across ${turfIds.length} turfs.`);
 
-    // Events: two behind, two ahead, so the demo has history as well as a diary.
-    const events: Array<[string, string, number, string]> = [
-      ['Building captains check-in', 'Fifteen minutes per block. Bring your sheet.', -21, 'Community room, Perram Row'],
-      ['Know your rights training', 'What to do when a notice arrives. Legal observers attending.', -7, 'Eastside Library, room 2'],
-      ['Rent board hearing', 'Public comment opens at 6.30. Wear red.', 6, 'City Hall, chamber B'],
-      ['Monthly general meeting', 'Repairs campaign vote, then food.', 20, 'Union hall, Dunmore Street'],
+    /*
+     * Two behind and two ahead, each on a weekday the meeting would plausibly
+     * be on.
+     *
+     * The day of the week is the last field and it exists because the first
+     * version did not have it: every event landed on whatever weekday `now()`
+     * plus the offset happened to be, which put the monthly general meeting on
+     * a Sunday directly underneath the group's own public page saying "come to
+     * the general meeting on the third Tuesday". A demo that contradicts itself
+     * in the same screenshot is worse than one with less in it.
+     *
+     * 0 is Sunday, matching EXTRACT(dow).
+     */
+    const events: Array<[string, string, number, string, number]> = [
+      ['Building captains check-in', 'Fifteen minutes per block. Bring your sheet.', -21, 'Community room, Perram Row', 4],
+      ['Know your rights training', 'What to do when a notice arrives. Legal observers attending.', -7, 'Eastside Library, room 2', 6],
+      ['Rent board hearing', 'Public comment opens at 6.30. Wear red.', 6, 'City Hall, chamber B', 3],
+      ['Monthly general meeting', 'Repairs campaign vote, then food.', 20, 'Union hall, Dunmore Street', 2],
     ];
     const eventIds: string[] = [];
-    for (const [title, description, offsetDays, location] of events) {
+    for (const [title, description, offsetDays, location, dow] of events) {
       const [row] = (
         await c.query(
           /*
@@ -194,11 +206,15 @@ async function main() {
               is_public, public_slug)
            VALUES (
              $1,$2,$3,
-             -- Snapped to 6.30pm rather than left at whatever minute the seed
-             -- happened to run. "Rent board hearing, 3:42 PM" is the sort of
-             -- detail that reads as a bug in every screenshot of the product,
-             -- and no group has ever scheduled a meeting for 3:42.
-             date_trunc('day', now() + ($4 || ' days')::interval) + interval '18 hours 30 minutes',
+             -- Snapped to 6.30pm on the right weekday, rather than left at
+             -- whatever moment the seed happened to run. "Rent board hearing,
+             -- 3:42 PM" reads as a bug in every screenshot of the product, and
+             -- a general meeting on a Sunday contradicts the group's own page.
+             -- The modulo walks forward 0-6 days to the next matching weekday.
+             date_trunc('day', now() + ($4 || ' days')::interval)
+               + (((($9::int - EXTRACT(dow FROM now() + ($4 || ' days')::interval)::int) + 7) % 7)
+                  || ' days')::interval
+               + interval '18 hours 30 minutes',
              $5, $6, $7, $8
            ) RETURNING id`,
           [
@@ -207,6 +223,7 @@ async function main() {
             offsetDays > 0
               ? `${title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')}-demo`
               : null,
+            dow,
           ],
         )
       ).rows;
