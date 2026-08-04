@@ -31,10 +31,19 @@ describe('marketing pages', () => {
     const html = await res.text();
     expect(html).toContain('<html lang="en">');
     expect(html).toContain('</html>');
-    // A JSX mistake that renders a component reference instead of markup
-    // typecheck-passes and looks fine until you read the page.
+    /*
+     * A JSX mistake that renders a component reference instead of markup
+     * typecheck-passes and looks fine until you read the page.
+     *
+     * The second assertion used to be `not.toContain('function ')`, which is a
+     * substring of ordinary English — "written into a database function rather
+     * than a settings page" failed it. A stringified function always has a
+     * parameter list, so requiring the parenthesis matches the mistake and not
+     * the prose.
+     */
     expect(html).not.toContain('[object Object]');
-    expect(html).not.toContain('function ');
+    expect(html).not.toMatch(/function\s*\w*\s*\(/);
+    expect(html).not.toMatch(/=>\s*\{/);
   });
 
   /*

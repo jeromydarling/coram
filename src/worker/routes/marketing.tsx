@@ -287,23 +287,33 @@ const STYLE = `
                    background: radial-gradient(50% 60% at 20% 30%, rgba(240,165,44,.18), transparent 70%),
                                radial-gradient(45% 55% at 80% 10%, rgba(18,133,122,.20), transparent 70%);
                    pointer-events: none; }
-  .creed .col { position: relative; }
-  .creed h2 { color: var(--ink-fg); margin-bottom: 2.5rem; text-align: center; }
-  .creed li { font-family: var(--display); font-size: clamp(1.4rem, 3.4vw, 2.1rem);
-              line-height: 1.35; max-width: 22ch; margin: 0 0 2.2rem; list-style: none;
-              padding-left: 1.6rem; position: relative; }
-  /*
-   * The list is centred as a block and left-ragged inside it. Centring the
-   * lines themselves would put each bullet in a different place and turn four
-   * promises into a poem.
-   */
-  .creed ul { padding: 0; margin: 0 auto; width: fit-content; }
-  .creed li::before { content: ''; position: absolute; left: 0; top: .55em;
-                      width: .7rem; height: .7rem; border-radius: 999px; }
-  .creed li:nth-child(1)::before { background: var(--flame); }
-  .creed li:nth-child(2)::before { background: var(--gold); }
-  .creed li:nth-child(3)::before { background: var(--teal); }
-  .creed li:nth-child(4)::before { background: var(--deep); }
+  .creed .wide { position: relative; }
+  /* max-width:none as well as the centring: .eyebrow is a <p>, so it inherits
+     the 34rem measure and a centred line inside a left-hugging 34rem block
+     lands well left of the heading it belongs to. */
+  .creed .eyebrow { color: var(--gold); text-align: center; margin-inline: auto;
+                    max-width: none; }
+  .creed h2 { color: var(--ink-fg); margin: .4rem 0 3.5rem; text-align: center; }
+
+  .creed-grid { list-style: none; padding: 0; margin: 0; display: grid; gap: 3rem 2.5rem;
+                grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  @media (max-width: 68rem) { .creed-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 40rem) { .creed-grid { grid-template-columns: 1fr; gap: 2.2rem; } }
+
+  /* The number carries the colour, so the rule above it can stay quiet. */
+  .creed-n { display: block; font-family: var(--display); font-size: .95rem;
+             letter-spacing: .06em; padding-bottom: .7rem; margin-bottom: .9rem;
+             border-bottom: 1px solid rgba(255,246,236,.18); }
+  .creed-grid li:nth-child(1) .creed-n { color: var(--flame); }
+  .creed-grid li:nth-child(2) .creed-n { color: var(--gold); }
+  .creed-grid li:nth-child(3) .creed-n { color: var(--teal); }
+  .creed-grid li:nth-child(4) .creed-n { color: #6d8cf0; }
+
+  .creed-grid h3 { font-family: var(--display); font-weight: 500;
+                   font-size: clamp(1.15rem, 1.5vw, 1.35rem); line-height: 1.25;
+                   color: var(--ink-fg); margin: 0 0 .7rem; letter-spacing: -.01em; }
+  .creed-grid p { margin: 0; max-width: none; font-size: .93rem; line-height: 1.65;
+                  color: rgba(255,246,236,.62); }
 
   /* ---- the six tools converging ---- */
   .merge { position: relative; height: 400px; margin: 2.5rem 0 1rem; overflow: hidden;
@@ -380,9 +390,65 @@ const STYLE = `
                background: linear-gradient(120deg, rgba(226,69,42,.10), rgba(240,165,44,.12));
                border: 1px solid rgba(226,69,42,.22); }
 
-  footer { border-top: 1px solid var(--line); margin-top: 5rem; padding-top: 2rem;
-           padding-bottom: 4rem; font-size: .9rem; color: var(--muted); }
-  footer a { color: var(--muted); }
+  footer { border-top: 1px solid var(--line); margin-top: 7rem; padding-top: 3.5rem;
+           padding-bottom: 3rem; font-size: .9rem; color: var(--muted); }
+  footer a { color: var(--muted); text-decoration: none; }
+  footer a:hover { color: var(--fg); }
+
+  .foot-top { display: grid; gap: 3rem; }
+  @media (min-width: 56rem) {
+    .foot-top { grid-template-columns: 2fr 1fr 1fr; gap: 4rem; }
+  }
+  .foot-brand .wordmark { font-family: var(--display); font-size: 1.25rem; color: var(--fg);
+                          display: flex; align-items: center; gap: .55rem;
+                          margin-bottom: .9rem; letter-spacing: -.01em; }
+  .foot-brand p { max-width: 32ch; margin: 0; line-height: 1.6; }
+  .foot-links { display: flex; flex-direction: column; gap: .55rem; align-items: flex-start; }
+  .foot-links h2 { font-family: var(--body); font-size: .75rem; font-weight: 650;
+                   letter-spacing: .09em; text-transform: uppercase; color: var(--fg);
+                   margin: 0 0 .35rem; }
+
+  .foot-bottom { display: flex; flex-wrap: wrap; justify-content: space-between; gap: .6rem 2rem;
+                 border-top: 1px solid var(--line); margin-top: 3.5rem; padding-top: 1.5rem; }
+  .foot-bottom p { margin: 0; max-width: none; }
+
+  /* ---- copy beside a figure ---- */
+  .split { display: grid; gap: 3rem; align-items: center; }
+  @media (min-width: 64rem) { .split { grid-template-columns: 1fr 1fr; gap: 4.5rem; } }
+  /* Left-ragged: this half is an argument being read, not a section heading. */
+  .split-copy h2 { text-align: left; margin-inline: 0; max-width: 18ch; }
+  .split-copy p { text-align: left; margin-inline: 0; max-width: 42ch; }
+  /*
+   * width:100% is load-bearing. Every child of .merge is absolutely
+   * positioned, so the element has no intrinsic width, and as a grid item it
+   * collapsed to zero — a 400-point-tall column of nothing beside the copy.
+   */
+  .split .merge { margin: 0; width: 100%; height: 420px; }
+
+  /* ---- the closing pair: what we publish, what it costs ---- */
+  .closing { display: grid; gap: 4rem; align-items: start; }
+  @media (min-width: 62rem) { .closing { grid-template-columns: 1fr 1fr; gap: 5rem; } }
+  /* Left-ragged, because these two columns are read rather than scanned — the
+     centred spine above is for section headings, not for a comparison. */
+  .closing-col h2 { text-align: left; margin: .3rem 0 1.4rem; max-width: none; }
+  .closing-col > p { max-width: none; }
+
+  .ticks { list-style: none; padding: 0; margin: 0 0 1.6rem; }
+  .ticks li { position: relative; padding-left: 1.6rem; margin-bottom: .7rem;
+              line-height: 1.5; }
+  .ticks li::before { content: ''; position: absolute; left: 0; top: .62em;
+                      width: .55rem; height: .55rem; border-radius: 2px;
+                      background: var(--teal); }
+
+  .price-card { border: 1px solid var(--line); border-radius: 16px; padding: 2rem 1.9rem;
+                background: var(--bg); }
+  .price-free { font-family: var(--display); font-size: 1.9rem; line-height: 1.1;
+                margin: 0 0 .5rem; max-width: none; }
+  .price-card .muted { max-width: none; margin: 0 0 .3rem; }
+  .price-rule { height: 1px; background: var(--line); margin: 1.5rem 0; }
+  .price-take { font-weight: 650; margin: 0 0 .35rem; max-width: none; }
+  .price-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 1.5rem;
+                   margin-top: 1.8rem; }
 
   /* ---- /why editorial ---- */
   .editorial { max-width: 40rem; }
@@ -474,17 +540,53 @@ function Page(props: {
           </nav>
         </header>
         {props.children}
-        <footer class="col">
-          <p>
-            <a href="/security">Security</a> ·{' '}
-            <a href="/terms">Acceptable use</a> ·{' '}
-            <a href="/trust">Trust</a> ·{' '}
-            <a href="/canary.txt">Warrant canary</a> ·{' '}
-            {/* Kept, but no longer the only thing standing in for a security
-                page. RFC 9116 wants it discoverable; a buyer wants prose. */}
-            <a href="/.well-known/security.txt">security.txt</a>
-          </p>
-          <p class="small">Coram is closed source. We publish audits instead of code.</p>
+        {/*
+          A footer with something in it.
+
+          It was one run-on line of five links and a sentence, in a container
+          narrower than the page, which read as the place the design stopped.
+          The links were already grouped in the reader's head — what the product
+          is, and how we can be held to it — so they are grouped on the page,
+          and the closed-source line gets its own rule at the bottom where a
+          colophon belongs.
+        */}
+        <footer class="wide">
+          <div class="foot-top">
+            <div class="foot-brand">
+              <a class="wordmark" href="/">
+                <Mark size={22} />
+                Coram
+              </a>
+              <p>
+                The operating system for grassroots organizing. Eleven modules, one record of who
+                your people are, and as little held about them as the work allows.
+              </p>
+            </div>
+
+            <nav class="foot-links" aria-label="Product">
+              <h2>Product</h2>
+              <a href="/why">Why we built it</a>
+              <a href="/pricing">Pricing</a>
+              <a href="/demo">See the demo</a>
+              <a href="/app">Start free</a>
+            </nav>
+
+            <nav class="foot-links" aria-label="Accountability">
+              <h2>Accountability</h2>
+              <a href="/trust">Trust</a>
+              <a href="/security">Security</a>
+              <a href="/canary.txt">Warrant canary</a>
+              <a href="/terms">Acceptable use</a>
+              {/* RFC 9116 wants it discoverable; a buyer wants the prose page
+                  above it, which is why this is last rather than alone. */}
+              <a href="/.well-known/security.txt">security.txt</a>
+            </nav>
+          </div>
+
+          <div class="foot-bottom">
+            <p class="small">Coram is closed source. We publish audits instead of code.</p>
+            <p class="small">No trackers on this page, or on any other.</p>
+          </div>
         </footer>
       </body>
     </html>
@@ -694,7 +796,16 @@ marketing.get('/', (c) =>
       </section>
 
       {/* 2. The problem — six tools drift, collide, merge into the mark. */}
-      <div class="col section">
+      {/*
+        Copy on one side, the diagram on the other.
+
+        Stacked, this was a narrow column of three paragraphs with a 400-point
+        square of mostly empty space under it — the reader scrolled past the
+        argument to reach the picture of the argument. Side by side they are
+        read at once, which is the only reason the diagram is there.
+      */}
+      <div class="wide section split">
+        <div class="split-copy">
         <h2>Six tools that have never met</h2>
         <p class="lead">
           The person who came to Tuesday's meeting, gave twenty dollars, and replied to a text
@@ -705,6 +816,7 @@ marketing.get('/', (c) =>
           Every tool is built for whoever can pay and sold down-market at a price that assumes a
           budget line.
         </p>
+        </div>
 
         {/*
          * Rendered merged: the finished state of the scroll sequence, and
@@ -740,15 +852,57 @@ marketing.get('/', (c) =>
       />
 
       {/* 3. What we owe you — the emotional centre. */}
+      {/*
+        Four commitments across, not four bullets down.
+        
+        This was a <ul> of four slogans set at a 22-character measure in the
+        middle of a full-bleed dark band — a slide deck's worth of type in a
+        field of black, with coloured dots doing the only work. Four short
+        claims laid across the band, each with the sentence that makes it
+        checkable, is the same content composed rather than listed.
+
+        Every supporting line restates something already promised elsewhere on
+        the site — §10 on trackers, Federatio's totals-only parent, the free
+        tier, the waiver in a database function. Nothing here is a new claim.
+      */}
       <section class="creed">
-        <div class="col">
+        <div class="wide">
+          <p class="eyebrow">The commitments</p>
           <h2>What we owe you</h2>
-          <ul data-motion="stagger">
-            <li>We do not surveil the people who use this.</li>
-            <li>Decisions stay at the smallest competent level.</li>
-            <li>The free tier is not a funnel. It is the point.</li>
-            <li>We take nothing from bail funds and mutual aid.</li>
-          </ul>
+          <ol class="creed-grid" data-motion="stagger">
+            <li>
+              <span class="creed-n">01</span>
+              <h3>We do not surveil the people who use this.</h3>
+              <p>
+                No analytics in the product, no open tracking, no click tracking. Engagement is
+                what an organizer wrote down, never what we watched.
+              </p>
+            </li>
+            <li>
+              <span class="creed-n">02</span>
+              <h3>Decisions stay at the smallest competent level.</h3>
+              <p>
+                A coalition parent sees totals and never a member. What an organizer can reach is
+                bounded in the database, not by a setting somebody can move.
+              </p>
+            </li>
+            <li>
+              <span class="creed-n">03</span>
+              <h3>The free tier is not a funnel. It is the point.</h3>
+              <p>
+                Free under 250 contacts with all eleven modules. Not a trial, not feature-gated,
+                and no card to start.
+              </p>
+            </li>
+            <li>
+              <span class="creed-n">04</span>
+              <h3>We take nothing from bail funds and mutual aid.</h3>
+              <p>
+                One percent on fundraising and dues. Zero here — and the waiver is written into a
+                database function rather than a settings page.
+              </p>
+            </li>
+          </ol>
         </div>
       </section>
 
@@ -1036,38 +1190,53 @@ marketing.get('/', (c) =>
         </p>
       </div>
 
-      {/* 7. Trust + pricing. */}
-      <div class="col section">
-        <h2>What we publish</h2>
-        <p>
-          An annual security audit in full, including what we have not fixed. A semiannual
-          transparency report. A quarterly warrant canary. Documentation for taking everything
-          with you.
-        </p>
-        <p>
-          Every one carries a live date, and the page flags itself when something is overdue.{' '}
-          <a href="/trust">See where they stand</a> — including the ones we have not published
-          yet.
-        </p>
+      {/*
+        7. Trust and price, side by side, because they are the same question.
 
-        <h2 style="margin-top:4rem">What it costs</h2>
-        <p>
-          Free under 250 contacts, with all eleven modules. Not a trial, not feature-gated, no
-          card required. <a href="/pricing">Full pricing</a>.
-        </p>
-        <div class="highlight">
-          <p style="margin:0;font-weight:600">
-            1% on fundraising and dues. Zero on bail and mutual aid.
-          </p>
-          <p class="muted small" style="margin:.4rem 0 0">
-            The waiver is written into a database function, not a settings page.
+        These were two short blocks stacked down a 46rem column, which made the
+        end of the page a long thin ribbon of prose and put four hundred points
+        of nothing beside it. Somebody deciding at the bottom of a page is
+        weighing "can I rely on them" against "what does it cost me", and the
+        two are read together or not at all.
+      */}
+      <div class="wide section closing">
+        <div class="closing-col">
+          <p class="eyebrow">Accountability</p>
+          <h2>What we publish</h2>
+          <ul class="ticks">
+            <li>An annual security audit in full, including what we have not fixed</li>
+            <li>A semiannual transparency report</li>
+            <li>A quarterly warrant canary</li>
+            <li>Documentation for taking everything with you</li>
+          </ul>
+          <p>
+            Every one carries a live date, and the page flags itself when something is overdue.{' '}
+            <a href="/trust">See where they stand</a> — including the ones we have not published
+            yet.
           </p>
         </div>
-        <p style="margin-top:2rem">
-          <a class="cta" href="/app">
-            Start free <span aria-hidden="true">→</span>
-          </a>
-        </p>
+
+        <div class="closing-col">
+          <p class="eyebrow">Price</p>
+          <h2>What it costs</h2>
+          <div class="price-card">
+            <p class="price-free">Free under 250 contacts</p>
+            <p class="muted">
+              All eleven modules. Not a trial, not feature-gated, and no card to start.
+            </p>
+            <div class="price-rule" />
+            <p class="price-take">1% on fundraising and dues. Zero on bail and mutual aid.</p>
+            <p class="muted small">
+              The waiver is written into a database function, not a settings page.
+            </p>
+            <div class="price-actions">
+              <a class="cta" href="/app">
+                Start free <span aria-hidden="true">→</span>
+              </a>
+              <a href="/pricing">Full pricing</a>
+            </div>
+          </div>
+        </div>
       </div>
     </Page>,
   ),
