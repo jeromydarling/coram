@@ -53,13 +53,26 @@ function kenBurns() {
 }
 
 /**
- * §8.1 "The problem": six tool-shaped cards drift, collide, and merge into the
- * single Coram mark, driven by scroll.
+ * §8.1 "The problem": six tool-shaped cards separate out of one point as the
+ * section arrives, driven by scroll.
  *
- * The server renders them already merged — stacked at the centre, which is
- * both the reduced-motion fallback §8.1 asks for and the resting state of the
- * animation. Here we push them back out to their scattered positions and let
- * scroll progress bring them home.
+ * ---------------------------------------------------------------------------
+ * This used to run backwards, and it broke the rule at the top of this file
+ * ---------------------------------------------------------------------------
+ *
+ * The server renders the six cards scattered and legible, at the positions
+ * their inline `left`/`top` put them. The animation ended at
+ * `scale(0.3)` with `opacity: 0` — so scrolling the section into view shrank
+ * every card to nothing, and anyone who scrolled to it and stopped was looking
+ * at an empty box with a mark in it. The finished state of the animation was a
+ * state the server never renders, which is exactly what the header of this
+ * file says must not happen.
+ *
+ * So it is inverted. The cards begin pulled in toward the centre, small and
+ * transparent, and scroll progress carries them out to precisely where the
+ * server drew them: `translate(0, 0) scale(1)`, fully opaque. The resting
+ * state, the no-JavaScript state and the reduced-motion state are now the same
+ * picture — six tools, apart, which is the section's whole argument.
  *
  * `scroll()` is Framer Motion's own; §8.4 allows no scroll library beyond an
  * intersection observer, and this is not a third-party one. There is no scroll
@@ -85,42 +98,55 @@ function toolMerge() {
   const spreadY = Math.min(stage.clientHeight * 0.2, 95);
 
   cards.forEach((card, i) => {
-    // Evenly around a circle, so no card is privileged and the collision reads
-    // as six things converging rather than a queue.
+    // Evenly around a circle, so no card is privileged and the separation
+    // reads as six things coming apart rather than a queue forming.
     const angle = (i / cards.length) * Math.PI * 2 - Math.PI / 2;
-    const x = Math.cos(angle) * spreadX;
-    const y = Math.sin(angle) * spreadY;
+
+    /*
+     * Negative, because these offsets pull the card *toward* the centre from
+     * wherever the server drew it. The end of every keyframe list below is
+     * translate(0,0) scale(1) — the untouched, server-rendered position.
+     */
+    const x = -Math.cos(angle) * spreadX;
+    const y = -Math.sin(angle) * spreadY;
+    const tilt = (i % 2 ? 1 : -1) * 12;
 
     scroll(
       animate(
         card,
         {
           transform: [
-            `translate(${x}px, ${y}px) rotate(${(i % 2 ? 1 : -1) * 14}deg) scale(1.05)`,
-            `translate(${x * 0.35}px, ${y * 0.35}px) rotate(${(i % 2 ? 1 : -1) * 5}deg) scale(0.9)`,
-            'translate(0px, 0px) rotate(0deg) scale(0.3)',
+            `translate(${x}px, ${y}px) rotate(${tilt}deg) scale(0.45)`,
+            `translate(${x * 0.4}px, ${y * 0.4}px) rotate(${tilt * 0.4}deg) scale(0.88)`,
+            'translate(0px, 0px) rotate(0deg) scale(1)',
           ],
-          opacity: [1, 1, 0],
+          opacity: [0, 0.85, 1],
         },
-        { ease: 'easeInOut' },
+        { ease: 'easeOut' },
       ),
-      { target: stage, offset: ['start 85%', 'center 55%'] },
+      /*
+       * Finished by the time the stage's centre reaches two-thirds up the
+       * viewport, so the six labels are readable for the whole time the
+       * section is the thing being looked at — rather than resolving at the
+       * last possible moment and only while scrolling past.
+       */
+      { target: stage, offset: ['start 90%', 'center 65%'] },
     );
   });
 
   if (mark) {
-    // The mark arrives only once the cards are on top of it, so the merge
-    // reads as becoming one thing rather than a cross-fade between two.
+    /*
+     * The mark is the point they came out of, so it is there first and stays.
+     * It settles from slightly large rather than fading in, which reads as one
+     * thing dividing rather than as a seventh element joining.
+     */
     scroll(
       animate(
         mark,
-        {
-          opacity: [0, 0, 1, 1],
-          transform: ['scale(0.85)', 'scale(0.85)', 'scale(1.08)', 'scale(1)'],
-        },
+        { opacity: [0.35, 1, 1], transform: ['scale(1.25)', 'scale(1.04)', 'scale(1)'] },
         { ease: 'easeOut' },
       ),
-      { target: stage, offset: ['start 85%', 'center 55%'] },
+      { target: stage, offset: ['start 90%', 'center 65%'] },
     );
   }
 }

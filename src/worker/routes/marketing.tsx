@@ -834,7 +834,13 @@ marketing.get('/', (c) =>
               <div
                 class="tool"
                 data-tool
-                style={`left:${50 + Math.cos(angle) * 23}%;top:${50 + Math.sin(angle) * 28}%`}
+                /*
+                 * 30/34 rather than 23/28. The stage is half its old width now
+                 * that the copy sits beside it, and at the tighter spread the
+                 * six labels crowded the mark while the left and right edges
+                 * of the box stayed empty.
+                 */
+                style={`left:${50 + Math.cos(angle) * 30}%;top:${50 + Math.sin(angle) * 34}%`}
               >
                 {label}
               </div>
