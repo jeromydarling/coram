@@ -18,6 +18,7 @@ import { Hono } from 'hono';
 import type { Env, PurgeMessage, SendMessage, Vars } from './env';
 import { attachSession } from './lib/auth';
 import { ERROR, err, requestId } from './lib/http';
+import { isSecure, securityHeaders } from './lib/headers';
 import { hashPassword } from './lib/crypto';
 import { TenancyError, close, connect, withoutTenant } from './lib/rls';
 import { closeRequestDb } from './lib/db';
@@ -81,10 +82,11 @@ app.use('*', async (c, next) => {
 
   c.header('x-request-id', c.get('requestId'));
 
-  // Same-origin by construction, so these are cheap and unconditional.
-  c.header('X-Content-Type-Options', 'nosniff');
-  c.header('Referrer-Policy', 'no-referrer');
-  c.header('X-Frame-Options', 'DENY');
+  // Same-origin by construction, so these are cheap and unconditional. The set
+  // and the reasoning behind each directive live in lib/headers.ts.
+  for (const [name, value] of Object.entries(securityHeaders(isSecure(c.req.raw)))) {
+    c.header(name, value);
+  }
 });
 
 app.use('/api/*', attachSession);
