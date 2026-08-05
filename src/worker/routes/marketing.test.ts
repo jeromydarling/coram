@@ -367,9 +367,30 @@ describe('/security', () => {
   it('says what we do not have, including the awkward ones', async () => {
     const html = await (await get('/security', fakeEnv())).text();
     for (const gap of ABSENT) expect(html).toContain(gap.title);
-    expect(html).toMatch(/No SOC 2/);
-    expect(html).toMatch(/No independent penetration test/i);
+    expect(html).toMatch(/no independent penetration test/i);
     expect(html).toMatch(/closed source/i);
+  });
+
+  /*
+   * The SOC 2 line is the one most likely to drift, because there is now
+   * something real to point at and pointing at it is flattering.
+   *
+   * We did run a review against the criteria, control by control, and it found
+   * things that are now fixed. It is a self-assessment. Nobody independent
+   * signed it, and the distance between those two is the entire difference
+   * between a claim and a certification — which is exactly the distance a
+   * security page is tempted to close with a well-chosen verb.
+   *
+   * So both halves are asserted: that the work is admitted, and that its limit
+   * is admitted in the same breath.
+   */
+  it('says the SOC 2 work happened and that it was our own', async () => {
+    const html = await (await get('/security', fakeEnv())).text();
+    expect(html).toMatch(/SOC 2 criteria ourselves/i);
+    expect(html).toMatch(/nobody independent has signed/i);
+    expect(html).toMatch(/no badge/i);
+    // The exact phrasings that would turn a self-assessment into a credential.
+    expect(html).not.toMatch(/\b(SOC ?2 (certified|compliant|audited)|we are SOC ?2)\b/i);
   });
 
   it('does not claim an audit it has not had', async () => {

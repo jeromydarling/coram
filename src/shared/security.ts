@@ -185,13 +185,17 @@ export const ABSENT: Gap[] = [
   },
   {
     id: 'soc2',
-    title: 'No SOC 2, and we do not imply one',
+    title: 'Our SOC 2 review is our own, not an auditor’s',
     claim:
-      'We have not been audited against SOC 2. You will not find a badge here, because there is ' +
-      'nothing behind it.',
+      'We have gone through the SOC 2 criteria ourselves, control by control, and we are working ' +
+      'the results in order of how bad they were. Nobody independent has signed any of it, so ' +
+      'there is no badge on this page — a badge would mean something we have not earned.',
     instead:
-      'It is expensive, and so far no grassroots group has asked us for it. If a union or a ' +
-      'funded coalition makes it a condition, we will do it and say so on this page.',
+      'Marking your own homework is worth doing and worth exactly what it sounds like. What it ' +
+      'has been good for is an honest written list of where we are weak, and several of the ' +
+      'things on that list are already fixed. A real audit costs more than this project has, and ' +
+      'no grassroots group has asked us for one; if a union or a funded coalition makes it a ' +
+      'condition, we will pay for it and say so here.',
   },
   {
     id: 'not-open-source',
