@@ -166,12 +166,22 @@ export const PROTECTED: Rule[] = [
   },
 ];
 
-/** What we can actually see, stated plainly rather than implied. */
+/**
+ * What we can actually see, stated plainly rather than implied.
+ *
+ * Rewritten out of the vocabulary it was in. It said "Colloquium encrypts
+ * them" and "we hold only ciphertext" — a module name and a term of art, on a
+ * page read by someone deciding whether their group is safe here. The facts
+ * are unchanged; the words are ones they already have.
+ */
 export const LIMITS: string[] = [
-  'We do not read your channel messages. Colloquium encrypts them and the key never reaches us.',
-  'We do not read your organiser notes. Those are encrypted in your browser with your passphrase.',
-  'We do not scan content for prohibited material, because for most of it we hold only ciphertext.',
-  'This means enforcement here is driven by reports and by what is publicly visible — petitions, ' +
+  'We do not read your channel messages. They are encrypted before they leave your device, and ' +
+    'nothing that would open them ever reaches us.',
+  'We do not read your organiser notes. Those are encrypted on your own screen, with a ' +
+    'passphrase we never see.',
+  'We cannot check what is inside them for prohibited material, because most of what we hold is ' +
+    'unreadable to us. That is the trade, and it is the right way round.',
+  'So enforcement here runs on reports, and on what is already out in the open — petitions, ' +
     'public event pages, fundraising pages. It is not, and cannot be, proactive surveillance.',
 ];
 

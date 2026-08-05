@@ -73,6 +73,24 @@ const STYLE = `
     --deep:  #1e3a8f;
     --accent: var(--flame);
 
+    /*
+     * The fifth colour, and the one that is not part of the rotation.
+     *
+     * Two places say "read this one differently": the conduct that gets an
+     * organisation removed, and the gaps on /security. Both had been asking for
+     * var(--warn) and this token did not exist, so "color: var(--warn)" fell
+     * back to body ink, and "border-top: 2px solid var(--warn)" was invalid
+     * outright — it computed to "0px none", meaning the rule was simply not
+     * drawn. Nothing looked broken; the emphasis was just absent, which is the
+     * worst way for a style to fail.
+     *
+     * Deliberately a darker rust than --flame rather than a brighter red.
+     * --flame is the accent and appears on things we want you to click; this
+     * appears on things we want you to slow down and read, and the two should
+     * not be the same colour.
+     */
+    --warn: #a3391c;
+
     --measure: 34rem;
     --display: ui-serif, Iowan Old Style, Palatino Linotype, Georgia, serif;
     --body: ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif;
@@ -80,7 +98,8 @@ const STYLE = `
   @media (prefers-color-scheme: dark) {
     :root { --fg: #f6ece0; --bg: #120e0b; --muted: #a3968a; --line: #302620;
             --ink: #0c0908; --ink-fg: #fff6ec;
-            --flame: #ff6144; --gold: #ffbe4d; --teal: #2bb3a3; --deep: #6d8cf0; }
+            --flame: #ff6144; --gold: #ffbe4d; --teal: #2bb3a3; --deep: #6d8cf0;
+            --warn: #ff9270; }
   }
   * { box-sizing: border-box; }
   body { margin: 0; background: var(--bg); color: var(--fg);
@@ -159,6 +178,13 @@ const STYLE = `
    * and the essay pages keep their ragged right, because centred paragraphs
    * make every line start in a different place and are harder to read.
    */
+  /*
+   * h1 is in this list because of /security. Only the essay pages open with
+   * one inside a .section, so its absence was invisible until one did — and
+   * then the page had a left-pinned title over a centred standfirst, which is
+   * the same failure the comment above describes, one element higher up.
+   */
+  .wide.section > h1,
   .wide.section > h2,
   .wide.section > p,
   .wide.section > .eyebrow,
@@ -170,6 +196,7 @@ const STYLE = `
   .col.section > h2,
   .col.section > .lead,
   .col.section > .eyebrow { text-align: center; margin-inline: auto; }
+  .wide.section > h1 { max-width: 26ch; }
   .wide.section > h2,
   .col.section > h2 { max-width: 22ch; }
   .wide.section > .lead,
@@ -177,6 +204,8 @@ const STYLE = `
   .wide.section > p { max-width: 54ch; }
   .wide.section > .shots,
   .wide.section > .claims,
+  .wide.section > .gaps,
+  .wide.section > .points,
   .wide.section > .grid,
   .wide.section > .merge { margin-inline: auto; }
 
@@ -207,6 +236,64 @@ const STYLE = `
   .claim:nth-child(4n+4) h3 { border-top-color: var(--deep); }
   .claim p { margin: 0; font-size: .93rem; line-height: 1.6; color: var(--muted);
              max-width: none; }
+  /*
+   * The line under a claim on /security that says what the reader can do about
+   * it. It is set apart rather than run on, because a claim and a way to check
+   * the claim are different kinds of sentence and the page's whole argument is
+   * that the second kind exists. The rule down the left is doing the work an
+   * italic would do badly at this size.
+   */
+  .check { margin: .7rem 0 0; padding-left: .85rem; border-left: 2px solid var(--line);
+           font-size: .88rem; line-height: 1.55; color: var(--muted); }
+  /*
+   * var(--fg), not var(--ink). --ink is the dark panel *background* and
+   * --ink-fg is the type that goes on it; borrowing --ink for text works by
+   * accident in light mode, where it happens to be near-black on cream, and
+   * disappears completely in dark mode, where it is near-black on near-black.
+   * The label was legible on the machine it was written on and invisible on
+   * half the machines that would read it.
+   */
+  .check b { display: block; font-family: var(--body); font-weight: 650; font-size: .74rem;
+             letter-spacing: .09em; text-transform: uppercase; color: var(--fg);
+             margin-bottom: .2rem; }
+
+  /*
+   * The gaps. Deliberately not .claim: a page where the missing things are
+   * styled identically to the present ones reads as eight more features, and
+   * the reader skims past the half that makes the rest believable. Same grid,
+   * warn-coloured rule, and the admission set at reading size with the
+   * mitigation smaller underneath — which is the honest order, since somebody
+   * scanning should catch the gap and not the excuse.
+   */
+  .gaps { display: grid; gap: 2.4rem 3rem; margin: 2.5rem auto 0; max-width: 56rem;
+          grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  @media (max-width: 46rem) { .gaps { grid-template-columns: 1fr; gap: 1.8rem; } }
+  .gap h3 { font-family: var(--body); font-weight: 650; font-size: .95rem; letter-spacing: 0;
+            margin: 0 0 .35rem; padding-top: .7rem; border-top: 2px solid var(--warn); }
+  .gap p { margin: 0; font-size: .93rem; line-height: 1.6; max-width: none; }
+  .gap p + p { margin-top: .55rem; font-size: .88rem; color: var(--muted); }
+
+  /*
+   * Two-column facts with no heading of their own — the limits on what we can
+   * see, and what we promise a researcher.
+   *
+   * They were briefly rendered as .claim without an h3, which strips the
+   * coloured rule the class exists for and leaves four grey paragraphs floating
+   * in a grid: text that looks like it was never given a design, in the middle
+   * of a page arguing for care. A short rule per item is the whole treatment,
+   * and it is enough, because these are one sentence each and a heading would
+   * be a heading over nothing.
+   */
+  .points { display: grid; gap: 1.8rem 3rem; margin: 2.5rem auto 0; max-width: 52rem;
+            grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  @media (max-width: 46rem) { .points { grid-template-columns: 1fr; gap: 1.4rem; } }
+  .points p { margin: 0; padding-top: .7rem; border-top: 2px solid var(--line);
+              font-size: .92rem; line-height: 1.6; max-width: none; text-align: left; }
+  .points p:nth-child(4n+1) { border-top-color: var(--flame); }
+  .points p:nth-child(4n+2) { border-top-color: var(--gold); }
+  .points p:nth-child(4n+3) { border-top-color: var(--teal); }
+  .points p:nth-child(4n+4) { border-top-color: var(--deep); }
+
   .muted { color: var(--muted); }
   .small { font-size: .87rem; }
   a { color: inherit; text-underline-offset: .18em; }
@@ -1830,79 +1917,106 @@ marketing.get('/demo', (c) =>
 // ---------------------------------------------------------------------------
 
 /**
- * The security posture in prose a buyer can read.
+ * The security posture, for the person who has to decide.
  *
  * Before this the entire security surface was a footer link to security.txt —
  * a file that tells a researcher where to send a report and tells a prospective
  * customer nothing. Rendered from src/shared/security.ts so the page and the
  * claims cannot drift apart.
  *
- * Every control carries how to verify it, and the second half is what we do not
- * have. That ordering is deliberate: a reader who finds the gap themselves
- * stops believing the first half.
+ * Two things govern the writing, and both are in that file's header at length.
+ * The reader is a tenant organizer, not an engineer, so no sentence here needs
+ * a computer science degree. And the mechanism behind each boundary is not on
+ * the page: our customers are people a state has an active interest in, and a
+ * current, indexed description of exactly what each protection rests on is a
+ * map somebody could use. The commitments are public; the wiring is for an
+ * auditor under NDA.
+ *
+ * The order is deliberate. What is in place, then what we can see anyway, then
+ * what we do not have — a reader who finds the gap themselves stops believing
+ * everything above it, so the gaps are on the page and styled so they are not
+ * mistaken for eight more features.
  */
 marketing.get('/security', (c) =>
   c.html(
     <Page
       title="Security — Coram"
-      description="How Coram is built, what it can see, and what it does not have."
+      description="What Coram protects, what it can see anyway, and what it does not have."
     >
-      <main class="col">
-        <h1>Security</h1>
-        <p class="lead">
-          The argument for this product is that it holds less than the alternative. Here is what
-          that means concretely, how you could check it, and where it falls short.
-        </p>
+      <main>
+        <section class="wide section" style="margin-top:4rem">
+          <p class="eyebrow">Security</p>
+          <h1>The case for this is that we hold less than the alternative.</h1>
+          <p class="lead">
+            So the useful version of this page is not a list of reassurances. It is what that
+            actually gets you, what you can do to check each one yourself, and the places it falls
+            short — that last part included because you would find them anyway.
+          </p>
+        </section>
 
-        <h2>What is actually in place</h2>
-        {CONTROLS.map((ctl) => (
-          <div class="card">
-            <h3 style="margin-top:0">{ctl.title}</h3>
-            <p style="margin-bottom:.5rem">{ctl.claim}</p>
-            <p class="muted small" style="margin:0">
-              <strong>How you would check:</strong> {ctl.verify}
-            </p>
+        <section class="wide section">
+          <h2>What protects your group</h2>
+          <div class="claims">
+            {CONTROLS.map((ctl) => (
+              <div class="claim">
+                <h3>{ctl.title}</h3>
+                <p>{ctl.claim}</p>
+                <p class="check">
+                  <b>Check it yourself</b>
+                  {ctl.check}
+                </p>
+              </div>
+            ))}
           </div>
-        ))}
+        </section>
 
-        <h2>What we can still see</h2>
-        <ul>
-          {LIMITS.map((line) => (
-            <li>{line}</li>
-          ))}
-        </ul>
-
-        <h2>What we do not have</h2>
-        <p>
-          This half is the point. Every security page lists controls; the ones worth trusting say
-          what is missing.
-        </p>
-        {ABSENT.map((gap) => (
-          <div class="card">
-            <h3 style="margin-top:0">{gap.title}</h3>
-            <p style="margin-bottom:.5rem">{gap.claim}</p>
-            <p class="muted small" style="margin:0">
-              {gap.verify}
-            </p>
+        <section class="wide section">
+          <h2>What we can see anyway</h2>
+          <p>
+            The things above are worth nothing if this part is vague, so it is not. Encryption
+            covers what is said; it does not cover that a workspace exists.
+          </p>
+          <div class="points">
+            {LIMITS.map((line) => (
+              <p>{line}</p>
+            ))}
           </div>
-        ))}
+        </section>
 
-        <h2>Reporting a vulnerability</h2>
-        <p>
-          <a href={`mailto:${DISCLOSURE.contact}`}>{DISCLOSURE.contact}</a>, or the details in{' '}
-          <a href={DISCLOSURE.wellKnown}>security.txt</a>.
-        </p>
-        <ul>
-          {DISCLOSURE.commitments.map((line) => (
-            <li>{line}</li>
-          ))}
-        </ul>
+        <section class="wide section">
+          <h2>What we do not have</h2>
+          <p>
+            This half is the point. Every security page lists strengths; the ones worth trusting
+            say what is missing, in the same size type.
+          </p>
+          <div class="gaps">
+            {ABSENT.map((gap) => (
+              <div class="gap">
+                <h3>{gap.title}</h3>
+                <p>{gap.claim}</p>
+                <p>{gap.instead}</p>
+              </div>
+            ))}
+          </div>
+        </section>
 
-        <p class="muted small">
-          Published artifacts — audits, the transparency report, the warrant canary — are on{' '}
-          <a href="/trust">/trust</a>, which flags its own staleness rather than waiting to be
-          asked.
-        </p>
+        <section class="wide section">
+          <h2>Found something?</h2>
+          <p>
+            Write to <a href={`mailto:${DISCLOSURE.contact}`}>{DISCLOSURE.contact}</a>, or use the
+            details in <a href={DISCLOSURE.wellKnown}>security.txt</a>. What we promise in return:
+          </p>
+          <div class="points">
+            {DISCLOSURE.commitments.map((line) => (
+              <p>{line}</p>
+            ))}
+          </div>
+          <p class="muted small" style="margin-top:3rem">
+            The reviews, the transparency report and the warrant canary are on{' '}
+            <a href="/trust">/trust</a>, which flags its own staleness rather than waiting to be
+            asked about it.
+          </p>
+        </section>
       </main>
     </Page>,
   ),

@@ -243,6 +243,91 @@ describe('the photography actually reaches a page', () => {
   });
 });
 
+describe('the stylesheet', () => {
+  /*
+   * Every custom property that gets used has to be one that exists.
+   *
+   * `--warn` was referenced in two places and defined in none. CSS does not
+   * complain about that; it does something quieter and worse. `color:
+   * var(--warn)` falls back to inherited body ink, so the headings for conduct
+   * that gets an organisation removed rendered in the same colour as everything
+   * around them. And `border-top: 2px solid var(--warn)` is invalid at computed
+   * value time, which throws away the entire shorthand — the rule computed to
+   * `0px none` and was simply not drawn.
+   *
+   * Both are invisible failures. Nothing errors, nothing warns, the markup is
+   * correct, and the emphasis a reader was supposed to get is just absent. A
+   * typo in a token name would do exactly the same thing, which is why this
+   * checks the whole set rather than the one that was wrong.
+   */
+  it('defines every custom property it uses', async () => {
+    const html = await (await get('/', fakeEnv())).text();
+    const style = /<style[^>]*>([\s\S]*?)<\/style>/.exec(html)?.[1] ?? '';
+    expect(style.length).toBeGreaterThan(1000);
+
+    const defined = new Set([...style.matchAll(/(--[a-z0-9-]+)\s*:/gi)].map((m) => m[1]));
+    // A var() with a fallback — var(--x, #fff) — degrades gracefully by design.
+    const used = [...style.matchAll(/var\(\s*(--[a-z0-9-]+)\s*\)/gi)].map((m) => m[1]);
+
+    expect([...new Set(used.filter((name) => !defined.has(name)))]).toEqual([]);
+  });
+
+  /*
+   * The near miss version of the same bug.
+   *
+   * The check above scans the whole sheet, so a token defined only inside the
+   * dark-scheme block counts as defined — and it is, for half the readers. The
+   * other half get the silent fallback, on a page nobody tests in light mode
+   * because their own machine is dark. Every colour the dark block overrides
+   * must have a light value to override.
+   */
+  it('gives every dark-scheme colour a light one to override', async () => {
+    const html = await (await get('/', fakeEnv())).text();
+    const style = /<style[^>]*>([\s\S]*?)<\/style>/.exec(html)?.[1] ?? '';
+
+    const dark = /prefers-color-scheme:\s*dark\s*\)\s*\{([\s\S]*?)\n\s*\}/.exec(style)?.[1] ?? '';
+    expect(dark, 'no dark-scheme block found').toContain('--fg');
+
+    const light = style.slice(0, style.indexOf('@media')).match(/(--[a-z0-9-]+)\s*:/gi) ?? [];
+    const lightNames = new Set(light.map((d) => d.replace(/\s*:$/, '')));
+
+    const orphans = [...dark.matchAll(/(--[a-z0-9-]+)\s*:/gi)]
+      .map((m) => m[1]!)
+      .filter((name) => !lightNames.has(name));
+    expect(orphans).toEqual([]);
+  });
+
+  /*
+   * The same check over the inline style attributes in the markup, which is
+   * where the original --warn reference lived. It is a separate assertion
+   * because the two are separate places to make the mistake, and the acceptable
+   * use page was the one that had it.
+   */
+  it('defines every custom property the markup reaches for', async () => {
+    // Every page, and each one asserted to have actually rendered. The first
+    // version of this list carried '/acceptable-use', which does not exist —
+    // that content is under /terms. A 404 body has no var() in it, so the entry
+    // passed while testing nothing, which is the failure mode a list of route
+    // strings has.
+    const pages = ['/', '/pricing', '/why', '/trust', '/terms', '/security', '/demo'];
+    const responses = await Promise.all(pages.map((p) => get(p, fakeEnv())));
+    for (const [i, res] of responses.entries()) expect(res.status, pages[i]).toBe(200);
+    const htmls = await Promise.all(responses.map((r) => r.text()));
+
+    const style = /<style[^>]*>([\s\S]*?)<\/style>/.exec(htmls[0]!)?.[1] ?? '';
+    const defined = new Set([...style.matchAll(/(--[a-z0-9-]+)\s*:/gi)].map((m) => m[1]));
+
+    const missing = new Set<string>();
+    for (const [i, html] of htmls.entries()) {
+      const body = html.replace(/<style[^>]*>[\s\S]*?<\/style>/, '');
+      for (const m of body.matchAll(/var\(\s*(--[a-z0-9-]+)\s*\)/gi)) {
+        if (!defined.has(m[1]!)) missing.add(`${pages[i]}: ${m[1]}`);
+      }
+    }
+    expect([...missing]).toEqual([]);
+  });
+});
+
 describe('/security', () => {
   /*
    * The whole security surface used to be a footer link to security.txt — a
@@ -256,12 +341,22 @@ describe('/security', () => {
     }
   });
 
+  /*
+   * The check line used to say "How you would check:" and then describe our
+   * internals — an iteration count, which privilege the isolation rests on not
+   * having. That is not something a reader can check, it is an assertion in the
+   * costume of proof, and it published a map besides. security.test.ts governs
+   * the wording; this only asserts every control still reaches the page with
+   * its check attached, since a claim rendered without one is the regression
+   * that matters here.
+   */
   it('gives every control a way to check it, not just a claim', async () => {
     const html = await (await get('/security', fakeEnv())).text();
     for (const ctl of CONTROLS) {
       expect(html).toContain(ctl.title);
-      expect(html).toContain('How you would check');
+      expect(html, ctl.id).toContain(ctl.check);
     }
+    expect(html).toContain('Check it yourself');
   });
 
   /*
