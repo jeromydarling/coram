@@ -8,7 +8,7 @@
  * localStorage is not a stolen account.
  */
 
-import { Navigate, Outlet } from 'react-router-dom';
+import { Navigate, Outlet } from 'react-router';
 import { useQuery } from '@tanstack/react-query';
 
 import { ApiError, api, type Workspace } from '@/lib/api';

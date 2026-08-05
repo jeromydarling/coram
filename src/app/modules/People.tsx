@@ -18,7 +18,7 @@
 
 import { useEffect, useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 import { Download, Plus, Printer, Search, Upload } from 'lucide-react';
 
 import { Badge } from '@/components/ui/badge';

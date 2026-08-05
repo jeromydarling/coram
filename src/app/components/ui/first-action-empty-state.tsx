@@ -10,7 +10,7 @@
  *      obvious next step. This component guarantees there always is one.
  */
 import { LucideIcon } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 import { Button } from '@/components/ui/button';
 import { EmptyState } from '@/components/ui/empty-state';
 

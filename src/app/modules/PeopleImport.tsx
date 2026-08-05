@@ -16,7 +16,7 @@
 
 import { useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 import { ArrowLeft, Undo2 } from 'lucide-react';
 
 import { Badge } from '@/components/ui/badge';

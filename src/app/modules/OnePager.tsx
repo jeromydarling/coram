@@ -34,7 +34,7 @@
 
 import { useQuery } from '@tanstack/react-query';
 import { ArrowLeft, Printer } from 'lucide-react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router';
 
 import { Button } from '@/components/ui/button';
 import { Failed, Loading } from '@/components/coram/State';
