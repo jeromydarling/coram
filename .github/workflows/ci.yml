@@ -33,3 +33,24 @@ jobs:
 
       - name: Tests
         run: npm test
+
+      # Anything that reaches a user's browser or the Worker runtime. Scoped to
+      # production dependencies and set to fail on any severity, because that
+      # set is small, we control every entry in it, and "moderate" in a package
+      # we ship is not a thing to sit on.
+      #
+      # devDependencies are deliberately not gated here. Two advisories in the
+      # local toolchain — esbuild's dev server via drizzle-kit, undici via
+      # miniflare — have no version to move to; npm's only suggested fix for
+      # each is a downgrade. Failing every build on them would train everyone to
+      # ignore this step, which is the outcome the step exists to prevent. They
+      # are reviewed when wrangler or drizzle-kit publishes, and the reasoning
+      # is in the commit that accepted them.
+      - name: Audit what we ship
+        run: npm audit --omit=dev --audit-level=low
+
+      # Not fatal. It prints the toolchain's advisories into the log so they
+      # stay visible, and so the day one of them becomes fixable is a day
+      # somebody sees it.
+      - name: Audit the toolchain (advisory)
+        run: npm audit --audit-level=moderate || true

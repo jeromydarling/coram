@@ -1,0 +1,48 @@
+# Dependency updates, weekly, in three groups.
+#
+# The grouping is the whole design. Ungrouped Dependabot on a tree this size
+# opens a dozen pull requests a week, all of them individually trivial, and the
+# rational response to a dozen trivial pull requests is to stop reading them —
+# at which point the security ones are buried with the rest. Three PRs a week
+# is a number a person actually reviews.
+#
+# `security-updates` is separate and ungrouped on purpose: a CVE should arrive
+# as its own pull request with its own advisory in the body, not folded into a
+# patch bump of eleven other things.
+
+version: 2
+
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+    open-pull-requests-limit: 5
+    labels: [dependencies]
+    groups:
+      # Everything the Worker actually ships. Small and worth reading line by
+      # line — hono, postgres.js, zod, react, the router.
+      runtime:
+        dependency-type: production
+        update-types: [minor, patch]
+      # The toolchain. A vitest or wrangler bump breaks CI loudly or not at all,
+      # so these can travel together.
+      tooling:
+        dependency-type: development
+        update-types: [minor, patch]
+    ignore:
+      # Majors come with release notes worth reading and a migration worth
+      # planning. react-router 7 -> 8 folded a whole package away; that is not a
+      # change to merge on a Monday morning because a bot opened it.
+      - dependency-name: '*'
+        update-types: [version-update:semver-major]
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly
+    labels: [dependencies]
+    groups:
+      actions:
+        patterns: ['*']

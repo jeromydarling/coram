@@ -1,0 +1,46 @@
+# Who has to look at a change before it lands.
+#
+# This file is half of change management (SOC 2 CC8.1): the other half is a
+# branch protection rule on main requiring a review from a code owner, which
+# lives in repository settings and cannot be set from here. Without that rule
+# this file is advisory — it requests reviewers and nothing more — so if you are
+# reading this and the rule is not on, turn it on before trusting the list
+# below.
+#
+# One owner today, because there is one person. The paths are still enumerated
+# rather than collapsed into a single `*` line, because the point of the file is
+# to say which parts of the tree are load-bearing, and that answer does not
+# change when the second person arrives — only the names on the right do.
+
+* @jeromydarling
+
+# ---------------------------------------------------------------------------
+# The parts where a careless change is not recoverable
+# ---------------------------------------------------------------------------
+
+# Migrations are append-only and run against production data. A mistake here is
+# not a revert, it is a restore.
+/migrations/ @jeromydarling
+
+# Row-level security, the session, the crypto, and the response headers. Every
+# tenancy boundary in the product is one of these four files being right.
+/src/worker/lib/rls.ts @jeromydarling
+/src/worker/lib/auth.ts @jeromydarling
+/src/worker/lib/crypto.ts @jeromydarling
+/src/worker/lib/headers.ts @jeromydarling
+
+# The retention registry and the sweep that acts on it. §3.4 is a public
+# promise; this is the code that keeps it.
+/src/worker/lib/retention.ts @jeromydarling
+/src/worker/cron/purge.ts @jeromydarling
+/scripts/check-retention.ts @jeromydarling
+
+# Bindings, secrets, cron schedules, and what the Worker is allowed to reach.
+/wrangler.toml @jeromydarling
+/.github/ @jeromydarling
+
+# The commitments themselves — the bail-fund waiver, the free tier, the burn
+# switch, the warrant canary. Changing the text is changing the promise.
+/src/worker/routes/marketing.tsx @jeromydarling
+/src/worker/lib/trust.ts @jeromydarling
+/src/worker/cron/canary.ts @jeromydarling
