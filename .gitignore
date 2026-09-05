@@ -30,6 +30,10 @@ dist-ssr
 .env
 .env.*
 !.env.example
+# wrangler's own convention for local-only secrets (AUTH_JWT_SECRET and
+# friends) — .env.* above does not catch this name.
+.dev.vars
+.dev.vars.*
 
 # Build output
 dist
