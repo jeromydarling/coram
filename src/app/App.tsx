@@ -15,6 +15,7 @@ import { BrowserRouter, Navigate, Route, Routes } from 'react-router';
 
 import { Toaster } from '@/components/ui/sonner';
 import { TooltipProvider } from '@/components/ui/tooltip';
+import { AcceptInvite } from '@/modules/AcceptInvite';
 import { Advocacy } from '@/modules/Advocacy';
 import { Coalition } from '@/modules/Coalition';
 import { Drafting } from '@/modules/Drafting';
@@ -54,6 +55,7 @@ export function App() {
         <BrowserRouter basename="/app">
           <Routes>
             <Route path="/login" element={<Login />} />
+            <Route path="/invite/:token" element={<AcceptInvite />} />
             {/* Everything below requires a session. RequireSession asks the
                 Worker rather than trusting anything in localStorage — the
                 session is an HttpOnly cookie and this app deliberately holds

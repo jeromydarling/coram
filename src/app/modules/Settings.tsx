@@ -10,7 +10,7 @@
 
 import { useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { Download, Flame } from 'lucide-react';
+import { Copy, Download, Flame, TriangleAlert, UserPlus, X } from 'lucide-react';
 
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -30,7 +30,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Fact, Facts, Guarantee, PageHeader, Section } from '@/components/coram/Page';
 import { Failed, Loading } from '@/components/coram/State';
-import { api, day, patch, post, put, type Workspace } from '@/lib/api';
+import { api, day, del, patch, post, put, type Workspace } from '@/lib/api';
 import { failed, say } from '@/lib/notify';
 
 const ROLES = ['steward', 'organizer', 'member', 'legal', 'observer'] as const;
@@ -48,6 +48,14 @@ interface Member {
   role: string;
   display_name: string | null;
   created_at: string;
+}
+
+interface Invite {
+  id: string;
+  email: string;
+  role: string;
+  created_at: string;
+  expires_at: string;
 }
 
 interface Brand {
@@ -111,8 +119,35 @@ function Members({ isSteward }: { isSteward: boolean }) {
     onError: (e: Error) => failed('Not changed', e),
   });
 
+  const stewardCount = members.data?.filter((m) => m.role === 'steward').length ?? 0;
+
   return (
     <>
+      {/*
+       * The safeguard a premortem on churn asked for. Every workspace starts
+       * with exactly one steward — coram.create_workspace() makes its
+       * creator the sole one — and until this screen said so, nothing ever
+       * told anyone that staying that way is a risk rather than a
+       * convenience. Organizing groups lose their most active person
+       * constantly; a workspace should not go with them.
+       *
+       * A warning, not a floor: a real one-person group is not a bug, and the
+       * product does not get to insist otherwise. It only has to be visible.
+       */}
+      {isSteward && !members.isLoading && stewardCount === 1 && (
+        <div className="mb-6 flex items-start gap-3 rounded-lg border border-destructive/30 bg-destructive/[0.05] px-5 py-4">
+          <TriangleAlert className="mt-0.5 h-4 w-4 shrink-0 text-destructive" />
+          <div>
+            <p className="text-sm font-medium">You are the only steward</p>
+            <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
+              If you lose access to this workspace, nobody left in it can manage billing, change a
+              role, or close it. Invite someone else as a steward before that is a problem instead
+              of after.
+            </p>
+          </div>
+        </div>
+      )}
+
       <Section title="Members">
         {members.isLoading ? (
           <Loading rows={3} />
@@ -151,6 +186,8 @@ function Members({ isSteward }: { isSteward: boolean }) {
         )}
       </Section>
 
+      {isSteward && <Invites />}
+
       <Section title="What each role reaches" hint="Enforced in the database, not in this page.">
         <dl className="paper divide-y">
           {ROLES.map((r) => (
@@ -169,6 +206,174 @@ function Members({ isSteward }: { isSteward: boolean }) {
         manage billing or close it. Promote someone else first.
       </Guarantee>
     </>
+  );
+}
+
+/**
+ * The other half of "who is in it": who has been asked to be, and hasn't
+ * answered yet.
+ *
+ * The invite is handed back as a link rather than mailed — see api/workspace.ts
+ * and 0020_workspace_invites.sql's header for why that is the honest choice
+ * here rather than a shortcut — so the moment right after creating one is the
+ * only chance a steward gets to actually send it. Losing that link means
+ * doing the whole thing again, so it stays on screen, copyable, rather than
+ * closing the dialog out from under them.
+ */
+function Invites() {
+  const client = useQueryClient();
+  const [open, setOpen] = useState(false);
+  const [email, setEmail] = useState('');
+  const [role, setRole] = useState<(typeof ROLES)[number]>('organizer');
+  const [justCreated, setJustCreated] = useState<{ path: string; email: string } | null>(null);
+
+  const invites = useQuery({
+    queryKey: ['invites'],
+    queryFn: () => api<Invite[]>('/workspace/invites'),
+  });
+
+  const create = useMutation({
+    mutationFn: () => post<{ path: string }>('/workspace/invites', { email: email.trim(), role }),
+    onSuccess: (data) => {
+      setJustCreated({ path: data.path, email });
+      setEmail('');
+      void client.invalidateQueries({ queryKey: ['invites'] });
+    },
+    onError: (e: Error) => failed('Not invited', e),
+  });
+
+  const revoke = useMutation({
+    mutationFn: (id: string) => del(`/workspace/invites/${id}`),
+    onSuccess: () => {
+      say('Invitation withdrawn.');
+      void client.invalidateQueries({ queryKey: ['invites'] });
+    },
+    onError: (e: Error) => failed('Not withdrawn', e),
+  });
+
+  const link = justCreated ? window.location.origin + justCreated.path : '';
+
+  return (
+    <Section title="Invitations" hint="Good for seven days, and for one address.">
+      {!invites.isLoading && !invites.isError && invites.data?.length === 0 && !justCreated ? (
+        <p className="text-sm text-muted-foreground">Nobody is waiting on an invitation.</p>
+      ) : invites.isLoading ? (
+        <Loading rows={1} />
+      ) : invites.isError ? (
+        <Failed error={invites.error} />
+      ) : (
+        <ul className="paper divide-y">
+          {invites.data?.map((i) => (
+            <li key={i.id} className="flex flex-wrap items-center gap-x-3 gap-y-1 px-5 py-3">
+              <span className="font-medium">{i.email}</span>
+              <Badge variant="secondary" className="font-normal">
+                {i.role}
+              </Badge>
+              <span className="text-sm text-muted-foreground">sent {day(i.created_at)}</span>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="ml-auto h-7 text-muted-foreground"
+                disabled={revoke.isPending}
+                onClick={() => revoke.mutate(i.id)}
+              >
+                <X className="mr-1.5 h-3.5 w-3.5" />
+                Withdraw
+              </Button>
+            </li>
+          ))}
+        </ul>
+      )}
+
+      <Dialog
+        open={open}
+        onOpenChange={(next) => {
+          setOpen(next);
+          if (!next) setJustCreated(null);
+        }}
+      >
+        <DialogTrigger asChild>
+          <Button variant="outline" size="sm" className="mt-4">
+            <UserPlus className="mr-2 h-4 w-4" />
+            Invite someone
+          </Button>
+        </DialogTrigger>
+        <DialogContent>
+          {justCreated ? (
+            <>
+              <DialogHeader>
+                <DialogTitle>Send this to {justCreated.email}</DialogTitle>
+                <DialogDescription>
+                  However you would normally reach them — Signal, text, in person. Coram does not
+                  send it for you.
+                </DialogDescription>
+              </DialogHeader>
+              <div className="flex gap-2">
+                <Input value={link} readOnly aria-label="Invitation link" />
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => {
+                    void navigator.clipboard.writeText(link);
+                    say('Copied.');
+                  }}
+                >
+                  <Copy className="mr-2 h-4 w-4" />
+                  Copy
+                </Button>
+              </div>
+              <DialogFooter>
+                <Button variant="ghost" onClick={() => setJustCreated(null)}>
+                  Invite someone else
+                </Button>
+                <Button onClick={() => setOpen(false)}>Done</Button>
+              </DialogFooter>
+            </>
+          ) : (
+            <>
+              <DialogHeader>
+                <DialogTitle>Invite someone</DialogTitle>
+                <DialogDescription>They do not need a Coram account yet.</DialogDescription>
+              </DialogHeader>
+              <div className="space-y-4">
+                <div className="space-y-2">
+                  <Label htmlFor="invite-email">Email</Label>
+                  <Input
+                    id="invite-email"
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="invite-role">Role</Label>
+                  <Select value={role} onValueChange={(v) => setRole(v as (typeof ROLES)[number])}>
+                    <SelectTrigger id="invite-role">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {ROLES.map((r) => (
+                        <SelectItem key={r} value={r}>
+                          {r}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+              <DialogFooter>
+                <Button variant="ghost" onClick={() => setOpen(false)}>
+                  Cancel
+                </Button>
+                <Button disabled={!email.trim() || create.isPending} onClick={() => create.mutate()}>
+                  {create.isPending ? 'Sending…' : 'Create invitation'}
+                </Button>
+              </DialogFooter>
+            </>
+          )}
+        </DialogContent>
+      </Dialog>
+    </Section>
   );
 }
 
