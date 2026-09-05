@@ -153,15 +153,36 @@ describe('the gaps', () => {
   });
 
   /*
-   * The four that a reader would otherwise find on their own, which is the
+   * The five that a reader would otherwise find on their own, which is the
    * expensive way to find them.
    */
-  it('keeps all four admissions', () => {
+  it('keeps all five admissions', () => {
     expect(ABSENT.map((g) => g.id).sort()).toEqual([
       'metadata',
       'not-open-source',
       'pentest',
+      'single-vendor',
       'soc2',
     ]);
+  });
+
+  /*
+   * The infrastructure-dependency gap, checked on its own.
+   *
+   * A premortem on why groups might not stay raised the sharpest version of
+   * this objection: a sophisticated organizer's real question is not "is the
+   * crypto sound", it is "what happens the day your hosting account, your
+   * database, or your payment processor decides they are done with you" —
+   * because unlike the six scattered tools this replaces, Coram going dark is
+   * one company's decision, not six. The honest answer is that nothing removes
+   * that risk while a single company hosts this, and the entry has to say so
+   * without dressing the export up as a fix for a warning we cannot promise.
+   */
+  it('names the single-company risk without pretending export erases it', () => {
+    const gap = ABSENT.find((g) => g.id === 'single-vendor');
+    expect(gap?.claim).toMatch(/one company/i);
+    expect(gap?.claim).toMatch(/six/i);
+    expect(gap?.instead).toMatch(/no fix/i);
+    expect(gap?.instead).not.toMatch(/\bprotects? you\b|\bsafe(ly)?\b|\bguarantee/i);
   });
 });

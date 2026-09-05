@@ -209,6 +209,21 @@ export const ABSENT: Gap[] = [
       'good enough that walking away costs you nothing.',
   },
   {
+    id: 'single-vendor',
+    title: 'One company runs this, not the six you are replacing',
+    claim:
+      'Each of the tools Coram replaces belonged to a different company, so no single one of ' +
+      'them could take everything down at once. Coram is one company, on one hosting account, ' +
+      'one database and one payment processor — a billing dispute, a policy decision, or this ' +
+      'project simply failing as a business can end it with less warning than any of those six ' +
+      'ever gave you.',
+    instead:
+      'There is no fix for this while a single company is the one hosting it, and anyone who ' +
+      'tells you otherwise is selling something. What lowers the cost is the export above: run ' +
+      'it on a schedule of your own choosing rather than waiting for the day you would need it, ' +
+      'because we cannot promise that day comes with warning.',
+  },
+  {
     id: 'metadata',
     title: 'We can still see the shape of your organising',
     claim:
