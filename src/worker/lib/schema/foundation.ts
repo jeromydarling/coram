@@ -133,6 +133,14 @@ export const memberships = pgTable(
     /** Display name within this workspace. Optional — a handle is fine. */
     displayName: text('display_name'),
     createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
+    /**
+     * Date-granular, like users.lastSeenOn, and written once. Answers "did
+     * this person ever actually arrive after joining this workspace" — not
+     * lastSeenOn, which every later login overwrites forward, so it cannot
+     * tell an activated workspace apart from one where everyone stopped
+     * showing up in month two. See scripts/activation-report.ts.
+     */
+    firstLoginOn: timestamp('first_login_on', { withTimezone: true }),
   },
   (t) => [
     uniqueIndex('memberships_tenant_user_key').on(t.tenantId, t.userId),
@@ -150,6 +158,56 @@ registerTable({
   reason:
     'Binds a person to a workspace and a role. Every access decision derives from it. ' +
     'Matches the users retention window so a purged user leaves no dangling grant.',
+});
+
+// ---------------------------------------------------------------------------
+// workspace_invites
+// ---------------------------------------------------------------------------
+
+/**
+ * A standing offer to join one workspace, at one role, addressed to one email.
+ *
+ * Never carries an `acceptedAt`: an accepted invite has nothing left to say
+ * that `memberships` does not now say better, so coram.accept_invite() deletes
+ * the row in the same statement that creates the membership. This table only
+ * ever holds invites still waiting on someone — the nightly sweep only ever
+ * finds the ones nobody answered.
+ */
+export const workspaceInvites = pgTable(
+  'workspace_invites',
+  {
+    id: uuid('id').primaryKey().defaultRandom(),
+    tenantId: uuid('tenant_id')
+      .notNull()
+      .references(() => tenants.id, { onDelete: 'cascade' }),
+    email: text('email').notNull(),
+    role: text('role').$type<Role>().notNull(),
+    invitedBy: uuid('invited_by')
+      .notNull()
+      .references(() => users.id, { onDelete: 'cascade' }),
+    /** sha256 of the link's token. The token itself is never stored. */
+    tokenHash: text('token_hash').notNull(),
+    expiresAt: timestamp('expires_at', { withTimezone: true }).notNull(),
+    createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => [
+    uniqueIndex('workspace_invites_pending_email_key').on(t.tenantId, sql`lower(${t.email})`),
+    uniqueIndex('workspace_invites_token_hash_key').on(t.tokenHash),
+  ],
+);
+
+registerTable({
+  table: 'workspace_invites',
+  // Short: the token itself already expires in a week (see api/workspace.ts),
+  // this only bounds how long a spent or ignored row can linger afterward.
+  retentionDays: 30,
+  pii: 'contact',
+  timestampColumn: 'created_at',
+  tenantColumn: 'tenant_id',
+  purge: 'delete',
+  reason:
+    'An email address for someone who has not joined yet. Deleted the moment they accept — see ' +
+    'the type comment — so this rule only ever catches invites nobody answered.',
 });
 
 // ---------------------------------------------------------------------------
