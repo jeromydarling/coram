@@ -45,8 +45,24 @@ export const selectWorkspaceSchema = z.object({
   tenantId: z.string().uuid(),
 });
 
+/**
+ * Accepting an invite. No email field — the invite already names one, and
+ * asking again would let someone accept it as an address that is not theirs.
+ *
+ * `password` is required by the schema but only load-bearing when the invited
+ * address has no account yet; api/auth.ts decides which case it is and, for an
+ * existing account, treats it as the password to authenticate with rather than
+ * one to set.
+ */
+export const acceptInviteSchema = z.object({
+  token: z.string().min(20),
+  password,
+  displayName: z.string().trim().max(120).optional(),
+});
+
 export type SignupInput = z.infer<typeof signupSchema>;
 export type LoginInput = z.infer<typeof loginSchema>;
 export type RequestResetInput = z.infer<typeof requestResetSchema>;
 export type ConfirmResetInput = z.infer<typeof confirmResetSchema>;
 export type SelectWorkspaceInput = z.infer<typeof selectWorkspaceSchema>;
+export type AcceptInviteInput = z.infer<typeof acceptInviteSchema>;

@@ -20,17 +20,26 @@ import {
 } from '../../lib/auth';
 import { hashPassword, mintOneTimeToken, needsRehash, sha256Hex, verifyPassword } from '../../lib/crypto';
 import { ERROR, detailFor, err, ok, logFailure } from '../../lib/http';
-import { clientIp, consume, LOGIN_LIMIT, RESET_LIMIT, SIGNUP_LIMIT } from '../../lib/ratelimit';
+import {
+  ACCEPT_INVITE_LIMIT,
+  clientIp,
+  consume,
+  LOGIN_LIMIT,
+  RESET_LIMIT,
+  SIGNUP_LIMIT,
+} from '../../lib/ratelimit';
 import {withoutTenant, withTenant} from '../../lib/rls';
 import { db } from '../../lib/db';
 
 import {
+  acceptInviteSchema,
   confirmResetSchema,
   loginSchema,
   requestResetSchema,
   selectWorkspaceSchema,
   signupSchema,
 } from '../../../shared/schemas/auth';
+
 
 export const auth = new Hono<{ Bindings: Env; Variables: Vars }>();
 
@@ -93,6 +102,13 @@ auth.post('/signup', async (c) => {
 
     const { token, session } = await createSession(c.env, result.userId, result.tenantId);
     c.header('Set-Cookie', sessionCookie(token, c.env));
+
+    c.executionCtx.waitUntil(
+      withoutTenant(sql, (tx) => tx`SELECT coram.touch_login(${result.userId}::uuid, ${result.tenantId}::uuid)`).then(
+        () => undefined,
+        () => undefined,
+      ),
+    );
 
     await withTenant(sql, session, async (tx) => {
       await tx`
@@ -161,6 +177,13 @@ auth.post('/login', async (c) => {
   const { token } = await createSession(c.env, user.id, tenantId);
   c.header('Set-Cookie', sessionCookie(token, c.env));
 
+  c.executionCtx.waitUntil(
+    withoutTenant(sql, (tx) => tx`SELECT coram.touch_login(${user.id}::uuid, ${tenantId ?? null}::uuid)`).then(
+      () => undefined,
+      () => undefined,
+    ),
+  );
+
   return c.json(
     ok({
       tenantId: tenantId ?? null,
@@ -199,6 +222,16 @@ auth.post('/workspace', requireSession, async (c) => {
   await revokeSession(c.env, session);
   const { token } = await createSession(c.env, session.userId, parsed.data.tenantId);
   c.header('Set-Cookie', sessionCookie(token, c.env));
+
+  c.executionCtx.waitUntil(
+    withoutTenant(
+      sql,
+      (tx) => tx`SELECT coram.touch_login(${session.userId}::uuid, ${parsed.data.tenantId}::uuid)`,
+    ).then(
+      () => undefined,
+      () => undefined,
+    ),
+  );
 
   return c.json(ok({ tenantId: parsed.data.tenantId }));
 });
@@ -290,6 +323,139 @@ auth.post('/reset/confirm', async (c) => {
   await revokeAllSessions(c.env, userId);
 
   return c.json(ok(undefined, { message: 'Password changed. Sign in again.' }));
+});
+
+// ---------------------------------------------------------------------------
+// Invites — the other end of POST /api/workspace/invites
+// ---------------------------------------------------------------------------
+
+/**
+ * GET /api/auth/invites/:token — what the link says, before anyone commits to
+ * anything.
+ *
+ * Unauthenticated by necessity: the whole point is to tell someone who has
+ * never signed in what they are being asked to join. Returns only what the
+ * accept screen needs to render itself — never the tenant id, which the
+ * accept step re-derives from the token instead of trusting back from a form.
+ */
+auth.get('/invites/:token', async (c) => {
+  const rid = c.get('requestId');
+  const sql = db(c);
+
+  const tokenHash = await sha256Hex(c.req.param('token'));
+  const rows = await withoutTenant(sql, (tx) => tx`SELECT * FROM coram.find_invite(${tokenHash})`);
+  const invite = rows[0] as
+    | { tenant_name: string; email: string; role: string; expires_at: string }
+    | undefined;
+
+  if (!invite || new Date(invite.expires_at) <= new Date()) {
+    return c.json(err('That invitation has expired or does not exist.', ERROR.NOT_FOUND, rid), 404);
+  }
+
+  const existing = await withoutTenant(sql, (tx) => tx`SELECT id FROM coram.find_login(${invite.email})`);
+
+  return c.json(
+    ok({
+      workspaceName: invite.tenant_name,
+      email: invite.email,
+      role: invite.role,
+      hasAccount: existing.length > 0,
+    }),
+  );
+});
+
+/**
+ * POST /api/auth/invites/:token/accept
+ *
+ * Two shapes behind one endpoint, chosen by whether the invited address
+ * already has an account — never by anything the caller asserts:
+ *
+ *   - No account yet: `password` sets one, alongside the membership.
+ *   - Account exists: `password` must be the one already on file. This is not
+ *     a lesser check reused from login by accident — it is the same proof
+ *     login demands, because a link is not identity and the alternative is
+ *     letting anyone who intercepts an invite meant for someone else attach
+ *     themselves to that person's existing account.
+ */
+auth.post('/invites/:token/accept', async (c) => {
+  const rid = c.get('requestId');
+
+  const rate = await consume(c.env, 'accept-invite', clientIp(c.req.raw), ACCEPT_INVITE_LIMIT);
+  if (!rate.allowed) {
+    return c.json(err('Too many attempts. Try again shortly.', ERROR.RATE_LIMITED, rid), 429);
+  }
+
+  const parsed = acceptInviteSchema.safeParse({
+    ...(await c.req.json().catch(() => null)),
+    token: c.req.param('token'),
+  });
+  if (!parsed.success) {
+    return c.json(err(parsed.error.issues[0].message, ERROR.VALIDATION, rid), 400);
+  }
+
+  const sql = db(c);
+  const tokenHash = await sha256Hex(parsed.data.token);
+
+  const inviteRows = await withoutTenant(sql, (tx) => tx`SELECT * FROM coram.find_invite(${tokenHash})`);
+  const invite = inviteRows[0] as { id: string; email: string; expires_at: string } | undefined;
+
+  if (!invite || new Date(invite.expires_at) <= new Date()) {
+    return c.json(err('That invitation has expired or does not exist.', ERROR.NOT_FOUND, rid), 404);
+  }
+
+  const loginRows = await withoutTenant(sql, (tx) => tx`SELECT * FROM coram.find_login(${invite.email})`);
+  const existingUser = loginRows[0] as { id: string; password_hash: string } | undefined;
+
+  let userId: string;
+  if (existingUser) {
+    const valid = await verifyPassword(parsed.data.password, existingUser.password_hash);
+    if (!valid) {
+      return c.json(
+        err('That email already has an account. Enter its password to accept.', ERROR.UNAUTHORIZED, rid),
+        401,
+      );
+    }
+    userId = existingUser.id;
+  } else {
+    const hash = await hashPassword(parsed.data.password);
+    const rows = await withoutTenant(sql, (tx) => tx`SELECT coram.create_user(${invite.email}, ${hash})`);
+    userId = rows[0].create_user as string;
+  }
+
+  const acceptRows = await withoutTenant(
+    sql,
+    (tx) =>
+      tx`SELECT coram.accept_invite(${invite.id}::uuid, ${userId}::uuid, ${parsed.data.displayName ?? null}) AS tenant_id`,
+  );
+  const tenantId = acceptRows[0]?.tenant_id as string | null | undefined;
+
+  if (!tenantId) {
+    return c.json(
+      err('That invitation was just used or withdrawn. Ask for a new one.', ERROR.CONFLICT, rid),
+      409,
+    );
+  }
+
+  const { token, session } = await createSession(c.env, userId, tenantId);
+  c.header('Set-Cookie', sessionCookie(token, c.env));
+
+  c.executionCtx.waitUntil(
+    withoutTenant(sql, (tx) => tx`SELECT coram.touch_login(${userId}::uuid, ${tenantId}::uuid)`).then(
+      () => undefined,
+      () => undefined,
+    ),
+  );
+
+  // Matches signup's own audit entry for the same moment: a person's first
+  // arrival in a workspace, whichever door they came in through.
+  await withTenant(sql, session, async (tx) => {
+    await tx`
+      INSERT INTO public.audit_log (tenant_id, actor_id, actor_role, action, record_type)
+      VALUES (coram.current_tenant_id(), coram.current_user_id(), coram.current_role(), 'session.start', 'session')
+    `;
+  });
+
+  return c.json(ok({ tenantId }), 201);
 });
 
 /** Lowercase, hyphenated, deduplicated. Collisions get a short random suffix. */

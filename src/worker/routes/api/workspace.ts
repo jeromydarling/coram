@@ -8,11 +8,13 @@ import { z } from 'zod';
 import type { Env, Vars } from '../../env';
 import { requireWorkspace, revokeAllSessions } from '../../lib/auth';
 import { record, recordBefore } from '../../lib/audit';
-import { ERROR, err, ok, logFailure } from '../../lib/http';
-import {withTenant, withoutTenant} from '../../lib/rls';
+import { mintOneTimeToken } from '../../lib/crypto';
+import { ERROR, detailFor, err, ok, logFailure } from '../../lib/http';
+import {isDenied, withTenant, withoutTenant} from '../../lib/rls';
 import { db } from '../../lib/db';
 
 import { ROLES } from '../../lib/schema';
+import { email as emailSchema } from '../../../shared/schemas/auth';
 
 export const workspace = new Hono<{ Bindings: Env; Variables: Vars }>();
 
@@ -162,6 +164,132 @@ workspace.patch('/members/:id', async (c) => {
     logFailure('workspace', rid, error);
     return c.json(err('Could not change that role.', ERROR.INTERNAL, rid), 500);
   }
+});
+
+// ---------------------------------------------------------------------------
+// Invites
+//
+// The other half of §4.1's five roles being able to change hands at all: until
+// this, coram.create_workspace() made its creator the sole steward and nothing
+// in the product ever added a second row to `memberships`. Every workspace was
+// a single point of failure for an organization that, by nature, has high
+// turnover, and there was no route that changed it.
+//
+// The link is handed back to the steward who asked for it rather than mailed,
+// because nothing in this codebase sends outbound email yet (see the reset
+// flow below, and 0020_workspace_invites.sql's header) — and because, unlike
+// reset, there is no security reason not to: the steward already knows exactly
+// who they mean to send it to, and for a small organizing group is at least as
+// likely to send it over Signal as email.
+// ---------------------------------------------------------------------------
+
+const INVITE_TTL_DAYS = 7;
+
+workspace.get('/invites', async (c) => {
+  const session = c.get('session')!;
+  const sql = db(c);
+
+  const invites = await withTenant(
+    sql,
+    session,
+    (tx) => tx`
+      SELECT id, email, role, created_at, expires_at
+      FROM public.workspace_invites
+      ORDER BY created_at DESC
+    `,
+  );
+
+  return c.json(ok(invites));
+});
+
+const inviteCreate = z.object({ email: emailSchema, role: z.enum(ROLES) });
+
+workspace.post('/invites', async (c) => {
+  const rid = c.get('requestId');
+  const session = c.get('session')!;
+
+  const parsed = inviteCreate.safeParse(await c.req.json().catch(() => null));
+  if (!parsed.success) {
+    return c.json(err(parsed.error.issues[0].message, ERROR.VALIDATION, rid), 400);
+  }
+  const { email, role } = parsed.data;
+
+  const sql = db(c);
+
+  try {
+    const result = await withTenant(sql, session, async (tx) => {
+      const [already] = await tx`
+        SELECT 1 FROM public.memberships m
+        JOIN public.users u ON u.id = m.user_id
+        WHERE lower(u.email) = lower(${email})
+      `;
+      if (already) return 'already_member' as const;
+
+      // Re-inviting refreshes rather than errors on the unique (tenant_id,
+      // lower(email)) index — a steward correcting a typo'd role should not
+      // have to notice and revoke the old row first.
+      await tx`DELETE FROM public.workspace_invites WHERE lower(email) = lower(${email})`;
+
+      const { token, hash } = await mintOneTimeToken();
+      const expiresAt = new Date(Date.now() + INVITE_TTL_DAYS * 24 * 60 * 60 * 1000).toISOString();
+
+      const [invite] = await tx`
+        INSERT INTO public.workspace_invites (tenant_id, email, role, invited_by, token_hash, expires_at)
+        VALUES (coram.current_tenant_id(), ${email}, ${role}, coram.current_user_id(), ${hash}, ${expiresAt}::timestamptz)
+        RETURNING id, expires_at
+      `;
+
+      await record(tx, { action: 'member.invite', recordType: 'workspace_invite' });
+
+      return { id: invite.id as string, expiresAt: invite.expires_at as string, token };
+    });
+
+    if (result === 'already_member') {
+      return c.json(err('That person is already a member.', ERROR.CONFLICT, rid), 409);
+    }
+
+    // The path only. The Worker does not know its own public hostname any
+    // more reliably than the browser that just called it does.
+    return c.json(
+      ok({
+        id: result.id,
+        email,
+        role,
+        expiresAt: result.expiresAt,
+        path: `/app/invite/${result.token}`,
+      }),
+      201,
+    );
+  } catch (error) {
+    /*
+     * A denied INSERT raises rather than matching zero rows — see isDenied.
+     * Without this, a member pressing "invite" the one time the button was
+     * visible to them by mistake was told the invite had failed rather than
+     * that it was not theirs to send.
+     */
+    if (isDenied(error)) {
+      return c.json(err('Only a steward can invite someone.', ERROR.FORBIDDEN, rid), 403);
+    }
+    logFailure('workspace', rid, error);
+    return c.json(err('Could not create that invite.', ERROR.INTERNAL, rid, detailFor(c.env, error)), 500);
+  }
+});
+
+workspace.delete('/invites/:id', async (c) => {
+  const rid = c.get('requestId');
+  const session = c.get('session')!;
+  const sql = db(c);
+
+  const rows = await withTenant(
+    sql,
+    session,
+    (tx) => tx`DELETE FROM public.workspace_invites WHERE id = ${c.req.param('id')}::uuid RETURNING id`,
+  );
+
+  if (!rows.length) {
+    return c.json(err('No such invite, or not yours to revoke.', ERROR.NOT_FOUND, rid), 404);
+  }
+  return c.json(ok());
 });
 
 // ---------------------------------------------------------------------------

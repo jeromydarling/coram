@@ -30,6 +30,12 @@ export interface RateLimit {
 export const LOGIN_LIMIT: RateLimit = { limit: 8, windowSeconds: 15 * 60 };
 export const SIGNUP_LIMIT: RateLimit = { limit: 5, windowSeconds: 60 * 60 };
 export const RESET_LIMIT: RateLimit = { limit: 5, windowSeconds: 60 * 60 };
+/**
+ * Same shape as LOGIN_LIMIT, for the same reason: accepting an invite for an
+ * address that already has an account means proving the caller knows that
+ * account's password, which makes this endpoint a second place to guess one.
+ */
+export const ACCEPT_INVITE_LIMIT: RateLimit = { limit: 8, windowSeconds: 15 * 60 };
 
 const MAX_WINDOW_SECONDS = 24 * 60 * 60;
 
